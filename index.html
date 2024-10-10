@@ -24,21 +24,33 @@
         <img src="./assets/img/join_logo_dark.svg" alt="">
         <div class="sign-up-field">
             <h3>Not a Join user?</h3>
-            <button>Sign up</button>
+            <button id="signUp">Sign up</button>
         </div>
     </header>
 
-    <!-- Der Rest der Seite, der nach der Animation sichtbar wird -->
     <div class="login-content">
-        <div class="login-form">
-            <h1>Log in</h1>
-            <img src="" alt="Underline">
-         <form onsubmit="login()">
-            <input type="email" required id="email">
-            <input type="password" required id="password">
-            <button>Login</button>
-         </form>
-         <div id="msgBox"></div>
+        <div class="login-modal">
+            <h1 class="login-fsize">Log in</h1>
+            <img src="./assets/img/underline_login.svg" alt="Underline">
+            <div class="login-box">
+                <form onsubmit="login()">
+                    <div>
+                        <input type="email" required id="email" placeholder="Email">
+                    </div>
+                    <div>
+                        <input type="password" required id="password" placeholder="Password">
+                    </div>
+                    <div>
+                        <input type="checkbox">
+                        <span>Remember me</span>
+                    </div>
+                    <div>
+                        <button id="logIn">Log in</button>
+                        <button id="guestLogIn">Guest Log in</button>
+                    </div>
+                </form>
+            </div>
+            <div id="msgBox"></div>
         </div>
     </div>
 
