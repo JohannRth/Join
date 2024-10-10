@@ -1,1 +1,50 @@
-/* test */
+/* Globales Reset */
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #F6F7F8;
+}
+
+.login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 80px;
+    height: 208px;
+}
+
+.sign-up-field {
+    display: flex;
+    align-items: center;
+}
+
+.login-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: #ffffff;
+    width: 100%;
+    max-width: 652px;
+    min-height: 400px;
+    border-radius: 24px;
+    padding: 48px 115px;
+}
+
+.login-footer {
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    height: 65px;
+    align-items: flex-end;
+}
