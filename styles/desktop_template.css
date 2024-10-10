@@ -1,4 +1,51 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 36px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    font-size: 21px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.help-icon {
+    width: 31px;
+    height: 31px;
+    margin-right: 26px;
+    cursor: pointer;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profile-picture {
+    width: 49px;
+    height: 49px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #2A3647;
+}
+
+.user-name {
+    font-size: 16px;
+    margin-left: 8px;
+}
+
 .desktopSideMenu {
+    font-family: "inter", sans-serif;
     background-color: #2A3647;
     display: flex;
     flex-direction: column;
@@ -6,28 +53,68 @@
     top: 0;
     left: 0;
     height: 100%;
-    width: 232px; 
-
+    width: 232px;
 }
 
-.desktopImageContainer{
+.desktopImageContainer {
     padding-top: 64px;
-    padding-left: 65.98px;
-    padding-right: 65.98px;
+    padding-left: 66px;
+    padding-right: 66px;
 }
 
-.desktopImage{
-    width: 100.03px;
-    height: 121.97px;
+.desktopImage {
+    width: 100px;
+    height: 122px;
 }
 
-.navLinks{
+.navLinksContainer {
     display: flex;
     flex-direction: column;
-    
+    width: 100%;
+    padding-top: 70px;
+    gap: 15px;
 }
 
-.singleNavLink{
-    color: white;
+.desktopLinkAndImage {
+    display: flex;
+    align-items: center;
+    padding-left: 54px;
+    height: 46px;
+}
+
+.desktopLinkAndImage img {
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+}
+
+.singleNavLink {
+    color: #CDCDCD;
     text-decoration: none;
+    font-size: 16px;
+}
+
+.desktopLinkAndImage:hover {
+    background-color: #091931;
+}
+
+.desktopLinkAndImage.active {
+    background-color: #091931;
+}
+
+.dataProtectionContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    padding-bottom: 40px;
+    padding-left: 54px;
+    gap: 15px;
+}
+
+.dataProtectionPolicy,
+.dataProtectionNotice {
+    font-weight: 400;
+    text-decoration: none;
+    color: #A8A8A8;
+    font-size: 16px;
 }
