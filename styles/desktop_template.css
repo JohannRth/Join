@@ -1,3 +1,8 @@
+body {
+    padding-top: 89px; 
+    padding-left: 232px; 
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -5,6 +10,11 @@
     padding: 20px 36px;
     background-color: #FFFFFF;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 232px; 
+    right: 0;
+    z-index: 1000;
 }
 
 .header h1 {
@@ -35,7 +45,7 @@
     width: 49px;
     height: 49px;
     border-radius: 50%;
-    object-fit: cover;
+    background-color: #FFFFFF;
     border: 3px solid #2A3647;
 }
 
