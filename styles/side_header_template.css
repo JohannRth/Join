@@ -1,4 +1,11 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    scroll-behavior: smooth;
+}
+
 body {
+    font-family: "inter", sans-serif;
     padding-top: 89px; 
     padding-left: 232px; 
 }
@@ -55,7 +62,6 @@ body {
 }
 
 .desktopSideMenu {
-    font-family: "inter", sans-serif;
     background-color: #2A3647;
     display: flex;
     flex-direction: column;
