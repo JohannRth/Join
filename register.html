@@ -27,23 +27,32 @@
 
     <div class="login-content">
         <div class="login-modal">
-            <h1 class="login-fsize">Log in</h1>
+            <img class="back-button" src="./assets/img/arrow-left-line.svg" alt="Back-Button" onclick="window.location.href='index.html'">
+            <h1 class="login-fsize">Sign Up</h1>
             <img src="./assets/img/underline_login.svg" alt="Underline">
-            <div class="login-box">
+            <div class="login-box" height="auto">
                 <form onsubmit="login()">
                     <div>
-                        <input type="email" required id="email" placeholder="Email">
+                        <input type="text" required id="inputName" placeholder="Name" autocomplete="name">
                     </div>
                     <div>
-                        <input type="password" required id="password" placeholder="Password">
+                        <input type="email" required id="email" placeholder="Email" autocomplete="email">
                     </div>
                     <div>
-                        <input type="checkbox">
-                        <span>Remember me</span>
+                        <input type="password" required id="password" placeholder="Password" autocomplete="new-password">
                     </div>
                     <div>
-                        <button id="logIn">Log in</button>
-                        <button id="guestLogIn">Guest Log in</button>
+                        <input type="password" required id="confirmedPassword" placeholder="Confirm Password" autocomplete="new-password">
+                    </div>
+                    <div id="passwordError" class="login-error">
+                        <p></p>
+                    </div>
+                    <div class="checkbox-sec">
+                        <input id="checkboxSignUp" type="checkbox">
+                        <span>I accept the <a href="">Privacy Policy</a></span>
+                    </div>
+                    <div class="login-btn-sec">
+                        <button id="signUpButton">Sign Up</button>
                     </div>
                 </form>
             </div>
