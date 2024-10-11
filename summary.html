@@ -1,27 +1,397 @@
 <!DOCTYPE html>
 <html lang="de">
-
-<head>
+  <head>
     <!-- Meta -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Link -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
     <script src="./js/login.js"></script>
     <script src="./assets/templates/load_header_sidebar.js"></script>
-    <link rel="stylesheet" href="./assets/fonts/font.css">
-    <link rel="stylesheet" href="/styles/side_header_template.css">
+    <link rel="stylesheet" href="./assets/fonts/font.css" />
+    <link rel="stylesheet" href="/styles/side_header_template.css" />
     <!-- Link-Fonts -->
-    <link rel="stylesheet" href="./assets/fonts/font.css">
+    <link rel="stylesheet" href="./assets/fonts/font.css" />
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/img/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="./assets/img/favicon.svg" />
     <!-- Title -->
     <title>Summary</title>
-</head>
-<body>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #F6F7F8;
+        }
+
+        .title-container {
+            display: flex;
+            align-items: center; 
+            width: 625px;
+            height: 73px;
+            margin-left: 330px;
+            margin-top: 190px;
+        }
+
+        .title-container h1 {
+            font-size: 61px;
+            font-weight: 700;
+            margin-right: 30px; 
+        }
+
+        .separator {
+            height: 59px; 
+            width: 3px;   
+            background-color: #5CBEE7; 
+            margin-right: 30px; 
+        }
+
+        .title-container p {
+            font-size: 27px;
+            font-weight: 400;
+            color: #2A3647; 
+        }
+
+        .main-summary{
+            margin-left: 328px;
+            margin-top: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary-conatiner{
+            height: 562px;
+            width: 560px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toDo-done-container{
+            height: 168px;
+            width: 560px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .toDo-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 264px;
+            height: 168px;
+            padding: 38px 19px 38px 19px;
+            gap: 36px;
+            border-radius: 30px;
+            opacity: 0px;
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 4px 0px #0000001A;
+        }
+
+        .toDo-number-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .todo-number{
+            font-size: 64px;
+            font-weight: 600;
+        }
+
+        .summary-span{
+            font-size: 16px;
+            font-weight: 400;
+            color: #2A3647;
+        }
+
+        .done-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 264px;
+            height: 168px;
+            padding: 38px 19px 38px 19px;
+            gap: 36px;
+            border-radius: 30px;
+            opacity: 0px;
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 4px 0px #0000001A;
+        }
+
+        .done-number-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .done-number{
+            font-size: 64px;
+            font-weight: 600;
+        }
+
+        .urgent-date-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 560px;
+            height: 168px;
+            padding: 28px 48px 28px 48px;
+            gap: 61px;
+            border-radius: 30px 30px 30px 30px;
+            opacity: 0px;
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 4px 0px #0000001A;
+            margin-top: 28px;
+        }
+
+        .urgent-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 130px;
+            height: 96px;
+            gap: 16px;
+        }
+
+        .urgent-number-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .separator-urgent{
+            height: 102px; 
+            width: 3px;   
+            background-color: #E8E8E8; 
+        }
+
+        .urgent-number{
+            font-size: 64px;
+            font-weight: 600;
+        }
+
+        .data-container{
+            display: flex;
+            flex-direction: column;
+            width: 178px;
+            height: 57px;
+            gap: 13px;
+        }
+
+        .date-urgent{
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .Upcoming-Deadline{
+            font-size: 16px;
+            font-weight: 400;
+            color: #2A3647;
+        }
+
+        .tasks-container{
+            display: flex;
+            justify-content: space-between;
+            height: 170px;
+            width: 560px;
+            margin-top: 28px;
+            gap: 13px;
+        }
+
+        .board-task-container{
+            width: 168px;
+            height: 168px;
+            padding: 25px 0px 25px 0px;
+            gap: 13px;
+            border-radius: 30px;
+            opacity: 0px;
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 4px 0px #0000001A;
+        }
+
+        .progress-task-container{
+            width: 168px;
+            height: 168px;
+            padding: 25px 0px 25px 0px;
+            gap: 13px;
+            border-radius: 30px;
+            opacity: 0px;
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 4px 0px #0000001A;
+        }
+
+        .feedback-task-container{
+            width: 168px;
+            height: 168px;
+            padding: 25px 0px 25px 0px;
+            gap: 13px;
+            border-radius: 30px;
+            opacity: 0px;
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 4px 0px #0000001A;
+        }
+
+        .board-number-span{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 168px;
+            height: 168px;
+            top: 1px;
+            border-radius: 30px 0px 0px 0px;
+            opacity: 0px;
+        }
+
+        .board-number{
+            font-size: 64px;
+            font-weight: 600;
+        }
+
+        .tasks-span{
+            font-size: 20px;
+            font-weight: 400;
+            text-align: center;
+            color: #2A3647;
+        }
+
+        .progress-number-span{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 168px;
+            height: 168px;
+            top: 1px;
+            border-radius: 30px 0px 0px 0px;
+            opacity: 0px;
+        }
+
+        .progress-number{
+            font-size: 64px;
+            font-weight: 600;
+        }
+
+        .feedback-number-span{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 168px;
+            height: 168px;
+            top: 1px;
+            border-radius: 30px 0px 0px 0px;
+            opacity: 0px;
+        }
+
+        .feedback-number{
+            font-size: 64px;
+            font-weight: 600;
+        }
+
+        .main-greet{
+            display: flex;
+            justify-content: center;
+            height: 562px;
+            width: 560px;
+        }
+
+        .greet-container{
+            display: flex;
+            flex-direction: column;
+            height: 136px;
+            width: 385px;
+        }
+
+        .greet-time{
+            font-size: 47px;
+            font-weight: 500;
+            color: #2A3647;
+        }
+
+        .greet-name{
+            font-size: 64px;
+            font-weight: 700;
+            color:#29ABE2;
+        }
+
+    </style>
+  </head>
+  <body>
+
     <div id="sidebar-placeholder"></div>
     <div id="header-placeholder"></div>
-</body>
+
+        <div class="title-container">
+            <h1>Join 360</h1>
+            <span class="separator"></span>
+            <p>Key Metrics at a Glance</p>
+        </div>
+        <div class="main-summary">
+            <div class="summary-conatiner">
+                <div class="toDo-done-container">
+                    <div class="toDo-container">
+                        <div>
+                            <img src="./assets/img/edit_todo.svg" alt="">
+                        </div>
+                        <div class="toDo-number-container">
+                            <span class="todo-number">1</span>
+                            <span class="summary-span">To do</span>
+                        </div>
+                    </div>
+                    <div class="done-container">
+                        <div>
+                            <img src="./assets/img/ok_done.svg" alt="">
+                        </div>
+                        <div class="done-number-container">
+                            <span class="done-number">2</span>
+                            <span class="summary-span">Done</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="urgent-date-container">
+                    <div class="urgent-container">
+                        <div>
+                            <img src="./assets/img/urgent.svg" alt="">
+                        </div>
+                        <div class="urgent-number-container">
+                            <span class="urgent-number"> 0</span>
+                            <span class="summary-span"> Urgent </span>
+                        </div>
+                    </div>
+                    <span class="separator-urgent"></span>
+                    <div class="data-container">
+                        <span class="date-urgent"> Oktober 16, 2024</span>
+                        <span class="Upcoming-Deadline"> Upcoming Deadline </span>
+                    </div>
+                </div>
+                <div class="tasks-container">
+                    <div class="board-task-container">
+                        <div class="board-number-span">
+                            <span class="board-number">5</span>
+                            <span class="tasks-span"> Tasks in<br>board </span>
+                        </div>
+                    </div>
+                    <div class="progress-task-container">
+                        <div class="progress-number-span">
+                            <span class="progress-number">4</span>
+                            <span class="tasks-span"> Tasks in<br>Progress </span>
+                        </div>  
+                    </div>
+                    <div class="feedback-task-container">
+                        <div class="feedback-number-span">
+                            <span class="feedback-number">2</span>
+                            <span class="tasks-span"> Awaiting Feedback </span>
+                        </div> 
+                    </div>
+                </div>    
+            </div>
+            <div class="main-greet">
+                <div class="greet-container">
+                    <span class="greet-time">Good morning, </span>
+                    <span class="greet-name">Sofia Müller</span>
+                </div>
+            </div>
+        </div>
+  </body>
 </html>
