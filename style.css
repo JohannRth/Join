@@ -40,6 +40,7 @@ body {
     padding: 48px 115px;
     align-content: center;
     justify-content: space-around;
+    box-shadow: 0px 0px 14px 3px #0000000A;
 }
 
 button#logIn,
@@ -64,16 +65,35 @@ button#guestLogIn {
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
+
+.checkbox-sec{
+    padding: 16px;
+}
+
+.login-btn-sec{
+    display: flex;
+    justify-content: space-evenly;
+}
+
 
 input#email,
 input#password{
     width: 100%;
-    margin-bottom: 24px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    cursor: pointer;
+    border: 1px solid #D1D1D1;
+    padding: 12px 21px;
+    font-size: 20px;
+    box-sizing: border-box;
 }
 
 .login-fsize {
     font-size: 61px !important;
+    margin-bottom: 10px;
 }
 
 .login-footer {
