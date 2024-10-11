@@ -106,6 +106,12 @@ button#signUpButton:hover {
     padding: 16px;
 }
 
+.checkbox-register-sec {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+}
+
 .login-btn-sec {
     display: flex;
     justify-content: space-around;
