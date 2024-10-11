@@ -14,7 +14,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 36px;
     background-color: #FFFFFF;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
     position: fixed;
@@ -22,12 +21,14 @@ body {
     left: 232px; 
     right: 0;
     z-index: 1000;
+    height: 96px;
 }
 
 .header h1 {
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 400;
     color: #000000;
+    padding-left: 116px;
 }
 
 .header-right {
@@ -35,10 +36,11 @@ body {
     align-items: center;
 }
 
-.help-icon {
-    width: 31px;
-    height: 31px;
-    margin-right: 26px;
+.helpImageHeader{
+    padding-right: 12px;
+}
+
+.helpImage{
     cursor: pointer;
 }
 
@@ -54,6 +56,7 @@ body {
     border-radius: 50%;
     background-color: #FFFFFF;
     border: 3px solid #2A3647;
+    margin-right: 40px;
 }
 
 .user-name {
@@ -87,7 +90,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding-top: 70px;
+    padding-top: 114px;
     gap: 15px;
 }
 
@@ -122,7 +125,7 @@ body {
     display: flex;
     flex-direction: column;
     margin-top: auto;
-    padding-bottom: 40px;
+    padding-bottom: 64px;
     padding-left: 54px;
     gap: 15px;
 }
