@@ -32,7 +32,7 @@ body {
     width: 32px;
     cursor: pointer;
     position: fixed;
-    top: 22.1%;
+    top: 225px;
     right: 96px
 }
 
@@ -67,4 +67,25 @@ h3{
 
 .blueText {
     color: #29ABE2;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    border-radius: 4px;
+    padding-right: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F6F7F8;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #A8A8A8;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #29ABE2;
+    border-radius: 4px;
 }
