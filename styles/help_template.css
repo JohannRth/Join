@@ -70,7 +70,7 @@ body {
     font-weight: 700;
     padding-right: 35px;
     display: inline-block;
-    width: 56px; /* Dieser Wert sollte dem padding-left von .textNumbers entsprechen */
+    width: 56px; 
 }
 
 .helpText h3 {
