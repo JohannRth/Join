@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #F6F7F8;
+    max-width: 1920px;
+}
+
+.legalNotice {
+    color: #000000;
+    display: flex;
+    justify-content: center;
+    padding-top: 206px;
+    padding-left: 328px;
+    padding-right: 98px;
+    background-color: #F6F7F8;
+    
+}
+    
+.legalNoticeHeader {
+    display: flex;
+    margin-bottom: 20px;
+}
+  
+.legalNoticeHeadline{
+    font-size: 61px;
+    margin-right: 20px;
+}
+  
+.arrowLeft {
+    height: 32px;
+    width: 32px;
+    cursor: pointer;
+    position: fixed;
+    top: 22.1%;
+    right: 96px
+}
+
+.arrowLeft:hover {
+    background-color: #EEEEEE;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+}
+
+li{
+    font-size: 16px;
+}
+
+h2{
+    font-size: 27px;
+    font-weight: 700;
+    padding-top: 32px;
+    padding-bottom: 16px;
+}
+
+h3{
+    font-size: 20px;
+    font-weight: 700;
+}
+
+  
+.legalNoticeContent p {
+    font-size: 16px;
+    line-height: 1.5;
+    padding-bottom: 24px;
+}
+
+.blueText {
+    color: #29ABE2;
+}
