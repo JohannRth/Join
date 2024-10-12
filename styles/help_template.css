@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #F6F7F8;
+}
+
+.textHelp {
+    color: #000000;
+    padding-left: 328px;
+    padding-top: 206px;
+    padding-bottom: 64px;
+    padding-right: 98px;
+    width: 1440px;
+}
+
+.headlineAndArrowLeft {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 32px;
+}
+
+.headlineAndArrowLeft h1 {
+    font-size: 61px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.headlineAndArrowLeft img {
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+
+.headlineWhatIsJoin {
+    font-size: 27px;
+    font-weight: 700;
+    padding-top: 8px;
+    padding-bottom: 16px;
+}
+
+.headlineHowToUseIt {
+    font-size: 27px;
+    font-weight: 700;
+    padding-top: 8px;
+    padding-bottom: 24px;
+}
+
+.headlineEnjoyUsing{
+    font-size: 27px;
+    font-weight: 700;
+    padding-top: 20px;
+    padding-bottom: 24px;
+}
+
+.helpNumbers {
+    font-size: 27px;
+    font-weight: 700;
+    padding-right: 35px;
+    display: inline-block;
+    width: 56px; /* Dieser Wert sollte dem padding-left von .textNumbers entsprechen */
+}
+
+.helpText h3 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.helpText p {
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+.blue-text {
+    color: #29ABE2;
+}
+
+.helpText a {
+    color: #29ABE2;
+    text-decoration: none;
+}
+
+.helpText a:hover {
+    text-decoration: underline;
+}
+
+.textNumbers {
+    padding-left: 56px;
+    display: block;
+    padding-bottom: 16px;
+}
+
+h3 {
+    display: flex;
+    align-items: baseline;
+}
