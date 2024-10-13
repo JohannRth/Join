@@ -144,6 +144,25 @@ input#confirmedPassword {
     box-sizing: border-box;
 }
 
+input#inputName {
+    padding-right: 30px;
+    background: url(./assets/img/person.svg) no-repeat right 21px center;
+    background-color: white;
+}
+
+input#email {
+    padding-right: 30px;
+    background: url(./assets/img/mail.svg) no-repeat right 21px center;
+    background-color: white;
+}
+
+input#password,
+input#confirmedPassword {
+    padding-right: 30px;
+    background: url(./assets/img/lock.svg) no-repeat right 21px center;
+    background-color: white;
+}
+
 .login-fsize {
     font-size: 61px !important;
     margin-bottom: 10px;
