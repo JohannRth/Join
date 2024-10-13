@@ -20,9 +20,116 @@
     <link rel="icon" type="image/x-icon" href="./assets/img/favicon.svg">
     <!-- Title -->
     <title>Board</title>
+
+    <style>
+        .main-board{
+            width: 1208px;
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .board-headline-container{
+            width: 1208px;
+            height: 232px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .board-add-task{
+            width: 1056px;
+            height: 73px;
+            margin-left: 64px;
+            margin-top: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .headline-span-board{
+            font-size: 61px;
+            font-weight: 700;
+        }
+
+        .input-container{
+            height: 48px;
+            width: 504px;
+            gap: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-find-task{
+            width: 312px;
+            height: 48px;
+            padding: 8px 16px 8px 16px;
+            border-radius: 10px;
+            border: 1px solid #A8A8A8;
+            opacity: 0px;
+            font-size: 20px;
+            font-weight: 400;
+            color: #D1D1D1;  
+        }
+
+        .butten-add-task-board{
+            width: 160px;
+            height: 48px;
+            padding: 8px 16px 8px 16px;
+            gap: 4px;
+            border-radius: 10px;
+            border: 1px solid #2A3647;
+            opacity: 0px;
+            background-color:#2A3647;
+            opacity: 0px;
+            color: #FFFFFF;
+            font-size: 21px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+    </style>
+
 </head>
 <body>
     <div id="sidebar-placeholder"></div>
     <div id="header-placeholder"></div>
+    <div class="main-board">
+        <div class="board-headline-container">
+            <div class="board-add-task">
+                <div>
+                    <span class="headline-span-board">Borad</span>
+                </div>
+                <div class="input-container">
+                    <input class="input-find-task" placeholder="Find Task" type="text">
+                    <button class="butten-add-task-board">Add task <img src="./assets/img/add.svg" alt=""></button>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <span>To do</span>
+                    <button></button>
+                </div>
+                <div>
+                    <span>In progress</span>
+                    <button></button>
+                </div>
+                <div>
+                    <span>Await feedback</span>
+                    <button></button>
+                </div>
+                <div>
+                    <span>Done</span>
+                    <button></button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
 </body>
 </html>
