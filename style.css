@@ -77,7 +77,6 @@ button#guestLogIn {
     background-color: #F6F7F8;
     border: 1px solid #2A3647;
     color: #2A3647;
-    box-shadow: 0px 4px 4px 0px #00000040;
 }
 
 button#guestLogIn:hover,
@@ -104,12 +103,25 @@ button#signUpButton:hover {
 
 .checkbox-sec {
     padding: 16px;
+    display: flex;
+    gap: 8px;
 }
 
 .checkbox-register-sec {
     padding: 16px;
     display: flex;
     justify-content: center;
+    gap: 8px;
+}
+
+.checkbox-register-sec a {
+    color: #29ABE2;
+    text-decoration: none;
+}
+
+.checkbox-register-sec a:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .login-btn-sec {
