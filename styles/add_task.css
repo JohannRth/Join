@@ -1,0 +1,88 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F6F7F8;
+}
+
+.addTaskContainer {
+    padding-top: 206px;
+    padding-left: 328px;
+    padding-right: 135px;
+}
+
+.addTaskHeadline {
+    font-size: 61px;
+    font-weight: 700;
+}
+
+.addTaskContent {
+    padding-top: 48px;
+}
+
+.inputContainer {
+    margin-bottom: 20px;
+}
+
+input[type="text"], textarea, select, input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.dateContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.prioContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.prioButton {
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.clearButton, .createButton {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.clearButton {
+    background-color: white;
+    color: #2A3647;
+    border: 1px solid #2A3647;
+}
+
+.createButton {
+    background-color: #2A3647;
+    color: white;
+}

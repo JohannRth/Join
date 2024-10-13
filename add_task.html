@@ -1,27 +1,71 @@
 <!DOCTYPE html>
 <html lang="de">
-
-<head>
+  <head>
     <!-- Meta -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Link -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/styles/add_task.css">
     <script src="script.js"></script>
     <script src="./js/login.js"></script>
     <script src="./assets/templates/load_header_sidebar.js"></script>
-    <link rel="stylesheet" href="./assets/fonts/font.css">
-    <link rel="stylesheet" href="/styles/side_header_template.css">
+    <link rel="stylesheet" href="./assets/fonts/font.css" />
+    <link rel="stylesheet" href="/styles/side_header_template.css" />
+    <link rel="stylesheet" href="/styles/privacy_policy.css">
     <!-- Link-Fonts -->
-    <link rel="stylesheet" href="./assets/fonts/font.css">
+    <link rel="stylesheet" href="./assets/fonts/font.css" />
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/img/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="./assets/img/favicon.svg" />
     <!-- Title -->
     <title>Add Task</title>
 </head>
 <body>
     <div id="sidebar-placeholder"></div>
     <div id="header-placeholder"></div>
+    <div class="addTaskContainer">
+        <div>
+            <h1 class="addTaskHeadline">Add Task</h1>
+        </div>
+        <div class="addTaskContent">
+            <form onsubmit="createTask(); return false;">
+                <div class="inputContainer">
+                    <input id="title" type="text" placeholder="Enter a title">
+                </div>
+                <div class="inputContainer">
+                    <textarea id="description" placeholder="Enter a Description"></textarea>
+                </div>
+                <div class="inputContainer">
+                    <select id="assignedTo">
+                        <option value="" disabled selected>Select contacts to assign</option>
+                    </select>
+                </div>
+                <div class="dateContainer">
+                    <div class="inputContainer">
+                        <input type="date" id="date">
+                    </div>
+                </div>
+                <div class="prioContainer">
+                    <button type="button" class="prioButton" onclick="setPriority('urgent')">Urgent</button>
+                    <button type="button" class="prioButton" onclick="setPriority('medium')">Medium</button>
+                    <button type="button" class="prioButton" onclick="setPriority('low')">Low</button>
+                </div>
+                <div class="inputContainer">
+                    <select id="category">
+                        <option value="" disabled selected>Select task category</option>
+                    </select>
+                </div>
+                <div class="inputContainer">
+                    <select id="subtasks">
+                        <option value="" disabled selected>Add subtask</option>
+                    </select>
+                </div>
+                <div class="buttonContainer">
+                    <button type="button" class="clearButton" onclick="clearForm()">Clear</button>
+                    <button type="submit" class="createButton">Create Task</button>
+                </div>
+            </form>
+        </div>
+    </div>   
 </body>
 </html>
