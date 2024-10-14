@@ -27,6 +27,7 @@
             margin-top: 8px;
             display: flex;
             flex-direction: column;
+            font-family: 'Inter', sans-serif;
         }
 
         .board-headline-container{
@@ -34,7 +35,7 @@
             height: 232px;
             display: flex;
             flex-direction: column;
-            background-color: #D1D1D1;
+            background-color: #F6F7F8;
         }
 
         .board-add-task{
@@ -81,7 +82,6 @@
             border: 1px solid #2A3647;
             opacity: 0px;
             background-color:#2A3647;
-            opacity: 0px;
             color: #FFFFFF;
             font-size: 21px;
             font-weight: 700;
@@ -94,14 +94,44 @@
             height: 24px;
             padding-left: 64px;
             padding-right: 64px;
-            margin-top: 55px;
+            margin-top: 48px;
             display: flex;
             justify-content: space-between;
-            background-color: aquamarine;
         }
 
         .column-titel{
-            background-color: #A8A8A8;
+            width: 244px;
+            height: 24px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 700;
+            color: #42526E;
+        }
+
+        .button-titel{
+            width: 24px;
+            height: 24px;
+            padding: 3px;
+            border-radius: 8px;
+            border: 2px solid #2A3647;
+            opacity: 0px;
+        }
+
+        .drag-area-container{
+            width: 1,208px;
+            height: 688px;
+            margin-top: 8px;
+            padding: 0px 64px 0px 64px;
+            gap: 26px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .drag-area{
+            width: 246px;
+            height: 688px;
+            background-color: #b0b6bf;
         }
 
     </style>
@@ -124,28 +154,69 @@
             <div class="column-titel-container">
                 <div class="column-titel">
                     <span>To do</span>
-                    <button></button>
+                    <button class="button-titel"><img class="cross-titel-button" src="./assets/img/Capa 1.svg" alt=""></button>
                 </div>
                 <div class="column-titel">
                     <span>In progress</span>
-                    <button></button>
+                    <button class="button-titel"><img class="cross-titel-button" src="./assets/img/Capa 1.svg" alt=""></button>
                 </div>
                 <div class="column-titel">
                     <span>Await feedback</span>
-                    <button></button>
+                    <button class="button-titel"><img class="cross-titel-button" src="./assets/img/Capa 1.svg" alt=""></button>
                 </div>
                 <div class="column-titel">
                     <span>Done</span>
-                    <button></button>
+                    <div></div>
                 </div>
             </div>
         </div>
-        <div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+        <div class="drag-area-container">
+            <div class="drag-area" id="ToDO"></div>
+            <div class="drag-area" id="inProgress"></div>
+            <div class="drag-area" id="awaitFeedback"></div>
+            <div class="drag-area" id="done"></div>
         </div>
     </div>
+
+    <script>
+        let todos =[{
+            'id': 0,
+            'titel':'bearbeite board',
+            'category': 'todo'
+        }, {
+            'id': 1,
+            'titel':'bearbeite help',
+            'category': 'todo' 
+        }, {
+            'id': 2,
+            'titel':'bearbeite help',
+            'category': 'inProgress' 
+        }];
+
+        function updateHTML() {
+            let open = todos.filter(t => t['category']== 'todo');
+
+            document.getElementById('todo').innerHTML = '';
+
+            for (let index = 0; index < todo.length; index++) {
+                const element = todo[index];
+                document.getElementById('todo').innerHTML += generateTodoHTML(element);
+            }
+
+            let inProgress = inProgress.filter(t => t['category']== 'inProgress');
+
+            document.getElementById('inProgress').innerHTML = '';
+
+            for (let index = 0; index < inProgress.length; index++) {
+                const element = inProgress[index];
+                document.getElementById('inProgress').innerHTML += generateTodoHTML(element);
+            }
+        }
+
+        function generateTodoHTML(element){
+            return `<div class="titel-card">${element['titel']}</div>`;
+        }
+
+    </script>
 </body>
 </html>
