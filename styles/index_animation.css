@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    animation: fadeOutContainer 1s ease-in-out forwards;
+    animation: fadeOutContainer 0.5s ease-in-out forwards;
     animation-delay: 1s;
     z-index: 10;
     pointer-events: none;
@@ -12,7 +12,7 @@
 .image-container img {
     width: 200px;
     height: auto;
-    animation: moveAndResize 1s ease-in-out forwards;
+    animation: moveAndResize 0.7s ease-in-out forwards;
 }
 
 @keyframes moveAndResize {
