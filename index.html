@@ -8,6 +8,7 @@
 
     <!-- Link -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./styles/index_animation.css">
     <script src="script.js"></script>
     <script src="./js/login.js"></script>
     <!-- Link-Fonts -->
@@ -19,6 +20,11 @@
 </head>
 
 <body>
+
+    <!-- Container für das animierte Logo -->
+    <div class="image-container">
+        <img src="./assets/img/join_logo_dark.svg" alt="Join Logo">
+    </div>
 
     <header class="login-header">
         <img src="./assets/img/join_logo_dark.svg" alt="">
@@ -38,7 +44,8 @@
                         <input type="email" required id="email" placeholder="Email" autocomplete="email">
                     </div>
                     <div>
-                        <input type="password" required id="password" placeholder="Password" autocomplete="new-password">
+                        <input type="password" required id="password" placeholder="Password"
+                            autocomplete="new-password">
                     </div>
                     <div id="passwordError" class="login-error">
                         <p></p>

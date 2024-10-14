@@ -1,0 +1,51 @@
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    animation: fadeOutContainer 1s ease-in-out forwards;
+    animation-delay: 1s;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.image-container img {
+    width: 200px;
+    height: auto;
+    animation: moveAndResize 1s ease-in-out forwards;
+}
+
+@keyframes moveAndResize {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    100% {
+        transform: translate(calc(-50vw + 140px), calc(-50vh + 104px)) scale(0.5);
+    }
+}
+
+@keyframes fadeOutContainer {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
+.login-header,
+.login-content {
+    opacity: 0;
+    animation: fadeInContent 1s ease-in-out forwards;
+    animation-delay: 1.5s;
+}
+
+@keyframes fadeInContent {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
