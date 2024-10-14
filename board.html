@@ -34,6 +34,7 @@
             height: 232px;
             display: flex;
             flex-direction: column;
+            background-color: #D1D1D1;
         }
 
         .board-add-task{
@@ -88,6 +89,21 @@
             align-items: center;
         }
 
+        .column-titel-container{
+            width: 1208px;
+            height: 24px;
+            padding-left: 64px;
+            padding-right: 64px;
+            margin-top: 55px;
+            display: flex;
+            justify-content: space-between;
+            background-color: aquamarine;
+        }
+
+        .column-titel{
+            background-color: #A8A8A8;
+        }
+
     </style>
 
 </head>
@@ -105,20 +121,20 @@
                     <button class="butten-add-task-board">Add task <img src="./assets/img/add.svg" alt=""></button>
                 </div>
             </div>
-            <div>
-                <div>
+            <div class="column-titel-container">
+                <div class="column-titel">
                     <span>To do</span>
                     <button></button>
                 </div>
-                <div>
+                <div class="column-titel">
                     <span>In progress</span>
                     <button></button>
                 </div>
-                <div>
+                <div class="column-titel">
                     <span>Await feedback</span>
                     <button></button>
                 </div>
-                <div>
+                <div class="column-titel">
                     <span>Done</span>
                     <button></button>
                 </div>
