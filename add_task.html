@@ -28,44 +28,62 @@
             <h1 class="addTaskHeadline">Add Task</h1>
         </div>
         <div class="addTaskContent">
-            <form onsubmit="createTask(); return false;">
-                <div class="inputContainer">
-                    <input id="title" type="text" placeholder="Enter a title">
-                </div>
-                <div class="inputContainer">
-                    <textarea id="description" placeholder="Enter a Description"></textarea>
-                </div>
-                <div class="inputContainer">
-                    <select id="assignedTo">
-                        <option value="" disabled selected>Select contacts to assign</option>
-                    </select>
-                </div>
-                <div class="dateContainer">
-                    <div class="inputContainer">
-                        <input type="date" id="date">
+            <div class="leftAddTaskContainer">
+                <form onsubmit="createTask(); return false;">
+                    <div class="inputContainerTitle">
+                        <div class="inputContainer">
+                            <span class="addTaskInputTitle">Title</span>
+                            <input id="title" type="text" placeholder="Enter a title">
+                        </div>
                     </div>
+                    <div class="inputContainerDescription">
+                        <div class="inputContainer">
+                            <span class="addTaskInputTitle">Description</span>
+                            <textarea id="description" placeholder="Enter a Description"></textarea>
+                        </div>
+                    </div>
+                    <div class="inputContainer">
+                        <span class="addTaskInputTitle">Assigned To</span>
+                        <select id="assignedTo">
+                            <option value="" disabled selected>Select contacts to assign</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="addTaskSeparateContainer"></div>
+            <div class="rightAddTaskContainer">
+                    <div class="inputContainerDueDate">
+                        <div class="inputContainer">
+                            <span class="addTaskInputTitle">Due date</span>
+                            <input type="date" id="date">
+                        </div>
+                    </div>
+                    <div class="prioContainer">
+                        <span class="addTaskInputTitle">Prio</span>
+                        <div class="prioButtonContainer">
+                            <button type="button" class="prioButton" onclick="setPriority('urgent')">Urgent <img src="./assets/img/Capa 2.svg"></button>
+                            <button type="button" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
+                            <button type="button" class="prioButton" onclick="setPriority('low')">Low <img src="./assets/img/Prio baja.svg"></button>
+                        </div>
+                    </div>
+                    <div class="inputContainer">
+                        <span class="addTaskInputTitle">Category</span>
+                        <select id="category">
+                            <option value="" disabled selected>Select task category</option>
+                        </select>
+                    </div>
+                    <div class="inputContainer">
+                        <span class="addTaskInputTitle">Subtasks</span>
+                        <select id="subtasks">
+                            <option value="" disabled selected>Add new subtask</option>
+                        </select>
+                    </div>
+                </form>
+                <div class="addTaskCreateButtonContainer">
+                    <button type="button" class="clearButton" onclick="clearForm()">Clear <img class="clearAndCreateButtonImage" src="./assets/img/Vector.svg"></button>
+                    <button type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
                 </div>
-                <div class="prioContainer">
-                    <button type="button" class="prioButton" onclick="setPriority('urgent')">Urgent</button>
-                    <button type="button" class="prioButton" onclick="setPriority('medium')">Medium</button>
-                    <button type="button" class="prioButton" onclick="setPriority('low')">Low</button>
-                </div>
-                <div class="inputContainer">
-                    <select id="category">
-                        <option value="" disabled selected>Select task category</option>
-                    </select>
-                </div>
-                <div class="inputContainer">
-                    <select id="subtasks">
-                        <option value="" disabled selected>Add subtask</option>
-                    </select>
-                </div>
-                <div class="buttonContainer">
-                    <button type="button" class="clearButton" onclick="clearForm()">Clear</button>
-                    <button type="submit" class="createButton">Create Task</button>
-                </div>
-            </form>
-        </div>
-    </div>   
+            </div>
+        </div> 
+    </div>  
 </body>
 </html>
