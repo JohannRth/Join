@@ -1,10 +1,12 @@
 .image-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    animation: fadeOutContainer 0.5s ease-in-out forwards;
-    animation-delay: 1s;
     z-index: 10;
     pointer-events: none;
 }
@@ -12,7 +14,7 @@
 .image-container img {
     width: 200px;
     height: auto;
-    animation: moveAndResize 0.7s ease-in-out forwards;
+    animation: moveAndResize 1s ease-in-out forwards;
 }
 
 @keyframes moveAndResize {
@@ -24,21 +26,11 @@
     }
 }
 
-@keyframes fadeOutContainer {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        display: none;
-    }
-}
-
 .login-header,
 .login-content {
     opacity: 0;
     animation: fadeInContent 1s ease-in-out forwards;
-    animation-delay: 1.5s;
+    animation-delay: 1s;
 }
 
 @keyframes fadeInContent {
