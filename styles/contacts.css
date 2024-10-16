@@ -1,0 +1,7 @@
+.main-board {
+    width: 1208px;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+}
