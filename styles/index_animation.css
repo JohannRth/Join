@@ -22,7 +22,7 @@
         transform: translate(0, 0) scale(1);
     }
     100% {
-        transform: translate(calc(-50vw + 140px), calc(-50vh + 104px)) scale(0.5);
+        transform: translate(calc(-50vw + 130px), calc(-50vh + 104px)) scale(0.5);
     }
 }
 

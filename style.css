@@ -16,6 +16,14 @@ body {
     height: 208px;
 }
 
+.register-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 40px 80px;
+    height: 208px;
+}
+
 .sign-up-field {
     display: flex;
     align-items: center;
