@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html lang="de">
   <head>
-    <!-- Meta -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Link -->
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="/styles/add_task.css">
     <script src="script.js"></script>
+    <script src="./js/add_task.js"></script>
     <script src="./js/login.js"></script>
     <script src="./assets/templates/load_header_sidebar.js"></script>
     <link rel="stylesheet" href="./assets/fonts/font.css" />
     <link rel="stylesheet" href="./styles/side_header_template.css" />
     <link rel="stylesheet" href="./styles/privacy_policy.css">
-    <!-- Link-Fonts -->
     <link rel="stylesheet" href="./assets/fonts/font.css" />
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./assets/img/favicon.svg" />
-    <!-- Title -->
     <title>Add Task</title>
 </head>
 <body>
@@ -60,22 +56,26 @@
                     <div class="prioContainer">
                         <span class="addTaskInputTitle">Prio</span>
                         <div class="prioButtonContainer">
-                            <button type="button" class="prioButton" onclick="setPriority('urgent')">Urgent <img src="./assets/img/Capa 2.svg"></button>
+                            <button type="button" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/Capa 2.svg"></button>
                             <button type="button" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
-                            <button type="button" class="prioButton" onclick="setPriority('low')">Low <img src="./assets/img/Prio baja.svg"></button>
+                            <button type="button" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/Prio baja.svg"></button>
                         </div>
                     </div>
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Category</span>
                         <select id="category">
-                            <option value="" disabled selected>Select task category</option>
+                            <option value="" disabled selected hidden>Select task category</option>
+                            <option value="technical">Technical Task</option>
+                            <option value="user_story">User Story</option>
                         </select>
                     </div>
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Subtasks</span>
-                        <select id="subtasks">
-                            <option value="" disabled selected>Add new subtask</option>
-                        </select>
+                        <div class="subTaskInputContainer">
+                            <input type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
+                            <button type="button" class="addSubTaskButton" id="addSubTaskButton">+</button>
+                        </div>
+                        <div class="subTaskList" id="subTaskList"></div>
                     </div>
                 </form>
                 <div class="addTaskCreateButtonContainer">

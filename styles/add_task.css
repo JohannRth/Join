@@ -88,6 +88,15 @@ input[type="text"], textarea, select, input[type="date"] {
     text-align: left;
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.06);
     filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.1));
+    cursor: pointer;
+}
+
+input[type="text"]:focus,
+    textarea:focus,
+    select:focus,
+input[type="date"]:focus {
+    border-color: rgb(41,171,226);
+    outline: none;
 }
 
 #title::placeholder,
@@ -110,7 +119,7 @@ textarea {
     padding-bottom: 24px;
 }
 
-.prioButton {
+.prioButtonUrgent{
     width: 136px;
     height: 56px;
     padding: 10px;
@@ -123,24 +132,131 @@ textarea {
     font-weight: 400;
 }
 
+.prioButtonUrgent:hover {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+}
+
 .prioButtonMedium {
     width: 136px;
     height: 56px;
     padding: 10px;
-    background-color: #FFA800;
+    background-color: white;
     border: 1px solid #D1D1D1;
     border-radius: 10px;
     cursor: pointer;
     margin-right: 16px;
     font-size: 20px;
     font-weight: 400;
-    color: #FFFFFF;
+}
+
+.prioButtonMedium img {
+    filter: brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(342%) hue-rotate(360deg) brightness(103%) contrast(103%);
+}
+
+.prioButtonMedium:hover {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+}
+
+.prioButtonLow {
+    width: 136px;
+    height: 56px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 16px;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.prioButtonLow:hover {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+}
+
+.prioButtonUrgent.active {
+    background-color: #FF3D00;
+    color: white;
+}
+  
+.prioButtonUrgent.active img {
+    filter: brightness(0) invert(1);
+}
+  
+.prioButtonMedium.active {
+    background-color: #FFA800;
+    color: white;
+}
+  
+.prioButtonMedium.active img {
+    filter: brightness(0) invert(1);
+}
+  
+.prioButtonLow.active {
+    background-color: #7AE229;
+    color: white;
+}
+  
+.prioButtonLow.active img {
+    filter: brightness(0) invert(1);
+}
+
+.subTaskInputContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.subTaskInput {
+    width: 100%;
+    padding-right: 40px;
+}
+
+.addSubTaskButton {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+.subTaskList {
+    margin-top: 10px;
+}
+
+.subTask {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.subTask span {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.subTask button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    background-color: #2A3647;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .addTaskCreateButtonContainer {
     display: flex;
-    padding-top: 146px;
+    padding-top: 64px;
     padding-left: 136px;
+    padding-bottom: 79px;
 }
 
 .clearButton, .createButton {
