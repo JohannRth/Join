@@ -10,7 +10,7 @@ body {
 
 .login-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding: 40px 80px;
     height: 208px;
