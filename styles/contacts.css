@@ -5,3 +5,7 @@
     flex-direction: column;
     font-family: 'Inter', sans-serif;
 }
+
+.contact-headline {
+    display: flex;
+}
