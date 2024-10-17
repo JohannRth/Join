@@ -69,8 +69,8 @@ function loadContacts() {
         const contactInfoElement = document.createElement('div');
         contactInfoElement.className = 'contact-info';
         contactInfoElement.innerHTML = `
-            <strong>${contact.name}</strong><br>
-            <span>${contact.email}</span>
+            <span class="contact-info-name">${contact.name}</span>
+            <span class="contact-info-mail">${contact.email}</span>
         `;
 
         // Icon und Kontaktinformationen zum Hauptkontakt-Element hinzufügen

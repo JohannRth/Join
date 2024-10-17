@@ -84,6 +84,22 @@ button#addContactBtn:hover {
 
 .contact-info {
     flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 16px;
+}
+
+.contact-info-name {
+    padding: 0;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.contact-info-mail {
+    font-size: 16px;
+    font-weight: 400;
+    color: #007CEE;
 }
 
 .modal {
