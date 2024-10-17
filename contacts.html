@@ -28,19 +28,31 @@
     <div id="header-placeholder"></div>
 
     <div class="main-board">
-
-        <div class="contact-headline">
-            <h1>Contacts</h1>
-            <img src="./assets/img/horizontalline_contacts.svg" alt="Line">
-            <span>Better with a Team</span>
-        </div>
-
-        <div id="contactList" class="conacts-list">
-            <button>Add new contact <img src="./assets/img/person_add.svg" alt="Add Person"></button>
-            <div id="contacts" class="contacts">
-
+        <div>
+            <div class="contact-headline">
+                <h1>Contacts</h1>
+                <img src="./assets/img/horizontalline_contacts.svg" alt="Line">
+                <h2>Better with a Team</h2>
             </div>
         </div>
+
+        <div id="contactList" class="contacts-list">
+            <button id="addContactBtn">Add new contact <img src="./assets/img/person_add.svg" alt="Person add"></button>
+            <div id="contacts" class="contacts">
+                <!-- Kontakte werden hier dynamisch von JavaScript eingefügt -->
+            </div>
+        </div>
+
+        <!-- Modal Fenster für Kontaktdetails -->
+        <div id="contactModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="contactName"></h2>
+                <p><strong>Email:</strong> <span id="contactEmail"></span></p>
+                <p><strong>Phone:</strong> <span id="contactPhone"></span></p>
+            </div>
+        </div>
+
     </div>
 </body>
 

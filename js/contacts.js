@@ -32,3 +32,51 @@ const contacts = [
     }
 ];
 
+// Funktion, um Kontakte zu laden
+function loadContacts() {
+    const contactContainer = document.getElementById('contacts');
+
+    contacts.forEach((contact, index) => {
+        const contactElement = document.createElement('div');
+        contactElement.className = 'contact-item';
+        contactElement.innerHTML = `
+            <strong>${contact.name}</strong><br>
+            <span>${contact.email}</span>
+        `;
+        contactElement.addEventListener('click', () => openModal(index));
+        contactContainer.appendChild(contactElement);
+    });
+}
+
+// Funktion, um das Modal zu öffnen
+function openModal(index) {
+    const modal = document.getElementById('contactModal');
+    const contact = contacts[index];
+    document.getElementById('contactName').innerText = contact.name;
+    document.getElementById('contactEmail').innerText = contact.email;
+    document.getElementById('contactPhone').innerText = contact.phone;
+    modal.style.display = 'block';
+}
+
+// Funktion, um das Modal zu schließen
+function closeModal() {
+    const modal = document.getElementById('contactModal');
+    modal.style.display = 'none';
+}
+
+// EventListener für das Schließen des Modals
+document.addEventListener('DOMContentLoaded', () => {
+    const closeModalButton = document.querySelector('.close');
+    closeModalButton.addEventListener('click', closeModal);
+    
+    // Kontakte laden
+    loadContacts();
+});
+
+// Modal schließen, wenn außerhalb des Modal-Fensters geklickt wird
+window.onclick = function(event) {
+    const modal = document.getElementById('contactModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+};
