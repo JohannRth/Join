@@ -58,6 +58,8 @@ button#addContactBtn:hover {
 }
 
 .contact-item {
+    display: flex;
+    align-items: center;
     padding: 10px;
     border-bottom: 1px solid #ccc;
     cursor: pointer;
@@ -65,6 +67,23 @@ button#addContactBtn:hover {
 
 .contact-item:hover {
     background-color: #f1f1f1;
+}
+
+.contact-icon {
+    height: 42px;
+    width: 42px;
+    border-radius: 42px;
+    font-size: 12px;
+    color: white;
+    border: 2px solid #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.contact-info {
+    flex-grow: 1;
 }
 
 .modal {
