@@ -1,320 +1,765 @@
 <!DOCTYPE html>
-<html lang="de">
-    
-<head>
-    <!-- Meta -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-   <!-- Link -->
-   <link rel="stylesheet" href="style.css" />
-   <script src="script.js"></script>
-   <script src="./js/login.js"></script>
-   <script src="./assets/templates/load_header_sidebar.js"></script>
-   <link rel="stylesheet" href="./assets/fonts/font.css" />
-   <link rel="stylesheet" href="./styles/side_header_template.css" />
-   <!-- Link-Fonts -->
-   <link rel="stylesheet" href="./assets/fonts/font.css" />
-   <!-- Favicon -->
-   <link rel="icon" type="image/x-icon" href="./assets/img/favicon.svg" />
-   <!-- Title -->
+<html lang="de">
+
+  <head>
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Link -->
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+    <script src="./js/login.js"></script>
+    <script src="./assets/templates/load_header_sidebar.js"></script>
+    <link rel="stylesheet" href="./assets/fonts/font.css" />
+    <link rel="stylesheet" href="./styles/side_header_template.css" />
+    <!-- Link-Fonts -->
+    <link rel="stylesheet" href="./assets/fonts/font.css" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/img/favicon.svg" />
+    <!-- Title -->
     <title>Board</title>
 
     <style>
-        .main-board{
-            width: 1208px;
-            margin-top: 8px;
-            display: flex;
-            flex-direction: column;
-            font-family: 'Inter', sans-serif;
-        }
+      .main-board {
+        width: 1208px;
+        margin-top: 8px;
+        display: flex;
+        flex-direction: column;
+        font-family: "Inter", sans-serif;
+      }
 
-        .board-headline-container{
-            width: 1208px;
-            height: 232px;
-            display: flex;
-            flex-direction: column;
-            background-color: #F6F7F8;
-        }
+      .board-headline-container {
+        width: 1208px;
+        height: 232px;
+        display: flex;
+        flex-direction: column;
+        background-color: #f6f7f8;
+      }
 
-        .board-add-task{
-            width: 1056px;
-            height: 73px;
-            margin-left: 64px;
-            margin-top: 80px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      .board-add-task {
+        width: 1056px;
+        height: 73px;
+        margin-left: 64px;
+        margin-top: 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        .headline-span-board{
-            font-size: 61px;
-            font-weight: 700;
-        }
+      .headline-span-board {
+        font-size: 61px;
+        font-weight: 700;
+      }
 
-        .input-container{
-            height: 48px;
-            width: 504px;
-            gap: 32px;
-            display: flex;
-            align-items: center;
-        }
+      .input-container {
+        height: 48px;
+        width: 504px;
+        gap: 32px;
+        display: flex;
+        align-items: center;
+      }
 
-        .input-find-task{
-            width: 312px;
-            height: 48px;
-            padding: 8px 16px 8px 16px;
-            border-radius: 10px;
-            border: 1px solid #A8A8A8;
-            font-size: 20px;
-            font-weight: 400;
-            color: #D1D1D1;  
-        }
+      .input-find-task {
+        width: 312px;
+        height: 48px;
+        padding: 8px 16px 8px 16px;
+        border-radius: 10px;
+        border: 1px solid #a8a8a8;
+        font-size: 20px;
+        font-weight: 400;
+        color: #d1d1d1;
+      }
 
-        .button-add-task-board{
-            width: 160px;
-            height: 48px;
-            padding: 8px 16px 8px 16px;
-            gap: 4px;
-            border-radius: 10px;
-            border: 1px solid #2A3647;
-            background-color:#2A3647;
-            color: #FFFFFF;
-            font-size: 21px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-        }
+      .button-add-task-board {
+        width: 160px;
+        height: 48px;
+        padding: 8px 16px 8px 16px;
+        gap: 4px;
+        border-radius: 10px;
+        border: 1px solid #2a3647;
+        background-color: #2a3647;
+        color: #ffffff;
+        font-size: 21px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+      }
 
-        .column-titel-container{
-            width: 1208px;
-            height: 24px;
-            padding-left: 64px;
-            padding-right: 64px;
-            margin-top: 48px;
-            display: flex;
-            justify-content: space-between;
-        }
+      .column-titel-container {
+        width: 1208px;
+        height: 24px;
+        padding-left: 64px;
+        padding-right: 64px;
+        margin-top: 48px;
+        display: flex;
+        justify-content: space-between;
+      }
 
-        .column-titel{
-            width: 244px;
-            height: 24px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 20px;
-            font-weight: 700;
-            color: #42526E;
-        }
+      .column-titel {
+        width: 244px;
+        height: 24px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 20px;
+        font-weight: 700;
+        color: #42526e;
+      }
 
-        .button-titel{
-            width: 24px;
-            height: 24px;
-            padding: 3px;
-            border-radius: 8px;
-            border: 2px solid #2A3647;
-            opacity: 0px;
-        }
+      .button-titel {
+        width: 24px;
+        height: 24px;
+        padding: 3px;
+        border-radius: 8px;
+        border: 2px solid #2a3647;
+        opacity: 0px;
+      }
 
-        .drag-area-container{
-            width: 1208px;
-            height: 688px;
-            margin-top: 8px;
-            padding: 0px 64px 0px 64px;
-            gap: 26px;
-            display: flex;
-            justify-content: space-between;
-        }
+      .drag-area-container {
+        width: 1208px;
+        height: 688px;
+        margin-top: 8px;
+        padding: 0px 64px 0px 64px;
+        gap: 26px;
+        display: flex;
+        justify-content: space-between;
+      }
 
-        .drag-area{
-            width: 246px;
-            min-height: 688px;
-            transition: 0.3s;
-            border-radius: 8px;
-        }
+      .drag-area {
+        width: 246px;
+        min-height: 688px;
+        transition: 0.3s;
+        border-radius: 8px;
+      }
 
-        .titel-card {
-            width: 252px;
-            height: 256px;
-            border-radius: 24px;
-            padding: 16px;
-            margin-bottom: 10px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            cursor: grab;
-        }
+      .titel-card {
+        width: 252px;
+        height: 263px;
+        border-radius: 24px;
+        padding: 16px;
+        gap: 10px;
+        background-color: white;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 20px;
+        cursor: grab;
+      }
 
-        .no-tasks {
-            width: 246px;
-            height: 48px;
-            border-radius: 10px;
-            border: 1px solid #a8a8a8;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #e7e7e7;
-            font-size: 16px;
-            font-weight: 400;
-        }
+      .titel-card.dragging {
+        cursor: grabbing;
+      }
 
+      .user-story {
+        width: 113px;
+        height: 27px;
+        border-radius: 8px;
+        padding: 4px 16px;
+        background-color: #0038ff;
+        color: white;
+        font-weight: 500;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .title-description {
+        width: 220px;
+        height: 84px;
+        border-radius: 10px;
+        gap: 4px;
+      }
+
+      .task-title {
+        width: 220px;
+        height: 38px;
+        font-weight: 700;
+        font-size: 16px;
+        color: #2a3647;
+        margin: 0;
+      }
+
+      .task-description {
+        width: 220px;
+        height: 38px;
+        font-weight: 400;
+        font-size: 16px;
+        color: #a8a8a8;
+        margin: 4px 0 0 0;
+      }
+
+      .task-progress {
+        width: 220px;
+        height: 16px;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+      }
+
+      .progress-bar {
+        width: 128px;
+        height: 8px;
+        background-color: #e0e0e0;
+        border-radius: 8px;
+        position: relative;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background-color: #4589ff;
+        border-radius: 8px;
+      }
+
+      .progress-text {
+        font-size: 12px;
+        color: #000000;
+        margin-left: 10px;
+        line-height: 16px;
+      }
+
+      .task-assigned {
+        width: 80px;
+        height: 32px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .person-circle {
+        width: 32px;
+        height: 32px;
+        background-color: #ddd;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 14px;
+        color: white;
+      }
+
+      .priority-icon {
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        background-image: url("./assets/img/Prio media.svg");
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+
+      .no-tasks {
+        width: 246px;
+        height: 48px;
+        border-radius: 10px;
+        border: 1px solid #a8a8a8;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #e7e7e7;
+        font-size: 16px;
+        font-weight: 400;
+      }
+/* Overlay für den verschwommenen Hintergrund */
+.card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Dimm-Effekt */
+    backdrop-filter: blur(5px); /* Hintergrund verschwommen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.5s ease;
+}
+
+.card-overlay.hidden {
+    display: none;
+    opacity: 0;
+}
+
+/* Erweiterte Titel-Karte */
+.expanded-card-overlay {
+    width: 525px;
+    height: 931px;
+    border-radius: 30px;
+    padding: 48px 40px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    animation: slideInOverlay 0.5s forwards;
+    z-index: 1001; /* Überlagert alles andere */
+}
+
+/* Animation für das Reinschieben */
+@keyframes slideInOverlay {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Schließen-Button */
+.close-btn-overlay {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.user-story-overlay {
+    width: 164px;
+    height: 36px;
+    border-radius: 8px;
+    background-color: #0038ff;
+    color: white;
+    font-weight: 500;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 16px;
+}
+
+/* Task Titel */
+.expanded-card-overlay .task-title-overlay {
+    width: 445px;
+    height: 219px;
+    font-weight: 700;
+    font-size: 61px; /* größere Schriftgröße */
+    color: #000000;
+}
+
+.expanded-card-overlay .task-description-overlay {
+    width: 445px;
+    height: 24px;
+    font-weight: 400;
+    font-size: 20px; /* richtige Größe */
+    color: #000000;
+}
+
+/* Datum und Priorität */
+.date-priority-container-overlay {
+    width: 445px;
+    height: 24px;
+    display: flex;
+    gap: 25px;
+    justify-content: space-between;
+}
+
+.due-date-overlay, .priority-overlay {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.priority-overlay {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Personen zugewiesen */
+.task-assigned-overlay {
+    width: 445px;
+    display: grid;
+    grid-template-columns: 50px auto;
+    gap: 8px;
+    align-items: center;
+}
+
+.person-circle-overlay {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+}
+
+.person-name-overlay {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2A3647;
+}
+
+/* Subtasks */
+.subtasks-overlay {
+    width: 445px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subtasks-overlay div {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+/* Aktion (Delete, Icon in der Mitte und Edit) */
+.actions-overlay {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    gap: 16px;
+}
+.action-icon-overlay {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
     </style>
-
-</head>
-<body>
+  </head>
+  <body>
     <div id="sidebar-placeholder"></div>
     <div id="header-placeholder"></div>
     <div class="main-board">
-        <div class="board-headline-container">
-            <div class="board-add-task">
-                <div>
-                    <span class="headline-span-board">Board</span>
-                </div>
-                <div class="input-container">
-                    <input class="input-find-task" placeholder="Find Task" type="text">
-                    <button class="button-add-task-board">Add task <img src="./assets/img/add.svg" alt=""></button>
-                </div>
-            </div>
-            <div class="column-titel-container">
-                <div class="column-titel">
-                    <span>To do</span>
-                    <button class="button-titel"><img class="cross-titel-button" src="./assets/img/Capa 1.svg" alt=""></button>
-                </div>
-                <div class="column-titel">
-                    <span>In progress</span>
-                    <button class="button-titel"><img class="cross-titel-button" src="./assets/img/Capa 1.svg" alt=""></button>
-                </div>
-                <div class="column-titel">
-                    <span>Await feedback</span>
-                    <button class="button-titel"><img class="cross-titel-button" src="./assets/img/Capa 1.svg" alt=""></button>
-                </div>
-                <div class="column-titel">
-                    <span>Done</span>
-                    <div></div>
-                </div>
-            </div>
+      <div class="board-headline-container">
+        <div class="board-add-task">
+          <div>
+            <span class="headline-span-board">Board</span>
+          </div>
+          <div class="input-container">
+            <input
+              class="input-find-task"
+              placeholder="Find Task"
+              type="text"
+            />
+            <button class="button-add-task-board">
+              Add task <img src="./assets/img/add.svg" alt="" />
+            </button>
+          </div>
         </div>
-        <div class="drag-area-container">
-            <div class="drag-area" id="todo"></div>
-            <div class="drag-area" id="inProgress"></div>
-            <div class="drag-area" id="awaitFeedback"></div>
-            <div class="drag-area" id="done"></div>
+        <div class="column-titel-container">
+          <div class="column-titel">
+            <span>To do</span>
+            <button class="button-titel">
+              <img
+                class="cross-titel-button"
+                src="./assets/img/Capa 1.svg"
+                alt=""
+              />
+            </button>
+          </div>
+          <div class="column-titel">
+            <span>In progress</span>
+            <button class="button-titel">
+              <img
+                class="cross-titel-button"
+                src="./assets/img/Capa 1.svg"
+                alt=""
+              />
+            </button>
+          </div>
+          <div class="column-titel">
+            <span>Await feedback</span>
+            <button class="button-titel">
+              <img
+                class="cross-titel-button"
+                src="./assets/img/Capa 1.svg"
+                alt=""
+              />
+            </button>
+          </div>
+          <div class="column-titel">
+            <span>Done</span>
+            <div></div>
+          </div>
         </div>
+      </div>
+      <div class="drag-area-container">
+        <div class="drag-area" id="todo"></div>
+        <div class="drag-area" id="inProgress"></div>
+        <div class="drag-area" id="awaitFeedback"></div>
+        <div class="drag-area" id="done"></div>
+      </div>
     </div>
 
+<!-- Erweiterte Karte im Overlay -->
+<div class="card-overlay hidden" id="card-overlay">
+    <div class="expanded-card-overlay">
+      <div class="user-story-overlay">User Story</div>
+      <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeCardOverlay()">
+
+      <div class="task-title-overlay">Kochwelt Page & Recipe Recommender</div>
+      <div class="task-description-overlay">Build start page with recipe recommendation.</div>
+
+      <div class="date-priority-container-overlay">
+        <div class="due-date-overlay">Due date: 10/05/2023</div>
+        <div class="priority-overlay">
+          <span>Priority: Medium</span>
+          <img src="./assets/img/Prio media.svg" alt="priority-icon" class="priority-icon-overlay">
+        </div>
+      </div>
+
+      <div class="task-assigned-overlay">
+        <div class="person-circle-overlay" style="background-color: #00C6FF;">EM</div>
+        <span class="person-name-overlay">Emmanuel Mauer</span>
+        
+        <div class="person-circle-overlay" style="background-color: #5D27C2;">MB</div>
+        <span class="person-name-overlay">Marcel Bauer</span>
+        
+        <div class="person-circle-overlay" style="background-color: #0038FF;">AM</div>
+        <span class="person-name-overlay">Anton Mayer</span>
+    </div>
+
+      <div class="subtasks-overlay">
+        <div><input type="checkbox" checked> Implement Recipe Recommendation</div>
+        <div><input type="checkbox"> Start Page Layout</div>
+      </div>
+
+      <div class="actions-overlay">
+        <img src="./assets/img/delete.svg" alt="delete" class="action-icon-overlay">
+        <img src="./assets/img/Vector 3.jpg" alt="weg" class="action-icon-overlay">
+        <img src="./assets/img/edit.svg" alt="edit" class="action-icon-overlay">
+      </div>
+    </div>
+</div>
+
     <script>
+      let todos = [
+        {
+          id: 0,
+          titel: "CSS Architecture Planning",
+          type: "Technical Task", // Display type as "Technical Task"
+          category: "done", // Placement in the "done" column
+          description: "Define CSS naming conventions and structure.",
+          priority: "High",
+          subtasks: 2,
+          completedSubtasks: 2,
+          contacts: ["SM", "BZ"],
+        },
+      ];
 
-    let todos = [
-        {
-            'id': 0,
-            'titel': 'Kochwelt Page & Recipe Recommender',
-            'category': 'inProgress', 
-        },
-        {
-            'id': 1,
-            'titel': 'HTML Base Template Creation',
-            'category': 'awaitFeedback', 
-        },
-        {
-            'id': 2,
-            'titel': 'CSS Architecture Planning',
-            'category': 'done',
-        },
-        {
-            'id': 3,
-            'titel': 'Neue Aufgabe für To Do',
-            'category': 'todo',
-        }
-    ];
-
-    document.addEventListener('DOMContentLoaded', (event) => {
+      document.addEventListener("DOMContentLoaded", (event) => {
         updateHTML();
-    
-        const dragAreas = document.querySelectorAll('.drag-area');
-        dragAreas.forEach(area => {
-            area.addEventListener('dragover', allowDrop);
-            area.addEventListener('drop', dropTask);
-        });
-    });
 
-    function allowDrop(ev) {
+        const dragAreas = document.querySelectorAll(".drag-area");
+        dragAreas.forEach((area) => {
+          area.addEventListener("dragover", allowDrop);
+          area.addEventListener("drop", dropTask);
+        });
+      });
+
+      function allowDrop(ev) {
         ev.preventDefault();
+      }
+
+      function dragTask(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+        ev.target.classList.add("dragging"); // Füge eine Klasse hinzu, um den Cursor zu ändern
+      }
+
+      function generateTodoHTML(element) {
+    let progressHTML = "";
+    if (element["subtasks"] > 0) {
+        let percentage =
+            (element["completedSubtasks"] / element["subtasks"]) * 100;
+        progressHTML = `
+            <div class="task-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${percentage}%;"></div>
+                </div>
+                <span class="progress-text">${element["completedSubtasks"]}/${element["subtasks"]} Subtasks</span>
+            </div>
+        `;
     }
 
-    function dropTask(ev) {
+    let contactsHTML = "";
+    if (element["contacts"]) {
+        contactsHTML = `
+            <div class="task-assigned">
+                ${element["contacts"]
+                  .map(
+                    (contact) => `
+                    <span class="person-circle">${contact}</span>
+                `
+                  )
+                  .join("")}
+            </div>
+        `;
+    }
+
+    return `
+    <div id="${element["id"]}" class="titel-card" draggable="true" ondragstart="dragTask(event)" ondblclick="openCardOverlay(${element['id']})">
+        <div class="user-story">${element["type"]}</div>
+        <div class="task-details">
+            <h3 class="task-title">${element["titel"]}</h3>
+            <p class="task-description">${element["description"]}</p>
+        </div>
+        ${progressHTML}
+        ${contactsHTML}
+        <div class="priority-icon"></div>
+    </div>`;
+}
+
+      function dragTask(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+        ev.target.style.cursor = "grabbing"; // Cursor auf 'grabbing' setzen
+      }
+
+      function dropTask(ev) {
         ev.preventDefault();
         const taskId = ev.dataTransfer.getData("text");
         const taskElement = document.getElementById(taskId);
         ev.currentTarget.appendChild(taskElement);
 
+        taskElement.classList.remove("dragging"); // Entferne die Klasse nach dem Drop
+
         const newCategory = ev.currentTarget.id;
-        todos = todos.map(task => task.id == taskId ? { ...task, category: newCategory } : task);
+        todos = todos.map((task) =>
+          task.id == taskId ? { ...task, category: newCategory } : task
+        );
 
         updateHTML();
-    }
+      }
 
-    function generateTodoHTML(element) {
-        return `<div id="${element['id']}" class="titel-card" draggable="true" ondragstart="dragTask(event)">
-                    ${element['titel']}
-                </div>`;
-    }
+      // Setze den Cursor zurück, wenn das Draggen beendet wird
+      document.addEventListener("dragend", function (event) {
+        event.target.classList.remove("dragging");
+      });
 
-    function dragTask(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-    }
-
-    function updateHTML() {
+      function updateHTML() {
         // To-Do Category
-        let todoTasks = todos.filter(t => t['category'] === 'todo');
-        let todoContainer = document.getElementById('todo');
-        todoContainer.innerHTML = '';
+        let todoTasks = todos.filter((t) => t["category"] === "todo");
+        let todoContainer = document.getElementById("todo");
+        todoContainer.innerHTML = "";
 
         if (todoTasks.length === 0) {
-            todoContainer.innerHTML = `<div class="no-tasks">No tasks To do</div>`;
+          todoContainer.innerHTML = `<div class="no-tasks">No tasks To do</div>`;
         } else {
-            todoTasks.forEach(task => {
-                todoContainer.innerHTML += generateTodoHTML(task);
-            });
+          todoTasks.forEach((task) => {
+            todoContainer.innerHTML += generateTodoHTML(task);
+          });
         }
 
         // In-Progress Category
-        let inProgressTasks = todos.filter(t => t['category'] === 'inProgress');
-        let inProgressContainer = document.getElementById('inProgress');
-        inProgressContainer.innerHTML = '';
+        let inProgressTasks = todos.filter(
+          (t) => t["category"] === "inProgress"
+        );
+        let inProgressContainer = document.getElementById("inProgress");
+        inProgressContainer.innerHTML = "";
 
         if (inProgressTasks.length === 0) {
-            inProgressContainer.innerHTML = `<div class="no-tasks">No tasks In progress</div>`;
+          inProgressContainer.innerHTML = `<div class="no-tasks">No tasks In progress</div>`;
         } else {
-            inProgressTasks.forEach(task => {
-                inProgressContainer.innerHTML += generateTodoHTML(task);
-            });
+          inProgressTasks.forEach((task) => {
+            inProgressContainer.innerHTML += generateTodoHTML(task);
+          });
         }
 
         // Await Feedback Category
-        let feedbackTasks = todos.filter(t => t['category'] === 'awaitFeedback');
-        let feedbackContainer = document.getElementById('awaitFeedback');
-        feedbackContainer.innerHTML = '';
+        let feedbackTasks = todos.filter(
+          (t) => t["category"] === "awaitFeedback"
+        );
+        let feedbackContainer = document.getElementById("awaitFeedback");
+        feedbackContainer.innerHTML = "";
 
         if (feedbackTasks.length === 0) {
-            feedbackContainer.innerHTML = `<div class="no-tasks">No tasks Await feedback</div>`;
+          feedbackContainer.innerHTML = `<div class="no-tasks">No tasks Await feedback</div>`;
         } else {
-            feedbackTasks.forEach(task => {
-                feedbackContainer.innerHTML += generateTodoHTML(task);
-            });
+          feedbackTasks.forEach((task) => {
+            feedbackContainer.innerHTML += generateTodoHTML(task);
+          });
         }
 
         // Done Category
-        let doneTasks = todos.filter(t => t['category'] === 'done');
-        let doneContainer = document.getElementById('done');
-        doneContainer.innerHTML = '';
+        let doneTasks = todos.filter((t) => t["category"] === "done");
+        let doneContainer = document.getElementById("done");
+        doneContainer.innerHTML = "";
 
         if (doneTasks.length === 0) {
-            doneContainer.innerHTML = `<div class="no-tasks">No tasks Done</div>`;
+          doneContainer.innerHTML = `<div class="no-tasks">No tasks Done</div>`;
         } else {
-            doneTasks.forEach(task => {
-                doneContainer.innerHTML += generateTodoHTML(task);
-            });
+          doneTasks.forEach((task) => {
+            doneContainer.innerHTML += generateTodoHTML(task);
+          });
         }
+      }
+
+      function generateExpandedCardHTML(element) {
+    let progressHTML = "";
+    if (element["subtasks"] > 0) {
+        let percentage =
+            (element["completedSubtasks"] / element["subtasks"]) * 100;
+        progressHTML = `
+            <div class="task-progress-overlay">
+                <div class="progress-bar-overlay">
+                    <div class="progress-fill-overlay" style="width: ${percentage}%;"></div>
+                </div>
+                <span class="progress-text-overlay">${element["completedSubtasks"]}/${element["subtasks"]} Subtasks</span>
+            </div>
+        `;
     }
-    </script> 
-    </body> 
+
+    let contactsHTML = "";
+    if (element["contacts"]) {
+        contactsHTML = `
+            <div class="task-assigned-overlay">
+                ${element["contacts"]
+                  .map(
+                    (contact) => `
+                    <span class="person-circle-overlay">${contact}</span>
+                `
+                  )
+                  .join("")}
+            </div>
+        `;
+    }
+
+    return `
+    <div class="expanded-card-overlay">
+        <div class="user-story-overlay">${element["type"]}</div>
+        <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeCardOverlay()">
+        <div class="task-title-overlay">${element["titel"]}</div>
+        <div class="task-description-overlay">${element["description"]}</div>
+        <div class="date-priority-container-overlay">
+            <div class="due-date-overlay">Due date: 10/05/2023</div>
+            <div class="priority-overlay">Priority: Medium</div>
+        </div>
+        ${progressHTML}
+        ${contactsHTML}
+        <div class="subtasks-overlay">
+            <div><input type="checkbox" checked> Implement Recipe Recommendation</div>
+            <div><input type="checkbox"> Start Page Layout</div>
+        </div>
+        <div class="actions-overlay">
+            <img src="./assets/img/delete.svg" alt="delete" class="action-icon-overlay">
+            <img src="./assets/img/edit.svg" alt="edit" class="action-icon-overlay">
+        </div>
+    </div>`;
+}
+
+function openCardOverlay(taskId) {
+    const overlay = document.getElementById("card-overlay");
+    const task = todos.find((t) => t.id === taskId); // Finde die entsprechende Aufgabe basierend auf der ID
+    overlay.innerHTML = generateExpandedCardHTML(task); // Erzeuge die HTML-Struktur für die erweiterte Karte
+    overlay.classList.remove("hidden");
+}
+
+function closeCardOverlay() {
+    const overlay = document.getElementById("card-overlay");
+    overlay.classList.add("hidden");
+}
+    </script>
+  </body>
 </html>
