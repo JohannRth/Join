@@ -54,6 +54,7 @@ const colors = [
 // Hauptfunktion zum Laden der Kontakte
 function loadContacts() {
     const contactContainer = document.getElementById('contacts');
+    contactContainer.innerHTML = ''; // Container leeren
     contacts.forEach((contact, index) => {
         const contactElement = createContactElement(contact, index);
         contactContainer.appendChild(contactElement);
@@ -74,7 +75,7 @@ function createContactElement(contact, index) {
     contactElement.appendChild(contactInfoElement);
 
     // Event-Listener für Klick auf den Kontakt hinzufügen
-    contactElement.addEventListener('click', () => openModal(index));
+    contactElement.addEventListener('click', () => displayContactDetails(contact));
 
     return contactElement;
 }
@@ -99,6 +100,18 @@ function createContactInfo(contact) {
     return contactInfoElement;
 }
 
+// Funktion, um die Details eines Kontakts anzuzeigen
+function displayContactDetails(contact) {
+    const contactDetails = document.getElementById('contactDetails');
+    if (contactDetails) {
+        contactDetails.innerHTML = `
+            <h2>${contact.name}</h2>
+            <p><strong>Email:</strong> ${contact.email}</p>
+            <p><strong>Telefon:</strong> ${contact.phone}</p>
+        `;
+    }
+}
+
 // Funktion zum Erhalten der Initialen des Namens
 function getInitials(name) {
     const nameParts = name.split(' ');
@@ -113,35 +126,64 @@ function getColor(name) {
     return colors[index % colors.length];
 }
 
-// Funktion, um das Modal für einen bestimmten Kontakt zu öffnen
-function openModal(index) {
-    const modal = document.getElementById('contactModal');
-    const contact = contacts[index];
-    document.getElementById('contactName').innerText = contact.name;
-    document.getElementById('contactEmail').innerText = contact.email;
-    document.getElementById('contactPhone').innerText = contact.phone;
-    modal.style.display = 'flex';
+// Funktion, um das Modal zum Hinzufügen eines neuen Kontakts zu öffnen
+function openAddContactModal() {
+    const modal = document.getElementById('addContactModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
 }
 
-// Funktion, um das Modal zu schließen
-function closeModal() {
-    const modal = document.getElementById('contactModal');
-    modal.style.display = 'none';
-}
-
-// EventListener für das Schließen des Modals
-document.addEventListener('DOMContentLoaded', () => {
-    const closeModalButton = document.querySelector('.close');
-    closeModalButton.addEventListener('click', closeModal);
-    
-    // Kontakte laden
-    loadContacts();
-});
-
-// Modal schließen, wenn außerhalb des Modal-Fensters geklickt wird
-window.onclick = function(event) {
-    const modal = document.getElementById('contactModal');
-    if (event.target === modal) {
+// Funktion, um das Modal zum Hinzufügen eines neuen Kontakts zu schließen
+function closeAddContactModal() {
+    const modal = document.getElementById('addContactModal');
+    if (modal) {
         modal.style.display = 'none';
     }
-};
+}
+
+// Funktion zum Hinzufügen eines neuen Kontakts
+function addNewContact(event) {
+    event.preventDefault();
+    const name = document.getElementById('newContactName').value;
+    const email = document.getElementById('newContactEmail').value;
+    const phone = document.getElementById('newContactPhone').value;
+
+    if (name && email && phone) {
+        contacts.push({ name, email, phone });
+        loadContacts();
+        closeAddContactModal();
+    }
+}
+
+// EventListener für das Laden der Seite
+document.addEventListener('DOMContentLoaded', () => {
+    // Kontakte laden
+    loadContacts();
+
+    // EventListener für das Hinzufügen eines neuen Kontakts
+    const addContactForm = document.getElementById('addContactForm');
+    if (addContactForm) {
+        addContactForm.addEventListener('submit', addNewContact);
+    }
+
+    // EventListener für den "Add Contact" Button
+    const addContactBtn = document.getElementById('addContactBtn');
+    if (addContactBtn) {
+        addContactBtn.addEventListener('click', openAddContactModal);
+    }
+
+    // EventListener für das Schließen des Modals
+    const closeModalButton = document.querySelector('.close');
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', closeAddContactModal);
+    }
+
+    // Modal schließen, wenn außerhalb des Modal-Fensters geklickt wird
+    window.onclick = function (event) {
+        const modal = document.getElementById('addContactModal');
+        if (event.target === modal) {
+            closeAddContactModal();
+        }
+    };
+});

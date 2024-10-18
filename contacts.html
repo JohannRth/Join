@@ -34,6 +34,10 @@
                 <img src="./assets/img/horizontalline_contacts.svg" alt="Line">
                 <h2>Better with a Team</h2>
             </div>
+            <!-- Container für die Details des ausgewählten Kontakts -->
+            <div id="contactDetails" class="contact-details">
+                <!-- Informationen zu einem bestimmten Kontakt werden hier angezeigt -->
+            </div>
         </div>
 
         <div id="contactList" class="contacts-list">
@@ -43,13 +47,23 @@
             </div>
         </div>
 
-        <!-- Modal Fenster für Kontaktdetails -->
-        <div id="contactModal" class="modal">
+        <!-- Modal Fenster für neuen Kontakt -->
+        <div id="addContactModal" class="modal">
             <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2 id="contactName"></h2>
-                <p><strong>Email:</strong> <span id="contactEmail"></span></p>
-                <p><strong>Phone:</strong> <span id="contactPhone"></span></p>
+                <span class="close" onclick="closeAddContactModal()">&times;</span>
+                <h2>Neuen Kontakt hinzufügen</h2>
+                <form id="addContactForm">
+                    <div>
+                        <input type="text" required id="newContactName" placeholder="Name" autocomplete="name">
+                    </div>
+                    <div>
+                        <input type="email" required id="newContactEmail" placeholder="Email" autocomplete="email">
+                    </div>
+                    <div>
+                        <input type="text" required id="newContactPhone" placeholder="Telefonnummer" autocomplete="tel">
+                    </div>
+                    <button type="submit">Kontakt hinzufügen</button>
+                </form>
             </div>
         </div>
 
