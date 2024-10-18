@@ -120,7 +120,7 @@ function openModal(index) {
     document.getElementById('contactName').innerText = contact.name;
     document.getElementById('contactEmail').innerText = contact.email;
     document.getElementById('contactPhone').innerText = contact.phone;
-    modal.style.display = 'block';
+    modal.style.display = 'flex';
 }
 
 // Funktion, um das Modal zu schließen

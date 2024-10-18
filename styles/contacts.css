@@ -104,6 +104,8 @@ button#addContactBtn:hover {
 
 .modal {
     display: none;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     z-index: 1;
     left: 0;
