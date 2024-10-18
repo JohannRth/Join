@@ -51,55 +51,69 @@ const colors = [
     "#FFBB2B"
 ];
 
-// Funktion, um Kontakte zu laden
+// Hauptfunktion zum Laden der Kontakte
 function loadContacts() {
     const contactContainer = document.getElementById('contacts');
-
     contacts.forEach((contact, index) => {
-        const contactElement = document.createElement('div');
-        contactElement.className = 'contact-item';
-
-        // Icon erstellen
-        const iconElement = document.createElement('div');
-        iconElement.className = 'contact-icon';
-        iconElement.textContent = getInitials(contact.name);
-        iconElement.style.backgroundColor = getColor(contact.name);
-        
-        // Kontaktname und E-Mail erstellen
-        const contactInfoElement = document.createElement('div');
-        contactInfoElement.className = 'contact-info';
-        contactInfoElement.innerHTML = `
-            <span class="contact-info-name">${contact.name}</span>
-            <span class="contact-info-mail">${contact.email}</span>
-        `;
-
-        // Icon und Kontaktinformationen zum Hauptkontakt-Element hinzufügen
-        contactElement.appendChild(iconElement);
-        contactElement.appendChild(contactInfoElement);
-
-        // Event-Listener für Klick auf den Kontakt
-        contactElement.addEventListener('click', () => openModal(index));
-
-        // Kontakt-Element zum Container hinzufügen
+        const contactElement = createContactElement(contact, index);
         contactContainer.appendChild(contactElement);
     });
 }
 
-// Funktion, um Initialen aus dem Namen zu erhalten
+// Funktion zum Erstellen des Kontakt-Elements
+function createContactElement(contact, index) {
+    const contactElement = document.createElement('div');
+    contactElement.className = 'contact-item';
+
+    // Erstelle das Icon-Element und die Kontaktinformationen
+    const iconElement = createContactIcon(contact.name);
+    const contactInfoElement = createContactInfo(contact);
+
+    // Icon und Kontaktinformationen zusammenfügen
+    contactElement.appendChild(iconElement);
+    contactElement.appendChild(contactInfoElement);
+
+    // Event-Listener für Klick auf den Kontakt hinzufügen
+    contactElement.addEventListener('click', () => openModal(index));
+
+    return contactElement;
+}
+
+// Funktion zum Erstellen des Icons mit den Initialen
+function createContactIcon(name) {
+    const iconElement = document.createElement('div');
+    iconElement.className = 'contact-icon';
+    iconElement.textContent = getInitials(name);
+    iconElement.style.backgroundColor = getColor(name);
+    return iconElement;
+}
+
+// Funktion zum Erstellen der Kontaktinformationen
+function createContactInfo(contact) {
+    const contactInfoElement = document.createElement('div');
+    contactInfoElement.className = 'contact-info';
+    contactInfoElement.innerHTML = `
+        <span class="contact-info-name">${contact.name}</span>
+        <span class="contact-info-mail">${contact.email}</span>
+    `;
+    return contactInfoElement;
+}
+
+// Funktion zum Erhalten der Initialen des Namens
 function getInitials(name) {
     const nameParts = name.split(' ');
     const initials = nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '');
     return initials.toUpperCase();
 }
 
-// Funktion, um eine Farbe basierend auf dem Anfangsbuchstaben zu erhalten
+// Funktion zum Abrufen einer Farbe basierend auf dem ersten Buchstaben des Namens
 function getColor(name) {
     const firstLetter = name.charAt(0).toUpperCase();
     const index = firstLetter.charCodeAt(0) - 65; // 'A' hat den charCode 65
     return colors[index % colors.length];
 }
 
-// Funktion, um das Modal zu öffnen
+// Funktion, um das Modal für einen bestimmten Kontakt zu öffnen
 function openModal(index) {
     const modal = document.getElementById('contactModal');
     const contact = contacts[index];
