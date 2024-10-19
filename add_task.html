@@ -72,14 +72,15 @@
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Subtasks</span>
                         <div class="subTaskInputContainer">
-                            <input type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
-                            <button type="button" class="addSubTaskButton" id="addSubTaskButton">+</button>
+                            <input required type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
+                            <img onclick="addNewSubtask()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
                         </div>
+                        <div class="subTaskErrorMessage" id="subTaskErrorMessage"></div>
                         <div class="subTaskList" id="subTaskList"></div>
                     </div>
                 </form>
                 <div class="addTaskCreateButtonContainer">
-                    <button type="button" class="clearButton" onclick="clearForm()">Clear <img class="clearAndCreateButtonImage" src="./assets/img/Vector.svg"></button>
+                    <button type="button" class="clearButton">Clear <img class="clearAndCreateButtonImage" src="./assets/img/Vector.svg"></button>
                     <button type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
                 </div>
             </div>

@@ -14,46 +14,55 @@ function setPriority(priority) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    let addSubTaskButton = document.getElementById('addSubTaskButton');
-    let subTaskInput = document.getElementById('subTaskInput');
+function addNewSubtask() {
+    let newSubTask = document.getElementById('subTaskInput');
+    let errorMessage = document.getElementById('subTaskErrorMessage');
+    if(newSubTask.value == 0) {
+        errorMessage.textContent = 'Bitte füge einen Text hinzu';
+        errorMessage.classList.add('visible');
+        return false;
+    }
+    errorMessage.classList.remove('visible');
+    subTasks.push(newSubTask.value);
+    newSubTask.value = '';
+    renderSubtasks();
+}
+
+function renderSubtasks() {
     let subTaskList = document.getElementById('subTaskList');
+    subTaskList.innerHTML = '';
+    subTasks.forEach((subTask, index) => {
+        let subTaskElement = document.createElement('div');
+        subTaskElement.innerHTML = `
+            <div class="subTask">
+                <div class="leftContainerSubTask">
+                    <span>${subTask}</span>
+                </div>
+                <div class="rightContainerSubTask">
+                    <div>
+                        <img class="subTaskEditButton" onclick="editSubTask(${index})" src="./assets/img/edit.svg">
+                    </div>
+                    <div class="partingLine">
+                    </div>
+                    <div>
+                        <img class="subTaskDeleteButton" onclick="deleteSubTask(${index})" src="./assets/img/delete.svg">
+                    </div>
+                </div>
+            </div> 
+        `;
+        subTaskList.appendChild(subTaskElement);
+    });
+}
 
-    addSubTaskButton.addEventListener('click', addSubTask);
-
-    function addSubTask() {
-        let subTaskText = subTaskInput.value.trim();
-        if (subTaskText) {
-            subTasks.push(subTaskText);
-            subTaskInput.value = '';
-            renderSubTasks();
-        }
+function editSubTask(index) {
+    let newText = prompt('Bearbeite den Subtask:', subTasks[index]);
+    if (newText !== null) {
+        subTasks[index] = newText;
+        renderSubtasks();
     }
+}
 
-    function renderSubTasks() {
-        subTaskList.innerHTML = '';
-        subTasks.forEach((subTask, index) => {
-            const subTaskElement = document.createElement('div');
-            subTaskElement.className = 'subTask';
-            subTaskElement.innerHTML = `
-                <span>${subTask}</span>
-                <button onclick="editSubTask(${index})">Edit</button>
-                <button onclick="deleteSubTask(${index})">Delete</button>
-            `;
-            subTaskList.appendChild(subTaskElement);
-        });
-    }
-
-    window.editSubTask = function(index) {
-        const newText = prompt('Edit subTask:', subTasks[index]);
-        if (newText !== null) {
-            subTasks[index] = newText.trim();
-            renderSubTasks();
-        }
-    }
-
-    window.deleteSubTask = function(index) {
-        subTasks.splice(index, 1);
-        renderSubTasks();
-    }
-});
+function deleteSubTask(index) {
+    subTasks.splice(index, 1);
+    renderSubtasks();
+}

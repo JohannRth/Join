@@ -79,7 +79,7 @@ input[type="text"], textarea, select, input[type="date"] {
     display: flex;
     flex-direction: column;
     width: 440px;
-    height: 48px;
+    height: 50px;
     padding: 12px;
     border: 1px solid #D1D1D1;
     border-radius: 10px;
@@ -218,13 +218,10 @@ textarea {
 
 .addSubTaskButton {
     position: absolute;
-    right: 5px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    font-size: 20px;
+    cursor: pointer;
 }
 
 .subTaskList {
@@ -234,7 +231,11 @@ textarea {
 .subTask {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 7px 12px;
+    border-radius: 10px;
+    background-color:  #d3d3d354;
 }
 
 .subTask span {
@@ -242,19 +243,39 @@ textarea {
     margin-right: 10px;
 }
 
-.subTask button {
-    margin-left: 5px;
-    padding: 5px 10px;
-    background-color: #2A3647;
-    color: white;
-    border: none;
-    border-radius: 5px;
+.rightContainerSubTask {
+    display: flex;
+}
+
+.subTaskEditButton {
     cursor: pointer;
+}
+
+.partingLine{
+    height: 25px;
+    width: 2px;
+    background-color: #D1D1D1;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.subTaskDeleteButton {
+    cursor: pointer;
+}
+
+.subTaskErrorMessage {
+    color: red;
+    display: none;
+}
+
+.subTaskErrorMessage.visible {
+    padding-top: 10px;
+    display: block;
 }
 
 .addTaskCreateButtonContainer {
     display: flex;
-    padding-top: 64px;
+    padding-top: 5px;
     padding-left: 136px;
     padding-bottom: 79px;
 }
