@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <html lang="de">
-
   <head>
     <!-- Meta -->
     <meta charset="UTF-8" />
@@ -265,168 +264,255 @@
         font-size: 16px;
         font-weight: 400;
       }
-/* Overlay für den verschwommenen Hintergrund */
-.card-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Dimm-Effekt */
-    backdrop-filter: blur(5px); /* Hintergrund verschwommen */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    transition: opacity 0.5s ease;
-}
+      /* Overlay für den verschwommenen Hintergrund */
+      .card-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        transition: opacity 0.5s ease;
+      }
 
-.card-overlay.hidden {
-    display: none;
-    opacity: 0;
-}
+      .card-overlay.hidden {
+        display: none;
+        opacity: 0;
+      }
 
-/* Erweiterte Titel-Karte */
-.expanded-card-overlay {
-    width: 525px;
-    height: 931px;
-    border-radius: 30px;
-    padding: 48px 40px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    position: relative;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    animation: slideInOverlay 0.5s forwards;
-    z-index: 1001; /* Überlagert alles andere */
-}
+      /* Erweiterte Titel-Karte */
+      .expanded-card-overlay {
+        width: 525px;
+        height: 931px;
+        border-radius: 30px;
+        padding: 48px 40px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: relative;
+        box-shadow: 0px 0px 4px 0px #00000029;
+        animation: slideInOverlay 0.5s forwards;
+        z-index: 1001;
+      }
 
-/* Animation für das Reinschieben */
-@keyframes slideInOverlay {
-    from {
-        transform: translateX(100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
+      @keyframes slideInOverlay {
+        from {
+          transform: translateX(100%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
 
-/* Schließen-Button */
-.close-btn-overlay {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-}
+      .close-story-container-overlay {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-.user-story-overlay {
-    width: 164px;
-    height: 36px;
-    border-radius: 8px;
-    background-color: #0038ff;
-    color: white;
-    font-weight: 500;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px 16px;
-}
+      .close-btn-overlay {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+      }
 
-/* Task Titel */
-.expanded-card-overlay .task-title-overlay {
-    width: 445px;
-    height: 219px;
-    font-weight: 700;
-    font-size: 61px; /* größere Schriftgröße */
-    color: #000000;
-}
+      .user-story-overlay {
+        width: 164px;
+        height: 36px;
+        border-radius: 8px;
+        background-color: #0038ff;
+        color: white;
+        font-weight: 500;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 16px;
+      }
 
-.expanded-card-overlay .task-description-overlay {
-    width: 445px;
-    height: 24px;
-    font-weight: 400;
-    font-size: 20px; /* richtige Größe */
-    color: #000000;
-}
+      /* Titel overlay */
+      .expanded-card-overlay .task-title-overlay {
+        width: 445px;
+        height: 219px;
+        font-weight: 700;
+        font-size: 61px;
+        color: #000000;
+      }
 
-/* Datum und Priorität */
-.date-priority-container-overlay {
-    width: 445px;
-    height: 24px;
-    display: flex;
-    gap: 25px;
-    justify-content: space-between;
-}
+      /* Description overlay */
+      .expanded-card-overlay .task-description-overlay {
+        width: 445px;
+        height: 24px;
+        font-weight: 400;
+        font-size: 20px;
+        color: #000000;
+      }
 
-.due-date-overlay, .priority-overlay {
-    font-size: 16px;
-    font-weight: 400;
-}
+      /* Date overlay */
+      .due-date-overlay {
+        width: 445px;
+        height: 24px;
+        gap: 25px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
 
-.priority-overlay {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+      .date-line-overlay {
+        font-size: 20px;
+        font-weight: 400;
+        text-align: left;
+        color: #2a3647;
+      }
 
-/* Personen zugewiesen */
-.task-assigned-overlay {
-    width: 445px;
-    display: grid;
-    grid-template-columns: 50px auto;
-    gap: 8px;
-    align-items: center;
-}
+      .date-date-overlay {
+        font-weight: 400;
+        font-size: 20px;
+        color: #000000;
+      }
 
-.person-circle-overlay {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 14px;
-    color: white;
-}
+      /* Priority overlay */
+      .priority-container-overlay {
+        width: 445px;
+        height: 32px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 25px;
+      }
 
-.person-name-overlay {
-    font-size: 16px;
-    font-weight: 500;
-    color: #2A3647;
-}
+      .priority-line-overlay {
+        font-size: 20px;
+        font-weight: 400;
+        text-align: left;
+        color: #2a3647;
+      }
 
-/* Subtasks */
-.subtasks-overlay {
-    width: 445px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+      .priority-focus-overlay {
+        font-size: 20px;
+        font-weight: 400;
+        text-align: left;
+      }
 
-.subtasks-overlay div {
-    font-size: 16px;
-    font-weight: 400;
-}
+      .priority-focus-img-container {
+        display: flex;
+        align-items: center;
+        width: 139px;
+        height: 32px;
+        padding: 4px 18px 4px 18px;
+        gap: 10px;
+        border-radius: 10px;
+      }
 
-/* Aktion (Delete, Icon in der Mitte und Edit) */
-.actions-overlay {
-    position: absolute;
-    bottom: 24px;
-    right: 24px;
-    display: flex;
-    gap: 16px;
-}
-.action-icon-overlay {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-}
+      /* Persons overlay */
+      .task-assigned-container-overlay {
+        width: 445px;
+        height: 208px;
+        gap: 8px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .task-assigned-line-overlay {
+        width: 445px;
+        height: 24px;
+        font-size: 20px;
+        font-weight: 400;
+        text-align: left;
+        color: #2a3647;
+      }
+
+      .person-container-overlay {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 16px;
+        width: 445px;
+        height: 56px;
+        padding: 7px 16px 7px 16px;
+      }
+
+      .person-circle-overlay {
+        width: 42px;
+        height: 42px;
+        border-radius: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 400;
+        font-size: 14px;
+        background-color: rgb(28, 10, 195);
+        color: white;
+      }
+
+      .person-name-overlay {
+        font-size: 16px;
+        font-weight: 500;
+        color: #2a3647;
+      }
+
+      /* Subtasks overlay*/
+      .subtask-conatiner-overlay{
+        width: 445px;
+        height: 100px;
+        gap: 8px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .subtask-line-overlay{
+        width: 445px;
+        height: 24px;
+        text-align: left;
+        font-weight: 400;
+        font-size: 20px;
+        color: #2a3647;
+      }
+
+      .subtasks-box-overlay{
+        width: 445px;
+        height: 68px;
+        gap: 4px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .subtasks-titelbox-overlay{
+        width: 344px;
+        height: 32px;
+        padding: 6px 16px 6px 16px;
+        gap: 16px;
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Aktion overlay*/
+      .actions-overlay {
+        position: absolute;
+        bottom: 48px;
+        right: 40px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .action-btn-overlay{
+        width: 81px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        gap: 8px;
+        font-weight: 400;
+        font-size: 16px;
+        color: #2a3647;
+      }
+
     </style>
   </head>
   <body>
@@ -494,54 +580,85 @@
       </div>
     </div>
 
-<!-- Erweiterte Karte im Overlay -->
-<div class="card-overlay hidden" id="card-overlay">
-    <div class="expanded-card-overlay">
-      <div class="user-story-overlay">User Story</div>
-      <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeCardOverlay()">
+    <!-- Erweiterte Karte im Overlay -->
+    <div class="card-overlay hidden" id="card-overlay">
+      <div class="expanded-card-overlay">
+        <div class="user-story-overlay">User Story</div>
+        <img
+          src="./assets/img/close.svg"
+          alt="close"
+          class="close-btn-overlay"
+          onclick="closeCardOverlay()"
+        />
 
-      <div class="task-title-overlay">Kochwelt Page & Recipe Recommender</div>
-      <div class="task-description-overlay">Build start page with recipe recommendation.</div>
+        <div class="task-title-overlay">Kochwelt Page & Recipe Recommender</div>
+        <div class="task-description-overlay">
+          Build start page with recipe recommendation.
+        </div>
 
-      <div class="date-priority-container-overlay">
-        <div class="due-date-overlay">Due date: 10/05/2023</div>
-        <div class="priority-overlay">
-          <span>Priority: Medium</span>
-          <img src="./assets/img/Prio media.svg" alt="priority-icon" class="priority-icon-overlay">
+        <div class="date-priority-container-overlay">
+          <div class="due-date-overlay">Due date: 10/05/2023</div>
+          <div class="priority-overlay">
+            <span>Priority: Medium</span>
+            <img
+              src="./assets/img/Prio media.svg"
+              alt="priority-icon"
+              class="priority-icon-overlay"
+            />
+          </div>
+        </div>
+
+        <div class="task-assigned-overlay">
+          <div class="person-circle-overlay" style="background-color: #00c6ff">
+            EM
+          </div>
+          <span class="person-name-overlay">Emmanuel Mauer</span>
+
+          <div class="person-circle-overlay" style="background-color: #5d27c2">
+            MB
+          </div>
+          <span class="person-name-overlay">Marcel Bauer</span>
+
+          <div class="person-circle-overlay" style="background-color: #0038ff">
+            AM
+          </div>
+          <span class="person-name-overlay">Anton Mayer</span>
+        </div>
+
+        <div class="subtasks-overlay">
+          <div>
+            <input type="checkbox" checked /> Implement Recipe Recommendation
+          </div>
+          <div><input type="checkbox" /> Start Page Layout</div>
+        </div>
+
+        <div class="actions-overlay">
+          <img
+            src="./assets/img/delete.svg"
+            alt="delete"
+            class="action-icon-overlay"
+          />
+          <img
+            src="./assets/img/Vector 3.jpg"
+            alt="weg"
+            class="action-icon-overlay"
+          />
+          <img
+            src="./assets/img/edit.svg"
+            alt="edit"
+            class="action-icon-overlay"
+          />
         </div>
       </div>
-
-      <div class="task-assigned-overlay">
-        <div class="person-circle-overlay" style="background-color: #00C6FF;">EM</div>
-        <span class="person-name-overlay">Emmanuel Mauer</span>
-        
-        <div class="person-circle-overlay" style="background-color: #5D27C2;">MB</div>
-        <span class="person-name-overlay">Marcel Bauer</span>
-        
-        <div class="person-circle-overlay" style="background-color: #0038FF;">AM</div>
-        <span class="person-name-overlay">Anton Mayer</span>
     </div>
-
-      <div class="subtasks-overlay">
-        <div><input type="checkbox" checked> Implement Recipe Recommendation</div>
-        <div><input type="checkbox"> Start Page Layout</div>
-      </div>
-
-      <div class="actions-overlay">
-        <img src="./assets/img/delete.svg" alt="delete" class="action-icon-overlay">
-        <img src="./assets/img/Vector 3.jpg" alt="weg" class="action-icon-overlay">
-        <img src="./assets/img/edit.svg" alt="edit" class="action-icon-overlay">
-      </div>
-    </div>
-</div>
 
     <script>
       let todos = [
         {
           id: 0,
           titel: "CSS Architecture Planning",
-          type: "Technical Task", // Display type as "Technical Task"
-          category: "done", // Placement in the "done" column
+          type: "Technical Task",
+          category: "done",
           description: "Define CSS naming conventions and structure.",
           priority: "High",
           subtasks: 2,
@@ -566,15 +683,15 @@
 
       function dragTask(ev) {
         ev.dataTransfer.setData("text", ev.target.id);
-        ev.target.classList.add("dragging"); // Füge eine Klasse hinzu, um den Cursor zu ändern
+        ev.target.classList.add("dragging");
       }
 
       function generateTodoHTML(element) {
-    let progressHTML = "";
-    if (element["subtasks"] > 0) {
-        let percentage =
+        let progressHTML = "";
+        if (element["subtasks"] > 0) {
+          let percentage =
             (element["completedSubtasks"] / element["subtasks"]) * 100;
-        progressHTML = `
+          progressHTML = `
             <div class="task-progress">
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: ${percentage}%;"></div>
@@ -582,11 +699,11 @@
                 <span class="progress-text">${element["completedSubtasks"]}/${element["subtasks"]} Subtasks</span>
             </div>
         `;
-    }
+        }
 
-    let contactsHTML = "";
-    if (element["contacts"]) {
-        contactsHTML = `
+        let contactsHTML = "";
+        if (element["contacts"]) {
+          contactsHTML = `
             <div class="task-assigned">
                 ${element["contacts"]
                   .map(
@@ -597,10 +714,10 @@
                   .join("")}
             </div>
         `;
-    }
+        }
 
-    return `
-    <div id="${element["id"]}" class="titel-card" draggable="true" ondragstart="dragTask(event)" ondblclick="openCardOverlay(${element['id']})">
+        return `
+    <div id="${element["id"]}" class="titel-card" draggable="true" ondragstart="dragTask(event)" ondblclick="openCardOverlay(${element["id"]})">
         <div class="user-story">${element["type"]}</div>
         <div class="task-details">
             <h3 class="task-title">${element["titel"]}</h3>
@@ -610,11 +727,11 @@
         ${contactsHTML}
         <div class="priority-icon"></div>
     </div>`;
-}
+      }
 
       function dragTask(ev) {
         ev.dataTransfer.setData("text", ev.target.id);
-        ev.target.style.cursor = "grabbing"; // Cursor auf 'grabbing' setzen
+        ev.target.style.cursor = "grabbing";
       }
 
       function dropTask(ev) {
@@ -623,7 +740,7 @@
         const taskElement = document.getElementById(taskId);
         ev.currentTarget.appendChild(taskElement);
 
-        taskElement.classList.remove("dragging"); // Entferne die Klasse nach dem Drop
+        taskElement.classList.remove("dragging");
 
         const newCategory = ev.currentTarget.id;
         todos = todos.map((task) =>
@@ -697,69 +814,85 @@
       }
 
       function generateExpandedCardHTML(element) {
-    let progressHTML = "";
-    if (element["subtasks"] > 0) {
-        let percentage =
-            (element["completedSubtasks"] / element["subtasks"]) * 100;
-        progressHTML = `
-            <div class="task-progress-overlay">
-                <div class="progress-bar-overlay">
-                    <div class="progress-fill-overlay" style="width: ${percentage}%;"></div>
+        let contactsHTML = "";
+        if (element["contacts"]) {
+          contactsHTML = `
+            <div class="task-assigned-container-overlay">
+                <div class="task-assigned-line-overlay">
+                    <span>Assigned To:</span>
                 </div>
-                <span class="progress-text-overlay">${element["completedSubtasks"]}/${element["subtasks"]} Subtasks</span>
-            </div>
-        `;
-    }
-
-    let contactsHTML = "";
-    if (element["contacts"]) {
-        contactsHTML = `
-            <div class="task-assigned-overlay">
                 ${element["contacts"]
                   .map(
                     (contact) => `
-                    <span class="person-circle-overlay">${contact}</span>
+                    <div class="person-container-overlay">
+                        <span class="person-circle-overlay">${contact.initials}</span>
+                        <span class="person-name-overlay">${contact.fullName}</span>
+                    </div>
                 `
                   )
                   .join("")}
             </div>
         `;
-    }
+        }
 
-    return `
+        return `
     <div class="expanded-card-overlay">
-        <div class="user-story-overlay">${element["type"]}</div>
-        <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeCardOverlay()">
+        <div class="close-story-container-overlay">
+            <div class="user-story-overlay">${element["type"]}</div>
+            <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeCardOverlay()">
+        </div>
         <div class="task-title-overlay">${element["titel"]}</div>
         <div class="task-description-overlay">${element["description"]}</div>
-        <div class="date-priority-container-overlay">
-            <div class="due-date-overlay">Due date: 10/05/2023</div>
-            <div class="priority-overlay">Priority: Medium</div>
+        <div class="due-date-overlay">
+            <span class="date-line-overlay">Due date:</span>
+            <span class="date-date-overlay">10/05/2023</span>
         </div>
-        ${progressHTML}
+        <div class="priority-container-overlay">
+            <span class="priority-line-overlay">Priority:</span>
+            <div class="priority-focus-img-container">
+                <span class="priority-focus-overlay">Medium</span>
+                <img src="./assets/img/Prio media.svg" alt="Prio medium" class="priority-img-overlay">
+            </div>    
+        </div>
         ${contactsHTML}
-        <div class="subtasks-overlay">
-            <div><input type="checkbox" checked> Implement Recipe Recommendation</div>
-            <div><input type="checkbox"> Start Page Layout</div>
-        </div>
+        <div class="subtask-conatiner-overlay">
+            <div class="subtask-line-overlay">
+                <span>Subtasks</span>
+            </div>
+            <div class="subtasks-box-overlay">
+                <div class="subtasks-titelbox-overlay">
+                    <div>
+                        <input type="checkbox" checked>
+                    </div>
+                    <div> 
+                        <span>Implement Recipe Recommendation</span>
+                    </div>    
+                </div>
+            </div>
+        </div>    
         <div class="actions-overlay">
-            <img src="./assets/img/delete.svg" alt="delete" class="action-icon-overlay">
-            <img src="./assets/img/edit.svg" alt="edit" class="action-icon-overlay">
+            <p class="action-btn-overlay">
+            <img src="./assets/img/delete.svg" alt="delete">Delete
+            </p>
+            <img src="./assets/img/Vector 3.svg" alt="delete">
+            <p class="action-btn-overlay">
+            <img src="./assets/img/edit.svg" alt="edit">Edit
+            </p>
         </div>
     </div>`;
-}
+      }
 
-function openCardOverlay(taskId) {
-    const overlay = document.getElementById("card-overlay");
-    const task = todos.find((t) => t.id === taskId); // Finde die entsprechende Aufgabe basierend auf der ID
-    overlay.innerHTML = generateExpandedCardHTML(task); // Erzeuge die HTML-Struktur für die erweiterte Karte
-    overlay.classList.remove("hidden");
-}
+      function openCardOverlay(taskId) {
+        const overlay = document.getElementById("card-overlay");
+        const task = todos.find((t) => t.id === taskId); // Finde die entsprechende Aufgabe basierend auf der ID
+        overlay.innerHTML = generateExpandedCardHTML(task); // Erzeuge die HTML-Struktur für die erweiterte Karte
+        overlay.classList.remove("hidden");
+      }
 
-function closeCardOverlay() {
-    const overlay = document.getElementById("card-overlay");
-    overlay.classList.add("hidden");
-}
+      function closeCardOverlay() {
+        const overlay = document.getElementById("card-overlay");
+        overlay.classList.add("hidden");
+      }
     </script>
   </body>
 </html>

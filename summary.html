@@ -93,6 +93,22 @@
             box-shadow: 0px 0px 4px 0px #0000001A;
         }
 
+        .image-todo-container img {
+            transition: opacity 0.3s ease; 
+        }
+
+        .toDo-container:hover .image-todo-container img {
+            content: url('./assets/img/Group 7.svg'); 
+        }
+
+        .toDo-container:hover {
+            width: 282px;
+            height: 184px;
+            background-color: #2a3647; 
+            box-shadow: 0px 4px 4px 0px #00000040;
+            cursor: pointer;
+        }
+
         .toDo-number-container{
             display: flex;
             flex-direction: column;
@@ -104,10 +120,26 @@
             font-weight: 600;
         }
 
+        .toDo-number-container .todo-number  {
+            transition: color 0.3s ease; 
+        }
+
+        .toDo-container:hover .todo-number  {
+            color: #ffffff; 
+        }
+
         .summary-span{
             font-size: 16px;
             font-weight: 400;
             color: #2A3647;
+        }
+
+        .toDo-number-container .summary-span  {
+            transition: color 0.3s ease; 
+        }
+
+        .toDo-container:hover .summary-span  {
+            color: #ffffff; 
         }
 
         .done-container{
@@ -124,16 +156,49 @@
             box-shadow: 0px 0px 4px 0px #0000001A;
         }
 
+        .image-done-container img {
+            transition: opacity 0.3s ease; 
+        }
+
+        .done-container:hover .image-done-container img {
+            content: url('./assets/img/Frame 59 (3).svg'); 
+        }
+
+        .done-container:hover {
+            width: 282px;
+            height: 184px;
+            background-color: #2a3647; 
+            box-shadow: 0px 4px 4px 0px #00000040;
+            cursor: pointer;
+        }
+
         .done-number-container{
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
+        .done-number-container .done-number  {
+            transition: color 0.3s ease; 
+        }
+
+        .done-container:hover .done-number  {
+            color: #ffffff; 
+        }
+
         .done-number{
             font-size: 64px;
             font-weight: 600;
         }
+
+        .done-number-container .summary-span  {
+            transition: color 0.3s ease; 
+        }
+
+        .done-container:hover .summary-span  {
+            color: #ffffff; 
+        }
+
 
         .urgent-date-container{
             display: flex;
@@ -335,7 +400,7 @@
             <div class="summary-conatiner">
                 <div class="toDo-done-container">
                     <div class="toDo-container">
-                        <div>
+                        <div class="image-todo-container">
                             <img src="./assets/img/edit_todo.svg" alt="">
                         </div>
                         <div class="toDo-number-container">
@@ -344,7 +409,7 @@
                         </div>
                     </div>
                     <div class="done-container">
-                        <div>
+                        <div class="image-done-container">
                             <img src="./assets/img/ok_done.svg" alt="">
                         </div>
                         <div class="done-number-container">
