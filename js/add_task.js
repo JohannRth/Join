@@ -28,39 +28,60 @@ function addNewSubtask() {
     renderSubtasks();
 }
 
-function renderSubtasks() {
+function renderSubtasks(editIndex = -1) {
     let subTaskList = document.getElementById('subTaskList');
     subTaskList.innerHTML = '';
     subTasks.forEach((subTask, index) => {
-        let subTaskElement = document.createElement('div');
-        subTaskElement.innerHTML = `
-            <div class="subTask">
-                <div class="leftContainerSubTask">
-                    <span>${subTask}</span>
+        if (index === editIndex) {
+            subTaskList.innerHTML += `
+                <div class="subTask">
+                    <div class="leftContainerSubTask">
+                        <input type="text" id="editInput${index}" value="${subTask}" class="subTaskEditInput">
+                    </div>
+                    <div class="rightContainerSubTask">
+                        <div>
+                            <img class="subTaskSaveButton" onclick="saveSubTask(${index})" src="./assets/img/check.svg" alt="Save">
+                        </div>
+                        <div class="partingLine"></div>
+                        <div>
+                            <img class="subTaskDeleteButton" onclick="deleteSubTask(${index})" src="./assets/img/delete.svg" alt="Delete">
+                        </div>
+                    </div>
                 </div>
-                <div class="rightContainerSubTask">
-                    <div>
-                        <img class="subTaskEditButton" onclick="editSubTask(${index})" src="./assets/img/edit.svg">
+            `;
+        } else {
+            subTaskList.innerHTML += `
+                <div class="subTask">
+                    <div class="leftContainerSubTask">
+                        <span>${subTask}</span>
                     </div>
-                    <div class="partingLine">
-                    </div>
-                    <div>
-                        <img class="subTaskDeleteButton" onclick="deleteSubTask(${index})" src="./assets/img/delete.svg">
+                    <div class="rightContainerSubTask">
+                        <div>
+                            <img class="subTaskEditButton" onclick="editSubTask(${index})" src="./assets/img/edit.svg" alt="Edit">
+                        </div>
+                        <div class="partingLine"></div>
+                        <div>
+                            <img class="subTaskDeleteButton" onclick="deleteSubTask(${index})" src="./assets/img/delete.svg" alt="Delete">
+                        </div>
                     </div>
                 </div>
-            </div> 
-        `;
-        subTaskList.appendChild(subTaskElement);
+            `;
+        }
     });
 }
 
 function editSubTask(index) {
-    let newText = prompt('Bearbeite den Subtask:', subTasks[index]);
-    if (newText !== null) {
-        subTasks[index] = newText;
-        renderSubtasks();
-    }
+    renderSubtasks(index);
 }
+
+function saveSubTask(index) {
+    let editedText = document.getElementById(`editInput${index}`).value;
+    if (editedText.trim() !== '') {
+        subTasks[index] = editedText;
+    }
+    renderSubtasks();
+}
+
 
 function deleteSubTask(index) {
     subTasks.splice(index, 1);

@@ -29,18 +29,18 @@
                     <div class="inputContainerTitle">
                         <div class="inputContainer">
                             <span class="addTaskInputTitle">Title</span>
-                            <input id="title" type="text" placeholder="Enter a title">
+                            <input class="inputAddTask" id="title" type="text" placeholder="Enter a title">
                         </div>
                     </div>
                     <div class="inputContainerDescription">
                         <div class="inputContainer">
                             <span class="addTaskInputTitle">Description</span>
-                            <textarea id="description" placeholder="Enter a Description"></textarea>
+                            <textarea class="textAreaAddTask" id="description" placeholder="Enter a Description"></textarea>
                         </div>
                     </div>
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Assigned To</span>
-                        <select id="assignedTo">
+                        <select class="optionAddTask" id="assignedTo">
                             <option value="" disabled selected>Select contacts to assign</option>
                         </select>
                     </div>
@@ -50,7 +50,7 @@
                     <div class="inputContainerDueDate">
                         <div class="inputContainer">
                             <span class="addTaskInputTitle">Due date</span>
-                            <input type="date" id="date">
+                            <input class="inputAddTask" type="date" id="date">
                         </div>
                     </div>
                     <div class="prioContainer">
@@ -63,7 +63,7 @@
                     </div>
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Category</span>
-                        <select id="category">
+                        <select class="optionAddTask" id="category">
                             <option value="" disabled selected hidden>Select task category</option>
                             <option value="technical">Technical Task</option>
                             <option value="user_story">User Story</option>
@@ -72,7 +72,7 @@
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Subtasks</span>
                         <div class="subTaskInputContainer">
-                            <input required type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
+                            <input class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
                             <img onclick="addNewSubtask()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
                         </div>
                         <div class="subTaskErrorMessage" id="subTaskErrorMessage"></div>
