@@ -91,6 +91,27 @@ body {
     cursor: pointer;
 }
 
+.inputAddTaskDueDate {
+    display: flex;
+    flex-direction: column;
+    width: 440px;
+    height: 50px;
+    padding: 12px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: left;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.06);
+    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.1));
+    cursor: pointer;
+    color: #D1D1D1;
+}
+
+.inputAddTaskDueDate:not([value="YYYY-MM-DD"]) {
+    color: black;
+}
+
 .textAreaAddTask {
     display: flex;
     flex-direction: column;
@@ -107,6 +128,7 @@ body {
     filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.1));
     cursor: pointer;
 }
+
 
 .optionAddTask {
     display: flex;
@@ -137,7 +159,6 @@ input[type="text"]:focus,
     padding: 4px 0;
     font-size: 16px;
     border: none;
-    border-bottom: 2px solid #29ABE2;
     outline: none;
     background-color: transparent;
     display: inline-block;
@@ -145,14 +166,18 @@ input[type="text"]:focus,
 
 #title::placeholder,
 #description::placeholder,
-#date,
 #subtasks {
     color: #D1D1D1;
 }
 
-.prioContainer {
+.required::after {
+    content: "*";
+    color: red;
+    margin-left: 4px;
+}
+
+.prioButtonContainer {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     padding-bottom: 24px;
@@ -169,6 +194,9 @@ input[type="text"]:focus,
     margin-right: 16px;
     font-size: 20px;
     font-weight: 400;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .prioButtonUrgent:hover {
@@ -187,6 +215,9 @@ input[type="text"]:focus,
     margin-right: 16px;
     font-size: 20px;
     font-weight: 400;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .prioButtonMedium img {
@@ -209,6 +240,9 @@ input[type="text"]:focus,
     margin-right: 16px;
     font-size: 20px;
     font-weight: 400;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .prioButtonLow:hover {
@@ -277,6 +311,21 @@ input[type="text"]:focus,
     background-color:  #d3d3d354;
 }
 
+.subTask:hover {
+    cursor: pointer;
+    background-color:  #d3d3d3af;
+}
+
+.subTaskEdit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 7px 12px;
+    background-color:  #d3d3d354;
+    border-bottom: 2px solid #29ABE2;
+}
+
 .subTask span {
     flex-grow: 1;
     margin-right: 10px;
@@ -298,6 +347,12 @@ input[type="text"]:focus,
     margin-left: 5px;
 }
 
+.subTaskSaveButton {
+    height: 20px;
+    cursor: pointer;
+    padding-top: 5px;
+}
+
 .subTaskDeleteButton {
     cursor: pointer;
 }
@@ -314,9 +369,25 @@ input[type="text"]:focus,
 
 .addTaskCreateButtonContainer {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 980px;
     padding-top: 5px;
-    padding-left: 136px;
     padding-bottom: 79px;
+}
+
+.requiredTextAddTask{
+    color: black;
+}
+
+.requiredBefore::before {
+    content: "*";
+    color: red;
+    margin-left: 4px;
+}
+
+.clearAndCreateButtons {
+    display: flex;
 }
 
 .clearButton, .createButton {
@@ -336,7 +407,6 @@ input[type="text"]:focus,
     border: 1px solid #2A3647;
     width: 110px;
     height: 56px;
-    transition: all 225ms ease-in-out;
     margin-right: 18px;
 }
 
@@ -346,13 +416,16 @@ input[type="text"]:focus,
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+.clearButton:hover .clearAndCreateButtonImage {
+    filter: invert(48%) sepia(85%) saturate(2476%) hue-rotate(165deg) brightness(100%) contrast(119%);
+}
+
 .createButton {
     background: #2A3647;
     color: white;
     border: none;
     width: 183px;
     height: 56px;
-    transition: all 225ms ease-in-out;
 }
 
 .createButton:hover {
@@ -361,8 +434,8 @@ input[type="text"]:focus,
 }
 
 .clearAndCreateButtonImage {
-    width: 24px;
-    height: 24px;
+    width: 14px;
+    height: 14px;
     margin-left: 10px;
 }
 

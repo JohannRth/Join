@@ -28,7 +28,7 @@
                 <form onsubmit="createTask(); return false;">
                     <div class="inputContainerTitle">
                         <div class="inputContainer">
-                            <span class="addTaskInputTitle">Title</span>
+                            <span class="addTaskInputTitle required">Title</span>
                             <input class="inputAddTask" id="title" type="text" placeholder="Enter a title">
                         </div>
                     </div>
@@ -49,8 +49,8 @@
             <div class="rightAddTaskContainer">
                     <div class="inputContainerDueDate">
                         <div class="inputContainer">
-                            <span class="addTaskInputTitle">Due date</span>
-                            <input class="inputAddTask" type="date" id="date">
+                            <span class="addTaskInputTitle required">Due date</span>
+                            <input class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
                         </div>
                     </div>
                     <div class="prioContainer">
@@ -62,8 +62,8 @@
                         </div>
                     </div>
                     <div class="inputContainer">
-                        <span class="addTaskInputTitle">Category</span>
-                        <select class="optionAddTask" id="category">
+                        <span class="addTaskInputTitle required">Category</span>
+                        <select class="optionAddTask" id="category" required>
                             <option value="" disabled selected hidden>Select task category</option>
                             <option value="technical">Technical Task</option>
                             <option value="user_story">User Story</option>
@@ -79,12 +79,17 @@
                         <div class="subTaskList" id="subTaskList"></div>
                     </div>
                 </form>
-                <div class="addTaskCreateButtonContainer">
-                    <button type="button" class="clearButton">Clear <img class="clearAndCreateButtonImage" src="./assets/img/Vector.svg"></button>
-                    <button type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
-                </div>
             </div>
         </div> 
+        <div class="addTaskCreateButtonContainer">
+            <div>
+                <span class="requiredBefore requiredTextAddTask">This field is required</span>
+            </div>
+            <div class="clearAndCreateButtons">
+                <button type="button" class="clearButton">Clear <img class="clearAndCreateButtonImage" src="./assets/img/clear-x-image.svg"></button>
+                <button type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
+            </div>
+        </div>
     </div>  
 </body>
 </html>

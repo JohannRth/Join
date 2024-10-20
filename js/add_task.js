@@ -34,13 +34,13 @@ function renderSubtasks(editIndex = -1) {
     subTasks.forEach((subTask, index) => {
         if (index === editIndex) {
             subTaskList.innerHTML += `
-                <div class="subTask">
+                <div class="subTaskEdit">
                     <div class="leftContainerSubTask">
                         <input type="text" id="editInput${index}" value="${subTask}" class="subTaskEditInput">
                     </div>
                     <div class="rightContainerSubTask">
                         <div>
-                            <img class="subTaskSaveButton" onclick="saveSubTask(${index})" src="./assets/img/check.svg" alt="Save">
+                            <img class="subTaskSaveButton" onclick="saveSubTask(${index})" src="./assets/img/check-dark.svg" alt="Save">
                         </div>
                         <div class="partingLine"></div>
                         <div>
@@ -51,7 +51,7 @@ function renderSubtasks(editIndex = -1) {
             `;
         } else {
             subTaskList.innerHTML += `
-                <div class="subTask">
+                <div class="subTask" ondblclick="editSubTask(${index})">
                     <div class="leftContainerSubTask">
                         <span>${subTask}</span>
                     </div>
@@ -69,7 +69,6 @@ function renderSubtasks(editIndex = -1) {
         }
     });
 }
-
 function editSubTask(index) {
     renderSubtasks(index);
 }
@@ -86,4 +85,22 @@ function saveSubTask(index) {
 function deleteSubTask(index) {
     subTasks.splice(index, 1);
     renderSubtasks();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const dateInput = document.querySelector('.inputAddTaskDueDate');
+    if (dateInput) {
+        dateInput.addEventListener('change', updateDateColor);
+        dateInput.addEventListener('dblclick', setToday);
+        updateDateColor.call(dateInput);
+    }
+});
+
+function updateDateColor() {
+    this.style.color = this.value ? 'black' : '#D1D1D1';
+}
+
+function setToday() {
+    this.value = new Date().toISOString().split('T')[0];
+    updateDateColor.call(this);
 }
