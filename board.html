@@ -101,18 +101,21 @@
         height: 24px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         font-size: 20px;
         font-weight: 700;
         color: #42526e;
       }
 
-      .button-titel {
+      .cross-titel-button {
         width: 24px;
         height: 24px;
-        padding: 3px;
-        border-radius: 8px;
-        border: 2px solid #2a3647;
-        opacity: 0px;
+        transition: opacity 0.3s ease;
+      }
+
+      .cross-titel-button:hover{
+        cursor: pointer;
+        content: url('./assets/img/cross-blue.svg'); 
       }
 
       /* Drag Area */
@@ -175,8 +178,8 @@
         padding: 4px 16px;
         background-color: #0038ff;
         color: white;
-        font-weight: 500;
-        font-size: 12px;
+        font-weight: 400;
+        font-size: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -211,8 +214,8 @@
         width: 220px;
         height: 16px;
         display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
+        justify-content: flex-start;
+        align-items: center;
       }
 
       .progress-bar {
@@ -231,16 +234,16 @@
 
       .progress-text {
         font-size: 12px;
+        font-weight: 400;
         color: #000000;
-        margin-left: 10px;
         line-height: 16px;
+        margin-left: 11px;
       }
 
       .task-assigned {
-        width: 80px;
+        width: auto;
         height: 32px;
         display: flex;
-        gap: 8px;
       }
 
       .person-circle {
@@ -254,6 +257,7 @@
         font-weight: bold;
         font-size: 14px;
         color: white;
+        margin-left: -5px;
       }
 
       .priority-icon {
@@ -262,10 +266,8 @@
         position: absolute;
         bottom: 16px;
         right: 16px;
-        background-image: url("./assets/img/Prio media.svg");
-        background-size: contain;
-        background-repeat: no-repeat;
       }
+
       /* Overlay für den Hintergrund */
       .card-overlay {
         position: fixed;
@@ -521,11 +523,7 @@
             <span class="headline-span-board">Board</span>
           </div>
           <div class="input-container">
-            <input
-              class="input-find-task"
-              placeholder="Find Task"
-              type="text"
-            />
+            <input class="input-find-task" placeholder="Find Task" type="text"/>
             <button class="button-add-task-board">
               Add task <img src="./assets/img/add.svg" alt="" />
             </button>
@@ -534,33 +532,15 @@
         <div class="column-titel-container">
           <div class="column-titel">
             <span>To do</span>
-            <button class="button-titel">
-              <img
-                class="cross-titel-button"
-                src="./assets/img/Capa 1.svg"
-                alt=""
-              />
-            </button>
+              <img class="cross-titel-button" src="./assets/img/plus button.svg" alt="button-cross"/>
           </div>
           <div class="column-titel">
             <span>In progress</span>
-            <button class="button-titel">
-              <img
-                class="cross-titel-button"
-                src="./assets/img/Capa 1.svg"
-                alt=""
-              />
-            </button>
+              <img class="cross-titel-button" src="./assets/img/plus button.svg" alt="button-cross"/>
           </div>
           <div class="column-titel">
             <span>Await feedback</span>
-            <button class="button-titel">
-              <img
-                class="cross-titel-button"
-                src="./assets/img/Capa 1.svg"
-                alt=""
-              />
-            </button>
+              <img class="cross-titel-button" src="./assets/img/plus button.svg" alt="button-cross"/> 
           </div>
           <div class="column-titel">
             <span>Done</span>
@@ -654,7 +634,7 @@
         {
           id: 0,
           titel: "CSS Architecture Planning",
-          type: "Technical Task",
+          type: "User Story",
           category: "done",
           description: "Define CSS naming conventions and structure.",
           priority: "High",
@@ -722,7 +702,9 @@
         </div>
         ${progressHTML}
         ${contactsHTML}
-        <div class="priority-icon"></div>
+        <div class="priority-icon">
+            <img src="./assets/img/medium-titel-card.svg" alt="medium-titel-card">
+        </div>
     </div>`;
       }
 
