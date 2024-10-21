@@ -430,8 +430,8 @@
                     </div>
                     <span class="separator-urgent"></span>
                     <div class="data-container">
-                        <span class="date-urgent"> Oktober 16, 2024</span>
-                        <span class="Upcoming-Deadline"> Upcoming Deadline </span>
+                        <span class="date-urgent" id="datum"></span>
+                        <span class="Upcoming-Deadline">Upcoming Deadline </span>
                     </div>
                 </div>
                 <div class="tasks-container">
@@ -462,5 +462,17 @@
                 </div>
             </div>
         </div>
+
+        <script>
+        // Datum //
+        const heute = new Date();
+        
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        
+        const formatiertesDatum = heute.toLocaleDateString('en-US', options);
+        
+        document.getElementById('datum').innerText = formatiertesDatum;
+        // Datum //
+        </script>
   </body>
 </html>
