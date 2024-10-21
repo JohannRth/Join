@@ -30,6 +30,7 @@
                         <div class="inputContainer">
                             <span class="addTaskInputTitle required">Title</span>
                             <input class="inputAddTask" id="title" type="text" placeholder="Enter a title">
+                            <div class="error-message"></div>
                         </div>
                     </div>
                     <div class="inputContainerDescription">
@@ -40,7 +41,7 @@
                     </div>
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Assigned To</span>
-                        <select class="optionAddTask" id="assignedTo">
+                        <select class="assignedAddTask" id="assignedTo">
                             <option value="" disabled selected>Select contacts to assign</option>
                         </select>
                     </div>
@@ -51,6 +52,7 @@
                         <div class="inputContainer">
                             <span class="addTaskInputTitle required">Due date</span>
                             <input class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
+                            <div class="error-message"></div>
                         </div>
                     </div>
                     <div class="prioContainer">
@@ -63,11 +65,13 @@
                     </div>
                     <div class="inputContainer">
                         <span class="addTaskInputTitle required">Category</span>
-                        <select class="optionAddTask" id="category" required>
-                            <option value="" disabled selected hidden>Select task category</option>
-                            <option class="categoryChoices" value="technical">Technical Task</option>
-                            <option class="categoryChoices" value="user_story">User Story</option>
-                        </select>
+                        <div class="customDropdown">
+                            <div class="selectedOption">Select task category</div>
+                            <div class="dropdownOptions">
+                                <div class="option" data-value="technical">Technical Task</div>
+                                <div class="option" data-value="userStory">User Story</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Subtasks</span>

@@ -75,6 +75,17 @@ body {
     text-align: left;
 }
 
+.input-error {
+    border: 1px solid red !important;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
 .inputAddTask {
     display: flex;
     flex-direction: column;
@@ -129,8 +140,7 @@ body {
     cursor: pointer;
 }
 
-
-.optionAddTask {
+.assignedAddTask {
     display: flex;
     flex-direction: column;
     width: 440px;
@@ -141,20 +151,19 @@ body {
     font-size: 20px;
     font-weight: 400;
     text-align: left;
-    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.06);
-    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.1));
+    box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
-.categoryChoices:hover {
-    background-color: #f0f0f0; /* Ein helles Grau */
-    color: #333; /* Dunklere Textfarbe für besseren Kontrast */
+.assignedAddTask:hover {
+    box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.4);
 }
 
-select option:hover {
-    background-color: #f0f0f0 !important; /* Überschreibt den Standard-Hover-Effekt */
+.assignedAddTask:active,
+.assignedAddTask:focus {
+    box-shadow: none;
+    border-color: rgb(41,171,226);
 }
-
 
 input[type="text"]:focus,
     textarea:focus,
@@ -162,6 +171,91 @@ input[type="text"]:focus,
     input[type="date"]:focus {
     border-color: rgb(41,171,226);
     outline: none;
+    box-shadow: none;
+}
+
+.customDropdown.active .options {
+    display: block !important;
+    z-index: 1000;
+}
+
+.customDropdown {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
+
+.selectedOption {
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 440px;
+    height: 50px;
+    padding: 12px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: left;
+    box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    background-image: url(../assets/img/arrow_drop_down.svg);
+    background-repeat: no-repeat;
+    background-position: calc(100% - 10px) center;    
+}
+
+.selectedOption:hover {
+    box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.4);
+}
+
+.dropDownImage {
+    height: 6px;
+}
+
+.dropdownOptions {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #D1D1D1;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    z-index: 1;
+}
+
+.option {
+    padding: 13px 21px;
+    color: black;
+}
+
+.option:hover {
+    background-color: #F6F7F8;
+}
+
+.customDropdown.active .selectedOption {
+    border-radius: 10px 10px 0 0;
+}
+
+.customDropdown.active .dropdownOptions {
+    display: block;
+}
+
+.customDropdown.error .selectedOption {
+    border-color: red;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+
+.errorMessage.visible {
+    display: block;
 }
 
 .subTaskEditInput {
