@@ -141,12 +141,29 @@ function displayContactDetails(contact) {
     const contactDetails = document.getElementById('contactDetails');
     if (contactDetails) {
         contactDetails.innerHTML = `
-            <h2>${contact.name}</h2>
-            <p><strong>Email:</strong> ${contact.email}</p>
-            <p><strong>Telefon:</strong> ${contact.phone}</p>
+            <div class="contact-details-header">
+                <div class="contact-icon-large" style="background-color: ${getColor(contact.name)};">
+                    ${getInitials(contact.name)}
+                </div>
+                <div class="contact-details-info">
+                    <h2>${contact.name}</h2>
+                    <div class="contact-actions">
+                        <button class="edit-button"><img src="./assets/img/edit.svg" alt="Edit"> Edit</button>
+                        <button class="delete-button"><img src="./assets/img/delete.svg" alt="Delete"> Delete</button>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-details-body">
+                <h3>Contact Information</h3>
+                <p><strong>Email</strong></p>
+                <p class="contact-details-email">${contact.email}</p>
+                <p><strong>Phone</strong></p>
+                <p class="contact-details-phone">${contact.phone}</p>
+            </div>
         `;
     }
 }
+
 
 // Funktion zum Erhalten der Initialen des Namens
 function getInitials(name) {
@@ -223,3 +240,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 });
+
+document.addEventListener('click', function (event) {
+    if (event.target.closest('.edit-button')) {
+        const contactName = document.querySelector('.contact-details-info h2').innerText;
+        console.log(`Bearbeiten des Kontakts: ${contactName}`);
+        // Logik für das Bearbeiten hinzufügen (z.B. Modal öffnen mit vorgefüllten Daten)
+    }
+
+    if (event.target.closest('.delete-button')) {
+        const contactName = document.querySelector('.contact-details-info h2').innerText;
+        console.log(`Löschen des Kontakts: ${contactName}`);
+        // Logik für das Löschen hinzufügen (z.B. Bestätigung und Kontakt entfernen)
+        deleteContact(contactName);
+    }
+});
+
+// Funktion, um einen Kontakt zu löschen
+function deleteContact(name) {
+    const index = contacts.findIndex(contact => contact.name === name);
+    if (index !== -1) {
+        contacts.splice(index, 1);
+        loadContacts(); // Aktualisiert die Kontaktliste
+        document.getElementById('contactDetails').innerHTML = ''; // Leert die Kontaktdetails, wenn der Kontakt gelöscht wurde
+    }
+}

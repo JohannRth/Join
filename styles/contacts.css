@@ -23,7 +23,7 @@
 .contact-headline {
     display: flex;
     align-items: center;
-    padding: 110px 40px;
+    padding: 110px 0px 0px 60px;
 }
 
 .contact-headline h1 {
@@ -157,20 +157,81 @@ button#addContactBtn:hover {
 }
 
 .contact-details {
-    padding: 20px;
     margin-top: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
     background-color: #f9f9f9;
-    max-width: 600px;
+    padding: 0px 0px 0px 60px;
 }
 
-.contact-details h2 {
-    margin-top: 0;
+.contact-details-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 54px;
 }
 
-.contact-details p {
-    margin: 5px 0;
+.contact-icon-large {
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    font-size: 32px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.contact-details-info {
+    flex-grow: 1;
+}
+
+.contact-details-info h2 {
+    margin: 0;
+    font-size: 47px;
+    font-weight: 500;
+    line-height: 56.4px;
+}
+
+.contact-actions {
+    margin-top: 10px;
+    display: flex;
+}
+
+.contact-actions button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.contact-actions button:hover {
+    color: #007CEE;
+}
+
+.contact-actions:hover img{
+    color: #007CEE !important;
+}
+
+.contact-details-body {
+    margin-top: 20px;
+}
+
+.contact-details-body h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.contact-details-email,
+.contact-details-phone {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .modal {
