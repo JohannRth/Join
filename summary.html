@@ -215,6 +215,18 @@
             margin-top: 28px;
         }
 
+        .urgent-date-container img {
+            transition: opacity 0.3s ease; 
+        }
+
+        .urgent-date-container:hover {
+            width: 576px;
+            height: 184px;
+            background-color: #2a3647; 
+            box-shadow: 0px 4px 4px 0px #00000040;
+            cursor: pointer;
+        }
+
         .urgent-container{
             display: flex;
             justify-content: center;
@@ -230,10 +242,26 @@
             align-items: center;
         }
 
+        .urgent-date-container .urgent-number  {
+            transition: color 0.3s ease; 
+        }
+
+        .urgent-date-container:hover .urgent-number  {
+            color: #ffffff; 
+        }
+
         .separator-urgent{
             height: 102px; 
             width: 3px;   
             background-color: #E8E8E8; 
+        }
+
+        .urgent-date-container span  {
+            transition: color 0.3s ease; 
+        }
+
+        .urgent-date-container:hover span  {
+            color: #ffffff; 
         }
 
         .urgent-number{
@@ -357,6 +385,52 @@
             font-weight: 600;
         }
 
+        .board-task-container:hover{
+            width: 184px;
+            height: 184px;
+            background-color: #2a3647; 
+            box-shadow: 0px 4px 4px 0px #00000040;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .feedback-task-container:hover{
+            width: 184px;
+            height: 184px;
+            background-color: #2a3647; 
+            box-shadow: 0px 4px 4px 0px #00000040;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+        }
+
+        .progress-task-container:hover{
+            width: 184px;
+            height: 184px;
+            background-color: #2a3647; 
+            box-shadow: 0px 4px 4px 0px #00000040;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tasks-container span  {
+            transition: color 0.3s ease; 
+        }
+
+        .board-task-container:hover span  {
+            color: #ffffff; 
+        }
+
+        .feedback-task-container:hover span  {
+            color: #ffffff; 
+        }
+
+        .progress-task-container:hover span  {
+            color: #ffffff; 
+        }
+
         .main-greet{
             display: flex;
             justify-content: flex-start;
@@ -464,15 +538,40 @@
         </div>
 
         <script>
-        // Datum //
-        const heute = new Date();
+            // Datum //
+            const heute = new Date();
         
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
         
-        const formatiertesDatum = heute.toLocaleDateString('en-US', options);
+            const formatiertesDatum = heute.toLocaleDateString('en-US', options);
         
-        document.getElementById('datum').innerText = formatiertesDatum;
-        // Datum //
+            document.getElementById('datum').innerText = formatiertesDatum;
+            // Datum //
+
+            // Redirect to 'board.html' when containers are clicked
+            document.querySelector('.toDo-container').addEventListener('click', function() {
+                window.location.href = 'board.html';
+            });
+
+            document.querySelector('.done-container').addEventListener('click', function() {
+                window.location.href = 'board.html';
+            });
+
+            document.querySelector('.urgent-date-container').addEventListener('click', function() {
+                window.location.href = 'board.html';
+            });
+
+            document.querySelector('.board-task-container').addEventListener('click', function() {
+                window.location.href = 'board.html';
+            });
+
+            document.querySelector('.progress-task-container').addEventListener('click', function() {
+                window.location.href = 'board.html';
+            });
+
+            document.querySelector('.feedback-task-container').addEventListener('click', function() {
+                window.location.href = 'board.html';
+            });
         </script>
   </body>
 </html>

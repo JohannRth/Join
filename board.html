@@ -115,6 +115,7 @@
         opacity: 0px;
       }
 
+      /* Drag Area */
       .drag-area-container {
         width: 1208px;
         height: 688px;
@@ -132,6 +133,21 @@
         border-radius: 8px;
       }
 
+      .no-tasks {
+        width: 246px;
+        height: 48px;
+        border-radius: 10px;
+        border: 1px solid #a8a8a8;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #e7e7e7;
+        font-size: 16px;
+        font-weight: 400;
+      }
+
+      /* Titel Card */
       .titel-card {
         width: 252px;
         height: 263px;
@@ -250,21 +266,7 @@
         background-size: contain;
         background-repeat: no-repeat;
       }
-
-      .no-tasks {
-        width: 246px;
-        height: 48px;
-        border-radius: 10px;
-        border: 1px solid #a8a8a8;
-        background-color: #f4f4f4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #e7e7e7;
-        font-size: 16px;
-        font-weight: 400;
-      }
-      /* Overlay für den verschwommenen Hintergrund */
+      /* Overlay für den Hintergrund */
       .card-overlay {
         position: fixed;
         top: 0;
@@ -336,7 +338,6 @@
         padding: 4px 16px;
       }
 
-      /* Titel overlay */
       .expanded-card-overlay .task-title-overlay {
         width: 445px;
         height: 219px;
@@ -344,8 +345,7 @@
         font-size: 61px;
         color: #000000;
       }
-
-      /* Description overlay */
+ 
       .expanded-card-overlay .task-description-overlay {
         width: 445px;
         height: 24px;
@@ -354,7 +354,6 @@
         color: #000000;
       }
 
-      /* Date overlay */
       .due-date-overlay {
         width: 445px;
         height: 24px;
@@ -377,7 +376,6 @@
         color: #000000;
       }
 
-      /* Priority overlay */
       .priority-container-overlay {
         width: 445px;
         height: 32px;
@@ -410,7 +408,6 @@
         border-radius: 10px;
       }
 
-      /* Persons overlay */
       .task-assigned-container-overlay {
         width: 445px;
         height: 208px;
@@ -457,7 +454,6 @@
         color: #2a3647;
       }
 
-      /* Subtasks overlay*/
       .subtask-conatiner-overlay{
         width: 445px;
         height: 100px;
@@ -653,6 +649,7 @@
     </div>
 
     <script>
+      // titel carde  
       let todos = [
         {
           id: 0,
@@ -813,6 +810,7 @@
         }
       }
 
+      // ExpandedCard
       function generateExpandedCardHTML(element) {
         let contactsHTML = "";
         if (element["contacts"]) {
@@ -882,10 +880,11 @@
     </div>`;
       }
 
+      //card-overlay
       function openCardOverlay(taskId) {
         const overlay = document.getElementById("card-overlay");
-        const task = todos.find((t) => t.id === taskId); // Finde die entsprechende Aufgabe basierend auf der ID
-        overlay.innerHTML = generateExpandedCardHTML(task); // Erzeuge die HTML-Struktur für die erweiterte Karte
+        const task = todos.find((t) => t.id === taskId); 
+        overlay.innerHTML = generateExpandedCardHTML(task); 
         overlay.classList.remove("hidden");
       }
 
