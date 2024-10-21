@@ -5,6 +5,21 @@
     justify-content: flex-end;
 }
 
+*::-webkit-scrollbar {
+    width: 16px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #a8a8a8;
+    border-radius: 10px;
+    border: 3px solid #ffffff;
+    border-radius: 15px;
+}
+
 .contact-headline {
     display: flex;
     align-items: center;
@@ -30,6 +45,12 @@
 .contacts-list {
     width: 400px;
     padding: 32px 24px;
+    overflow: auto;
+    scroll-behavior: smooth;
+    width: 456px;
+    height: calc(100svh - 101px);
+    background-color: white;
+    box-shadow: 4px 0px 6px 0px #00000014;
 }
 
 button#addContactBtn {
@@ -60,26 +81,27 @@ button#addContactBtn:hover {
 .contact-item {
     display: flex;
     align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    cursor: pointer;
+    justify-content: flex-start;
+    gap: 20px;
+    height: 78px;
+    padding: 15px 24px;
+    border-radius: 10px;
 }
 
 .contact-item:hover {
     background-color: #f1f1f1;
+    cursor: pointer;
 }
 
 .contact-icon {
-    height: 42px;
-    width: 42px;
-    border-radius: 42px;
-    font-size: 12px;
-    color: white;
-    border: 2px solid #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 10px;
+    height: 42px;
+    width: 42px;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
 }
 
 .contact-info {
@@ -87,7 +109,6 @@ button#addContactBtn:hover {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    padding-left: 16px;
 }
 
 .contact-info-name {
@@ -183,4 +204,14 @@ button#addContactBtn:hover {
 
 .close:hover {
     color: #000;
+}
+
+.contact-letter-header {
+    width: 100%;
+    padding: 17px 36px;
+    font-weight: 400;
+}
+
+.contact-list-separator {
+    width: 100%;
 }
