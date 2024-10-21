@@ -146,6 +146,16 @@ body {
     cursor: pointer;
 }
 
+.categoryChoices:hover {
+    background-color: #f0f0f0; /* Ein helles Grau */
+    color: #333; /* Dunklere Textfarbe für besseren Kontrast */
+}
+
+select option:hover {
+    background-color: #f0f0f0 !important; /* Überschreibt den Standard-Hover-Effekt */
+}
+
+
 input[type="text"]:focus,
     textarea:focus,
     select:focus,
@@ -276,6 +286,7 @@ input[type="text"]:focus,
 .prioButtonLow.active img {
     filter: brightness(0) invert(1);
 }
+
 
 .subTaskInputContainer {
     position: relative;
