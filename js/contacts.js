@@ -63,10 +63,8 @@ function loadContacts() {
     for (const letter in groupedContacts) {
         if (groupedContacts.hasOwnProperty(letter)) {
             // Überschrift für den Buchstaben hinzufügen
-            const letterHeader = document.createElement('h2');
-            letterHeader.className = 'contact-letter-header';
-            letterHeader.textContent = letter;
-            contactContainer.appendChild(letterHeader);
+            const letterHeader = `<h2 class="contact-letter-header">${letter}</h2>`;
+            contactContainer.insertAdjacentHTML('beforeend', letterHeader);
 
             // Trennungsbild als HTML-String hinzufügen
             const separatorImage = `<img class="contact-list-separator" src="./assets/img/contacts_seperator.svg" alt="Separator-Line">`;
@@ -80,7 +78,6 @@ function loadContacts() {
         }
     }
 }
-''
 
 // Funktion zum Gruppieren der Kontakte nach dem Anfangsbuchstaben
 function groupContactsByAlphabet() {
@@ -165,7 +162,64 @@ function getColor(name) {
     return colors[index % colors.length];
 }
 
+// Funktion zum Öffnen des Modals für neuen Kontakt
+function openAddContactModal() {
+    const modal = document.getElementById('addContactModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+// Funktion zum Schließen des Modals für neuen Kontakt
+function closeAddContactModal() {
+    const modal = document.getElementById('addContactModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Funktion zum Hinzufügen eines neuen Kontakts
+function addNewContact(event) {
+    event.preventDefault();
+    const name = document.getElementById('newContactName').value;
+    const email = document.getElementById('newContactEmail').value;
+    const phone = document.getElementById('newContactPhone').value;
+
+    if (name && email && phone) {
+        contacts.push({ name, email, phone });
+        loadContacts();
+        closeAddContactModal();
+    }
+}
+
 // EventListener für das Laden der Seite
 document.addEventListener('DOMContentLoaded', () => {
+    // Kontakte laden
     loadContacts();
+
+    // EventListener für den "Add Contact" Button
+    const addContactBtn = document.getElementById('addContactBtn');
+    if (addContactBtn) {
+        addContactBtn.addEventListener('click', openAddContactModal);
+    }
+
+    // EventListener für das Formular zum Hinzufügen eines neuen Kontakts
+    const addContactForm = document.getElementById('addContactForm');
+    if (addContactForm) {
+        addContactForm.addEventListener('submit', addNewContact);
+    }
+
+    // EventListener für das Schließen des Modals
+    const closeModalButton = document.querySelector('.close');
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', closeAddContactModal);
+    }
+
+    // Modal schließen, wenn außerhalb des Modal-Fensters geklickt wird
+    window.onclick = function (event) {
+        const modal = document.getElementById('addContactModal');
+        if (event.target === modal) {
+            closeAddContactModal();
+        }
+    };
 });
