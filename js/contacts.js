@@ -138,6 +138,20 @@ function createContactInfo(contact) {
 
 // Funktion, um die Details eines Kontakts anzuzeigen
 function displayContactDetails(contact) {
+    // Entferne die aktive Markierung von allen Kontakten
+    const allContactItems = document.querySelectorAll('.contact-item');
+    allContactItems.forEach(item => {
+        item.classList.remove('active-contact');
+    });
+
+    // Finde das aktuelle Kontakt-Element und füge die aktive Markierung hinzu
+    const currentContactElement = Array.from(allContactItems).find(item =>
+        item.querySelector('.contact-info-name').textContent === contact.name
+    );
+    if (currentContactElement) {
+        currentContactElement.classList.add('active-contact');
+    }
+
     const contactDetails = document.getElementById('contactDetails');
     if (contactDetails) {
         contactDetails.innerHTML = `

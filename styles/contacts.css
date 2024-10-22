@@ -173,13 +173,15 @@ button#addContactBtn:hover {
     height: 120px;
     width: 120px;
     border-radius: 50%;
-    font-size: 32px;
+    font-size: 48px;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
     margin-right: 20px;
+    border: 3px solid #FFFFFF;
+    box-shadow: 0px 0px 4px 0px #0000001A;
 }
 
 .contact-details-info {
@@ -222,7 +224,8 @@ button#addContactBtn:hover {
 }
 
 .contact-details-body h3 {
-    margin-bottom: 10px;
+    padding-bottom: 50px;
+    padding-top: 50px;
     font-size: 20px;
     font-weight: 500;
 }
@@ -232,6 +235,11 @@ button#addContactBtn:hover {
     font-size: 16px;
     color: #333;
     margin-bottom: 10px;
+}
+
+.active-contact {
+    background-color: #2A3647;
+    color: white; /* Der Text wird weiß, damit er gut lesbar ist */
 }
 
 .modal {
