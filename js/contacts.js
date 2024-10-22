@@ -279,3 +279,71 @@ function deleteContact(name) {
         document.getElementById('contactDetails').innerHTML = ''; // Leert die Kontaktdetails, wenn der Kontakt gelöscht wurde
     }
 }
+
+// Funktion zum Öffnen des Modals für neuen Kontakt
+function openAddContactModal() {
+    const modal = document.getElementById('addContactModal');
+    if (modal) {
+        // Setze den HTML-Inhalt des Modals
+        modal.innerHTML = `
+            <div class="add-contact-modal-content">
+                <div class="add-contact-left">
+                    <img src="./assets/img/join_logo_white.svg" alt="Join Logo">
+                    <h2>Add contact</h2>
+                    <p>Tasks are better with a team!</p>
+                </div>
+                <div class="add-contact-right">
+                    <span class="close" onclick="closeAddContactModal()">&times;</span>
+                    <div>
+                    <img src="./assets/img/addContact_person.svg">
+                    </div>
+                    <form id="addContactForm">
+                        <div class="form-group">
+                            <input type="text" required id="newContactName" placeholder="Name" autocomplete="name">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" required id="newContactEmail" placeholder="Email" autocomplete="email">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" required id="newContactPhone" placeholder="Phone" autocomplete="tel">
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="cancel-button" onclick="closeAddContactModal()">Cancel</button>
+                            <button type="submit" class="create-button">Create contact</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `;
+        // Zeige das Modal an
+        modal.style.display = 'flex';
+
+        // Event-Listener zum Hinzufügen eines neuen Kontakts
+        const addContactForm = document.getElementById('addContactForm');
+        if (addContactForm) {
+            addContactForm.addEventListener('submit', addNewContact);
+        }
+    }
+}
+
+// Funktion zum Schließen des Modals für neuen Kontakt
+function closeAddContactModal() {
+    const modal = document.getElementById('addContactModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Funktion zum Hinzufügen eines neuen Kontakts
+function addNewContact(event) {
+    event.preventDefault();
+    const name = document.getElementById('newContactName').value;
+    const email = document.getElementById('newContactEmail').value;
+    const phone = document.getElementById('newContactPhone').value;
+
+    if (name && email && phone) {
+        contacts.push({ name, email, phone });
+        loadContacts();
+        closeAddContactModal();
+    }
+}
