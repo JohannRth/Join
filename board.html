@@ -60,15 +60,34 @@
         align-items: center;
       }
 
-      .input-find-task {
+      .input-field-complett{
         width: 312px;
         height: 48px;
-        padding: 8px 16px 8px 16px;
+        display: flex;
+        justify-content: center;
         border-radius: 10px;
         border: 1px solid #a8a8a8;
         font-size: 20px;
         font-weight: 400;
         color: #d1d1d1;
+      }
+
+      .img-input-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .input-find-task {
+        width: 232px;
+        height: 48px;
+        padding: px 16px 8px 16px;
+        font-size: 20px;
+        font-weight: 400;
+        background-color: transparent;
+        border: none;
+        outline: none;
       }
 
       .button-add-task-board {
@@ -523,7 +542,13 @@
             <span class="headline-span-board">Board</span>
           </div>
           <div class="input-container">
-            <input class="input-find-task" placeholder="Find Task" type="text"/>
+            <div class="input-field-complett">               
+                <input class="input-find-task" placeholder="Find Task" type="text"/>
+                <div class="img-input-container">
+                    <img src="./assets/img/sep-delet-edit.svg" alt="">
+                    <img src="./assets/img/search.svg" alt="">
+                </div>
+            </div>
             <button class="button-add-task-board">
               Add task <img src="./assets/img/add.svg" alt="" />
             </button>
