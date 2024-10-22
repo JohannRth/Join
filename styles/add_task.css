@@ -97,8 +97,6 @@ body {
     font-size: 20px;
     font-weight: 400;
     text-align: left;
-    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.06);
-    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.1));
     cursor: pointer;
 }
 
@@ -113,8 +111,6 @@ body {
     font-size: 20px;
     font-weight: 400;
     text-align: left;
-    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.06);
-    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.1));
     cursor: pointer;
     color: #D1D1D1;
 }
@@ -135,8 +131,6 @@ body {
     font-size: 20px;
     font-weight: 400;
     text-align: left;
-    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.06);
-    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.1));
     cursor: pointer;
 }
 
@@ -194,8 +188,10 @@ input[type="text"]:focus,
     background-position: calc(100% - 10px) center;    
 }
 
+
 .selectedOption:hover {
     box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.4);
+    background-image: h;
 }
 
 .customDropdown.active .options {
@@ -207,10 +203,6 @@ input[type="text"]:focus,
     position: relative;
     width: 100%;
     cursor: pointer;
-}
-
-.dropDownImage {
-    height: 6px;
 }
 
 .dropdownOptions {
@@ -227,12 +219,14 @@ input[type="text"]:focus,
 }
 
 .option {
-    padding: 13px 21px;
+    padding: 13px 12px;
     color: black;
+    font-size: 20px;
 }
 
 .option:hover {
-    background-color: #F6F7F8;
+    background-color: #9c9c9c27;
+    border-radius: 10px;
 }
 
 .customDropdown.active .selectedOption {

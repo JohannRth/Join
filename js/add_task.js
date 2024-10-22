@@ -143,37 +143,64 @@ function setToday() {
     updateDateColor.call(this);
 }
 
-function initializeCustomDropdown() {
+function dropdownCategory() {
     const dropdown = document.querySelector('.customDropdown');
     const selectedOption = dropdown.querySelector('.selectedOption');
-    const options = dropdown.querySelector('.dropdownOptions');
+    const options = dropdown.querySelectorAll('.option');
+    const errorMessage = createErrorMessage(dropdown);
+    addDropdownListeners(dropdown, selectedOption, options, errorMessage);
+    addDocumentListener(dropdown);
+    addFormSubmitListener(selectedOption, dropdown, errorMessage);
+}
 
-    selectedOption.addEventListener('click', function(e) {
-        e.stopPropagation();
-        dropdown.classList.toggle('active');
-        options.style.display = dropdown.classList.contains('active') ? 'block' : 'none';
-    });
+function createErrorMessage(dropdown) {
+    const errorMessage = document.createElement('div');
+    errorMessage.className = 'errorMessage';
+    errorMessage.textContent = 'This field is required';
+    dropdown.appendChild(errorMessage);
+    return errorMessage;
+}
 
-    document.addEventListener('click', function(e) {
-        if (!dropdown.contains(e.target)) {
-            dropdown.classList.remove('active');
-            options.style.display = 'none';
-        }
-    });
+function addDropdownListeners(dropdown, selectedOption, options, errorMessage) {
+    selectedOption.addEventListener('click', () => dropdown.classList.toggle('active'));
 
-    options.querySelectorAll('.option').forEach(option => {
+    options.forEach(option => {
         option.addEventListener('click', function() {
-            selectedOption.textContent = this.textContent;
-            dropdown.classList.remove('active');
-            options.style.display = 'none';
+            updateSelectedOption(selectedOption, this.textContent);
+            resetDropdownState(dropdown, errorMessage);
         });
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    initializeCustomDropdown();
-    
-});
+function updateSelectedOption(selectedOption, text) {
+    selectedOption.textContent = text;
+    selectedOption.style.color = 'black';
+}
+
+function resetDropdownState(dropdown, errorMessage) {
+    dropdown.classList.remove('active', 'error');
+    errorMessage.classList.remove('visible');
+}
+
+function addDocumentListener(dropdown) {
+    document.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('active');
+        }
+    });
+}
+
+function addFormSubmitListener(selectedOption, dropdown, errorMessage) {
+    document.querySelector('form').addEventListener('submit', function(e) {
+        if (selectedOption.textContent === 'Select task category') {
+            e.preventDefault();
+            dropdown.classList.add('error');
+            errorMessage.classList.add('visible');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', dropdownCategory);
 
 
 // document.addEventListener('DOMContentLoaded', function() {
