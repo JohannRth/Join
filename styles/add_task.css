@@ -174,17 +174,6 @@ input[type="text"]:focus,
     box-shadow: none;
 }
 
-.customDropdown.active .options {
-    display: block !important;
-    z-index: 1000;
-}
-
-.customDropdown {
-    position: relative;
-    width: 100%;
-    cursor: pointer;
-}
-
 .selectedOption {
     background-color: white;
     display: flex;
@@ -207,6 +196,17 @@ input[type="text"]:focus,
 
 .selectedOption:hover {
     box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.4);
+}
+
+.customDropdown.active .options {
+    display: block !important;
+    z-index: 1000;
+}
+
+.customDropdown {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
 }
 
 .dropDownImage {

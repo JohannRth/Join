@@ -29,7 +29,7 @@
                     <div class="inputContainerTitle">
                         <div class="inputContainer">
                             <span class="addTaskInputTitle required">Title</span>
-                            <input class="inputAddTask" id="title" type="text" placeholder="Enter a title">
+                            <input onclick="fieldRequiredTitle()" class="inputAddTask" id="title" type="text" placeholder="Enter a title">
                             <div class="error-message"></div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                     <div class="inputContainerDueDate">
                         <div class="inputContainer">
                             <span class="addTaskInputTitle required">Due date</span>
-                            <input class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
+                            <input onclick="fieldRequiredDate()" class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
                             <div class="error-message"></div>
                         </div>
                     </div>
@@ -65,8 +65,8 @@
                     </div>
                     <div class="inputContainer">
                         <span class="addTaskInputTitle required">Category</span>
-                        <div class="customDropdown">
-                            <div class="selectedOption">Select task category</div>
+                        <div class="customDropdown" onclick="initializeCustomDropdown()">
+                            <div  class="selectedOption">Select task category</div>
                             <div class="dropdownOptions">
                                 <div class="option" data-value="technical">Technical Task</div>
                                 <div class="option" data-value="userStory">User Story</div>
