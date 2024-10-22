@@ -250,7 +250,7 @@ button#addContactBtn:hover {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .add-contact-modal-content {
@@ -265,36 +265,42 @@ button#addContactBtn:hover {
 .add-contact-left {
     background-color: #2A3647;
     color: white;
-    padding: 40px 20px;
+    padding: 0px 0px 0px 48px;
     width: 40%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     text-align: center;
 }
 
-.add-contact-left img {
+.modal-logo {
     margin-bottom: 20px;
-    width: 50px;
+    width: 52px;
+}
+
+.modal-underline {
+    width: 90px;
+    margin-top: 16px;
 }
 
 .add-contact-left h2 {
-    font-size: 32px;
+    font-size: 61px;
     margin-bottom: 10px;
     font-weight: 700;
 }
 
 .add-contact-left p {
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 27px;
+    font-weight: 300;
 }
 
 .add-contact-right {
     background-color: #fff;
     width: 60%;
-    padding: 30px;
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .add-contact-right .close {
@@ -305,25 +311,37 @@ button#addContactBtn:hover {
     cursor: pointer;
 }
 
-.form-group {
-    position: relative;
-    margin-bottom: 20px;
+.profileImg {
+    height: 120px;
+    width: 120px;
+    align-self: center;
+    margin-left: 30px;
+    margin-bottom: 50px;
+    box-shadow: 0px 0px 4px 0px #0000001A;
+    border: 3px solid #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 47px;
 }
 
-.input-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    opacity: 0.6;
+#addContactForm {
+    width: 422px;
+    margin-left: 30px;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 30px;
 }
 
 .form-actions {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    justify-content: flex-start;
+    gap: 32px;
+    padding-top: 20px;
 }
 
 .cancel-button, .create-button {
@@ -361,7 +379,6 @@ input#newContactPhone {
     box-sizing: border-box;
 }
 
-
 input#newContactName:focus,
 input#newContactEmail:focus,
 input#newContactPhone:focus {
@@ -383,6 +400,6 @@ input#newContactEmail {
 
 input#newContactPhone {
     padding-right: 30px;
-    background: url(/assets/img/mail.svg) no-repeat right 21px center;
+    background: url(/assets/img/phone.svg) no-repeat right 21px center;
     background-color: white;
 }

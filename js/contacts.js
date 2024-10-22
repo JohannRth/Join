@@ -288,15 +288,16 @@ function openAddContactModal() {
         modal.innerHTML = `
             <div class="add-contact-modal-content">
                 <div class="add-contact-left">
-                    <img src="./assets/img/join_logo_white.svg" alt="Join Logo">
+                    <img class="modal-logo" src="./assets/img/join_logo_white.svg" alt="Join Logo">
                     <h2>Add contact</h2>
                     <p>Tasks are better with a team!</p>
+                    <img class="modal-underline" src="./assets/img/underline_login.svg" alt="Join Logo">
                 </div>
                 <div class="add-contact-right">
-                    <span class="close" onclick="closeAddContactModal()">&times;</span>
-                    <div>
-                    <img src="./assets/img/addContact_person.svg">
-                    </div>
+                    <span class="close" onclick="closeAddContactModal()">X<img></span>
+                    
+                        <img class="profileImg" src="./assets/img/addContact_person.svg">
+                    
                     <form id="addContactForm">
                         <div class="form-group">
                             <input type="text" required id="newContactName" placeholder="Name" autocomplete="name">
