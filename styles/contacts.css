@@ -192,10 +192,7 @@ button#addContactBtn:hover {
 
 .contact-actions button:hover {
     color: #007CEE;
-}
-
-.contact-actions:hover img {
-    color: #007CEE !important;
+    filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg) brightness(100%) contrast(100%);
 }
 
 .contact-details-body {
@@ -261,6 +258,7 @@ button#addContactBtn:hover {
         transform: translateX(100%);
         opacity: 0;
     }
+
     100% {
         transform: translateX(0);
         opacity: 1;
@@ -273,6 +271,7 @@ button#addContactBtn:hover {
         transform: translateX(0);
         opacity: 1;
     }
+
     100% {
         transform: translateX(100%);
         opacity: 0;
