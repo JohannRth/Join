@@ -193,19 +193,29 @@ function getColor(name) {
     return colors[index % colors.length];
 }
 
-// Funktion zum Öffnen des Modals für neuen Kontakt
 function openAddContactModal() {
     const modal = document.getElementById('addContactModal');
+    const modalContent = document.querySelector('.add-contact-modal-content');
+    
     if (modal) {
         modal.style.display = 'flex';
+        modalContent.classList.remove('slide-out');
+        modalContent.classList.add('slide-in');
     }
 }
 
-// Funktion zum Schließen des Modals für neuen Kontakt
 function closeAddContactModal() {
     const modal = document.getElementById('addContactModal');
-    if (modal) {
-        modal.style.display = 'none';
+    const modalContent = document.querySelector('.add-contact-modal-content');
+
+    if (modalContent) {
+        modalContent.classList.remove('slide-in');
+        modalContent.classList.add('slide-out');
+        
+        // Warte, bis die Slide-Out-Animation abgeschlossen ist
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 120); // Dauer der Slide-Out-Animation (0.12s)
     }
 }
 
@@ -300,13 +310,16 @@ function openAddContactModal() {
                     
                     <form id="addContactForm">
                         <div class="form-group">
-                            <input type="text" required id="newContactName" placeholder="Name" autocomplete="name">
+                            <input type="text" id="newContactName" placeholder="Name" autocomplete="name">
+                            <span class="error-message" id="nameError"></span>
                         </div>
                         <div class="form-group">
-                            <input type="email" required id="newContactEmail" placeholder="Email" autocomplete="email">
+                            <input type="email" id="newContactEmail" placeholder="Email" autocomplete="email">
+                            <span class="error-message" id="emailError"></span>
                         </div>
                         <div class="form-group">
-                            <input type="text" required id="newContactPhone" placeholder="Phone" autocomplete="tel">
+                            <input type="text" id="newContactPhone" placeholder="Phone" autocomplete="tel">
+                            <span class="error-message" id="phoneError"></span>
                         </div>
                         <div class="form-actions">
                             <button type="button" class="cancel-button" onclick="closeAddContactModal()">Cancel <img src="./assets/img/clear-x-image.svg"></button>
@@ -327,24 +340,92 @@ function openAddContactModal() {
     }
 }
 
-// Funktion zum Schließen des Modals für neuen Kontakt
-function closeAddContactModal() {
-    const modal = document.getElementById('addContactModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
-
-// Funktion zum Hinzufügen eines neuen Kontakts
 function addNewContact(event) {
     event.preventDefault();
-    const name = document.getElementById('newContactName').value;
-    const email = document.getElementById('newContactEmail').value;
-    const phone = document.getElementById('newContactPhone').value;
 
-    if (name && email && phone) {
-        contacts.push({ name, email, phone });
-        loadContacts();
-        closeAddContactModal();
+    let isFormValid = true;
+
+    // Alle Felder validieren
+    isFormValid = nameValidation(isFormValid);
+    isFormValid = emailValidation(isFormValid);
+    isFormValid = phoneValidation(isFormValid);
+
+    // Wenn das Formular nicht gültig ist, beenden
+    if (!isFormValid) {
+        return;
     }
+
+    // Wenn das Formular gültig ist, neuen Kontakt hinzufügen
+    const name = document.getElementById('newContactName').value.trim();
+    const email = document.getElementById('newContactEmail').value.trim();
+    const phone = document.getElementById('newContactPhone').value.trim();
+
+    // Neuen Kontakt dem Array hinzufügen
+    contacts.push({ name, email, phone });
+
+    // Kontakte neu laden
+    loadContacts();
+
+    // Modal schließen
+    closeAddContactModal();
+}
+
+
+
+function nameValidation(isFormValid) {
+    const nameInput = document.getElementById("newContactName");
+    const nameError = document.getElementById("nameError");
+
+    if (!nameInput.value.trim()) {
+        nameError.innerHTML = "Name cannot be empty.";
+        nameError.style.display = 'flex';
+        isFormValid = false;
+    } else {
+        nameError.innerHTML = "";
+        nameError.style.display = 'none';
+    }
+
+    return isFormValid;
+}
+
+function emailValidation(isFormValid) {
+    const emailInput = document.getElementById("newContactEmail");
+    const emailError = document.getElementById("emailError");
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailInput.value.trim()) {
+        emailError.innerHTML = "Email cannot be empty.";
+        emailError.style.display = 'flex';
+        isFormValid = false;
+    } else if (!emailPattern.test(emailInput.value.trim())) {
+        emailError.innerHTML = "Please enter a valid email address.";
+        emailError.style.display = 'flex';
+        isFormValid = false;
+    } else {
+        emailError.innerHTML = "";
+        emailError.style.display = 'none';
+    }
+
+    return isFormValid;
+}
+
+function phoneValidation(isFormValid) {
+    const phoneInput = document.getElementById("newContactPhone");
+    const phoneError = document.getElementById("phoneError");
+    const phonePattern = /^\+?[0-9]{1,3}[\s]?[0-9\s]{6,15}$/;
+
+    if (!phoneInput.value.trim()) {
+        phoneError.innerHTML = "Phone number cannot be empty.";
+        phoneError.style.display = 'flex';
+        isFormValid = false;
+    } else if (!phonePattern.test(phoneInput.value.trim())) {
+        phoneError.innerHTML = "Please enter a valid phone number.";
+        phoneError.style.display = 'flex';
+        isFormValid = false;
+    } else {
+        phoneError.innerHTML = "";
+        phoneError.style.display = 'none';
+    }
+
+    return isFormValid;
 }
