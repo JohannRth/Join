@@ -13,6 +13,7 @@
     <script src="./assets/templates/load_header_sidebar.js"></script>
     <link rel="stylesheet" href="./assets/fonts/font.css" />
     <link rel="stylesheet" href="./styles/side_header_template.css" />
+    <link rel="stylesheet" href="./styles/board.css">
     <!-- Link-Fonts -->
     <link rel="stylesheet" href="./assets/fonts/font.css" />
     <!-- Favicon -->
@@ -21,514 +22,7 @@
     <title>Board</title>
 
     <style>
-      .main-board {
-        width: 1208px;
-        margin-top: 8px;
-        display: flex;
-        flex-direction: column;
-        font-family: "Inter", sans-serif;
-      }
-
-      .board-headline-container {
-        width: 1208px;
-        height: 232px;
-        display: flex;
-        flex-direction: column;
-        background-color: #f6f7f8;
-      }
-
-      .board-add-task {
-        width: 1056px;
-        height: 73px;
-        margin-left: 64px;
-        margin-top: 80px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .headline-span-board {
-        font-size: 61px;
-        font-weight: 700;
-      }
-
-      .input-container {
-        height: 48px;
-        width: 504px;
-        gap: 32px;
-        display: flex;
-        align-items: center;
-      }
-
-      .input-field-complett{
-        width: 312px;
-        height: 48px;
-        display: flex;
-        justify-content: center;
-        border-radius: 10px;
-        border: 1px solid #a8a8a8;
-        font-size: 20px;
-        font-weight: 400;
-        color: #d1d1d1;
-      }
-
-      .img-input-container{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 16px;
-      }
-
-      .input-find-task {
-        width: 232px;
-        height: 48px;
-        padding: px 16px 8px 16px;
-        font-size: 20px;
-        font-weight: 400;
-        background-color: transparent;
-        border: none;
-        outline: none;
-      }
-
-      .button-add-task-board {
-        width: 160px;
-        height: 48px;
-        padding: 8px 16px 8px 16px;
-        gap: 4px;
-        border-radius: 10px;
-        border: 1px solid #2a3647;
-        background-color: #2a3647;
-        color: #ffffff;
-        font-size: 21px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-      }
-
-      .column-titel-container {
-        width: 1208px;
-        height: 24px;
-        padding-left: 64px;
-        padding-right: 64px;
-        margin-top: 48px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .column-titel {
-        width: 244px;
-        height: 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 20px;
-        font-weight: 700;
-        color: #42526e;
-      }
-
-      .cross-titel-button {
-        width: 24px;
-        height: 24px;
-        transition: opacity 0.3s ease;
-      }
-
-      .cross-titel-button:hover{
-        cursor: pointer;
-        content: url('./assets/img/cross-blue.svg'); 
-      }
-
-      /* Drag Area */
-      .drag-area-container {
-        width: 1208px;
-        height: 688px;
-        margin-top: 8px;
-        padding: 0px 64px 0px 64px;
-        gap: 26px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .drag-area {
-        width: 246px;
-        min-height: 688px;
-        transition: 0.3s;
-        border-radius: 8px;
-      }
-
-      .no-tasks {
-        width: 246px;
-        height: 48px;
-        border-radius: 10px;
-        border: 1px solid #a8a8a8;
-        background-color: #f4f4f4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #e7e7e7;
-        font-size: 16px;
-        font-weight: 400;
-      }
-
-      /* Titel Card */
-      .titel-card {
-        width: 252px;
-        height: 263px;
-        border-radius: 24px;
-        padding: 16px;
-        gap: 10px;
-        background-color: white;
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: relative;
-        margin-bottom: 20px;
-        cursor: grab;
-      }
-
-      .titel-card.dragging {
-        cursor: grabbing;
-      }
-
-      .user-story {
-        width: 113px;
-        height: 27px;
-        border-radius: 8px;
-        padding: 4px 16px;
-        background-color: #0038ff;
-        color: white;
-        font-weight: 400;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .title-description {
-        width: 220px;
-        height: 84px;
-        border-radius: 10px;
-        gap: 4px;
-      }
-
-      .task-title {
-        width: 220px;
-        height: 38px;
-        font-weight: 700;
-        font-size: 16px;
-        color: #2a3647;
-        margin: 0;
-      }
-
-      .task-description {
-        width: 220px;
-        height: 38px;
-        font-weight: 400;
-        font-size: 16px;
-        color: #a8a8a8;
-        margin: 4px 0 0 0;
-      }
-
-      .task-progress {
-        width: 220px;
-        height: 16px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-      }
-
-      .progress-bar {
-        width: 128px;
-        height: 8px;
-        background-color: #e0e0e0;
-        border-radius: 8px;
-        position: relative;
-      }
-
-      .progress-fill {
-        height: 100%;
-        background-color: #4589ff;
-        border-radius: 8px;
-      }
-
-      .progress-text {
-        font-size: 12px;
-        font-weight: 400;
-        color: #000000;
-        line-height: 16px;
-        margin-left: 11px;
-      }
-
-      .task-assigned {
-        width: auto;
-        height: 32px;
-        display: flex;
-      }
-
-      .person-circle {
-        width: 32px;
-        height: 32px;
-        background-color: #ddd;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: bold;
-        font-size: 14px;
-        color: white;
-        margin-left: -5px;
-      }
-
-      .priority-icon {
-        width: 32px;
-        height: 32px;
-        position: absolute;
-        bottom: 16px;
-        right: 16px;
-      }
-
-      /* Overlay für den Hintergrund */
-      .card-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(5px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        transition: opacity 0.5s ease;
-      }
-
-      .card-overlay.hidden {
-        display: none;
-        opacity: 0;
-      }
-
-      /* Erweiterte Titel-Karte */
-      .expanded-card-overlay {
-        width: 525px;
-        height: 931px;
-        border-radius: 30px;
-        padding: 48px 40px;
-        background-color: white;
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-        position: relative;
-        box-shadow: 0px 0px 4px 0px #00000029;
-        animation: slideInOverlay 0.5s forwards;
-        z-index: 1001;
-      }
-
-      @keyframes slideInOverlay {
-        from {
-          transform: translateX(100%);
-        }
-        to {
-          transform: translateX(0);
-        }
-      }
-
-      .close-story-container-overlay {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .close-btn-overlay {
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-      }
-
-      .user-story-overlay {
-        width: 164px;
-        height: 36px;
-        border-radius: 8px;
-        background-color: #0038ff;
-        color: white;
-        font-weight: 500;
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 4px 16px;
-      }
-
-      .expanded-card-overlay .task-title-overlay {
-        width: 445px;
-        height: 219px;
-        font-weight: 700;
-        font-size: 61px;
-        color: #000000;
-      }
- 
-      .expanded-card-overlay .task-description-overlay {
-        width: 445px;
-        height: 24px;
-        font-weight: 400;
-        font-size: 20px;
-        color: #000000;
-      }
-
-      .due-date-overlay {
-        width: 445px;
-        height: 24px;
-        gap: 25px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-      }
-
-      .date-line-overlay {
-        font-size: 20px;
-        font-weight: 400;
-        text-align: left;
-        color: #2a3647;
-      }
-
-      .date-date-overlay {
-        font-weight: 400;
-        font-size: 20px;
-        color: #000000;
-      }
-
-      .priority-container-overlay {
-        width: 445px;
-        height: 32px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 25px;
-      }
-
-      .priority-line-overlay {
-        font-size: 20px;
-        font-weight: 400;
-        text-align: left;
-        color: #2a3647;
-      }
-
-      .priority-focus-overlay {
-        font-size: 20px;
-        font-weight: 400;
-        text-align: left;
-      }
-
-      .priority-focus-img-container {
-        display: flex;
-        align-items: center;
-        width: 139px;
-        height: 32px;
-        padding: 4px 18px 4px 18px;
-        gap: 10px;
-        border-radius: 10px;
-      }
-
-      .task-assigned-container-overlay {
-        width: 445px;
-        height: 208px;
-        gap: 8px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .task-assigned-line-overlay {
-        width: 445px;
-        height: 24px;
-        font-size: 20px;
-        font-weight: 400;
-        text-align: left;
-        color: #2a3647;
-      }
-
-      .person-container-overlay {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 16px;
-        width: 445px;
-        height: 56px;
-        padding: 7px 16px 7px 16px;
-      }
-
-      .person-circle-overlay {
-        width: 42px;
-        height: 42px;
-        border-radius: 45px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: 400;
-        font-size: 14px;
-        background-color: rgb(28, 10, 195);
-        color: white;
-      }
-
-      .person-name-overlay {
-        font-size: 16px;
-        font-weight: 500;
-        color: #2a3647;
-      }
-
-      .subtask-conatiner-overlay{
-        width: 445px;
-        height: 100px;
-        gap: 8px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .subtask-line-overlay{
-        width: 445px;
-        height: 24px;
-        text-align: left;
-        font-weight: 400;
-        font-size: 20px;
-        color: #2a3647;
-      }
-
-      .subtasks-box-overlay{
-        width: 445px;
-        height: 68px;
-        gap: 4px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .subtasks-titelbox-overlay{
-        width: 344px;
-        height: 32px;
-        padding: 6px 16px 6px 16px;
-        gap: 16px;
-        display: flex;
-        justify-content: center;
-      }
-
-      /* Aktion overlay*/
-      .actions-overlay {
-        position: absolute;
-        bottom: 48px;
-        right: 40px;
-        display: flex;
-        gap: 8px;
-      }
-
-      .action-btn-overlay{
-        width: 81px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        gap: 8px;
-        font-weight: 400;
-        font-size: 16px;
-        color: #2a3647;
-      }
+      
 
     </style>
   </head>
@@ -543,7 +37,7 @@
           </div>
           <div class="input-container">
             <div class="input-field-complett">               
-                <input class="input-find-task" placeholder="Find Task" type="text"/>
+                <input class="input-find-task" placeholder="Find Task" onclick="handleInputClick()" type="text"/>
                 <div class="img-input-container">
                     <img src="./assets/img/sep-delet-edit.svg" alt="">
                     <img src="./assets/img/search.svg" alt="">
@@ -557,15 +51,15 @@
         <div class="column-titel-container">
           <div class="column-titel">
             <span>To do</span>
-              <img class="cross-titel-button" src="./assets/img/plus button.svg" alt="button-cross"/>
+              <img class="cross-titel-button" src="./assets/img/plus_button.svg" alt="button-cross"/>
           </div>
           <div class="column-titel">
             <span>In progress</span>
-              <img class="cross-titel-button" src="./assets/img/plus button.svg" alt="button-cross"/>
+              <img class="cross-titel-button" src="./assets/img/plus_button.svg" alt="button-cross"/>
           </div>
           <div class="column-titel">
             <span>Await feedback</span>
-              <img class="cross-titel-button" src="./assets/img/plus button.svg" alt="button-cross"/> 
+              <img class="cross-titel-button" src="./assets/img/plus_button.svg" alt="button-cross"/> 
           </div>
           <div class="column-titel">
             <span>Done</span>
@@ -719,7 +213,7 @@
         }
 
         return `
-    <div id="${element["id"]}" class="titel-card" draggable="true" ondragstart="dragTask(event)" ondblclick="openCardOverlay(${element["id"]})">
+    <div id="${element["id"]}" class="titel-card" draggable="true" ondragstart="dragTask(event)" onclick="openCardOverlay(${element["id"]})">
         <div class="user-story">${element["type"]}</div>
         <div class="task-details">
             <h3 class="task-title">${element["titel"]}</h3>
@@ -893,12 +387,52 @@
         const task = todos.find((t) => t.id === taskId); 
         overlay.innerHTML = generateExpandedCardHTML(task); 
         overlay.classList.remove("hidden");
+
+        document.body.classList.add("no-scroll");
+
+        overlay.addEventListener('click', function(event) {
+        
+        if (event.target === overlay) {
+            closeCardOverlay();
+        }
+
+        });
       }
 
       function closeCardOverlay() {
         const overlay = document.getElementById("card-overlay");
         overlay.classList.add("hidden");
+
+        document.body.classList.remove("no-scroll");
       }
+
+      function handleInputClick() {
+        const inputWrapper = document.querySelector('.input-field-complett');
+
+ 
+        inputWrapper.classList.add('focused');
+
+  
+        const inputField = document.querySelector('.input-find-task');
+        inputField.setAttribute('placeholder', '');
+      }
+
+
+        document.addEventListener('click', function(event) {
+        const inputWrapper = document.querySelector('.input-field-complett');
+        const inputField = document.querySelector('.input-find-task');
+
+  
+        if (!inputWrapper.contains(event.target)) {
+            inputWrapper.classList.remove('focused');
+
+    
+        if (!inputField.value) {
+            inputField.setAttribute('placeholder', 'Find Task');
+            }
+        }
+      });
+
     </script>
   </body>
 </html>
