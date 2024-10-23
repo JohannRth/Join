@@ -195,29 +195,36 @@ function getColor(name) {
 
 function openAddContactModal() {
     const modal = document.getElementById('addContactModal');
-    const modalContent = document.querySelector('.add-contact-modal-content');
+    const modalContent = modal.querySelector('.add-contact-modal-content');
+
+    // Stelle sicher, dass das Modal sichtbar ist
+    modal.style.display = 'flex';
     
-    if (modal) {
-        modal.style.display = 'flex';
+    // Entferne die `slide-out` Klasse, falls sie vorhanden ist (z.B. durch vorheriges Schließen)
+    if (modalContent.classList.contains('slide-out')) {
         modalContent.classList.remove('slide-out');
-        modalContent.classList.add('slide-in');
     }
+
+    // Füge die `slide-in` Animation durch die Klasse hinzu
+    modalContent.classList.add('add-contact-modal-content');
 }
+
 
 function closeAddContactModal() {
     const modal = document.getElementById('addContactModal');
-    const modalContent = document.querySelector('.add-contact-modal-content');
+    const modalContent = modal.querySelector('.add-contact-modal-content');
 
-    if (modalContent) {
-        modalContent.classList.remove('slide-in');
-        modalContent.classList.add('slide-out');
-        
-        // Warte, bis die Slide-Out-Animation abgeschlossen ist
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 120); // Dauer der Slide-Out-Animation (0.12s)
-    }
+    // Füge die `slide-out` Klasse hinzu, um die Schließen-Animation zu starten
+    modalContent.classList.add('slide-out');
+
+    // Verwende ein Timeout, das der Animationszeit entspricht, um das Modal nach der Animation zu verstecken
+    setTimeout(() => {
+        modal.style.display = 'none';
+        // Entferne die `slide-in` Klasse, damit die Animation beim erneuten Öffnen wieder abgespielt wird
+        modalContent.classList.remove('add-contact-modal-content');
+    }, 120); // 0.12s = 120ms
 }
+
 
 // Funktion zum Hinzufügen eines neuen Kontakts
 function addNewContact(event) {

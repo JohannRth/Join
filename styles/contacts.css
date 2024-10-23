@@ -255,35 +255,37 @@ button#addContactBtn:hover {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
+/* Keyframes für die Slide-In-Animation */
 @keyframes slideInFromRight {
     0% {
-        transform: translateX(100%); /* Start außerhalb des sichtbaren Bereichs */
-        opacity: 0; /* Unsichtbar zu Beginn */
+        transform: translateX(100%);
+        opacity: 0;
     }
     100% {
-        transform: translateX(0); /* Endposition im sichtbaren Bereich */
-        opacity: 1; /* Voll sichtbar am Ende */
+        transform: translateX(0);
+        opacity: 1;
     }
 }
 
+/* Keyframes für die Slide-Out-Animation */
 @keyframes slideOutToRight {
     0% {
-        transform: translateX(0); /* Start im sichtbaren Bereich */
-        opacity: 1; /* Voll sichtbar */
+        transform: translateX(0);
+        opacity: 1;
     }
     100% {
-        transform: translateX(100%); /* Nach rechts herausgleiten */
-        opacity: 0; /* Unsichtbar am Ende */
+        transform: translateX(100%);
+        opacity: 0;
     }
 }
 
-/* Slide-In Animation */
-.slide-in {
+/* CSS für das Add Contact Modal, während es angezeigt wird */
+.add-contact-modal-content {
     animation: slideInFromRight 0.12s ease-out forwards;
 }
 
-/* Slide-Out Animation */
-.slide-out {
+/* CSS für das Add Contact Modal, während es geschlossen wird */
+.add-contact-modal-content.slide-out {
     animation: slideOutToRight 0.12s ease-out forwards;
 }
 
