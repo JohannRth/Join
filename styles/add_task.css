@@ -136,7 +136,8 @@ body {
 
 .assignedAddTask {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     width: 440px;
     height: 50px;
     padding: 12px;
@@ -145,12 +146,41 @@ body {
     font-size: 20px;
     font-weight: 400;
     text-align: left;
+    background-color: white;
     box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
 .assignedAddTask:hover {
     box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.4);
+}
+
+.contactDropdown {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    max-height: 201px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 440px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    
+}
+
+.contactDropdown.show {
+    display: block;
+}
+
+.contactItem {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.contactItem:hover {
+    background-color: #f0f0f0;
 }
 
 .assignedAddTask:active,
@@ -183,15 +213,34 @@ input[type="text"]:focus,
     text-align: left;
     box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    background-image: url(../assets/img/arrow_drop_down.svg);
-    background-repeat: no-repeat;
-    background-position: calc(100% - 10px) center;    
 }
-
 
 .selectedOption:hover {
     box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.4);
     background-image: h;
+}
+
+.dropDownImageCategory {
+    padding-bottom: 5px;
+  
+}
+
+.dropDownImageCategory:hover { 
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: #E0E0E0;
+    border-radius: 50%;
+    
+}
+
+.dropDownImageRotation180 {
+    transform: rotate(180deg);
+    transition: transform 0.2s ease;
+    padding-top: 4px;
 }
 
 .customDropdown.active .options {
@@ -214,7 +263,7 @@ input[type="text"]:focus,
     background-color: white;
     border: 1px solid #D1D1D1;
     border-top: none;
-    border-radius: 0 0 10px 10px;
+    border-radius: 10px;
     z-index: 1;
 }
 
@@ -227,10 +276,6 @@ input[type="text"]:focus,
 .option:hover {
     background-color: #9c9c9c27;
     border-radius: 10px;
-}
-
-.customDropdown.active .selectedOption {
-    border-radius: 10px 10px 0 0;
 }
 
 .customDropdown.active .dropdownOptions {

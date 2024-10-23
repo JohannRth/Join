@@ -41,9 +41,11 @@
                     </div>
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Assigned To</span>
-                        <select class="assignedAddTask" id="assignedTo">
-                            <option value="" disabled selected>Select contacts to assign</option>
-                        </select>
+                        <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
+                            <div id="contacts">Select contacts to assign</div>
+                            <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
+                        </div>
+                        <div class="contactDropdown" id="contactDropdown"></div>
                     </div>
             </div>
             <div class="addTaskSeparateContainer"></div>
@@ -58,18 +60,21 @@
                     <div class="prioContainer">
                         <span class="addTaskInputTitle">Prio</span>
                         <div class="prioButtonContainer">
-                            <button type="button" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
-                            <button type="button" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
-                            <button type="button" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
+                            <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
+                            <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
+                            <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
                         </div>
                     </div>
                     <div class="inputContainer">
                         <span class="addTaskInputTitle required">Category</span>
                         <div class="customDropdown" onclick="dropdownCategory()">
-                            <div  class="selectedOption">Select task category</div>
+                            <div  class="selectedOption" onclick="toggleRotationDownImage()">
+                                <div>Select task category</div>
+                                <div><img class="dropDownImageCategory" id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg"></div>
+                            </div>
                             <div class="dropdownOptions">
-                                <div class="option" data-value="technical">Technical Task</div>
-                                <div class="option" data-value="userStory">User Story</div>
+                                <div class="option" id="technicalTask" data-value="technical">Technical Task</div>
+                                <div class="option" id="userStory" data-value="userStory">User Story</div>
                             </div>
                         </div>
                     </div>

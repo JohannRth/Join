@@ -1,9 +1,25 @@
+let books = [
+    {
+      "title": "",
+      "description": "",
+      "assignedTo": [
+        {
+            "contacts": ""
+        }
+      ],
+      "dueDate": "",
+      "prio": "",
+      "category": "",
+      "subtasks": "",
+    },
+];
+
+
 let subTasks = [];
 
 function setPriority(priority) {
     let buttons = document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow');
     let selectedButton = document.querySelector(`.prioButton${priority.charAt(0).toUpperCase() + priority.slice(1)}`);
-    
     if (selectedButton.classList.contains('active')) {
         selectedButton.classList.remove('active');
     } else {
@@ -162,18 +178,25 @@ function createErrorMessage(dropdown) {
 }
 
 function addDropdownListeners(dropdown, selectedOption, options, errorMessage) {
-    selectedOption.addEventListener('click', () => dropdown.classList.toggle('active'));
-
+    let isOpen = false;
+    selectedOption.addEventListener('click', () => {
+        if (!isOpen) {
+            dropdown.classList.add('active');
+            isOpen = true;
+        }
+    });
     options.forEach(option => {
         option.addEventListener('click', function() {
             updateSelectedOption(selectedOption, this.textContent);
             resetDropdownState(dropdown, errorMessage);
+            dropdown.classList.remove('active');
+            isOpen = false;
         });
     });
 }
 
 function updateSelectedOption(selectedOption, text) {
-    selectedOption.textContent = text;
+    selectedOption.innerHTML = `${text} <img id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" onclick="toggleRotationDownImage()">`;
     selectedOption.style.color = 'black';
 }
 
@@ -182,13 +205,6 @@ function resetDropdownState(dropdown, errorMessage) {
     errorMessage.classList.remove('visible');
 }
 
-function addDocumentListener(dropdown) {
-    document.addEventListener('click', function(e) {
-        if (!dropdown.contains(e.target)) {
-            dropdown.classList.remove('active');
-        }
-    });
-}
 
 function addFormSubmitListener(selectedOption, dropdown, errorMessage) {
     document.querySelector('form').addEventListener('submit', function(e) {
@@ -202,6 +218,94 @@ function addFormSubmitListener(selectedOption, dropdown, errorMessage) {
 
 document.addEventListener('DOMContentLoaded', dropdownCategory);
 
+let isDropdownOpen = false;
+
+function toggleRotationDownImage() {
+    let downImage = document.getElementById('dropDownImageCategory');
+    downImage.classList.add('dropDownImageRotation180');
+}
+
+let contactDropdownInitialized = false;
+
+function initializeContactDropdown() {
+    if (contactDropdownInitialized) return;
+    const elements = getElements();
+    setupEventListeners(elements);
+    addExampleContacts(elements.contactDropdown);
+    contactDropdownInitialized = true;
+}
+
+function getElements() {
+    return {
+        assignedTo: document.getElementById('assignedTo'),
+        contactDropdown: document.getElementById('contactDropdown'),
+        dropDownImage: document.getElementById('dropDownImageContacts'),
+        contactsDisplay: document.getElementById('contacts')
+    };
+}
+
+function setupEventListeners(elements) {
+    let isOpen = false;
+    elements.assignedTo.addEventListener('click', (event) => toggleDropdown(event, elements, isOpen));
+}
+
+function toggleDropdown(event, elements, isOpen) {
+    event.stopPropagation();
+    isOpen = !isOpen;
+    elements.contactDropdown.classList.toggle('show', isOpen);
+    elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);    
+    if (isOpen) {
+        document.addEventListener('click', preventClose);
+    } else {
+        document.removeEventListener('click', preventClose);
+    }
+}
+
+function preventClose(event) {
+    event.stopPropagation();
+}
+
+function selectContact(contact, elements) {
+    elements.contactsDisplay.textContent = contact;
+    elements.contactDropdown.classList.remove('show');
+    elements.dropDownImage.classList.remove('dropDownImageRotation180');
+    document.removeEventListener('click', preventClose);
+}
+
+function addContact(contact, contactDropdown) {
+    const contactItem = document.createElement('div');
+    contactItem.className = 'contactItem';
+    contactItem.textContent = contact;
+    contactItem.addEventListener('click', (event) => {
+        event.stopPropagation();
+        selectContact(contact, getElements());
+    });
+    contactDropdown.appendChild(contactItem);
+}
+
+function addExampleContacts(contactDropdown) {
+    addContact('Max Mustermann', contactDropdown);
+    addContact('Erika Musterfrau', contactDropdown);
+    addContact('John Doe', contactDropdown);
+}
+
+document.addEventListener('DOMContentLoaded', initializeContactDropdown);
+
+function createNewTask () {
+    let title = document.getElementById('title').innerHTML.value;
+    let description = document.getElementById('description').innerHTML.value;
+    let contactDropdown = document.getElementById('contactDropdown').innerHTML.value;
+    let date = document.getElementById('date').innerHTML.value;
+    let prioUrgent = document.getElementById('prioUrgent').innerHTML;
+    let prioMedium = document.getElementById('prioMedium').innerHTML;
+    let prioLow = document.getElementById('prioLow').innerHTML;
+    let technicalTask = document.getElementById('technicalTask').innerHTML;
+    let userStory = document.getElementById('userStory').innerHTML;
+    let subTaskList = document.getElementById('subTaskList').innerHTML.value;
+    
+   
+    
+}
 
 // document.addEventListener('DOMContentLoaded', function() {
 //     const dropdown = document.querySelector('.customDropdown');
