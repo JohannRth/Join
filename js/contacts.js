@@ -294,7 +294,7 @@ function openAddContactModal() {
                     <img class="modal-underline" src="./assets/img/underline_login.svg" alt="Join Logo">
                 </div>
                 <div class="add-contact-right">
-                    <span class="close" onclick="closeAddContactModal()">X<img></span>
+                    <img src="./assets/img/Close.svg" class="close" onclick="closeAddContactModal()">
                     
                         <img class="profileImg" src="./assets/img/addContact_person.svg">
                     
@@ -309,8 +309,8 @@ function openAddContactModal() {
                             <input type="text" required id="newContactPhone" placeholder="Phone" autocomplete="tel">
                         </div>
                         <div class="form-actions">
-                            <button type="button" class="cancel-button" onclick="closeAddContactModal()">Cancel</button>
-                            <button type="submit" class="create-button">Create contact</button>
+                            <button type="button" class="cancel-button" onclick="closeAddContactModal()">Cancel <img src="./assets/img/clear-x-image.svg"></button>
+                            <button type="submit" class="create-button">Create contact <img src="./assets/img/check.svg"></button>
                         </div>
                     </form>
                 </div>

@@ -311,6 +311,11 @@ button#addContactBtn:hover {
     cursor: pointer;
 }
 
+.add-contact-right .close:hover {
+    background-color: #EEEEEE;
+    border-radius: 50%;
+}
+
 .profileImg {
     height: 120px;
     width: 120px;
@@ -353,18 +358,40 @@ button#addContactBtn:hover {
 }
 
 .cancel-button {
-    background-color: #ffffff;
-    color: #2A3647;
+    background-color: #F6F7F8;
     border: 1px solid #2A3647;
+    color: #2A3647;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cancel-button:hover {
+    border: 1px solid #29ABE2;
+    color: #29ABE2;
+    box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.cancel-button:hover img {
+    filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg) brightness(100%) contrast(100%);
 }
 
 .create-button {
     background-color: #2A3647;
     color: white;
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .create-button:hover {
     background-color: #29ABE2;
+    cursor: pointer;
+    font-family: "inter", sans-serif;
+    box-shadow: 0px 4px 4px 0px #00000040;
 }
 
 input#newContactName,
