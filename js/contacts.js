@@ -96,22 +96,56 @@ function addContactElements(container, contacts) {
     });
 }
 
-// Funktion zum Gruppieren der Kontakte nach dem Anfangsbuchstaben
+// Hauptfunktion zum Gruppieren der Kontakte
 function groupContactsByAlphabet() {
-    // Kontakte alphabetisch sortieren
-    contacts.sort((a, b) => a.name.localeCompare(b.name));
+    // Kontakte sortieren
+    contacts.sort(contactComparator);
 
-    // Kontakte nach Buchstaben gruppieren
+    // Kontakte gruppieren
+    return groupContactsByFirstLetter(contacts);
+}
+
+// Funktion zum Gruppieren der Kontakte nach dem Anfangsbuchstaben des Vornamens
+function groupContactsByFirstLetter(contacts) {
     const groupedContacts = {};
     contacts.forEach(contact => {
-        const firstLetter = contact.name.charAt(0).toUpperCase();
+        const firstName = contact.name.split(' ')[0];
+        const firstLetter = firstName.charAt(0).toUpperCase();
         if (!groupedContacts[firstLetter]) {
             groupedContacts[firstLetter] = [];
         }
         groupedContacts[firstLetter].push(contact);
     });
-
     return groupedContacts;
+}
+
+// Vergleichsfunktion für die Sortierung
+function contactComparator(a, b) {
+    const aInitials = getFirstAndLastInitials(a.name);
+    const bInitials = getFirstAndLastInitials(b.name);
+
+    // Zuerst nach dem Anfangsbuchstaben des Vornamens sortieren
+    const firstInitialComparison = aInitials.firstInitial.localeCompare(bInitials.firstInitial);
+    if (firstInitialComparison !== 0) {
+        return firstInitialComparison;
+    }
+
+    // Wenn die Anfangsbuchstaben gleich sind, nach dem Anfangsbuchstaben des Nachnamens sortieren
+    const lastInitialComparison = aInitials.lastInitial.localeCompare(bInitials.lastInitial);
+    if (lastInitialComparison !== 0) {
+        return lastInitialComparison;
+    }
+
+    // Falls immer noch gleich, gesamten Namen vergleichen
+    return a.name.localeCompare(b.name);
+}
+
+// Hilfsfunktion zum Extrahieren der Initialen
+function getFirstAndLastInitials(name) {
+    const [firstName, lastName = ''] = name.split(' ');
+    const firstInitial = firstName.charAt(0).toUpperCase();
+    const lastInitial = lastName.charAt(0).toUpperCase();
+    return { firstInitial, lastInitial };
 }
 
 // Funktion zum Erstellen des Kontakt-Elements
@@ -423,30 +457,61 @@ function deleteContactFromModal(contactIndex) {
 function addNewContact(event) {
     event.preventDefault();
 
-    const isFormValid = validateForm();
+    // Formular validieren
+    const isFormValid = handleFormValidation();
+
     if (!isFormValid) {
         return;
     }
 
+    // Kontakt-Daten aus dem Formular holen
     const newContact = getContactFormData();
-    const contactIndexInput = document.getElementById('contactIndex');
-    const contactIndex = contactIndexInput.value;
-    const index = parseInt(contactIndex, 10);
 
-    if (!isNaN(index)) {
-        // Bearbeitungsmodus
-        contacts[index] = newContact;
-    } else {
-        // Hinzufügen-Modus
-        addContact(newContact);
-    }
+    // Kontaktindex ermitteln
+    const index = getContactIndex();
 
+    // Kontakt speichern (hinzufügen oder aktualisieren)
+    const updatedContact = saveContact(newContact, index);
+
+    // Kontakte neu laden und Modal schließen
     loadContacts();
     closeAddContactModal();
 
+    // Zeige den neuen oder aktualisierten Kontakt in den Kontaktdetails an
+    displayContactDetails(updatedContact);
+
     // Erfolgsnachricht anzeigen
-    showSuccessPopup(!isNaN(index) ? 'edit' : 'add');
+    const mode = !isNaN(index) ? 'edit' : 'add';
+    showSuccessPopup(mode);
 }
+
+function handleFormValidation() {
+    return validateForm();
+}
+
+function getContactIndex() {
+    const contactIndexInput = document.getElementById('contactIndex');
+    const contactIndex = contactIndexInput.value;
+    return parseInt(contactIndex, 10);
+}
+
+function saveContact(newContact, index) {
+    let updatedContact;
+    if (!isNaN(index)) {
+        // Bearbeitungsmodus - aktualisiere den bestehenden Kontakt
+        const existingContact = contacts[index];
+        existingContact.name = newContact.name;
+        existingContact.email = newContact.email;
+        existingContact.phone = newContact.phone;
+        updatedContact = existingContact;
+    } else {
+        // Hinzufügen-Modus - füge neuen Kontakt hinzu
+        addContact(newContact);
+        updatedContact = newContact;
+    }
+    return updatedContact;
+}
+
 
 
 // Funktion, um das Erfolgs-Popup anzuzeigen
