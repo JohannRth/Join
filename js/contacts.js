@@ -57,26 +57,43 @@ function loadContacts() {
     const groupedContacts = groupContactsByAlphabet();
 
     const contactContainer = document.getElementById('contacts');
-    contactContainer.innerHTML = ''; // Container leeren
+    
+    // Leere den Container
+    clearContactContainer(contactContainer);
 
-    // Durch die gruppierten Kontakte iterieren und anzeigen
+    // Gruppierte Kontakte anzeigen
     for (const letter in groupedContacts) {
         if (groupedContacts.hasOwnProperty(letter)) {
-            // Überschrift für den Buchstaben hinzufügen
-            const letterHeader = `<h2 class="contact-letter-header">${letter}</h2>`;
-            contactContainer.insertAdjacentHTML('beforeend', letterHeader);
-
-            // Trennungsbild als HTML-String hinzufügen
-            const separatorImage = `<img class="contact-list-separator" src="./assets/img/contacts_seperator.svg" alt="Separator-Line">`;
-            contactContainer.insertAdjacentHTML('beforeend', separatorImage);
-
-            // Kontakte für diesen Buchstaben hinzufügen
-            groupedContacts[letter].forEach(contact => {
-                const contactElement = createContactElement(contact);
-                contactContainer.appendChild(contactElement);
-            });
+            addLetterHeader(contactContainer, letter);
+            addSeparatorImage(contactContainer);
+            addContactElements(contactContainer, groupedContacts[letter]);
         }
     }
+}
+
+// Funktion, um den Kontakt-Container zu leeren
+function clearContactContainer(container) {
+    container.innerHTML = ''; // Container leeren
+}
+
+// Funktion, um eine Buchstabenüberschrift hinzuzufügen
+function addLetterHeader(container, letter) {
+    const letterHeader = `<h2 class="contact-letter-header">${letter}</h2>`;
+    container.insertAdjacentHTML('beforeend', letterHeader);
+}
+
+// Funktion, um das Trennungsbild hinzuzufügen
+function addSeparatorImage(container) {
+    const separatorImage = `<img class="contact-list-separator" src="./assets/img/contacts_seperator.svg" alt="Separator-Line">`;
+    container.insertAdjacentHTML('beforeend', separatorImage);
+}
+
+// Funktion, um alle Kontakte unter einem Buchstaben hinzuzufügen
+function addContactElements(container, contacts) {
+    contacts.forEach(contact => {
+        const contactElement = createContactElement(contact);
+        container.appendChild(contactElement);
+    });
 }
 
 // Funktion zum Gruppieren der Kontakte nach dem Anfangsbuchstaben
