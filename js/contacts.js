@@ -214,36 +214,6 @@ function setActiveContactMarker(contact) {
     }
 }
 
-// Funktion, um die Details eines Kontakts in den Kontakt-Details-Bereich einzufügen
-function renderContactDetails(contact) {
-    const contactDetails = document.getElementById('contactDetails');
-    if (contactDetails) {
-        const contactIndex = contacts.indexOf(contact);
-        contactDetails.innerHTML = `
-            <div class="contact-details-header" data-contact-index="${contactIndex}">
-                <div class="contact-icon-large" style="background-color: ${getColor(contact.name)};">
-                    ${getInitials(contact.name)}
-                </div>
-                <div class="contact-details-info">
-                    <h2>${contact.name}</h2>
-                    <div class="contact-actions">
-                        <button class="edit-button"><img src="./assets/img/edit.svg" alt="Edit"> Edit</button>
-                        <button class="delete-button"><img src="./assets/img/delete.svg" alt="Delete"> Delete</button>
-                    </div>
-                </div>
-            </div>
-            <div class="contact-details-body">
-                <h3>Contact Information</h3>
-                <p><strong>Email</strong></p>
-                <p class="contact-details-email">${contact.email}</p>
-                <p><strong>Phone</strong></p>
-                <p class="contact-details-phone">${contact.phone}</p>
-            </div>
-        `;
-    }
-}
-
-
 // Funktion zum Erhalten der Initialen des Namens
 function getInitials(name) {
     const nameParts = name.trim().split(' ');

@@ -151,3 +151,8 @@ body {
     color: #29ABE2;
     font-weight: bolder;
 }
+
+/* Stil für das aktive Menüelement */
+.desktopLinkAndImage.active {
+    background-color: #091931; /* Ersetzen Sie dies durch Ihre gewünschte Hintergrundfarbe */
+}
