@@ -75,15 +75,15 @@ body {
     text-align: left;
 }
 
-.input-error {
+.inputError {
     border: 1px solid red !important;
 }
 
-.error-message {
+.errorMessageTitleAndDate {
     color: red;
     font-size: 12px;
     margin-top: 5px;
-    display: none;
+    position: fixed;
 }
 
 .inputAddTask {
@@ -174,19 +174,22 @@ body {
     display: block;
 }
 
+.selectedContactsHeadline {
+    font-size: 20px;
+    font-weight: 400;
+}
+
 .contactItem {
-    padding: 10px;
+    padding: 12px;
     cursor: pointer;
+    height: 48px;
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .contactItem:hover {
     background-color: #f0f0f0;
-}
-
-.assignedAddTask:active,
-.assignedAddTask:focus {
-    box-shadow: none;
-    border-color: rgb(41,171,226);
+    border-radius: 10px;
 }
 
 input[type="text"]:focus,
@@ -234,7 +237,6 @@ input[type="text"]:focus,
     height: 6px;
     background-color: #E0E0E0;
     border-radius: 50%;
-    
 }
 
 .dropDownImageRotation180 {
@@ -254,27 +256,39 @@ input[type="text"]:focus,
     cursor: pointer;
 }
 
-.dropdownOptions {
+.selectedCategoryHeadline {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.dropDownContent {
     display: none;
     position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    border: 1px solid #D1D1D1;
-    border-top: none;
-    border-radius: 10px;
-    z-index: 1;
+    background-color: #fff;
+    max-height: 201px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 440px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
-.option {
-    padding: 13px 12px;
-    color: black;
+.dropDownContent.show {
+    display: block;
+}
+
+.categoryItem {
+    padding: 12px;
+    cursor: pointer;
+    height: 48px;
     font-size: 20px;
+    font-weight: 400;
 }
 
-.option:hover {
-    background-color: #9c9c9c27;
+.categoryItem:hover {
+    background-color: #f0f0f0;
     border-radius: 10px;
 }
 
@@ -419,7 +433,6 @@ input[type="text"]:focus,
 .prioButtonLow.active img {
     filter: brightness(0) invert(1);
 }
-
 
 .subTaskInputContainer {
     position: relative;

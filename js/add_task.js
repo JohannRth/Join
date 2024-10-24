@@ -1,19 +1,21 @@
-let books = [
-    {
-      "title": "",
-      "description": "",
-      "assignedTo": [
-        {
-            "contacts": ""
-        }
-      ],
-      "dueDate": "",
-      "prio": "",
-      "category": "",
-      "subtasks": "",
-    },
-];
+// let newTasks = [
+//     {
+//       "title": "",
+//       "description": "",
+//       "assignedTo": [
+//         {
+//             "contacts": ""
+//         }
+//       ],
+//       "dueDate": "",
+//       "prio": "",
+//       "category": "",
+//       "subtasks": "",
+//     },
+// ];
 
+
+let newTasks = []; // Definition der newTasks-Array
 
 let subTasks = [];
 
@@ -116,11 +118,11 @@ function fieldRequiredTitle() {
 function validateTitleField() {
     let errorMessage = this.nextElementSibling;
     if (!this.value) {
-        this.classList.add('input-error');
+        this.classList.add('inputError');
         errorMessage.style.display = 'block';
         errorMessage.textContent = 'This field is required.';
     } else {
-        this.classList.remove('input-error');
+        this.classList.remove('inputError');
         errorMessage.style.display = 'none';
     }
 }
@@ -141,11 +143,11 @@ function fieldRequiredDate() {
 function validateDateField() {
     let errorMessage = this.nextElementSibling;
     if (!this.value) {
-        this.classList.add('input-error');
+        this.classList.add('inputError');
         errorMessage.style.display = 'block';
         errorMessage.textContent = 'This field is required.';
     } else {
-        this.classList.remove('input-error');
+        this.classList.remove('inputError');
         errorMessage.style.display = 'none';
     }
 }
@@ -159,64 +161,69 @@ function setToday() {
     updateDateColor.call(this);
 }
 
-function dropdownCategory() {
-    const dropdown = document.querySelector('.customDropdown');
-    const selectedOption = dropdown.querySelector('.selectedOption');
-    const options = dropdown.querySelectorAll('.option');
-    const errorMessage = createErrorMessage(dropdown);
-    addDropdownListeners(dropdown, selectedOption, options, errorMessage);
-    addDocumentListener(dropdown);
-    addFormSubmitListener(selectedOption, dropdown, errorMessage);
-}
+let categoryDropdownInitialized = false;
 
-function createErrorMessage(dropdown) {
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'errorMessage';
-    errorMessage.textContent = 'This field is required';
-    dropdown.appendChild(errorMessage);
-    return errorMessage;
-}
-
-function addDropdownListeners(dropdown, selectedOption, options, errorMessage) {
-    let isOpen = false;
-    selectedOption.addEventListener('click', () => {
-        if (!isOpen) {
-            dropdown.classList.add('active');
-            isOpen = true;
-        }
-    });
-    options.forEach(option => {
-        option.addEventListener('click', function() {
-            updateSelectedOption(selectedOption, this.textContent);
-            resetDropdownState(dropdown, errorMessage);
-            dropdown.classList.remove('active');
-            isOpen = false;
-        });
-    });
-}
-
-function updateSelectedOption(selectedOption, text) {
-    selectedOption.innerHTML = `${text} <img id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" onclick="toggleRotationDownImage()">`;
-    selectedOption.style.color = 'black';
-}
-
-function resetDropdownState(dropdown, errorMessage) {
-    dropdown.classList.remove('active', 'error');
-    errorMessage.classList.remove('visible');
-}
-
-
-function addFormSubmitListener(selectedOption, dropdown, errorMessage) {
-    document.querySelector('form').addEventListener('submit', function(e) {
-        if (selectedOption.textContent === 'Select task category') {
-            e.preventDefault();
-            dropdown.classList.add('error');
-            errorMessage.classList.add('visible');
+function initializeCategoryDropdown() {
+    if (categoryDropdownInitialized) return;
+    const elements = getCategoryElements();
+    setupCategoryEventListeners(elements);
+    addCategoryOptions(elements.categoryDropdown);
+    categoryDropdownInitialized = true;
+    document.addEventListener('click', (event) => {
+        if (!elements.categorySelector.contains(event.target) && !elements.categoryDropdown.contains(event.target)) {
+            closeCategoryDropdown(elements);
         }
     });
 }
 
-document.addEventListener('DOMContentLoaded', dropdownCategory);
+function getCategoryElements() {
+    return {
+        categorySelector: document.getElementById('categorySelector'),
+        categoryDropdown: document.getElementById('categoryDropdown'),
+        dropDownImage: document.getElementById('dropDownImageCategory'),
+        selectedCategory: document.getElementById('selectedCategory')
+    };
+}
+
+function setupCategoryEventListeners(elements) {
+    elements.categorySelector.addEventListener('click', (event) => {
+        event.stopPropagation();
+        toggleCategoryDropdown(elements);
+    });
+}
+
+function toggleCategoryDropdown(elements) {
+    const isOpen = elements.categoryDropdown.classList.toggle('show');
+    elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);
+}
+
+function closeCategoryDropdown(elements) {
+    elements.categoryDropdown.classList.remove('show');
+    elements.dropDownImage.classList.remove('dropDownImageRotation180');
+}
+
+function selectCategory(category, elements) {
+    elements.selectedCategory.textContent = category;
+    closeCategoryDropdown(elements);
+}
+
+function addCategoryOption(category, categoryDropdown) {
+    const categoryItem = document.createElement('div');
+    categoryItem.className = 'categoryItem';
+    categoryItem.textContent = category;
+    categoryItem.addEventListener('click', (event) => {
+        event.stopPropagation();
+        selectCategory(category, getCategoryElements());
+    });
+    categoryDropdown.appendChild(categoryItem);
+}
+
+function addCategoryOptions(categoryDropdown) {
+    addCategoryOption('Technical Task', categoryDropdown);
+    addCategoryOption('User Story', categoryDropdown);
+}
+
+document.addEventListener('DOMContentLoaded', initializeCategoryDropdown);
 
 let isDropdownOpen = false;
 
@@ -233,6 +240,11 @@ function initializeContactDropdown() {
     setupEventListeners(elements);
     addExampleContacts(elements.contactDropdown);
     contactDropdownInitialized = true;
+    document.addEventListener('click', (event) => {
+        if (!elements.assignedTo.contains(event.target) && !elements.contactDropdown.contains(event.target)) {
+            closeDropdown(elements);
+        }
+    });
 }
 
 function getElements() {
@@ -245,20 +257,20 @@ function getElements() {
 }
 
 function setupEventListeners(elements) {
-    let isOpen = false;
-    elements.assignedTo.addEventListener('click', (event) => toggleDropdown(event, elements, isOpen));
+    elements.assignedTo.addEventListener('click', (event) => {
+        event.stopPropagation();
+        toggleDropdown(elements);
+    });
 }
 
-function toggleDropdown(event, elements, isOpen) {
-    event.stopPropagation();
-    isOpen = !isOpen;
-    elements.contactDropdown.classList.toggle('show', isOpen);
-    elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);    
-    if (isOpen) {
-        document.addEventListener('click', preventClose);
-    } else {
-        document.removeEventListener('click', preventClose);
-    }
+function toggleDropdown(elements) {
+    const isOpen = elements.contactDropdown.classList.toggle('show');
+    elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);
+}
+
+function closeDropdown(elements) {
+    elements.contactDropdown.classList.remove('show');
+    elements.dropDownImage.classList.remove('dropDownImageRotation180');
 }
 
 function preventClose(event) {
@@ -291,57 +303,61 @@ function addExampleContacts(contactDropdown) {
 
 document.addEventListener('DOMContentLoaded', initializeContactDropdown);
 
-function createNewTask () {
-    let title = document.getElementById('title').innerHTML.value;
-    let description = document.getElementById('description').innerHTML.value;
-    let contactDropdown = document.getElementById('contactDropdown').innerHTML.value;
-    let date = document.getElementById('date').innerHTML.value;
-    let prioUrgent = document.getElementById('prioUrgent').innerHTML;
-    let prioMedium = document.getElementById('prioMedium').innerHTML;
-    let prioLow = document.getElementById('prioLow').innerHTML;
-    let technicalTask = document.getElementById('technicalTask').innerHTML;
-    let userStory = document.getElementById('userStory').innerHTML;
-    let subTaskList = document.getElementById('subTaskList').innerHTML.value;
-    
-   
-    
+function createNewTask() {
+    let category = getCategory();
+    if (category === '') {
+        let dropdown = document.querySelector('.customDropdown');
+        let errorMessage = dropdown.querySelector('.errorMessage');
+        dropdown.classList.add('error');
+        errorMessage.classList.add('visible');
+        return;
+    }
+
+    let newTask = {
+        "title": document.getElementById('title').value,
+        "description": document.getElementById('description').value,
+        "assignedTo": [{
+            "contacts": document.getElementById('contacts').textContent
+        }],
+        "dueDate": document.getElementById('date').value,
+        "prio": getPriority(),
+        "category": category,
+        "subtasks": getSubtasks(),
+    };
+    newTasks.push(newTask);
+    resetNewTask();
 }
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     const dropdown = document.querySelector('.customDropdown');
-//     const selectedOption = dropdown.querySelector('.selectedOption');
-//     const options = dropdown.querySelectorAll('.option');
-//     const errorMessage = document.createElement('div');
-//     errorMessage.className = 'errorMessage';
-//     errorMessage.textContent = 'This field is required';
-//     dropdown.appendChild(errorMessage);
+function getPriority() {
+    if (document.querySelector('.prioButtonUrgent.active')) return 'urgent';
+    if (document.querySelector('.prioButtonMedium.active')) return 'medium';
+    if (document.querySelector('.prioButtonLow.active')) return 'low';
+    return '';
+}
 
-//     selectedOption.addEventListener('click', function() {
-//         dropdown.classList.toggle('active');
-//     });
+function getCategory() {
+    let selectedOption = document.querySelector('.selectedOption div').textContent;
+    return selectedOption !== 'Select task category' ? selectedOption : '';
+}
 
-//     options.forEach(option => {
-//         option.addEventListener('click', function() {
-//             selectedOption.textContent = this.textContent;
-//             selectedOption.style.color = 'black';
-//             dropdown.classList.remove('active');
-//             dropdown.classList.remove('error');
-//             errorMessage.classList.remove('visible');
-//         });
-//     });
+function getSubtasks() {
+    let subtaskElements = document.querySelectorAll('#subTaskList .subtask');
+    return Array.from(subtaskElements).map(el => el.textContent);
+}
 
-//     document.addEventListener('click', function(e) {
-//         if (!dropdown.contains(e.target)) {
-//             dropdown.classList.remove('active');
-//         }
-//     });
+function resetNewTask() {
+    document.getElementById('title').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('contacts').textContent = 'Select contacts to assign';
+    document.getElementById('date').value = '';
+    
+    document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    document.querySelector('.selectedOption div').textContent = 'Select task category';
+    
+    document.getElementById('subTaskList').innerHTML = '';
+    document.getElementById('subTaskInput').value = '';
 
-//     document.querySelector('form').addEventListener('submit', function(e) {
-//         if (selectedOption.textContent === 'Select task category') {
-//             e.preventDefault();
-//             dropdown.classList.add('error');
-//             errorMessage.classList.add('visible');
-//         }
-//     });
-// });
-
+}
