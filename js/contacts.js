@@ -118,20 +118,20 @@ function groupContactsByAlphabet() {
 function createContactElement(contact) {
     const contactElement = document.createElement('div');
     contactElement.className = 'contact-item';
+    const contactIndex = contacts.indexOf(contact);
+    contactElement.setAttribute('data-contact-index', contactIndex);
 
-    // Erstelle das Icon-Element und die Kontaktinformationen
     const iconElement = createContactIcon(contact.name);
     const contactInfoElement = createContactInfo(contact);
 
-    // Icon und Kontaktinformationen zusammenfügen
     contactElement.appendChild(iconElement);
     contactElement.appendChild(contactInfoElement);
 
-    // Event-Listener für Klick auf den Kontakt hinzufügen
     contactElement.addEventListener('click', () => displayContactDetails(contact));
 
     return contactElement;
 }
+
 
 // Funktion zum Erstellen des Icons mit den Initialen
 function createContactIcon(name) {
@@ -184,8 +184,9 @@ function setActiveContactMarker(contact) {
 function renderContactDetails(contact) {
     const contactDetails = document.getElementById('contactDetails');
     if (contactDetails) {
+        const contactIndex = contacts.indexOf(contact);
         contactDetails.innerHTML = `
-            <div class="contact-details-header">
+            <div class="contact-details-header" data-contact-index="${contactIndex}">
                 <div class="contact-icon-large" style="background-color: ${getColor(contact.name)};">
                     ${getInitials(contact.name)}
                 </div>
@@ -208,9 +209,10 @@ function renderContactDetails(contact) {
     }
 }
 
+
 // Funktion zum Erhalten der Initialen des Namens
 function getInitials(name) {
-    const nameParts = name.split(' ');
+    const nameParts = name.trim().split(' ');
     const initials = nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '');
     return initials.toUpperCase();
 }
@@ -286,7 +288,7 @@ function loadPageContacts() {
 function setupAddContactButton() {
     const addContactBtn = document.getElementById('addContactBtn');
     if (addContactBtn) {
-        addContactBtn.addEventListener('click', openAddContactModal);
+        addContactBtn.addEventListener('click', () => openAddContactModal());
     }
 }
 
@@ -319,120 +321,156 @@ function setupWindowClickCloseModal() {
 
 document.addEventListener('click', function (event) {
     if (event.target.closest('.edit-button')) {
-        const contactName = document.querySelector('.contact-details-info h2').innerText;
-        console.log(`Bearbeiten des Kontakts: ${contactName}`);
-        // Logik für das Bearbeiten hinzufügen (z.B. Modal öffnen mit vorgefüllten Daten)
+        const contactDetailsHeader = document.querySelector('.contact-details-header');
+        const contactIndex = contactDetailsHeader.getAttribute('data-contact-index');
+        if (contactIndex !== null) {
+            const contact = contacts[contactIndex];
+            openAddContactModal(contact);
+        }
     }
 
     if (event.target.closest('.delete-button')) {
-        const contactName = document.querySelector('.contact-details-info h2').innerText;
-        console.log(`Löschen des Kontakts: ${contactName}`);
-        // Logik für das Löschen hinzufügen (z.B. Bestätigung und Kontakt entfernen)
-        deleteContact(contactName);
+        const contactDetailsHeader = document.querySelector('.contact-details-header');
+        const contactIndex = contactDetailsHeader.getAttribute('data-contact-index');
+        if (contactIndex !== null) {
+            deleteContact(contactIndex);
+        }
     }
 });
 
 // Funktion, um einen Kontakt zu löschen
-function deleteContact(name) {
-    const index = contacts.findIndex(contact => contact.name === name);
-    if (index !== -1) {
+function deleteContact(contactIndex) {
+    const index = parseInt(contactIndex, 10);
+    if (!isNaN(index)) {
         contacts.splice(index, 1);
-        loadContacts(); // Aktualisiert die Kontaktliste
-        document.getElementById('contactDetails').innerHTML = ''; // Leert die Kontaktdetails, wenn der Kontakt gelöscht wurde
+        loadContacts();
+        document.getElementById('contactDetails').innerHTML = '';
     }
 }
 
-// Funktion zum Öffnen des Modals für neuen Kontakt
-function openAddContactModal() {
+
+function getContactInitialsAndColor(contact) {
+    if (contact) {
+        const initials = getInitials(contact.name);
+        const color = getColor(contact.name);
+        return { initials, color };
+    }
+    return { initials: '', color: '' };
+}
+
+function setupAddContactFormListener() {
+    const addContactForm = document.getElementById('addContactForm');
+    if (addContactForm) {
+        addContactForm.addEventListener('submit', addNewContact);
+    }
+}
+
+function openAddContactModal(contact = null) {
+    // Sicherstellen, dass `contact` ein gültiges Objekt oder null ist
+    if (contact && (typeof contact !== 'object' || contact instanceof Event)) {
+        contact = null;
+    }
+
     const modal = document.getElementById('addContactModal');
     if (modal) {
-        // Setze den HTML-Inhalt des Modals
-        modal.innerHTML = `
-            <div class="add-contact-modal-content">
-                <div class="add-contact-left">
-                    <img class="modal-logo" src="./assets/img/join_logo_white.svg" alt="Join Logo">
-                    <h2>Add contact</h2>
-                    <p>Tasks are better with a team!</p>
-                    <img class="modal-underline" src="./assets/img/underline_login.svg" alt="Join Logo">
-                </div>
-                <div class="add-contact-right">
-                    <img src="./assets/img/Close.svg" class="close" onclick="closeAddContactModal()">
-                    
-                        <img class="profileImg" src="./assets/img/addContact_person.svg">
-                    
-                    <form id="addContactForm">
-                        <div class="form-group">
-                            <input type="text" id="newContactName" placeholder="Name" autocomplete="name">
-                            <span class="error-message" id="nameError"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="newContactEmail" placeholder="Email" autocomplete="email">
-                            <span class="error-message" id="emailError"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="newContactPhone" placeholder="Phone" autocomplete="tel">
-                            <span class="error-message" id="phoneError"></span>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="cancel-button" onclick="closeAddContactModal()">Cancel <img src="./assets/img/clear-x-image.svg"></button>
-                            <button type="submit" class="create-button">Create contact <img src="./assets/img/check.svg"></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        `;
-        // Zeige das Modal an
+        const isEditMode = contact !== null;
+        const contactIndex = isEditMode ? contacts.indexOf(contact) : '';
+
+        // Initialen und Farbe generieren, wenn im Bearbeitungsmodus
+        const { initials, color } = getContactInitialsAndColor(contact);
+
+        // HTML für das Modal erhalten
+        modal.innerHTML = getContactModalHTML(contact, isEditMode, contactIndex, initials, color);
+
+        // Modal anzeigen
         modal.style.display = 'flex';
 
-        // Event-Listener zum Hinzufügen eines neuen Kontakts
-        const addContactForm = document.getElementById('addContactForm');
-        if (addContactForm) {
-            addContactForm.addEventListener('submit', addNewContact);
-        }
+        // Event Listener für das Formular einrichten
+        setupAddContactFormListener();
     }
 }
 
-// Hauptfunktion zum Hinzufügen eines neuen Kontakts
+
+function getContactInitialsAndColor(contact) {
+    if (contact) {
+        const initials = getInitials(contact.name);
+        const color = getColor(contact.name);
+        return { initials, color };
+    }
+    return { initials: '', color: '' };
+}
+
+function setupAddContactFormListener() {
+    const addContactForm = document.getElementById('addContactForm');
+    if (addContactForm) {
+        addContactForm.addEventListener('submit', addNewContact);
+    }
+}
+
+function deleteContactFromModal(contactIndex) {
+    const index = parseInt(contactIndex, 10);
+    if (!isNaN(index)) {
+        contacts.splice(index, 1);
+        loadContacts();
+        closeAddContactModal();
+        document.getElementById('contactDetails').innerHTML = '';
+
+        // Erfolgsnachricht anzeigen
+        showSuccessPopup('delete');
+    }
+}
+
 function addNewContact(event) {
     event.preventDefault();
 
-    // Formular validieren
     const isFormValid = validateForm();
-
-    // Wenn das Formular nicht gültig ist, beenden
     if (!isFormValid) {
         return;
     }
 
-    // Kontakt-Daten aus dem Formular holen
     const newContact = getContactFormData();
+    const contactIndexInput = document.getElementById('contactIndex');
+    const contactIndex = contactIndexInput.value;
+    const index = parseInt(contactIndex, 10);
 
-    // Neuen Kontakt dem Array hinzufügen
-    addContact(newContact);
+    if (!isNaN(index)) {
+        // Bearbeitungsmodus
+        contacts[index] = newContact;
+    } else {
+        // Hinzufügen-Modus
+        addContact(newContact);
+    }
 
-    // Kontakte neu laden
     loadContacts();
-
-    // Modal schließen
     closeAddContactModal();
 
     // Erfolgsnachricht anzeigen
-    showSuccessPopup();
+    showSuccessPopup(!isNaN(index) ? 'edit' : 'add');
 }
+
 
 // Funktion, um das Erfolgs-Popup anzuzeigen
-function showSuccessPopup() {
+function showSuccessPopup(mode) {
     const popup = document.getElementById('popupContactSuccess');
     if (popup) {
-        // Popup sichtbar machen und Animation starten
+        let message = '';
+        if (mode === 'edit') {
+            message = 'Contact successfully updated';
+        } else if (mode === 'add') {
+            message = 'Contact successfully created';
+        } else if (mode === 'delete') {
+            message = 'Contact successfully deleted';
+        }
+
+        popup.querySelector('p').textContent = message;
         popup.classList.add('show');
 
-        // Nach 1 Sekunde das Popup wieder ausblenden
         setTimeout(() => {
             popup.classList.remove('show');
-        }, 1000); // Zeitdauer, wie lange das Popup angezeigt wird (1s)
+        }, 1000);
     }
 }
+
 
 // Funktion, um das Formular zu validieren
 function validateForm() {
