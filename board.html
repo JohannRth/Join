@@ -149,7 +149,7 @@
 
     <script>
       // titel carde  
-      let todos = [
+      let todos = JSON.parse(localStorage.getItem("todos")) || [
         {
           id: 0,
           titel: "CSS Architecture Planning",
@@ -241,11 +241,22 @@
         taskElement.classList.remove("dragging");
 
         const newCategory = ev.currentTarget.id;
-        todos = todos.map((task) =>
-          task.id == taskId ? { ...task, category: newCategory } : task
+            todos = todos.map((task) =>
+            task.id == taskId ? { ...task, category: newCategory } : task
         );
 
+        saveTodosToLocalStorage();
+
+        updateTodoCount();
+        updateDoneCount();
+        updateBoardTaskCount();
+        updateInProgressCount();
+        updateAwaitFeedbackCount();
         updateHTML();
+      }
+
+      function saveTodosToLocalStorage() {
+        localStorage.setItem("todos", JSON.stringify(todos));
       }
 
       // Setze den Cursor zurück, wenn das Draggen beendet wird
@@ -432,6 +443,65 @@
             }
         }
       });
+
+      // Drag-Area zähler //
+
+      function getTodoCount() { // ToDo
+        const todoContainer = document.getElementById("todo");
+        const tasks = todoContainer.querySelectorAll(".titel-card");
+        return tasks.length;
+      }
+
+      function updateTodoCount() {
+        const todoCount = getTodoCount();
+        localStorage.setItem('todoCount', todoCount);
+      }
+
+      function getDoneCount() { // Done
+        const doneContainer = document.getElementById("done");
+        const tasks = doneContainer.querySelectorAll(".titel-card");
+        return tasks.length;
+      }
+
+      function updateDoneCount() {
+        const doneCount = getDoneCount();
+        localStorage.setItem('doneCount', doneCount);
+      }
+
+      function getBoardTaskCount() { // Alle
+        const todoTasks = document.getElementById("todo").querySelectorAll(".titel-card");
+        const inProgressTasks = document.getElementById("inProgress").querySelectorAll(".titel-card");
+        const feedbackTasks = document.getElementById("awaitFeedback").querySelectorAll(".titel-card");
+        const doneTasks = document.getElementById("done").querySelectorAll(".titel-card");
+
+        const totalTasks = todoTasks.length + inProgressTasks.length + feedbackTasks.length + doneTasks.length;
+        return totalTasks;
+      }
+
+      function updateBoardTaskCount() {
+        const boardTaskCount = getBoardTaskCount();
+        localStorage.setItem('boardTaskCount', boardTaskCount);
+      }
+
+      function getInProgressCount() { // In Progress
+        const inProgressTasks = document.getElementById("inProgress").querySelectorAll(".titel-card");
+        return inProgressTasks.length;
+      }
+      
+      function updateInProgressCount() {
+        const inProgressCount = getInProgressCount();
+        localStorage.setItem('inProgressCount', inProgressCount);
+      }
+
+      function getAwaitFeedbackCount() { // Await Feedback
+        const feedbackTasks = document.getElementById("awaitFeedback").querySelectorAll(".titel-card");
+        return feedbackTasks.length;
+      }
+
+      function updateAwaitFeedbackCount() {
+        const feedbackCount = getAwaitFeedbackCount();
+        localStorage.setItem('feedbackCount', feedbackCount);
+      }
 
     </script>
   </body>

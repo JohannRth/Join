@@ -572,6 +572,24 @@
             document.querySelector('.feedback-task-container').addEventListener('click', function() {
                 window.location.href = 'board.html';
             });
+
+            // Drag-Area zähler //
+            document.addEventListener("DOMContentLoaded", function () {
+                const todoCount = localStorage.getItem('todoCount') || 0; // Für Todo
+                document.querySelector(".todo-number").innerText = todoCount;
+
+                const doneCount = localStorage.getItem('doneCount') || 0; // Für Done
+                document.querySelector(".done-number").innerText = doneCount;
+
+                const boardTaskCount = localStorage.getItem('boardTaskCount') || 0; // Gesamtzahl 
+                document.querySelector(".board-number").innerText = boardTaskCount;
+
+                const inProgressCount = localStorage.getItem('inProgressCount') || 0; // In Progress
+                document.querySelector(".progress-number").innerText = inProgressCount;
+
+                const feedbackCount = localStorage.getItem('feedbackCount') || 0; // Await Feedback
+                document.querySelector(".feedback-number").innerText = feedbackCount;
+            });
         </script>
   </body>
 </html>

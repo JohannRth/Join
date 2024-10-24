@@ -433,10 +433,11 @@ body.no-scroll {
 
   .task-assigned-container-overlay {
     width: 445px;
-    height: 208px;
+    height: 160px;
     gap: 8px;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
   }
 
   .task-assigned-line-overlay {
