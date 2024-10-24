@@ -3,6 +3,9 @@
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
+
+    overflow: hidden;
+    
 }
 
 *::-webkit-scrollbar {
@@ -19,7 +22,30 @@
     border: 3px solid #ffffff;
     border-radius: 15px;
 }
+/*/////////////////////////////////////////////////////////////////////////////////////*/
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%); 
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0); 
+        opacity: 1;
+    }
+}
 
+/* Animation für das Verschwinden nach unten */
+@keyframes slideOutDown {
+    from {
+        transform: translateY(0); 
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100%); 
+        opacity: 0;
+    }
+}
+/*/////////////////////////////////////////////////////////////////////////////////////*/
 .contact-headline {
     display: flex;
     align-items: center;
@@ -139,7 +165,30 @@ button#addContactBtn:hover {
     margin-top: 20px;
     margin-left: 60px;
     background-color: #f9f9f9;
+    /*/////////////////////////////////////////////////////////////////////////////////////*/
+    position: relative;
+    transition: all 0.5s ease;
+    opacity: 0;
+    display: none; 
+    animation-fill-mode: forwards;
+    transform: translateX(0);
+    /*/////////////////////////////////////////////////////////////////////////////////////*/
 }
+/*/////////////////////////////////////////////////////////////////////////////////////*/
+.contact-details.active {
+    display: block; 
+    opacity: 1;
+    animation: slideInRight 0.5s ease;
+}
+/*/////////////////////////////////////////////////////////////////////////////////////*/
+/*/////////////////////////////////////////////////////////////////////////////////////*/
+/* Kontakt-Details beim Verstecken */
+.contact-details.fade-out {
+    animation: slideOutDown 0.5s ease;
+    opacity: 0;
+    display: block;
+}
+/*/////////////////////////////////////////////////////////////////////////////////////*/
 
 .contact-details-header {
     display: flex;

@@ -187,12 +187,64 @@ function createContactInfo(contact) {
     return contactInfoElement;
 }
 
-// Hauptfunktion, um die Details eines Kontakts anzuzeigen
+///////////////////////////////////////////////////////////////////////////////////////
+// Funktion, um die Details eines Kontakts anzuzeigen
 function displayContactDetails(contact) {
-    removeActiveContactMarker(); // Entferne die Markierung von allen Kontakten
-    setActiveContactMarker(contact); // Markiere den aktuell ausgewählten Kontakt
-    renderContactDetails(contact); // Zeige die Details des ausgewählten Kontakts an
+    const contactDetailsDiv = document.getElementById('contactDetails');
+    const mainBoard = document.querySelector('.main-board');
+
+    // Verhindere Scrollen während der Animation
+    mainBoard.style.overflow = 'hidden';
+    
+    // Wenn bereits ein Kontakt angezeigt wird, blende ihn aus
+    if (contactDetailsDiv.classList.contains('active')) {
+        contactDetailsDiv.classList.remove('active');
+        contactDetailsDiv.classList.add('fade-out');
+
+        // Warte auf das Ende der Ausblende-Animation
+        contactDetailsDiv.addEventListener('animationend', function() {
+            // Entferne die fade-out Klasse, um Platz für das Hereinschieben zu machen
+            contactDetailsDiv.classList.remove('fade-out');
+
+            // Neue Kontaktinformationen laden und anzeigen
+            renderContactDetails(contact);
+
+            // Zeige den neuen Kontakt mit der Slide-in-Animation an
+            contactDetailsDiv.classList.add('active');
+        }, { once: true });
+    } else {
+        // Wenn keine Details angezeigt werden, direkt den neuen Kontakt anzeigen
+        renderContactDetails(contact);
+        contactDetailsDiv.classList.add('active');
+    }
+
+    // Markiere den aktuellen Kontakt als aktiv
+    removeActiveContactMarker();
+    setActiveContactMarker(contact);
 }
+
+// Funktion zum Rendern der Kontaktdetails
+function renderContactDetails(contact) {
+    const contactDetailsDiv = document.getElementById('contactDetails');
+    contactDetailsDiv.innerHTML = `
+        <div class="contact-details-header">
+            <div class="contact-icon-large" style="background-color:${getColor(contact.name)}">
+                ${getInitials(contact.name)}
+            </div>
+            <div class="contact-details-info">
+                <h2>${contact.name}</h2>
+                <p>${contact.email}</p>
+                <p>${contact.phone}</p>
+            </div>
+        </div>
+        <div class="contact-details-body">
+            <h3>Contact Information</h3>
+            <p>Email: ${contact.email}</p>
+            <p>Phone: ${contact.phone}</p>
+        </div>
+    `;
+}
+///////////////////////////////////////////////////////////////////////////////////////
 
 // Funktion, um die aktive Markierung von allen Kontakten zu entfernen
 function removeActiveContactMarker() {
