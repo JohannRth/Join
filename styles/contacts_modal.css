@@ -237,3 +237,41 @@ input#newContactPhone {
     height: 12px;
     text-align: center;
 }
+
+/* Keyframes für Slide-In von unten */
+@keyframes slideInBottom {
+    0% {
+        transform: translate(-50%, 100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+/* Erfolgsmeldung-Popup */
+.success {
+    width: 312px;
+    height: 65px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2A3647;
+    color: white;
+    padding: 0px 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none; /* Standardmäßig ausgeblendet */
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none; /* Verhindert, dass Popup fälschlicherweise angeklickt werden kann */
+}
+
+.success.show {
+    display: flex; /* Sichtbar machen */
+    animation: slideInBottom 0.5s forwards; /* Slide-In Animation anwenden */
+    pointer-events: auto; /* Klicks auf das Popup erlauben */
+}

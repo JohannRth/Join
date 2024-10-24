@@ -208,8 +208,6 @@ function renderContactDetails(contact) {
     }
 }
 
-
-
 // Funktion zum Erhalten der Initialen des Namens
 function getInitials(name) {
     const nameParts = name.split(' ');
@@ -417,6 +415,23 @@ function addNewContact(event) {
 
     // Modal schließen
     closeAddContactModal();
+
+    // Erfolgsnachricht anzeigen
+    showSuccessPopup();
+}
+
+// Funktion, um das Erfolgs-Popup anzuzeigen
+function showSuccessPopup() {
+    const popup = document.getElementById('popupContactSuccess');
+    if (popup) {
+        // Popup sichtbar machen und Animation starten
+        popup.classList.add('show');
+
+        // Nach 1 Sekunde das Popup wieder ausblenden
+        setTimeout(() => {
+            popup.classList.remove('show');
+        }, 1000); // Zeitdauer, wie lange das Popup angezeigt wird (1s)
+    }
 }
 
 // Funktion, um das Formular zu validieren
