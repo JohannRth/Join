@@ -223,27 +223,6 @@ function displayContactDetails(contact) {
     setActiveContactMarker(contact);
 }
 
-// Funktion zum Rendern der Kontaktdetails
-function renderContactDetails(contact) {
-    const contactDetailsDiv = document.getElementById('contactDetails');
-    contactDetailsDiv.innerHTML = `
-        <div class="contact-details-header">
-            <div class="contact-icon-large" style="background-color:${getColor(contact.name)}">
-                ${getInitials(contact.name)}
-            </div>
-            <div class="contact-details-info">
-                <h2>${contact.name}</h2>
-                <p>${contact.email}</p>
-                <p>${contact.phone}</p>
-            </div>
-        </div>
-        <div class="contact-details-body">
-            <h3>Contact Information</h3>
-            <p>Email: ${contact.email}</p>
-            <p>Phone: ${contact.phone}</p>
-        </div>
-    `;
-}
 ///////////////////////////////////////////////////////////////////////////////////////
 
 // Funktion, um die aktive Markierung von allen Kontakten zu entfernen
