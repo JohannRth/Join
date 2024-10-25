@@ -1,8 +1,19 @@
-let users = [
-    {'name': 'Testuser','email': 'butterbrot@test.de', 'password': 'test12345'}
-];
+const BASE_URL = "https://remotestoragegrp377-default-rtdb.europe-west1.firebasedatabase.app/";
 
-function register(event) {
+async function loadData(path = "") {
+    let response = await fetch(BASE_URL + path + ".json");
+    let data = await response.json();
+    return data || {};
+}
+
+async function saveData(path, data) {
+    await fetch(BASE_URL + path + '.json', {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+}
+
+async function register(event) {
     event.preventDefault(); // Verhindert das standardmäßige Absenden des Formulars
 
     // Eingabewerte abrufen
@@ -21,7 +32,6 @@ function register(event) {
     document.getElementById('passwordError').textContent = '';
     document.getElementById('confirmPasswordError').textContent = '';
     document.getElementById('privacyPolicyError').textContent = '';
-
 
     if (name === '') {
         document.getElementById('nameError').textContent = 'Please enter your name.';
@@ -65,24 +75,22 @@ function register(event) {
         password: password
     };
 
-    // Benutzer aus localStorage abrufen
-    let users = JSON.parse(localStorage.getItem('users')) || [];
+    // Benutzer aus Firebase abrufen
+    let usersData = await loadData('users') || {};
+    let users = Object.values(usersData);
 
     // Überprüfen, ob die E-Mail bereits registriert ist
     const userExists = users.some(u => u.email === email);
     if (userExists) {
-        document.getElementById('emailError').textContent = 'Diese E-Mail ist bereits registriert.';
+        document.getElementById('emailError').textContent = 'This email is already registered.';
         return;
     }
 
-    // Neuen Benutzer hinzufügen
-    users.push(user);
-
-    // Benutzer in localStorage speichern
-    localStorage.setItem('users', JSON.stringify(users));
+    // Neuen Benutzer in Firebase speichern
+    await saveData('users', user);
 
     // Erfolgsmeldung anzeigen
-    alert('Registrierung erfolgreich!');
+    alert('Registration successful!');
 
     // Formular zurücksetzen
     document.querySelector('form').reset();
