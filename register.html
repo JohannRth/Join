@@ -8,7 +8,7 @@
 
     <!-- Link -->
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <script src="./js/login.js"></script>
     <!-- Link-Fonts -->
     <link rel="stylesheet" href="./assets/fonts/font.css">
@@ -30,32 +30,34 @@
             <img class="back-button" src="./assets/img/arrow-left-line.svg" alt="Back-Button" onclick="window.location.href='index.html'">
             <h1 class="login-fsize">Sign Up</h1>
             <img src="./assets/img/underline_login.svg" alt="Underline">
-            <div class="login-box" height="auto">
-                <form onsubmit="login()">
+            
+                <form class="login-box" onsubmit="register(event)">
                     <div>
-                        <input type="text" required id="inputName" placeholder="Name" autocomplete="name">
+                        <input type="text" id="inputName" placeholder="Name" autocomplete="name">
+                        <span class="error-message" id="nameError"></span>
                     </div>
                     <div>
-                        <input type="email" required id="email" placeholder="Email" autocomplete="email">
+                        <input type="text" id="email" placeholder="Email" autocomplete="email">
+                        <span class="error-message" id="emailError"></span>
                     </div>
                     <div>
-                        <input type="password" required id="password" placeholder="Password" autocomplete="new-password">
+                        <input type="password" id="password" placeholder="Password" autocomplete="new-password">
+                        <span class="error-message" id="passwordError"></span>
                     </div>
                     <div>
-                        <input type="password" required id="confirmedPassword" placeholder="Confirm Password" autocomplete="new-password">
-                    </div>
-                    <div id="passwordError" class="login-error">
-                        <p></p>
+                        <input type="password" id="confirmedPassword" placeholder="Confirm Password" autocomplete="new-password">
+                        <span class="error-message" id="confirmPasswordError"></span>
                     </div>
                     <div class="checkbox-register-sec">
                         <input id="checkboxSignUp" type="checkbox">
-                        <span>I accept the <a href="./privacy_policy.html"target=blank>Privacy Policy</a></span>
-                    </div>
+                        <span>I accept the <a href="./privacy_policy.html" target="_blank">Privacy Policy</a></span>
+                        <div><span class="error-message" id="privacyPolicyError"></span></div>
+                    </div>                    
                     <div class="login-btn-sec">
-                        <button id="signUpButton">Sign Up</button>
+                        <button id="signUpButton" type="submit">Sign Up</button>
                     </div>
                 </form>
-            </div>
+            
             <div id="msgBox"></div>
         </div>
     </div>

@@ -95,6 +95,9 @@ button#signUpButton:hover {
 }
 
 .login-box {
+    position: relative;
+    margin-top: 12px;
+    gap: 20px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -116,8 +119,8 @@ button#signUpButton:hover {
 }
 
 .checkbox-register-sec {
-    padding: 16px;
-    display: flex;
+    padding: 6px;
+    margin: auto;
     justify-content: center;
     gap: 8px;
 }
@@ -143,8 +146,6 @@ input#password,
 input#confirmedPassword {
     width: 100%;
     border-radius: 10px;
-    margin-bottom: 10px;
-    margin-top: 20px;
     cursor: pointer;
     border: 1px solid #D1D1D1;
     padding: 12px 21px;
@@ -221,4 +222,16 @@ input#confirmedPassword {
     height: 32px;
     width: 32px;
     border-radius: 50%;
+}
+
+.error-message {
+    display: flex;
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    justify-content: center;
+    color: red;
+    font-size: 12px;
+    height: 12px;
+    text-align: center;
 }

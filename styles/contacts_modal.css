@@ -232,6 +232,9 @@ input#newContactPhone {
 }
 
 .error-message {
+    position: absolute;
+    left: 5%;
+    right: 5%;
     justify-content: center;
     color: red;
     font-size: 12px;

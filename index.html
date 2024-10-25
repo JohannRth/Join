@@ -9,7 +9,7 @@
     <!-- Link -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./styles/index_animation.css">
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <script src="./js/login.js"></script>
     <!-- Link-Fonts -->
     <link rel="stylesheet" href="./assets/fonts/font.css">
@@ -37,8 +37,8 @@
         <div class="login-modal">
             <h1 class="login-fsize">Log in</h1>
             <img src="./assets/img/underline_login.svg" alt="Underline">
-            <div class="login-box">
-                <form onsubmit="login()">
+
+                <form class="login-box" onsubmit="login()">
                     <div>
                         <input type="email" required id="email" placeholder="Email" autocomplete="email">
                     </div>
@@ -58,7 +58,7 @@
                         <button id="guestLogIn">Guest Log in</button>
                     </div>
                 </form>
-            </div>
+
             <div id="msgBox"></div>
         </div>
     </div>
