@@ -38,16 +38,13 @@ async function login(event) {
         // Überprüfen, ob die E-Mail vorhanden ist
         const user = users.find(u => u.email === email);
 
-        if (!user) {
+        if (!user || user.password !== password) {
             document.getElementById('loginError').textContent = 'Email or password is incorrect.';
             return;
         }
 
-        // Überprüfen, ob das Passwort übereinstimmt
-        if (user.password !== password) {
-            document.getElementById('loginError').textContent = 'Email or password is incorrect.';
-            return;
-        }
+        // Benutzernamen im localStorage speichern
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
 
         // Login erfolgreich, Weiterleitung zur summary.html
         window.location.href = 'summary.html';

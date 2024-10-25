@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
+
+<head>
     <!-- Meta -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Link -->
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js"></script>
-    <script src="./js/login.js"></script>
+    <script src="script.js" defer></script>
+    <script src="./js/login.js" defer></script>
+    <script src="./js/firebase.js" defer></script>
     <script src="./assets/templates/load_header_sidebar.js"></script>
     <link rel="stylesheet" href="./assets/fonts/font.css" />
     <link rel="stylesheet" href="./styles/side_header_template.css" />
@@ -29,7 +31,7 @@
 
         .title-container {
             display: flex;
-            align-items: center; 
+            align-items: center;
             width: 625px;
             height: 73px;
             margin-left: 330px;
@@ -39,23 +41,23 @@
         .title-container h1 {
             font-size: 61px;
             font-weight: 700;
-            margin-right: 30px; 
+            margin-right: 30px;
         }
 
         .separator {
-            height: 59px; 
-            width: 3px;   
-            background-color: #5CBEE7; 
-            margin-right: 30px; 
+            height: 59px;
+            width: 3px;
+            background-color: #5CBEE7;
+            margin-right: 30px;
         }
 
         .title-container p {
             font-size: 27px;
             font-weight: 400;
-            color: #2A3647; 
+            color: #2A3647;
         }
 
-        .main-summary{
+        .main-summary {
             margin-left: 328px;
             margin-top: 35px;
             display: flex;
@@ -65,21 +67,21 @@
             gap: 88px;
         }
 
-        .summary-conatiner{
+        .summary-conatiner {
             height: 562px;
             width: 560px;
             display: flex;
             flex-direction: column;
         }
 
-        .toDo-done-container{
+        .toDo-done-container {
             height: 168px;
             width: 560px;
             display: flex;
             justify-content: space-between;
         }
 
-        .toDo-container{
+        .toDo-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -94,55 +96,55 @@
         }
 
         .image-todo-container img {
-            transition: opacity 0.3s ease; 
+            transition: opacity 0.3s ease;
         }
 
         .toDo-container:hover .image-todo-container img {
-            content: url('./assets/img/Group 7.svg'); 
+            content: url('./assets/img/Group 7.svg');
         }
 
         .toDo-container:hover {
             width: 282px;
             height: 184px;
-            background-color: #2a3647; 
+            background-color: #2a3647;
             box-shadow: 0px 4px 4px 0px #00000040;
             cursor: pointer;
         }
 
-        .toDo-number-container{
+        .toDo-number-container {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .todo-number{
+        .todo-number {
             font-size: 64px;
             font-weight: 600;
         }
 
-        .toDo-number-container .todo-number  {
-            transition: color 0.3s ease; 
+        .toDo-number-container .todo-number {
+            transition: color 0.3s ease;
         }
 
-        .toDo-container:hover .todo-number  {
-            color: #ffffff; 
+        .toDo-container:hover .todo-number {
+            color: #ffffff;
         }
 
-        .summary-span{
+        .summary-span {
             font-size: 16px;
             font-weight: 400;
             color: #2A3647;
         }
 
-        .toDo-number-container .summary-span  {
-            transition: color 0.3s ease; 
+        .toDo-number-container .summary-span {
+            transition: color 0.3s ease;
         }
 
-        .toDo-container:hover .summary-span  {
-            color: #ffffff; 
+        .toDo-container:hover .summary-span {
+            color: #ffffff;
         }
 
-        .done-container{
+        .done-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -157,50 +159,50 @@
         }
 
         .image-done-container img {
-            transition: opacity 0.3s ease; 
+            transition: opacity 0.3s ease;
         }
 
         .done-container:hover .image-done-container img {
-            content: url('./assets/img/Frame 59 (3).svg'); 
+            content: url('./assets/img/Frame 59 (3).svg');
         }
 
         .done-container:hover {
             width: 282px;
             height: 184px;
-            background-color: #2a3647; 
+            background-color: #2a3647;
             box-shadow: 0px 4px 4px 0px #00000040;
             cursor: pointer;
         }
 
-        .done-number-container{
+        .done-number-container {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .done-number-container .done-number  {
-            transition: color 0.3s ease; 
+        .done-number-container .done-number {
+            transition: color 0.3s ease;
         }
 
-        .done-container:hover .done-number  {
-            color: #ffffff; 
+        .done-container:hover .done-number {
+            color: #ffffff;
         }
 
-        .done-number{
+        .done-number {
             font-size: 64px;
             font-weight: 600;
         }
 
-        .done-number-container .summary-span  {
-            transition: color 0.3s ease; 
+        .done-number-container .summary-span {
+            transition: color 0.3s ease;
         }
 
-        .done-container:hover .summary-span  {
-            color: #ffffff; 
+        .done-container:hover .summary-span {
+            color: #ffffff;
         }
 
 
-        .urgent-date-container{
+        .urgent-date-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -216,18 +218,18 @@
         }
 
         .urgent-date-container img {
-            transition: opacity 0.3s ease; 
+            transition: opacity 0.3s ease;
         }
 
         .urgent-date-container:hover {
             width: 576px;
             height: 184px;
-            background-color: #2a3647; 
+            background-color: #2a3647;
             box-shadow: 0px 4px 4px 0px #00000040;
             cursor: pointer;
         }
 
-        .urgent-container{
+        .urgent-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -236,40 +238,40 @@
             gap: 16px;
         }
 
-        .urgent-number-container{
+        .urgent-number-container {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .urgent-date-container .urgent-number  {
-            transition: color 0.3s ease; 
+        .urgent-date-container .urgent-number {
+            transition: color 0.3s ease;
         }
 
-        .urgent-date-container:hover .urgent-number  {
-            color: #ffffff; 
+        .urgent-date-container:hover .urgent-number {
+            color: #ffffff;
         }
 
-        .separator-urgent{
-            height: 102px; 
-            width: 3px;   
-            background-color: #E8E8E8; 
+        .separator-urgent {
+            height: 102px;
+            width: 3px;
+            background-color: #E8E8E8;
         }
 
-        .urgent-date-container span  {
-            transition: color 0.3s ease; 
+        .urgent-date-container span {
+            transition: color 0.3s ease;
         }
 
-        .urgent-date-container:hover span  {
-            color: #ffffff; 
+        .urgent-date-container:hover span {
+            color: #ffffff;
         }
 
-        .urgent-number{
+        .urgent-number {
             font-size: 64px;
             font-weight: 600;
         }
 
-        .data-container{
+        .data-container {
             display: flex;
             flex-direction: column;
             width: 178px;
@@ -277,18 +279,18 @@
             gap: 13px;
         }
 
-        .date-urgent{
+        .date-urgent {
             font-size: 21px;
             font-weight: 700;
         }
 
-        .Upcoming-Deadline{
+        .Upcoming-Deadline {
             font-size: 16px;
             font-weight: 400;
             color: #2A3647;
         }
 
-        .tasks-container{
+        .tasks-container {
             display: flex;
             justify-content: space-between;
             height: 170px;
@@ -297,7 +299,7 @@
             gap: 13px;
         }
 
-        .board-task-container{
+        .board-task-container {
             width: 168px;
             height: 168px;
             padding: 25px 0px 25px 0px;
@@ -308,7 +310,7 @@
             box-shadow: 0px 0px 4px 0px #0000001A;
         }
 
-        .progress-task-container{
+        .progress-task-container {
             width: 168px;
             height: 168px;
             padding: 25px 0px 25px 0px;
@@ -319,7 +321,7 @@
             box-shadow: 0px 0px 4px 0px #0000001A;
         }
 
-        .feedback-task-container{
+        .feedback-task-container {
             width: 168px;
             height: 168px;
             padding: 25px 0px 25px 0px;
@@ -330,7 +332,7 @@
             box-shadow: 0px 0px 4px 0px #0000001A;
         }
 
-        .board-number-span{
+        .board-number-span {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -341,19 +343,19 @@
             opacity: 0px;
         }
 
-        .board-number{
+        .board-number {
             font-size: 64px;
             font-weight: 600;
         }
 
-        .tasks-span{
+        .tasks-span {
             font-size: 20px;
             font-weight: 400;
             text-align: center;
             color: #2A3647;
         }
 
-        .progress-number-span{
+        .progress-number-span {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -364,12 +366,12 @@
             opacity: 0px;
         }
 
-        .progress-number{
+        .progress-number {
             font-size: 64px;
             font-weight: 600;
         }
 
-        .feedback-number-span{
+        .feedback-number-span {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -380,58 +382,58 @@
             opacity: 0px;
         }
 
-        .feedback-number{
+        .feedback-number {
             font-size: 64px;
             font-weight: 600;
         }
 
-        .board-task-container:hover{
+        .board-task-container:hover {
             width: 184px;
             height: 184px;
-            background-color: #2a3647; 
-            box-shadow: 0px 4px 4px 0px #00000040;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-        }
-        
-        .feedback-task-container:hover{
-            width: 184px;
-            height: 184px;
-            background-color: #2a3647; 
+            background-color: #2a3647;
             box-shadow: 0px 4px 4px 0px #00000040;
             cursor: pointer;
             display: flex;
             justify-content: center;
         }
 
-        .progress-task-container:hover{
+        .feedback-task-container:hover {
             width: 184px;
             height: 184px;
-            background-color: #2a3647; 
+            background-color: #2a3647;
             box-shadow: 0px 4px 4px 0px #00000040;
             cursor: pointer;
             display: flex;
             justify-content: center;
         }
 
-        .tasks-container span  {
-            transition: color 0.3s ease; 
+        .progress-task-container:hover {
+            width: 184px;
+            height: 184px;
+            background-color: #2a3647;
+            box-shadow: 0px 4px 4px 0px #00000040;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
         }
 
-        .board-task-container:hover span  {
-            color: #ffffff; 
+        .tasks-container span {
+            transition: color 0.3s ease;
         }
 
-        .feedback-task-container:hover span  {
-            color: #ffffff; 
+        .board-task-container:hover span {
+            color: #ffffff;
         }
 
-        .progress-task-container:hover span  {
-            color: #ffffff; 
+        .feedback-task-container:hover span {
+            color: #ffffff;
         }
 
-        .main-greet{
+        .progress-task-container:hover span {
+            color: #ffffff;
+        }
+
+        .main-greet {
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -439,28 +441,28 @@
             width: 560px;
         }
 
-        .greet-container{
+        .greet-container {
             display: flex;
             flex-direction: column;
             height: 136px;
             width: 385px;
         }
 
-        .greet-time{
+        .greet-time {
             font-size: 47px;
             font-weight: 500;
             color: #2A3647;
         }
 
-        .greet-name{
+        .greet-name {
             font-size: 64px;
             font-weight: 700;
-            color:#29ABE2;
+            color: #29ABE2;
         }
-
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
 
     <div id="sidebar-placeholder"></div>
     <div id="header-placeholder"></div>
@@ -470,126 +472,159 @@
         <span class="separator"></span>
         <p>Key Metrics at a Glance</p>
     </div>
-        <div class="main-summary">
-            <div class="summary-conatiner">
-                <div class="toDo-done-container">
-                    <div class="toDo-container">
-                        <div class="image-todo-container">
-                            <img src="./assets/img/edit_todo.svg" alt="">
-                        </div>
-                        <div class="toDo-number-container">
-                            <span class="todo-number">1</span>
-                            <span class="summary-span">To do</span>
-                        </div>
+    <div class="main-summary">
+        <div class="summary-conatiner">
+            <div class="toDo-done-container">
+                <div class="toDo-container">
+                    <div class="image-todo-container">
+                        <img src="./assets/img/edit_todo.svg" alt="">
                     </div>
-                    <div class="done-container">
-                        <div class="image-done-container">
-                            <img src="./assets/img/ok_done.svg" alt="">
-                        </div>
-                        <div class="done-number-container">
-                            <span class="done-number">2</span>
-                            <span class="summary-span">Done</span>
-                        </div>
+                    <div class="toDo-number-container">
+                        <span class="todo-number">1</span>
+                        <span class="summary-span">To do</span>
                     </div>
                 </div>
-                <div class="urgent-date-container">
-                    <div class="urgent-container">
-                        <div>
-                            <img src="./assets/img/urgent.svg" alt="">
-                        </div>
-                        <div class="urgent-number-container">
-                            <span class="urgent-number"> 0</span>
-                            <span class="summary-span"> Urgent </span>
-                        </div>
+                <div class="done-container">
+                    <div class="image-done-container">
+                        <img src="./assets/img/ok_done.svg" alt="">
                     </div>
-                    <span class="separator-urgent"></span>
-                    <div class="data-container">
-                        <span class="date-urgent" id="datum"></span>
-                        <span class="Upcoming-Deadline">Upcoming Deadline </span>
+                    <div class="done-number-container">
+                        <span class="done-number">2</span>
+                        <span class="summary-span">Done</span>
                     </div>
                 </div>
-                <div class="tasks-container">
-                    <div class="board-task-container">
-                        <div class="board-number-span">
-                            <span class="board-number">5</span>
-                            <span class="tasks-span"> Tasks in<br>board </span>
-                        </div>
-                    </div>
-                    <div class="progress-task-container">
-                        <div class="progress-number-span">
-                            <span class="progress-number">4</span>
-                            <span class="tasks-span"> Tasks in<br>Progress </span>
-                        </div>  
-                    </div>
-                    <div class="feedback-task-container">
-                        <div class="feedback-number-span">
-                            <span class="feedback-number">2</span>
-                            <span class="tasks-span"> Awaiting Feedback </span>
-                        </div> 
-                    </div>
-                </div>    
             </div>
-            <div class="main-greet">
-                <div class="greet-container">
-                    <span class="greet-time">Good morning, </span>
-                    <span class="greet-name">Sofia Müller</span>
+            <div class="urgent-date-container">
+                <div class="urgent-container">
+                    <div>
+                        <img src="./assets/img/urgent.svg" alt="">
+                    </div>
+                    <div class="urgent-number-container">
+                        <span class="urgent-number"> 0</span>
+                        <span class="summary-span"> Urgent </span>
+                    </div>
+                </div>
+                <span class="separator-urgent"></span>
+                <div class="data-container">
+                    <span class="date-urgent" id="datum"></span>
+                    <span class="Upcoming-Deadline">Upcoming Deadline </span>
+                </div>
+            </div>
+            <div class="tasks-container">
+                <div class="board-task-container">
+                    <div class="board-number-span">
+                        <span class="board-number">5</span>
+                        <span class="tasks-span"> Tasks in<br>board </span>
+                    </div>
+                </div>
+                <div class="progress-task-container">
+                    <div class="progress-number-span">
+                        <span class="progress-number">4</span>
+                        <span class="tasks-span"> Tasks in<br>Progress </span>
+                    </div>
+                </div>
+                <div class="feedback-task-container">
+                    <div class="feedback-number-span">
+                        <span class="feedback-number">2</span>
+                        <span class="tasks-span"> Awaiting Feedback </span>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="main-greet">
+            <div class="greet-container">
+                <span class="greet-time">Good morning, </span>
+                <span id="greetUser" class="greet-name">Sofia Müller</span>
+            </div>
+        </div>
+    </div>
 
-        <script>
-            // Datum //
-            const heute = new Date();
-        
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        
-            const formatiertesDatum = heute.toLocaleDateString('en-US', options);
-        
-            document.getElementById('datum').innerText = formatiertesDatum;
-            // Datum //
+    <script>
+        /////Beim Laden der Seite den  Benutzernamen aus dem LocalStorage auslesen und im Begrüßungselement mit entsrpechender Begrüßung anzeigen////////////////////////////////////////////////////////////////////////////////////
+        document.addEventListener('DOMContentLoaded', function () {
+            // Überprüfen, ob ein Benutzer im localStorage gespeichert ist
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
-            // Redirect to 'board.html' when containers are clicked
-            document.querySelector('.toDo-container').addEventListener('click', function() {
-                window.location.href = 'board.html';
-            });
+            if (loggedInUser && loggedInUser.name) {
+                // Benutzernamen anzeigen
+                document.getElementById('greetUser').textContent = loggedInUser.name;
+            } else {
+                // Falls kein Benutzer eingeloggt ist, Weiterleitung zur Login-Seite
+                // muss wieder aktiviert werden --> window.location.href = 'index.html';
+            }
+        });
 
-            document.querySelector('.done-container').addEventListener('click', function() {
-                window.location.href = 'board.html';
-            });
+        function getGreeting() {
+            const hour = new Date().getHours();
+            if (hour < 12) {
+                return 'Good morning,';
+            } else if (hour < 18) {
+                return 'Good afternoon,';
+            } else {
+                return 'Good evening,';
+            }
+        }
 
-            document.querySelector('.urgent-date-container').addEventListener('click', function() {
-                window.location.href = 'board.html';
-            });
+        document.addEventListener('DOMContentLoaded', function () {
+            // ... Ihr bestehender Code ...
 
-            document.querySelector('.board-task-container').addEventListener('click', function() {
-                window.location.href = 'board.html';
-            });
+            // Begrüßung setzen
+            document.querySelector('.greet-time').textContent = getGreeting();
+        });
+        /////////////////////////////////////////////////////////////////////////////////////////
+        // Datum //
+        const heute = new Date();
 
-            document.querySelector('.progress-task-container').addEventListener('click', function() {
-                window.location.href = 'board.html';
-            });
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-            document.querySelector('.feedback-task-container').addEventListener('click', function() {
-                window.location.href = 'board.html';
-            });
+        const formatiertesDatum = heute.toLocaleDateString('en-US', options);
 
-            // Drag-Area zähler //
-            document.addEventListener("DOMContentLoaded", function () {
-                const todoCount = localStorage.getItem('todoCount') || 0; // Für Todo
-                document.querySelector(".todo-number").innerText = todoCount;
+        document.getElementById('datum').innerText = formatiertesDatum;
+        // Datum //
 
-                const doneCount = localStorage.getItem('doneCount') || 0; // Für Done
-                document.querySelector(".done-number").innerText = doneCount;
+        // Redirect to 'board.html' when containers are clicked
+        document.querySelector('.toDo-container').addEventListener('click', function () {
+            window.location.href = 'board.html';
+        });
 
-                const boardTaskCount = localStorage.getItem('boardTaskCount') || 0; // Gesamtzahl 
-                document.querySelector(".board-number").innerText = boardTaskCount;
+        document.querySelector('.done-container').addEventListener('click', function () {
+            window.location.href = 'board.html';
+        });
 
-                const inProgressCount = localStorage.getItem('inProgressCount') || 0; // In Progress
-                document.querySelector(".progress-number").innerText = inProgressCount;
+        document.querySelector('.urgent-date-container').addEventListener('click', function () {
+            window.location.href = 'board.html';
+        });
 
-                const feedbackCount = localStorage.getItem('feedbackCount') || 0; // Await Feedback
-                document.querySelector(".feedback-number").innerText = feedbackCount;
-            });
-        </script>
-  </body>
+        document.querySelector('.board-task-container').addEventListener('click', function () {
+            window.location.href = 'board.html';
+        });
+
+        document.querySelector('.progress-task-container').addEventListener('click', function () {
+            window.location.href = 'board.html';
+        });
+
+        document.querySelector('.feedback-task-container').addEventListener('click', function () {
+            window.location.href = 'board.html';
+        });
+
+        // Drag-Area zähler //
+        document.addEventListener("DOMContentLoaded", function () {
+            const todoCount = localStorage.getItem('todoCount') || 0; // Für Todo
+            document.querySelector(".todo-number").innerText = todoCount;
+
+            const doneCount = localStorage.getItem('doneCount') || 0; // Für Done
+            document.querySelector(".done-number").innerText = doneCount;
+
+            const boardTaskCount = localStorage.getItem('boardTaskCount') || 0; // Gesamtzahl 
+            document.querySelector(".board-number").innerText = boardTaskCount;
+
+            const inProgressCount = localStorage.getItem('inProgressCount') || 0; // In Progress
+            document.querySelector(".progress-number").innerText = inProgressCount;
+
+            const feedbackCount = localStorage.getItem('feedbackCount') || 0; // Await Feedback
+            document.querySelector(".feedback-number").innerText = feedbackCount;
+        });
+    </script>
+</body>
+
 </html>

@@ -60,6 +60,11 @@ body {
     background-color: #FFFFFF;
     border: 3px solid #2A3647;
     margin-right: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #29ABE2;
+    text-transform: uppercase;
 }
 
 .user-name {
