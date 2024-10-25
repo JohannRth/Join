@@ -9,8 +9,8 @@
     <!-- Link -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./styles/index_animation.css">
-    <script src="script.js" defer></script>
-    <script src="./js/login.js"></script>
+    <script src="./js/firebase.js" defer></script>
+    <script src="./js/login.js" defer></script>
     <!-- Link-Fonts -->
     <link rel="stylesheet" href="./assets/fonts/font.css">
     <!-- Favicon -->
@@ -38,26 +38,27 @@
             <h1 class="login-fsize">Log in</h1>
             <img src="./assets/img/underline_login.svg" alt="Underline">
 
-                <form class="login-box" onsubmit="login()">
-                    <div>
-                        <input type="email" required id="email" placeholder="Email" autocomplete="email">
-                    </div>
-                    <div>
-                        <input type="password" required id="password" placeholder="Password"
-                            autocomplete="new-password">
-                    </div>
-                    <div id="passwordError" class="login-error">
-                        <p></p>
-                    </div>
-                    <div class="checkbox-sec">
-                        <input id="checkboxLogin" type="checkbox">
-                        <span>Remember me</span>
-                    </div>
-                    <div class="login-btn-sec">
-                        <button id="logIn">Log in</button>
-                        <button id="guestLogIn">Guest Log in</button>
-                    </div>
-                </form>
+            <form class="login-box" onsubmit="login(event)">
+                <div>
+                    <input type="text" id="loginEmail" placeholder="Email" autocomplete="email">
+                    <span class="error-message" id="loginEmailError"></span>
+                </div>
+                <div>
+                    <input type="password" id="loginPassword" placeholder="Password"
+                        autocomplete="new-password">
+                    <span class="error-message" id="loginPasswordError"></span>
+                </div>
+                <div id="loginError" class="login-error">
+                </div>
+                <div class="checkbox-sec">
+                    <input id="checkboxLogin" type="checkbox">
+                    <span>Remember me</span>
+                </div>
+                <div class="login-btn-sec">
+                    <button id="logIn" type="submit">Log in</button>
+                    <button id="guestLogIn">Guest Log in</button>
+                </div>
+            </form>
 
             <div id="msgBox"></div>
         </div>

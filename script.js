@@ -1,18 +1,3 @@
-const BASE_URL = "https://remotestoragegrp377-default-rtdb.europe-west1.firebasedatabase.app/";
-
-async function loadData(path = "") {
-    let response = await fetch(BASE_URL + path + ".json");
-    let data = await response.json();
-    return data || {};
-}
-
-async function saveData(path, data) {
-    await fetch(BASE_URL + path + '.json', {
-        method: 'POST',
-        body: JSON.stringify(data)
-    });
-}
-
 async function register(event) {
     event.preventDefault(); // Verhindert das standardmäßige Absenden des Formulars
 
@@ -89,15 +74,22 @@ async function register(event) {
     // Neuen Benutzer in Firebase speichern
     await saveData('users', user);
 
-    // Erfolgsmeldung anzeigen
-    alert('Registration successful!');
+    // Erfolgsmeldung anzeigen und Weiterleitung initiieren
+    showSuccessMessage();
 
     // Formular zurücksetzen
     document.querySelector('form').reset();
 }
 
-function validateEmail(email) {
-    // Einfache E-Mail-Validierung
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
+function showSuccessMessage() {
+    const successMessage = document.getElementById('successMessage');
+    successMessage.classList.add('show');
+
+    // Nach einer bestimmten Zeit zur Login-Seite weiterleiten
+    setTimeout(() => {
+        // Optional: Ausblendanimation starten
+        successMessage.classList.remove('show');
+        // Weiterleitung zur Login-Seite
+        window.location.href = 'index.html';
+    }, 2000); // 2000 Millisekunden = 2 Sekunden
 }
