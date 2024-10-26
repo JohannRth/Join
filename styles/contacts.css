@@ -3,9 +3,6 @@
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
-
-    overflow: hidden;
-    
 }
 
 *::-webkit-scrollbar {
@@ -184,7 +181,7 @@ button#addContactBtn:hover {
 /*/////////////////////////////////////////////////////////////////////////////////////*/
 /* Kontakt-Details beim Verstecken */
 .contact-details.fade-out {
-    animation: slideOutDown 0.3s ease;
+    animation: slideOutDown 0.5s ease;
     opacity: 0;
     display: block;
 }
