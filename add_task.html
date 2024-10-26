@@ -29,8 +29,8 @@
                     <div class="inputContainerTitle">
                         <div class="inputContainer">
                             <span class="addTaskInputTitle required">Title</span>
-                            <input onclick="fieldRequiredTitle()" class="inputAddTask" id="title" type="text" placeholder="Enter a title">
-                            <div class="errorMessageTitleAndDate"></div>
+                            <input class="inputAddTask" id="title" type="text" placeholder="Enter a title">
+                            <div class="errorMessage"></div>
                         </div>
                     </div>
                     <div class="inputContainerDescription">
@@ -53,8 +53,8 @@
                     <div class="inputContainerDueDate">
                         <div class="inputContainer">
                             <span class="addTaskInputTitle required">Due date</span>
-                            <input onclick="fieldRequiredDate()" class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
-                            <div class="errorMessageTitleAndDate"></div>
+                            <input onclick="getDateToday()" class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
+                            <div class="errorMessage"></div>
                         </div>
                     </div>
                     <div class="prioContainer">
@@ -70,9 +70,10 @@
                         <div id="categorySelector" class="customDropdown" onclick="initializeCategoryDropdown()">
                             <div class="selectedOption">
                                 <span class="selectedCategoryHeadline" id="selectedCategory">Select task category</span>
-                                <img id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
+                                <img class="dropDownImageCategory" id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
                             </div>
                             <div id="categoryDropdown" class="dropDownContent"></div>
+                            <div class="errorMessage"></div>
                         </div>
                     </div>
                     <div class="inputContainer">
@@ -93,7 +94,7 @@
             </div>
             <div class="clearAndCreateButtons">
                 <button onclick="resetNewTask()" type="button" class="clearButton">Clear <img class="clearAndCreateButtonImage" src="./assets/img/clear-x-image.svg"></button>
-                <button onclick="createNewTask ()" type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
+                <button onclick="createNewTask()" type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
             </div>
         </div>
     </div>  

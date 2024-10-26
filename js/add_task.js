@@ -36,7 +36,7 @@ function addNewSubtask() {
     let newSubTask = document.getElementById('subTaskInput');
     let errorMessage = document.getElementById('subTaskErrorMessage');
     if(newSubTask.value == 0) {
-        errorMessage.textContent = 'Bitte füge einen Text hinzu';
+        errorMessage.textContent = 'Please add a text';
         errorMessage.classList.add('visible');
         return false;
     }
@@ -120,10 +120,20 @@ function validateTitleField() {
     if (!this.value) {
         this.classList.add('inputError');
         errorMessage.style.display = 'block';
-        errorMessage.textContent = 'This field is required.';
+        errorMessage.textContent = 'This field is required';
     } else {
         this.classList.remove('inputError');
         errorMessage.style.display = 'none';
+    }
+}
+
+function getDateToday() {
+    let dateInput = document.getElementById('date');
+    if (dateInput) {
+        dateInput.ondblclick = function() {
+            this.value = new Date().toISOString().split('T')[0];
+            updateDateColor.call(this);
+        };
     }
 }
 
@@ -131,7 +141,6 @@ function fieldRequiredDate() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
         dateInput.onchange = updateDateColor;
-        dateInput.ondblclick = setToday;
         dateInput.onfocus = validateDateField;
         dateInput.oninput = validateDateField;
         dateInput.onblur = validateDateField;
@@ -145,10 +154,37 @@ function validateDateField() {
     if (!this.value) {
         this.classList.add('inputError');
         errorMessage.style.display = 'block';
-        errorMessage.textContent = 'This field is required.';
+        errorMessage.textContent = 'This field is required';
     } else {
         this.classList.remove('inputError');
         errorMessage.style.display = 'none';
+    }
+}
+
+function fieldRequiredCategory() {
+    let categorySelector = document.getElementById('categorySelector');
+    let dropdownContent = document.getElementById('categoryDropdown');
+    if (categorySelector && dropdownContent) {
+        categorySelector.onclick = function() {
+            let errorMessage = this.querySelector('.errorMessage');
+            this.classList.remove('inputError');
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+        };
+        validateCategoryField.call(categorySelector);
+    }
+}
+
+function validateCategoryField() {
+    let selectedCategory = this.querySelector('.selectedCategoryHeadline');
+    let errorMessage = this.querySelector('.errorMessage');
+    if (selectedCategory.textContent === 'Select task category') {
+        this.classList.add('inputError');
+        if (errorMessage) {
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = 'This field is required';
+        }
     }
 }
 
@@ -304,45 +340,27 @@ function addExampleContacts(contactDropdown) {
 document.addEventListener('DOMContentLoaded', initializeContactDropdown);
 
 function createNewTask() {
-    let category = getCategory();
-    if (category === '') {
-        let dropdown = document.querySelector('.customDropdown');
-        let errorMessage = dropdown.querySelector('.errorMessage');
-        dropdown.classList.add('error');
-        errorMessage.classList.add('visible');
-        return;
+    let title = document.getElementById('title').value;
+    let dueDate = document.getElementById('date').value;
+    let category = document.getElementById('selectedCategory').textContent;
+    let isValid = true;
+
+    if (!title) {
+        fieldRequiredTitle();
+        isValid = false;
     }
-
-    let newTask = {
-        "title": document.getElementById('title').value,
-        "description": document.getElementById('description').value,
-        "assignedTo": [{
-            "contacts": document.getElementById('contacts').textContent
-        }],
-        "dueDate": document.getElementById('date').value,
-        "prio": getPriority(),
-        "category": category,
-        "subtasks": getSubtasks(),
-    };
-    newTasks.push(newTask);
-    resetNewTask();
-}
-
-function getPriority() {
-    if (document.querySelector('.prioButtonUrgent.active')) return 'urgent';
-    if (document.querySelector('.prioButtonMedium.active')) return 'medium';
-    if (document.querySelector('.prioButtonLow.active')) return 'low';
-    return '';
-}
-
-function getCategory() {
-    let selectedOption = document.querySelector('.selectedOption div').textContent;
-    return selectedOption !== 'Select task category' ? selectedOption : '';
-}
-
-function getSubtasks() {
-    let subtaskElements = document.querySelectorAll('#subTaskList .subtask');
-    return Array.from(subtaskElements).map(el => el.textContent);
+    if (!dueDate) {
+        fieldRequiredDate();
+        isValid = false;
+    }
+    if (category === 'Select task category') {
+        fieldRequiredCategory();
+        isValid = false;
+    }
+    if (isValid) {
+        // Hier fügen wir den Code ein, um die Aufgabe tatsächlich zu erstellen
+        console.log("Neue Aufgabe erstellt!");
+    }
 }
 
 function resetNewTask() {
@@ -350,14 +368,12 @@ function resetNewTask() {
     document.getElementById('description').value = '';
     document.getElementById('contacts').textContent = 'Select contacts to assign';
     document.getElementById('date').value = '';
-    
     document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => {
         btn.classList.remove('active');
     });
-    
-    document.querySelector('.selectedOption div').textContent = 'Select task category';
-    
+    document.getElementById('selectedCategory').textContent = 'Select task category';
     document.getElementById('subTaskList').innerHTML = '';
     document.getElementById('subTaskInput').value = '';
 
 }
+

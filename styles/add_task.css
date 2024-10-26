@@ -73,17 +73,24 @@ body {
     font-size: 20px;
     font-weight: 400;
     text-align: left;
+    color: #2A3647;
 }
 
 .inputError {
+    height: 52px;
     border: 1px solid red !important;
+    border-radius: 12px;
 }
 
-.errorMessageTitleAndDate {
+.errorMessage {
     color: red;
     font-size: 12px;
     margin-top: 5px;
     position: fixed;
+}
+
+.errorMessage.visible {
+    display: block;
 }
 
 .inputAddTask {
@@ -113,7 +120,37 @@ body {
     text-align: left;
     cursor: pointer;
     color: #D1D1D1;
+    background-image: url(/assets/img/calender.svg);
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
+
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 2;
+}
+
+input[type="date"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+    padding-right: 30px;
+    cursor: pointer;
+}
+
 
 .inputAddTaskDueDate:not([value="YYYY-MM-DD"]) {
     color: black;
@@ -192,6 +229,7 @@ body {
     border-radius: 10px;
 }
 
+
 input[type="text"]:focus,
     textarea:focus,
     select:focus,
@@ -223,21 +261,6 @@ input[type="text"]:focus,
     background-image: h;
 }
 
-.dropDownImageCategory {
-    padding-bottom: 5px;
-  
-}
-
-.dropDownImageCategory:hover { 
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
-    background-color: #E0E0E0;
-    border-radius: 50%;
-}
 
 .dropDownImageRotation180 {
     transform: rotate(180deg);
@@ -300,12 +323,6 @@ input[type="text"]:focus,
     border-color: red;
 }
 
-.errorMessage {
-    color: red;
-    font-size: 12px;
-    margin-top: 4px;
-    display: none;
-}
 
 .errorMessage.visible {
     display: block;
@@ -455,7 +472,27 @@ input[type="text"]:focus,
 }
 
 .subTaskList {
+    max-height: 95px;
+    overflow-y: auto;
     margin-top: 10px;
+}
+
+.subTaskList::-webkit-scrollbar {
+    width: 10px;
+}
+
+.subTaskList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.subTaskList::-webkit-scrollbar-thumb {
+    background: rgb(115,179,206);
+    border-radius: 10px;
+}
+
+.subTaskList::-webkit-scrollbar-thumb:hover {
+    background: rgb(95,159,186);
 }
 
 .subTask {
@@ -559,12 +596,16 @@ input[type="text"]:focus,
 }
 
 .clearButton {
+    font-size: 20px;
+    font-weight: 400;
     background-color: white;
     color: #2A3647;
     border: 1px solid #2A3647;
     width: 110px;
     height: 56px;
     margin-right: 18px;
+    display: flex;
+    align-items: center;
 }
 
 .clearButton:hover {
@@ -578,11 +619,15 @@ input[type="text"]:focus,
 }
 
 .createButton {
+    font-size: 21px;
+    font-weight: 700;
     background: #2A3647;
     color: white;
     border: none;
     width: 183px;
     height: 56px;
+    display: flex;
+    align-items: center;
 }
 
 .createButton:hover {
