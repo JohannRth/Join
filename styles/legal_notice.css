@@ -43,6 +43,10 @@ body {
     border-radius: 50%;
 }
 
+.hidden {
+    display: none;
+}
+
 li{
     font-size: 16px;
 }

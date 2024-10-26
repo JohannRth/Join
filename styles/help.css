@@ -44,6 +44,10 @@ body {
     border-radius: 50%;
 }
 
+.hidden {
+    display: none;
+}
+
 
 .headlineWhatIsJoin {
     font-size: 27px;
