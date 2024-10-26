@@ -17,10 +17,10 @@ function renderContactDetails(contact) {
                 </div>
             </div>
             <div class="contact-details-body">
-                <h3>Contact Information</h3>
-                <p><strong>Email</strong></p>
-                <p class="contact-info-mail">${contact.email}</p>
-                <p><strong>Phone</strong></p>
+                <h3>Contact Information</h3><br>
+                <p><strong>Email</strong></p><br>
+                <p class="contact-info-mail">${contact.email}</p><br>
+                <p><strong>Phone</strong></p><br>
                 <p class="contact-details-phone">${contact.phone}</p>
             </div>
         `;
