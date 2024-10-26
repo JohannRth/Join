@@ -360,6 +360,7 @@ function createNewTask() {
     if (isValid) {
         // Hier fügen wir den Code ein, um die Aufgabe tatsächlich zu erstellen
         console.log("Neue Aufgabe erstellt!");
+        showTaskAddedNotification();
     }
 }
 
@@ -376,4 +377,12 @@ function resetNewTask() {
     document.getElementById('subTaskInput').value = '';
 
 }
+
+function showTaskAddedNotification() {
+    const notification = document.getElementById('taskAddedNotification');
+    notification.classList.add('show');
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
+  }
 

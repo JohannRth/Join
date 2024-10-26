@@ -42,8 +42,12 @@
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Assigned To</span>
                         <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
-                            <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
-                            <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
+                            <div>
+                                <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
+                            </div>
+                            <div class="dropDownImageAssignedToContainer">
+                                <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
+                            </div>
                         </div>
                         <div class="contactDropdown" id="contactDropdown"></div>
                     </div>
@@ -69,8 +73,12 @@
                         <span class="addTaskInputTitle required">Category</span>
                         <div id="categorySelector" class="customDropdown" onclick="initializeCategoryDropdown()">
                             <div class="selectedOption">
-                                <span class="selectedCategoryHeadline" id="selectedCategory">Select task category</span>
-                                <img class="dropDownImageCategory" id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
+                                <div>
+                                    <span class="selectedCategoryHeadline" id="selectedCategory">Select task category</span>
+                                </div>
+                                <div class="dropDownImageCategoryContainer">
+                                    <img class="dropDownImageCategory" id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
+                                </div>
                             </div>
                             <div id="categoryDropdown" class="dropDownContent"></div>
                             <div class="errorMessage"></div>
@@ -97,6 +105,14 @@
                 <button onclick="createNewTask()" type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
             </div>
         </div>
-    </div>  
+    </div> 
+    <div id="taskAddedNotification" class="taskAddedNotification">
+        <div>
+            <span>Task added to board</span>
+        </div>
+        <div>
+            <img class="taskAddedNotificationImage" src="./assets/img/logo_board.svg">
+        </div>
+      </div> 
 </body>
 </html>

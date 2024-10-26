@@ -123,7 +123,7 @@ body {
     background-image: url(/assets/img/calender.svg);
     background-repeat: no-repeat;
     background-position: right 12px center;
-    background-size: 20px;
+    background-size: 18px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -190,6 +190,24 @@ input[type="date"] {
 
 .assignedAddTask:hover {
     box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.4);
+}
+
+.dropDownImageAssignedToContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropDownImageAssignedToContainer:hover {
+    position: absolute;
+    top: 66.36%;
+    left: 50.30%;
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    transition: opacity 0.3s ease;
 }
 
 .contactDropdown {
@@ -282,6 +300,29 @@ input[type="text"]:focus,
 .selectedCategoryHeadline {
     font-size: 20px;
     font-weight: 400;
+}
+
+.dropDownImageCategoryContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropDownImageCategoryContainer:hover {
+    position: absolute;
+    top: 50.95%;
+    left: 96.1%;
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    transition: opacity 0.3s ease;
+}
+
+.dropDownImageCategory {
+    height: 9px;
+    width: 9px;
 }
 
 .dropDownContent {
@@ -472,7 +513,7 @@ input[type="text"]:focus,
 }
 
 .subTaskList {
-    max-height: 95px;
+    max-height: 153px;
     overflow-y: auto;
     margin-top: 10px;
 }
@@ -641,6 +682,32 @@ input[type="text"]:focus,
     height: 14px;
     margin-left: 10px;
 }
+
+.taskAddedNotification {
+    width: 320px;
+    height: 66px;
+    position: fixed;
+    bottom: -130px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2A3647;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 15px;
+    transition: bottom 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+  }
+  
+  .taskAddedNotification.show {
+    bottom: 500px;
+  }
+
+  .taskAddedNotificationImage {
+    height: 30px;
+  }
 
 .scroll {
     overflow-y: scroll;
