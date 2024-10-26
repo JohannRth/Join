@@ -72,42 +72,62 @@ function displayUserInitials() {
 }
 
     // Funktion zum Einrichten des Dropdown-Menüs
+    window.onload = function () {
+        loadHTML("header-placeholder", "/assets/templates/header.html", function() {
+            setupProfileDropdown(); 
+            displayUserInitials();
+        });
+        loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", highlightCurrentPage);
+    };
+
+
+
+    function setupProfileDropdown() {
+        const profilePicture = document.getElementById("profilePicture");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const arrowLeft = document.querySelector(".arrowLeft"); // Wählt das Element zum Verstecken aus
+    
+        // Überprüfen, ob die Elemente existieren, bevor Event-Listener hinzugefügt werden
+        if (profilePicture && dropdownMenu) {
+            profilePicture.addEventListener("click", function(event) {
+                event.stopPropagation(); // Verhindert das Schließen bei Klick auf das Profilbild
+                
+                // Zeige oder verstecke das Dropdown-Menü
+                if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
+                    dropdownMenu.style.display = "block";
+                    
+                    // Blendet das arrowLeft-Element aus, falls es existiert
+                    if (arrowLeft) {
+                        arrowLeft.style.display = "none";
+                    }
+                } else {
+                    dropdownMenu.style.display = "none";
+                    
+                    // Zeigt das arrowLeft-Element wieder an, falls es existiert
+                    if (arrowLeft) {
+                        arrowLeft.style.display = "block";
+                    }
+                }
+            });
+    
+            // Schließt das Menü und zeigt arrowLeft wieder, wenn irgendwo anders auf die Seite geklickt wird
+            document.addEventListener("click", function() {
+                if (dropdownMenu.style.display === "block") {
+                    dropdownMenu.style.display = "none";
+                    
+                    // Zeigt das arrowLeft-Element wieder an, falls es existiert
+                    if (arrowLeft) {
+                        arrowLeft.style.display = "block";
+                    }
+                }
+            });
+        }
+    }
+
 window.onload = function () {
     loadHTML("header-placeholder", "/assets/templates/header.html", function() {
-        
-        setupProfileDropdown();
+        setupProfileDropdown(); 
         displayUserInitials();
     });
     loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", highlightCurrentPage);
 };
-
-
-function setupProfileDropdown() {
-    const profilePicture = document.getElementById("profilePicture");
-    const dropdownMenu = document.getElementById("dropdownMenu");
-    const arrowLeft = document.querySelector(".arrowLeft"); // Wählt das Element zum Verstecken aus
-
-    // Überprüfen, ob die Elemente existieren, bevor Event-Listener hinzugefügt werden
-    if (profilePicture && dropdownMenu && arrowLeft) {
-        profilePicture.addEventListener("click", function(event) {
-            event.stopPropagation(); // Verhindert das Schließen bei Klick auf das Profilbild
-            
-            // Zeige oder verstecke das Dropdown-Menü und setze den display-Wert für arrowLeft
-            if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
-                dropdownMenu.style.display = "block";
-                arrowLeft.style.display = "none"; // Blendet das Element aus
-            } else {
-                dropdownMenu.style.display = "none";
-                arrowLeft.style.display = "block"; // Zeigt das Element wieder an
-            }
-        });
-
-        // Schließt das Menü und zeigt arrowLeft wieder, wenn irgendwo anders auf die Seite geklickt wird
-        document.addEventListener("click", function() {
-            if (dropdownMenu.style.display === "block") {
-                dropdownMenu.style.display = "none";
-                arrowLeft.style.display = "block"; // Zeigt das Element wieder an
-            }
-        });
-    }
-}
