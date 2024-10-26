@@ -478,7 +478,7 @@ input[type="text"]:focus,
 }
 
 .subTaskList::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;   
 }
 
 .subTaskList::-webkit-scrollbar-track {
@@ -487,12 +487,13 @@ input[type="text"]:focus,
 }
 
 .subTaskList::-webkit-scrollbar-thumb {
-    background: rgb(115,179,206);
+    background: rgb(41,171,226);
     border-radius: 10px;
 }
 
 .subTaskList::-webkit-scrollbar-thumb:hover {
     background: rgb(95,159,186);
+    cursor: pointer;
 }
 
 .subTask {
