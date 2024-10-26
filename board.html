@@ -11,9 +11,11 @@
     <script src="script.js"></script>
     <script src="./js/login.js"></script>
     <script src="./assets/templates/load_header_sidebar.js"></script>
+    <script src="./js/add_task.js"></script>
     <link rel="stylesheet" href="./assets/fonts/font.css" />
     <link rel="stylesheet" href="./styles/side_header_template.css" />
     <link rel="stylesheet" href="./styles/board.css">
+    <link rel="stylesheet" href="/styles/add_task.css">
     <!-- Link-Fonts -->
     <link rel="stylesheet" href="./assets/fonts/font.css" />
     <!-- Favicon -->
@@ -43,7 +45,7 @@
                     <img src="./assets/img/search.svg" alt="">
                 </div>
             </div>
-            <button class="button-add-task-board">
+            <button class="button-add-task-board" onclick="addTaskExpanded()">
               Add task <img src="./assets/img/add.svg" alt="" />
             </button>
           </div>
@@ -145,6 +147,83 @@
           />
         </div>
       </div>
+    </div>
+    <div class="card-overlay hidden" id="add-task-overlay">
+        <div class="expanded-card-overlay add-task-expanded-overlay">
+            <div class="board-add-task-h1-conatiner-cross">
+                <div class="board-add-task-h1">
+                    <h1 class="">Add Task</h1>
+                </div>
+                <div>
+                    <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeAddTaskOverlay()">
+                </div>
+            </div>
+            <div class="addTaskContent">
+                <div class="leftAddTaskContainer">
+                    <form onsubmit="createTask(); return false;">
+                        <div class="inputContainerTitle">
+                            <div class="inputContainer">
+                                <span class="addTaskInputTitle required">Title</span>
+                                <input onclick="fieldRequiredTitle()" class="inputAddTask" id="title" type="text" placeholder="Enter a title">
+                                <div class="errorMessageTitleAndDate"></div>
+                            </div>
+                        </div>
+                        <div class="inputContainerDescription">
+                            <div class="inputContainer">
+                                <span class="addTaskInputTitle">Description</span>
+                                <textarea class="textAreaAddTask" id="description" placeholder="Enter a Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="inputContainer">
+                            <span class="addTaskInputTitle">Assigned To</span>
+                            <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
+                                <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
+                                <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
+                            </div>
+                            <div class="contactDropdown" id="contactDropdown"></div>
+                        </div>
+                </div>
+                <div class="addTaskSeparateContainer"></div>
+                <div class="rightAddTaskContainer">
+                        <div class="inputContainerDueDate">
+                            <div class="inputContainer">
+                                <span class="addTaskInputTitle required">Due date</span>
+                                <input onclick="fieldRequiredDate()" class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
+                                <div class="errorMessageTitleAndDate"></div>
+                            </div>
+                        </div>
+                        <div class="prioContainer">
+                            <span class="addTaskInputTitle">Prio</span>
+                            <div class="prioButtonContainer">
+                                <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
+                                <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
+                                <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
+                            </div>
+                        </div>
+                        <div class="inputContainer">
+                            <span class="addTaskInputTitle required">Category</span>
+                            <div id="categorySelector" class="customDropdown" onclick="initializeCategoryDropdown()">
+                                <div class="selectedOption">
+                                    <span class="selectedCategoryHeadline" id="selectedCategory">Select task category</span>
+                                    <img id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
+                                </div>
+                                <div id="categoryDropdown" class="dropDownContent"></div>
+                            </div>
+                        </div>
+                        <div class="inputContainer">
+                            <span class="addTaskInputTitle">Subtasks</span>
+                            <div class="subTaskInputContainer">
+                                <input onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
+                                <img onclick="addNewSubtask()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
+                            </div>
+                            <div class="subTaskErrorMessage" id="subTaskErrorMessage"></div>
+                            <div class="subTaskList" id="subTaskList"></div>
+                        </div>
+                        <div><button></button></div>
+                    </form>
+                </div>
+            </div> 
+        </div>
     </div>
 
     <script>
@@ -502,6 +581,22 @@
         const feedbackCount = getAwaitFeedbackCount();
         localStorage.setItem('feedbackCount', feedbackCount);
       }
+
+      // Add Task Overlay Card //*css*/
+      
+      function addTaskExpanded() {
+        const overlay = document.getElementById('add-task-overlay');
+        overlay.classList.remove('hidden'); // Blendet das Overlay ein
+        document.body.classList.add('no-scroll'); // Verhindert das Scrollen im Hintergrund
+      }
+
+      function closeAddTaskOverlay() {
+        const overlay = document.getElementById('add-task-overlay');
+        overlay.classList.add('hidden'); // Blendet das Overlay aus
+        document.body.classList.remove('no-scroll');
+      }
+
+      
 
     </script>
   </body>
