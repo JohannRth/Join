@@ -148,14 +148,14 @@
         </div>
       </div>
     </div>
-    <div class="card-overlay hidden" id="add-task-overlay">
+    <div class="card-overlay hidden" id="add-task-overlay" onclick="closeAddTaskOverlay(event)">
         <div class="expanded-card-overlay add-task-expanded-overlay">
             <div class="board-add-task-h1-conatiner-cross">
                 <div class="board-add-task-h1">
                     <h1 class="">Add Task</h1>
                 </div>
                 <div>
-                    <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeAddTaskOverlay()">
+                    <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeAddTaskOverlay(event)">
                 </div>
             </div>
             <div class="addTaskContent">
@@ -219,10 +219,22 @@
                             <div class="subTaskErrorMessage" id="subTaskErrorMessage"></div>
                             <div class="subTaskList" id="subTaskList"></div>
                         </div>
-                        <div><button></button></div>
                     </form>
                 </div>
             </div> 
+            <div class="required-button-expanded-conatiner">
+                <div>
+                    <span class="requiredBefore requiredTextAddTask">This field is required</span>
+                </div>
+                <div class="required-expanded-button">
+                    <div>
+                        <button onclick="resetNewTask()" type="button" class="clearButton">Clear <img class="clearAndCreateButtonImage" src="./assets/img/clear-x-image.svg"></button>
+                    </div>
+                    <div>
+                        <button onclick="createNewTask()" type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -582,18 +594,20 @@
         localStorage.setItem('feedbackCount', feedbackCount);
       }
 
-      // Add Task Overlay Card //*css*/
+      // Add Task Overlay Card //
       
       function addTaskExpanded() {
         const overlay = document.getElementById('add-task-overlay');
-        overlay.classList.remove('hidden'); // Blendet das Overlay ein
-        document.body.classList.add('no-scroll'); // Verhindert das Scrollen im Hintergrund
+        overlay.classList.remove('hidden'); 
+        document.body.classList.add('no-scroll'); 
       }
 
-      function closeAddTaskOverlay() {
+      function closeAddTaskOverlay(event) {
         const overlay = document.getElementById('add-task-overlay');
-        overlay.classList.add('hidden'); // Blendet das Overlay aus
-        document.body.classList.remove('no-scroll');
+        if (event.target === overlay || event.target.classList.contains('close-btn-overlay')) {
+            overlay.classList.add('hidden'); 
+            document.body.classList.remove('no-scroll');
+        }
       }
 
       

@@ -540,7 +540,7 @@ body.no-scroll {
   .add-task-expanded-overlay {
     width: 1116px;
     height: 870px;
-    padding: 20px;
+    padding: 62px;
     background-color: #fff;
     display: flex;
     justify-content: center;
@@ -555,7 +555,20 @@ body.no-scroll {
   }
 
   .board-add-task-h1{
-    font-size: 61px;
+    font-size: 40px;
     font-weight: 700;
     color: #000000;
+  }
+
+  .required-button-expanded-conatiner{
+    display: flex;
+    justify-content: space-between;
+    width: 986px;
+  }
+
+  .required-expanded-button{
+    width: 334px;
+    height: 56px;
+    display: flex;
+    justify-content: center;
   }
