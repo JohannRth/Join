@@ -13,10 +13,16 @@ function loadHTML(elementID, fileName, callback) {
 
 // Lade die Header- und Sidebar-Dateien nach dem Laden der Seite
 window.onload = function () {
-    loadHTML("header-placeholder", "/assets/templates/header.html");
-    loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", highlightCurrentPage);
+    loadHTML("header-placeholder", "/assets/templates/header.html", function() {
+        setupProfileDropdown(); 
+        displayUserInitials();
+    });
+    loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", function() {
+        highlightCurrentPage();
+    });
 };
 
+// Funktion zum Hervorheben der aktuellen Seite im Menü
 function highlightCurrentPage() {
     var path = window.location.pathname;
     var page = path.split("/").pop(); // Holt den aktuellen Seitennamen (z.B. 'summary.html')
@@ -41,15 +47,6 @@ function getUserInitials(name) {
     return initials;
 }
 
-window.onload = function () {
-    loadHTML("header-placeholder", "/assets/templates/header.html", function() {
-        displayUserInitials();
-    });
-    loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", function() {
-        highlightCurrentPage();
-    });
-};
-
 function displayUserInitials() {
     // Benutzerdaten aus dem localStorage abrufen
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
@@ -67,62 +64,51 @@ function displayUserInitials() {
         }
     } else {
         // Falls kein Benutzer eingeloggt ist, Weiterleitung zur Login-Seite
-        //muss wieder aktiviert werden --> window.location.href = 'index.html';
+        // muss wieder aktiviert werden wenn die seite abgegeben wird --> window.location.href = 'index.html';
     }
 }
 
-    // Funktionen zum Dropdown-Menüs //
-    window.onload = function () {
-        loadHTML("header-placeholder", "/assets/templates/header.html", function() {
-            setupProfileDropdown(); 
-            displayUserInitials();
+// Funktionen zum Dropdown-Menü
+function setupProfileDropdown() {
+    const profilePicture = document.getElementById("profilePicture");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const arrowLeft = document.querySelector(".arrowLeft"); 
+
+    if (profilePicture && dropdownMenu) {
+        profilePicture.addEventListener("click", function(event) {
+            event.stopPropagation();
+
+            if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
+                dropdownMenu.style.display = "block";
+
+                if (arrowLeft) {
+                    arrowLeft.style.display = "none";
+                }
+            } else {
+                dropdownMenu.style.display = "none";
+
+                if (arrowLeft) {
+                    arrowLeft.style.display = "block";
+                }
+            }
         });
-        loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", highlightCurrentPage);
-    };
 
+        document.addEventListener("click", function() {
+            if (dropdownMenu.style.display === "block") {
+                dropdownMenu.style.display = "none";
 
-
-    function setupProfileDropdown() {
-        const profilePicture = document.getElementById("profilePicture");
-        const dropdownMenu = document.getElementById("dropdownMenu");
-        const arrowLeft = document.querySelector(".arrowLeft"); 
-    
-        
-        if (profilePicture && dropdownMenu) {
-            profilePicture.addEventListener("click", function(event) {
-                event.stopPropagation();
-                         
-                if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
-                    dropdownMenu.style.display = "block";
-                    
-                    if (arrowLeft) {
-                        arrowLeft.style.display = "none";
-                    }
-                } else {
-                    dropdownMenu.style.display = "none";
-                    
-                    if (arrowLeft) {
-                        arrowLeft.style.display = "block";
-                    }
+                if (arrowLeft) {
+                    arrowLeft.style.display = "block";
                 }
-            });
-    
-            document.addEventListener("click", function() {
-                if (dropdownMenu.style.display === "block") {
-                    dropdownMenu.style.display = "none";
-                    
-                    if (arrowLeft) {
-                        arrowLeft.style.display = "block";
-                    }
-                }
-            });
-        }
+            }
+        });
     }
+}
 
-window.onload = function () {
-    loadHTML("header-placeholder", "/assets/templates/header.html", function() {
-        setupProfileDropdown(); 
-        displayUserInitials();
-    });
-    loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", highlightCurrentPage);
-};
+// Logout-Funktion
+function logout() {
+    // Entfernen des Benutzers aus dem localStorage
+    localStorage.removeItem('loggedInUser');
+    // Weiterleitung zur Login-Seite
+    window.location.href = 'index.html';
+}
