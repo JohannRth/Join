@@ -2,9 +2,8 @@
 function renderContactDetails(contact) {
     const contactDetails = document.getElementById('contactDetails');
     if (contactDetails) {
-        const contactIndex = contacts.indexOf(contact);
         contactDetails.innerHTML = `
-            <div class="contact-details-header" data-contact-index="${contactIndex}">
+            <div class="contact-details-header" data-contact-key="${contact.key}">
                 <div class="contact-icon-large" style="background-color: ${getColor(contact.name)};">
                     ${getInitials(contact.name)}
                 </div>
@@ -27,7 +26,8 @@ function renderContactDetails(contact) {
     }
 }
 
-function getContactModalHTML(contact, isEditMode, contactIndex, initials, color) {
+// Funktion zum Generieren des Modal-HTML
+function getContactModalHTML(contact, isEditMode, contactKey, initials, color) {
     return `
         <div class="add-contact-modal-content">
             <div class="add-contact-left">
@@ -48,7 +48,7 @@ function getContactModalHTML(contact, isEditMode, contactIndex, initials, color)
                 `}
 
                 <form id="addContactForm">
-                    <input type="hidden" id="contactIndex" value="${contactIndex}">
+                    <input type="hidden" id="contactKey" value="${contact ? contact.key : ''}">
                     <div class="form-group">
                         <input type="text" id="newContactName" placeholder="Name" autocomplete="name" value="${isEditMode ? contact.name : ''}">
                         <span class="error-message" id="nameError"></span>
@@ -63,7 +63,7 @@ function getContactModalHTML(contact, isEditMode, contactIndex, initials, color)
                     </div>
                     <div class="form-actions">
                         ${isEditMode ? `
-                        <button type="button" class="cancel-button" onclick="deleteContactFromModal(${contactIndex})">Delete <img src="./assets/img/delete.svg"></button>
+                        <button type="button" class="cancel-button" onclick="deleteContactFromModal('${contact ? contact.key : ''}')">Delete <img src="./assets/img/delete.svg"></button>
                         ` : `
                         <button type="button" class="cancel-button" onclick="closeAddContactModal()">Cancel <img src="./assets/img/clear-x-image.svg"></button>
                         `}
