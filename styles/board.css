@@ -545,7 +545,7 @@ body.no-scroll {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 30px;
   }
 
   .board-add-task-h1-conatiner-cross{
