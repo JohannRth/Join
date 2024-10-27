@@ -187,7 +187,6 @@ function getDateToday() {
             }
             updateDateColor.call(this);
         };
-        
         dateInput.onchange = function() {
             updateDateColor.call(this);
         };
@@ -290,7 +289,7 @@ function getElements() {
         assignedTo: document.getElementById('assignedTo'),
         contactDropdown: document.getElementById('contactDropdown'),
         dropDownImage: document.getElementById('dropDownImageContacts'),
-        contactsDisplay: document.getElementById('contacts')
+        // contactsDisplay: document.getElementById('contacts')  // Fügt die Namen der Kontakte in den div ein
     };
 }
 
@@ -315,31 +314,82 @@ function preventClose(event) {
     event.stopPropagation();
 }
 
-function selectContact(contact, elements) {
-    elements.contactsDisplay.textContent = contact;
-    elements.contactDropdown.classList.remove('show');
-    elements.dropDownImage.classList.remove('dropDownImageRotation180');
-    document.removeEventListener('click', preventClose);
+function selectContact(contact) {
+    const contactItem = event.target.closest('.contactItem');
+    const checkbox = contactItem.querySelector('.contactCheckbox');
+    // Toggle checkbox
+    checkbox.checked = !checkbox.checked;
+    
+    // Update active contacts
+    updateActiveContacts(contact, checkbox.checked);
 }
 
+function updateActiveContacts(contact, isChecked) {
+    const activeContactsDiv = document.getElementById('aktivContacts');
+    
+    if (isChecked) {
+        // Add contact to aktivContacts
+        const contactElement = document.createElement('div');
+        contactElement.textContent = contact;
+        contactElement.setAttribute('data-contact', contact);
+        activeContactsDiv.appendChild(contactElement);
+    } else {
+        // Remove contact from aktivContacts
+        const existingContact = activeContactsDiv.querySelector(`[data-contact="${contact}"]`);
+        if (existingContact) {
+            existingContact.remove();
+        }
+    }
+}
+// function selectContact(contact, elements) {
+//     // elements.contactsDisplay.textContent = contact;
+//     // elements.contactDropdown.classList.remove('show'); // lässt beim anklicken des Kontaktes das DropDownMenü schließen.
+//     elements.dropDownImage.classList.remove('dropDownImageRotation180');
+//     document.removeEventListener('click', preventClose);
+// }
+
 function addContact(contact, contactDropdown) {
-    const contactItem = document.createElement('div');
+    let contactItem = document.createElement('div');
     contactItem.className = 'contactItem';
-    contactItem.textContent = contact;
+    contactItem.innerHTML = `
+        <div>
+            <span>${contact}</span>
+        </div>
+        <div>
+            <input type="checkbox" class="contactCheckbox">
+        </div>
+    `;
+    
     contactItem.addEventListener('click', (event) => {
-        event.stopPropagation();
+        event.preventDefault();
         selectContact(contact, getElements());
     });
+    
     contactDropdown.appendChild(contactItem);
 }
 
-function addExampleContacts(contactDropdown) {
-    addContact('Max Mustermann', contactDropdown);
-    addContact('Erika Musterfrau', contactDropdown);
-    addContact('John Doe', contactDropdown);
+async function initializeContactDropdown() {
+    if (contactDropdownInitialized) return;
+    const elements = getElements();
+    setupEventListeners(elements);
+    await loadAndAddContacts(elements.contactDropdown);
+    contactDropdownInitialized = true;
+}
+
+async function loadAndAddContacts(contactDropdown) {
+    try {
+        const contacts = await loadData('contacts');
+        Object.values(contacts).forEach(contact => {
+            addContact(contact.name, contactDropdown);
+        });
+    } catch (error) {
+        console.error('Fehler beim Laden der Kontakte:', error);
+        addExampleContacts(contactDropdown);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', initializeContactDropdown);
+
 
 function createNewTask() {
     let title = document.getElementById('title').value;
@@ -377,6 +427,7 @@ function resetNewTask() {
     document.getElementById('selectedCategory').textContent = 'Select task category';
     document.getElementById('subTaskList').innerHTML = '';
     document.getElementById('subTaskInput').value = '';
+    document.getElementById('aktivContacts').innerHTML = '';
 
 }
 

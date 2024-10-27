@@ -86,7 +86,7 @@ body {
     color: red;
     font-size: 12px;
     margin-top: 5px;
-    position: fixed;
+    position: absolute;
 }
 
 .errorMessage.visible {
@@ -235,6 +235,9 @@ input[type="date"] {
 }
 
 .contactItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 12px;
     cursor: pointer;
     height: 48px;
@@ -245,6 +248,11 @@ input[type="date"] {
 .contactItem:hover {
     background-color: #f0f0f0;
     border-radius: 10px;
+}
+
+.aktivContacts {
+    width: 400px;
+    height: 100px;
 }
 
 
@@ -513,7 +521,7 @@ input[type="text"]:focus,
 }
 
 .subTaskList {
-    max-height: 153px;
+    max-height: 150px;
     overflow-y: auto;
     margin-top: 10px;
 }
