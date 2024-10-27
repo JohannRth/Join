@@ -1,3 +1,17 @@
+const guestUser = {
+    name: 'Guest',
+    email: 'guest@example.com',
+    password: '' // Das Passwort kann leer sein oder einen festen Wert haben
+};
+
+// Funktion für den Gastlogin
+function guestLogin() {
+    // Gastbenutzer als eingeloggt setzen
+    localStorage.setItem('loggedInUser', JSON.stringify(guestUser));
+    // Weiterleitung zur summary.html
+    window.location.href = 'summary.html';
+}
+
 async function login(event) {
     event.preventDefault(); // Verhindert das standardmäßige Absenden des Formulars
 
