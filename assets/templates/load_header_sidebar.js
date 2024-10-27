@@ -11,16 +11,51 @@ function loadHTML(elementID, fileName, callback) {
     xhttp.send();
 }
 
-// Lade die Header- und Sidebar-Dateien nach dem Laden der Seite
+// Hauptfunktion beim Laden der Seite
 window.onload = function () {
+    checkAuthentication();
+
     loadHTML("header-placeholder", "/assets/templates/header.html", function() {
         setupProfileDropdown(); 
         displayUserInitials();
+        checkAuthentication(); // Nach dem Laden des Headers prüfen
     });
+
     loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", function() {
         highlightCurrentPage();
+        checkAuthentication(); // Nach dem Laden der Sidebar prüfen
     });
 };
+
+// Authentifizierungsprüfung
+function checkAuthentication() {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    const currentPage = window.location.pathname.split('/').pop();
+    const allowedPages = ['index.html', 'legal_notice.html', 'privacy_policy.html'];
+
+    if (!loggedInUser) {
+        if (!allowedPages.includes(currentPage)) {
+            window.location.href = 'index.html';
+        } else {
+            hideElementsForLoggedOutUser();
+        }
+    }
+}
+
+// Elemente für ausgeloggte Benutzer ausblenden
+function hideElementsForLoggedOutUser() {
+    // Elemente mit der Klasse 'navLinksContainer' ausblenden
+    const navLinksContainers = document.querySelectorAll('.navLinksContainer');
+    navLinksContainers.forEach(element => {
+        element.style.display = 'none';
+    });
+
+    // Elemente mit der Klasse 'header-right' ausblenden
+    const headerRightElements = document.querySelectorAll('.header-right');
+    headerRightElements.forEach(element => {
+        element.style.display = 'none';
+    });
+}
 
 // Funktion zum Hervorheben der aktuellen Seite im Menü
 function highlightCurrentPage() {
@@ -64,7 +99,7 @@ function displayUserInitials() {
         }
     } else {
         // Falls kein Benutzer eingeloggt ist, Weiterleitung zur Login-Seite
-        // muss wieder aktiviert werden wenn die seite abgegeben wird --> window.location.href = 'index.html';
+/////////////////// muss wieder aktiviert werden wenn die seite abgegeben wird --> window.location.href = 'index.html';
     }
 }
 

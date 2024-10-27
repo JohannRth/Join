@@ -156,6 +156,8 @@ input#confirmedPassword {
     box-sizing: border-box;
 }
 
+input#loginEmail:focus,
+input#loginPassword:focus,
 input#inputName:focus,
 input#email:focus,
 input#password:focus,
