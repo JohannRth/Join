@@ -127,16 +127,6 @@ function validateTitleField() {
     }
 }
 
-function getDateToday() {
-    let dateInput = document.getElementById('date');
-    if (dateInput) {
-        dateInput.ondblclick = function() {
-            this.value = new Date().toISOString().split('T')[0];
-            updateDateColor.call(this);
-        };
-    }
-}
-
 function fieldRequiredDate() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
@@ -188,14 +178,26 @@ function validateCategoryField() {
     }
 }
 
-function updateDateColor() {
-    this.style.color = this.value ? 'black' : '#D1D1D1';
+function getDateToday() {
+    let dateInput = document.getElementById('date');
+    if (dateInput) {
+        dateInput.onclick = function() {
+            if (this.value === "YYYY-MM-DD") {
+                this.value = new Date().toISOString().split('T')[0];
+            }
+            updateDateColor.call(this);
+        };
+        
+        dateInput.onchange = function() {
+            updateDateColor.call(this);
+        };
+    }
 }
 
-function setToday() {
-    this.value = new Date().toISOString().split('T')[0];
-    updateDateColor.call(this);
+function updateDateColor() {
+    this.style.color = this.value && this.value !== "YYYY-MM-DD" ? 'black' : '#D1D1D1';
 }
+
 
 let categoryDropdownInitialized = false;
 
