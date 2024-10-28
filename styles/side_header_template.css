@@ -150,6 +150,7 @@ body {
 
 .desktopLinkAndImage:hover {
     cursor: pointer;
+    background-color: #2A3D59;
 }
 
 .desktopLinkAndImage img {
@@ -162,10 +163,6 @@ body {
     color: #CDCDCD;
     text-decoration: none;
     font-size: 16px;
-}
-
-.desktopLinkAndImage:hover {
-    background-color: #091931;
 }
 
 .desktopLinkAndImage.active {
