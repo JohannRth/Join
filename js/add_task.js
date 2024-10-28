@@ -352,6 +352,9 @@ function addContact(contact, contactDropdown) {
     let contactItem = document.createElement('div');
     contactItem.className = 'contactItem';
     contactItem.innerHTML = `
+        <div class="contactIcon" style="background-color: ${getColor(contact)};">
+            ${getInitials(contact)}
+        </div>
         <div>
             <span>${contact}</span>
         </div>
@@ -366,6 +369,41 @@ function addContact(contact, contactDropdown) {
     });
     
     contactDropdown.appendChild(contactItem);
+}
+
+// Liste der Farben für die Icons
+const colors = [
+    "#FF7A00",
+    "#FF5EB3",
+    "#6E52FF",
+    "#9327FF",
+    "#00BEE8",
+    "#1FD7C1",
+    "#FF745E",
+    "#FFA35E",
+    "#FC71FF",
+    "#FFC701",
+    "#0038FF",
+    "#C3FF2B",
+    "#FFE62B",
+    "#FF4646",
+    "#FFBB2B"
+];
+
+// Funktion zum Erhalten der Initialen des Namens
+function getInitials(name) {
+    if (!name || typeof name !== 'string') return '';
+    const nameParts = name.trim().split(' ');
+    const initials = nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '');
+    return initials.toUpperCase();
+}
+
+// Funktion zum Abrufen einer Farbe basierend auf dem ersten Buchstaben des Namens
+function getColor(name) {
+    if (!name || typeof name !== 'string') return '#000000'; // Standardfarbe
+    const firstLetter = name.charAt(0).toUpperCase();
+    const index = firstLetter.charCodeAt(0) - 65; // 'A' hat den charCode 65
+    return colors[index % colors.length];
 }
 
 async function initializeContactDropdown() {
