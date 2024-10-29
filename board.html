@@ -161,8 +161,8 @@
                         <div class="inputContainerTitle">
                             <div class="inputContainer">
                                 <span class="addTaskInputTitle required">Title</span>
-                                <input onclick="fieldRequiredTitle()" class="inputAddTask" id="title" type="text" placeholder="Enter a title">
-                                <div class="errorMessageTitleAndDate"></div>
+                                <input class="inputAddTask" id="title" type="text" placeholder="Enter a title">
+                                <div class="errorMessage"></div>
                             </div>
                         </div>
                         <div class="inputContainerDescription">
@@ -172,21 +172,27 @@
                             </div>
                         </div>
                         <div class="inputContainer">
-                            <span class="addTaskInputTitle">Assigned To</span>
-                            <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
-                                <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
-                                <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
-                            </div>
-                            <div class="contactDropdown" id="contactDropdown"></div>
-                        </div>
+                          <span class="addTaskInputTitle">Assigned To</span>
+                          <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
+                              <div>
+                                  <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
+                              </div>
+                              <div class="dropDownImageAssignedToContainer">
+                                  <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
+                              </div>
+                          </div>
+                          <div class="contactDropdown" id="contactDropdown">
+                          </div>
+                          <div id="aktivContacts" class="aktivContacts"></div>
+                      </div>
                 </div>
                 <div class="addTaskSeparateContainer"></div>
                 <div class="rightAddTaskContainer">
                         <div class="inputContainerDueDate">
                             <div class="inputContainer">
                                 <span class="addTaskInputTitle required">Due date</span>
-                                <input onclick="fieldRequiredDate()" class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
-                                <div class="errorMessageTitleAndDate"></div>
+                                <input onclick="getDateToday()" class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
+                                <div class="errorMessage"></div>
                             </div>
                         </div>
                         <div class="prioContainer">
@@ -248,7 +254,17 @@
           subtasks: 2,
           completedSubtasks: 2,
           contacts: ["SM", "BZ"],
-        },
+        },{
+          id: 1,
+          titel: "CSS Architecture Planning",
+          type: "Technical Task",
+          category: "todo",
+          description: "njdnjsnfejknflakdsnjlsdnvanfbvoafbv.",
+          priority: "Low",
+          subtasks: 2,
+          completedSubtasks: 1,
+          contacts: ["SM", "BZ"],
+        }
       ];
 
       document.addEventListener("DOMContentLoaded", (event) => {
@@ -268,6 +284,7 @@
       function dragTask(ev) {
         ev.dataTransfer.setData("text", ev.target.id);
         ev.target.classList.add("dragging");
+        ev.target.style.cursor = "grabbing";
       }
 
       function generateTodoHTML(element) {
@@ -313,11 +330,6 @@
             <img src="./assets/img/medium-titel-card.svg" alt="medium-titel-card">
         </div>
     </div>`;
-      }
-
-      function dragTask(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-        ev.target.style.cursor = "grabbing";
       }
 
       function dropTask(ev) {
@@ -412,26 +424,27 @@
 
       // ExpandedCard
       function generateExpandedCardHTML(element) {
-        let contactsHTML = "";
-        if (element["contacts"]) {
-          contactsHTML = `
-            <div class="task-assigned-container-overlay">
-                <div class="task-assigned-line-overlay">
-                    <span>Assigned To:</span>
-                </div>
-                ${element["contacts"]
-                  .map(
-                    (contact) => `
-                    <div class="person-container-overlay">
-                        <span class="person-circle-overlay">${contact.initials}</span>
-                        <span class="person-name-overlay">${contact.fullName}</span>
-                    </div>
-                `
-                  )
-                  .join("")}
-            </div>
-        `;
-        }
+        console.log("Generiere HTML für Aufgabe:", element);
+  let contactsHTML = "";
+  if (element["contacts"]) {
+    contactsHTML = `
+      <div class="task-assigned-container-overlay">
+          <div class="task-assigned-line-overlay">
+              <span>Assigned To:</span>
+          </div>
+          ${element["contacts"]
+            .map(
+              (contact) => `
+              <div class="person-container-overlay">
+                  <span class="person-circle-overlay">${contact}</span>
+                  <span class="person-name-overlay">${contact}</span>
+              </div>
+          `
+            )
+            .join("")}
+      </div>
+  `;
+  }
 
         return `
     <div class="expanded-card-overlay">
@@ -606,6 +619,7 @@
             document.body.classList.remove('no-scroll');
         }
       }
+    
 
       
 
