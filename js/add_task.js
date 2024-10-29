@@ -1,24 +1,29 @@
-// let newTasks = [
-//     {
-//       "title": "",
-//       "description": "",
-//       "assignedTo": [
-//         {
-//             "contacts": ""
-//         }
-//       ],
-//       "dueDate": "",
-//       "prio": "",
-//       "category": "",
-//       "subtasks": "",
-//     },
-// ];
+// add_task.js
 
-
-let newTasks = []; // Definition der newTasks-Array
-
+// Initialisierung der Arrays
+let newTasks = [];
 let subTasks = [];
 
+// Liste der Farben für die Icons
+const colors = [
+    "#FF7A00",
+    "#FF5EB3",
+    "#6E52FF",
+    "#9327FF",
+    "#00BEE8",
+    "#1FD7C1",
+    "#FF745E",
+    "#FFA35E",
+    "#FC71FF",
+    "#FFC701",
+    "#0038FF",
+    "#C3FF2B",
+    "#FFE62B",
+    "#FF4646",
+    "#FFBB2B"
+];
+
+// Funktion zum Setzen der Priorität
 function setPriority(priority) {
     let buttons = document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow');
     let selectedButton = document.querySelector(`.prioButton${priority.charAt(0).toUpperCase() + priority.slice(1)}`);
@@ -409,26 +414,6 @@ function removeFromActiveContacts(contact) {
     });
 }
 
-
-// Liste der Farben für die Icons
-const colors = [
-    "#FF7A00",
-    "#FF5EB3",
-    "#6E52FF",
-    "#9327FF",
-    "#00BEE8",
-    "#1FD7C1",
-    "#FF745E",
-    "#FFA35E",
-    "#FC71FF",
-    "#FFC701",
-    "#0038FF",
-    "#C3FF2B",
-    "#FFE62B",
-    "#FF4646",
-    "#FFBB2B"
-];
-
 // Funktion zum Erhalten der Initialen des Namens
 function getInitials(name) {
     if (!name || typeof name !== 'string') return '';
@@ -467,32 +452,118 @@ async function loadAndAddContacts(contactDropdown) {
 
 document.addEventListener('DOMContentLoaded', initializeContactDropdown);
 
-
-function createNewTask() {
-    let title = document.getElementById('title').value;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+async function createNewTask() {
+    // Formulareingaben sammeln
+    let title = document.getElementById('title').value.trim();
+    let description = document.getElementById('description').value.trim();
     let dueDate = document.getElementById('date').value;
-    let category = document.getElementById('selectedCategory').textContent;
+    let category = document.getElementById('selectedCategory').textContent.trim();
+    let prio = getSelectedPriority(); // Funktion, die die ausgewählte Priorität zurückgibt
+    let assignedTo = getAssignedContacts(); // Funktion, die die zugewiesenen Kontakte sammelt
+    let subtasks = [...subTasks]; // Kopie des Subtasks-Arrays
+
+    // Validierung (bereits in createNewTask() integriert)
+    let isValid = validateTaskForm(title, dueDate, category);
+
+    if (!isValid) {
+        console.log('Form validation failed.');
+        return;
+    }
+
+    // Erstellen des Task-Objekts
+    let task = {
+        title: title,
+        description: description,
+        assignedTo: assignedTo,
+        dueDate: dueDate,
+        prio: prio,
+        category: category,
+        subtasks: subtasks,
+        createdAt: new Date().toISOString() // Optional: Zeitstempel
+    };
+
+    try {
+        // Speichern des Tasks in Firebase
+        const result = await saveData('tasks', task);
+        console.log('Task successfully created with key:', result.name);
+
+        // Aufgabe zum localen Array hinzufügen (optional)
+        task.key = result.name;
+        newTasks.push(task);
+
+        // Formular zurücksetzen
+        resetNewTask();
+
+        // Benachrichtigung anzeigen
+        showTaskAddedNotification();
+
+    } catch (error) {
+        console.error('Error creating task:', error);
+        showErrorNotification('Fehler beim Erstellen der Aufgabe. Bitte versuchen Sie es erneut.');
+    }
+}
+
+// Funktion zum Ermitteln der ausgewählten Priorität
+function getSelectedPriority() {
+    let prio = '';
+    if (document.querySelector('.prioButtonUrgent.active')) {
+        prio = 'urgent';
+    } else if (document.querySelector('.prioButtonMedium.active')) {
+        prio = 'medium';
+    } else if (document.querySelector('.prioButtonLow.active')) {
+        prio = 'low';
+    }
+    return prio;
+}
+
+// Funktion zum Sammeln der zugewiesenen Kontakte
+function getAssignedContacts() {
+    const aktivContactsDiv = document.getElementById('aktivContacts');
+    let contacts = [];
+    aktivContactsDiv.querySelectorAll('div').forEach(contactDiv => {
+        contacts.push(contactDiv.textContent.trim());
+    });
+    return contacts;
+}
+
+// Validierungsfunktion für das Task-Formular
+function validateTaskForm(title, dueDate, category) {
     let isValid = true;
 
     if (!title) {
         fieldRequiredTitle();
         isValid = false;
     }
+
     if (!dueDate) {
         fieldRequiredDate();
         isValid = false;
     }
+
     if (category === 'Select task category') {
         fieldRequiredCategory();
         isValid = false;
     }
-    if (isValid) {
-        // Hier fügen wir den Code ein, um die Aufgabe tatsächlich zu erstellen
-        console.log("Neue Aufgabe erstellt!");
-        showTaskAddedNotification();
-    }
+
+    return isValid;
 }
 
+// Funktion zum Anzeigen von Fehlerbenachrichtigungen (optional)
+function showErrorNotification(message) {
+    // Implementieren Sie eine Benachrichtigungsfunktion ähnlich wie showTaskAddedNotification()
+    const errorPopup = document.getElementById('popupError'); // Fügen Sie dieses Element in Ihr HTML ein
+    if (errorPopup) {
+        errorPopup.querySelector('p').textContent = message;
+        errorPopup.classList.add('show');
+
+        setTimeout(() => {
+            errorPopup.classList.remove('show');
+        }, 3000);
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Funktion zum Zurücksetzen des Formulars
 function resetNewTask() {
     document.getElementById('title').value = '';
     document.getElementById('description').value = '';
@@ -505,7 +576,6 @@ function resetNewTask() {
     document.getElementById('subTaskList').innerHTML = '';
     document.getElementById('subTaskInput').value = '';
     document.getElementById('aktivContacts').innerHTML = '';
-
 }
 
 function showTaskAddedNotification() {
