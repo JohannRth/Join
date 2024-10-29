@@ -130,7 +130,7 @@ body.no-scroll {
 
   .cross-titel-button:hover{
     cursor: pointer;
-    content: url('./assets/img/cross-blue.svg'); 
+    filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg) brightness(100%) contrast(100%);
   }
 
   /* Drag Area */
