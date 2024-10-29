@@ -314,7 +314,7 @@ function preventClose(event) {
     event.stopPropagation();
 }
 
-function selectContact(contact) {
+function selectContact(contact, elements) {
     const contactItem = event.target.closest('.contactItem');
     const checkbox = contactItem.querySelector('.contactCheckbox');
     // Toggle checkbox
@@ -352,24 +352,63 @@ function addContact(contact, contactDropdown) {
     let contactItem = document.createElement('div');
     contactItem.className = 'contactItem';
     contactItem.innerHTML = `
-        <div class="contactIcon" style="background-color: ${getColor(contact)};">
-            ${getInitials(contact)}
-        </div>
-        <div>
-            <span>${contact}</span>
+        <div class="contactIconAndName">
+            <div class="contactIcon" style="background-color: ${getColor(contact)};">
+                ${getInitials(contact)}
+            </div>
+            <div>
+                <span>${contact}</span>
+            </div>
         </div>
         <div>
             <input type="checkbox" class="contactCheckbox">
         </div>
     `;
     
+    const checkbox = contactItem.querySelector('.contactCheckbox');
+    
     contactItem.addEventListener('click', (event) => {
-        event.preventDefault();
-        selectContact(contact, getElements());
+        if (event.target !== checkbox) {
+            event.preventDefault();
+            toggleContactState(contactItem, checkbox, contact);
+        }
+    });
+    
+    checkbox.addEventListener('change', () => {
+        toggleContactState(contactItem, checkbox, contact);
     });
     
     contactDropdown.appendChild(contactItem);
 }
+
+function toggleContactState(contactItem, checkbox, contact) {
+    contactItem.classList.toggle('active');
+    checkbox.checked = contactItem.classList.contains('active');
+    
+    if (contactItem.classList.contains('active')) {
+        addToActiveContacts(contact);
+    } else {
+        removeFromActiveContacts(contact);
+    }
+}
+
+function addToActiveContacts(contact) {
+    const aktivContacts = document.querySelector('.aktivContacts');
+    const contactElement = document.createElement('div');
+    contactElement.textContent = contact;
+    aktivContacts.appendChild(contactElement);
+}
+
+function removeFromActiveContacts(contact) {
+    const aktivContacts = document.querySelector('.aktivContacts');
+    const contactElements = aktivContacts.querySelectorAll('div');
+    contactElements.forEach(element => {
+        if (element.textContent === contact) {
+            aktivContacts.removeChild(element);
+        }
+    });
+}
+
 
 // Liste der Farben für die Icons
 const colors = [
