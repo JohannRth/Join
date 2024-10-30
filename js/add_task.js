@@ -287,6 +287,7 @@ function initializeContactDropdown() {
             closeDropdown(elements);
         }
     });
+ 
 }
 
 function getElements() {
@@ -369,21 +370,31 @@ function addContact(contact, contactDropdown) {
             <input type="checkbox" class="contactCheckbox">
         </div>
     `;
-    
     const checkbox = contactItem.querySelector('.contactCheckbox');
-    
     contactItem.addEventListener('click', (event) => {
         if (event.target !== checkbox) {
             event.preventDefault();
             toggleContactState(contactItem, checkbox, contact);
         }
     });
-    
     checkbox.addEventListener('change', () => {
         toggleContactState(contactItem, checkbox, contact);
     });
+    sortContactAlphabetically(contactDropdown, contactItem);
+}
+
+function sortContactAlphabetically(container, newItem) {
+    const contactName = newItem.querySelector('.contactName').textContent;
+    const items = container.querySelectorAll('.contactItem');
+    const insertIndex = Array.from(items).findIndex(item => 
+        item.querySelector('.contactName').textContent.localeCompare(contactName) > 0
+    );
     
-    contactDropdown.appendChild(contactItem);
+    if (insertIndex === -1) {
+        container.appendChild(newItem);
+    } else {
+        container.insertBefore(newItem, items[insertIndex]);
+    }
 }
 
 function toggleContactState(contactItem, checkbox, contact) {
@@ -403,7 +414,7 @@ function addToActiveContacts(contact) {
     contactElement.className = 'contactIcon';
     contactElement.style.backgroundColor = getColor(contact);
     contactElement.textContent = getInitials(contact);
-    contactElement.setAttribute('data-contact', contact); // für einfaches Entfernen
+    contactElement.setAttribute('data-contact', contact);
     aktivContacts.appendChild(contactElement);
 }
 
@@ -522,8 +533,8 @@ function getSelectedPriority() {
 function getAssignedContacts() {
     const aktivContactsDiv = document.getElementById('aktivContacts');
     let contacts = [];
-    aktivContactsDiv.querySelectorAll('div').forEach(contactDiv => {
-        contacts.push(contactDiv.textContent.trim());
+    aktivContactsDiv.querySelectorAll('span.contactIcon').forEach(contactSpan => {
+        contacts.push(contactSpan.dataset.contact); // data-contact-Attribut extrahieren und hinzufügen
     });
     return contacts;
 }

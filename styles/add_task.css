@@ -200,14 +200,19 @@ input[type="date"] {
 
 .dropDownImageAssignedToContainer:hover {
     position: absolute;
-    top: 66.36%;
-    left: 50.30%;
+    top: 66.17%;
+    left: 39.1%;
     transform: translate(-50%, -50%);
     width: 25px;
     height: 25px;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     transition: opacity 0.3s ease;
+}
+
+.dropDownImageContacts {
+    height: 9px;
+    width: 9px;
 }
 
 .contactDropdown {
@@ -401,8 +406,8 @@ input[type="text"]:focus,
 
 .dropDownImageCategoryContainer:hover {
     position: absolute;
-    top: 50.95%;
-    left: 96.1%;
+    top: 51.01%;
+    left: 96.05%;
     transform: translate(-50%, -50%);
     width: 25px;
     height: 25px;
@@ -584,24 +589,45 @@ input[type="text"]:focus,
 }
 
 .subTaskInputContainer {
-    position: relative;
     display: flex;
     align-items: center;
     width: 100%;
+    position: relative;
 }
 
 .subTaskInput {
-    width: 100%;
-    padding-right: 40px;
+    flex-grow: 1;
 }
 
-.addSubTaskButton {
+
+.addSubTaskButtonContainer {
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.addSubTaskButtonContainer:hover {
+    position: absolute;
+    top: 50%;
+    left: 96.14%;
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    transition: opacity 0.3s ease;
+}
+
+.addSubTaskButton {
+    height: 14px;
+    width: 14px;
     cursor: pointer;
 }
+
 
 .subTaskList {
     max-height: 150px;

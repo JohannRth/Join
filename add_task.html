@@ -90,8 +90,12 @@
                     <div class="inputContainer">
                         <span class="addTaskInputTitle">Subtasks</span>
                         <div class="subTaskInputContainer">
-                            <input onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
-                            <img onclick="addNewSubtask()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
+                            <div>
+                                <input onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
+                            </div>
+                            <div class="addSubTaskButtonContainer">
+                                <img onclick="addNewSubtask()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
+                            </div>
                         </div>
                         <div class="subTaskErrorMessage" id="subTaskErrorMessage"></div>
                         <div class="subTaskList" id="subTaskList"></div>
