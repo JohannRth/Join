@@ -136,7 +136,6 @@ body.no-scroll {
   /* Drag Area */
   .drag-area-container {
     width: 1208px;
-    height: 688px;
     margin-top: 8px;
     padding: 0px 64px 0px 64px;
     gap: 26px;
@@ -146,7 +145,6 @@ body.no-scroll {
 
   .drag-area {
     width: 246px;
-    min-height: 688px;
     transition: 0.3s;
     border-radius: 8px;
   }
@@ -220,9 +218,11 @@ body.no-scroll {
     font-size: 16px;
     color: #2a3647;
     margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: normal; 
   }
 
   .task-description {
@@ -232,9 +232,11 @@ body.no-scroll {
     font-size: 16px;
     color: #a8a8a8;
     margin: 4px 0 0 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: -webkit-box; 
+    -webkit-box-orient: vertical; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: normal; 
   }
 
   .task-progress {
@@ -260,10 +262,10 @@ body.no-scroll {
   }
 
   .task-progress-placeholder {
-    width: 220px; /* gleiche Breite wie task-progress */
-    height: 16px; /* gleiche Höhe wie task-progress */
-    visibility: hidden; /* Unsichtbar, aber reserviert Platz */
-    margin-top: 8px; /* Optionaler Abstand, um die gleiche Höhe zu erhalten */
+    width: 220px; 
+    height: 16px; 
+    visibility: hidden; 
+    margin-top: 8px; 
 }
 
   .progress-text {
@@ -288,8 +290,8 @@ body.no-scroll {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: bold;
-    font-size: 14px;
+    font-weight: 400;
+    font-size: 12px;
     color: white;
     margin-left: -5px;
   }

@@ -101,24 +101,6 @@
             />
           </div>
         </div>
-
-        <div class="task-assigned-overlay">
-          <div class="person-circle-overlay" style="background-color: #00c6ff">
-            EM
-          </div>
-          <span class="person-name-overlay">Emmanuel Mauer</span>
-
-          <div class="person-circle-overlay" style="background-color: #5d27c2">
-            MB
-          </div>
-          <span class="person-name-overlay">Marcel Bauer</span>
-
-          <div class="person-circle-overlay" style="background-color: #0038ff">
-            AM
-          </div>
-          <span class="person-name-overlay">Anton Mayer</span>
-        </div>
-
         <div class="subtasks-overlay">
           <div>
             <input type="checkbox" checked /> Implement Recipe Recommendation
@@ -237,9 +219,18 @@
                         <button onclick="createNewTask()" type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
                     </div>
                 </div>
+                <div id="taskAddedNotification" class="taskAddedNotification">
+                  <div>
+                      <span>Task added to board</span>
+                  </div>
+                  <div>
+                      <img class="taskAddedNotificationImage" src="./assets/img/logo_board.svg">
+                  </div>
+                </div> 
             </div>
         </div>
     </div>
+    
 
     <script>
       // titel carde  
@@ -251,20 +242,22 @@
     const tasksData = await loadData("tasks");
     todos = Object.keys(tasksData).map((key, index) => {
         const task = tasksData[key];
-        console.log("Loaded task from Firebase:", task); // Debugging: Anzeigen des geladenen Task-Objekts
+        console.log("Loaded Task:", task);  // Debugging: Überprüfe den Task-Inhalt
+
         return {
             id: index,
             titel: task.title || "Untitled",
             type: task.category || "General",
             category: task.type || "todo",
             description: task.description || "No description",
-            priority: task.prio || "low",  // Verwenden Sie den `prio`-Wert aus Firebase
+            priority: task.prio || "low",
+            dueDate: task.dueDate || null, // Füge dueDate hinzu
             subtasks: task.subtasks ? Object.keys(task.subtasks).length : 0,
             completedSubtasks: 0,
-            contacts: task.assignedTo ? task.assignedTo.map(name => name.charAt(0)) : []
+            contacts: task.assignedTo ? task.assignedTo.map(name => name.trim()) : []
         };
     });
-    console.log("Todos Array nach dem Laden:", todos); // Debugging: Überprüfen Sie das `todos`-Array
+    console.log("Todos Array:", todos);  // Debugging: Überprüfe das vollständige todos-Array
     updateHTML();
 }
 
@@ -287,8 +280,18 @@
         ev.target.classList.add("dragging");
         ev.target.style.cursor = "grabbing";
       }
+
+      // Funktion zum Erhalten der Initialen des Vor- und Nachnamens
+function getInitials(name) {
+    if (!name || typeof name !== 'string') return '';
+    const nameParts = name.trim().split(' ');
+    const initials = nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '');
+    return initials.toUpperCase();
+}
+
+// Anpassung der generateTodoHTML-Funktion
 function generateTodoHTML(element) {
-    console.log("Element an generateTodoHTML übergeben:", element); // Debugging: Anzeigen des übergebenen Elements
+    console.log("Element an generateTodoHTML übergeben:", element);
 
     const taskTypeStyle = element.type === "Technical Task"
         ? `height: 27px; width: 144px; border-radius: 8px; padding: 4px 16px; background-color: #1FD7C1; color: #FFFFFF; font-size: 16px; font-weight: 400;`
@@ -321,16 +324,17 @@ function generateTodoHTML(element) {
         priorityIcon = `<img src="./assets/img/default-titel-card.svg" alt="Default Priority" />`;
     }
 
+    // Kontakte mit farbigen Icons und Initialen erstellen
     let contactsHTML = "";
     if (element["contacts"]) {
         contactsHTML = `
             <div class="task-assigned">
                 ${element["contacts"]
-                    .map(
-                        (contact) => `
-                        <span class="person-circle">${contact}</span>
-                    `
-                    )
+                    .map(contact => {
+                        const initials = getInitials(contact); // Initialen des Kontakts abrufen
+                        const color = getColor(contact); // Farbe basierend auf Namen abrufen
+                        return `<span class="person-circle" style="background-color: ${color};">${initials}</span>`;
+                    })
                     .join("")}
             </div>
         `;
@@ -350,6 +354,8 @@ function generateTodoHTML(element) {
             </div>
         </div>`;
 }
+
+
       function dropTask(ev) {
         ev.preventDefault();
         const taskId = ev.dataTransfer.getData("text");
@@ -442,63 +448,60 @@ function generateTodoHTML(element) {
 
       // ExpandedCard
       function generateExpandedCardHTML(element) {
-        console.log("Generiere HTML für Aufgabe:", element);
-  let contactsHTML = "";
-  if (element["contacts"]) {
-    contactsHTML = `
-      <div class="task-assigned-container-overlay">
-          <div class="task-assigned-line-overlay">
-              <span>Assigned To:</span>
-          </div>
-          ${element["contacts"]
-            .map(
-              (contact) => `
-              <div class="person-container-overlay">
-                  <span class="person-circle-overlay">${contact}</span>
-                  <span class="person-name-overlay">${contact}</span>
-              </div>
-          `
-            )
-            .join("")}
-      </div>
-  `;
-  }
+    console.log("Generiere HTML für Aufgabe:", element);
 
-        return `
+    const taskTypeStyle = element.type === "Technical Task"
+        ? `height: 27px; width: 144px; border-radius: 8px; padding: 4px 16px; background-color: #1FD7C1; color: #FFFFFF; font-size: 16px; font-weight: 400;`
+        : `width: 113px; height: 27px; border-radius: 8px; padding: 4px 16px; background-color: #0038ff; color: white; font-weight: 400; font-size: 16px; display: flex; align-items: center; justify-content: center;`;
+
+    // Priority icon and label based on element priority
+    let priorityLabel = "";
+    let priorityIconSrc = "";
+    if (element.priority === "urgent") {
+        priorityLabel = "Urgent";
+        priorityIconSrc = "./assets/img/urgent-titel-card.svg";
+    } else if (element.priority === "medium") {
+        priorityLabel = "Medium";
+        priorityIconSrc = "./assets/img/medium-titel-card.svg";
+    } else if (element.priority === "low") {
+        priorityLabel = "Low";
+        priorityIconSrc = "./assets/img/low-titel-card.svg";
+    } else {
+        priorityLabel = "Default";
+        priorityIconSrc = "./assets/img/default-titel-card.svg";
+    }
+
+    // Formatierung des Due Date aus dem Firebase-Element
+    const dueDate = element.dueDate ? new Date(element.dueDate).toLocaleDateString("de-DE") : "Kein Datum";
+
+    return `
     <div class="expanded-card-overlay">
         <div class="close-story-container-overlay">
-            <div class="user-story-overlay">${element["type"]}</div>
+            <div class="user-story-overlay" style="${taskTypeStyle}">${element["type"]}</div>
             <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeCardOverlay()">
         </div>
         <div class="task-title-overlay">${element["titel"]}</div>
         <div class="task-description-overlay">${element["description"]}</div>
         <div class="due-date-overlay">
             <span class="date-line-overlay">Due date:</span>
-            <span class="date-date-overlay">10/05/2023</span>
+            <span class="date-date-overlay">${dueDate}</span>
         </div>
         <div class="priority-container-overlay">
             <span class="priority-line-overlay">Priority:</span>
             <div class="priority-focus-img-container">
-                <span class="priority-focus-overlay">Medium</span>
-                <img src="./assets/img/Prio media.svg" alt="Prio medium" class="priority-img-overlay">
+                <span class="priority-focus-overlay">${priorityLabel}</span>
+                <img src="${priorityIconSrc}" alt="Priority ${priorityLabel}" class="priority-img-overlay">
             </div>    
         </div>
-        ${contactsHTML}
-        <div class="subtask-conatiner-overlay">
-            <div class="subtask-line-overlay">
-                <span>Subtasks</span>
-            </div>
-            <div class="subtasks-box-overlay">
-                <div class="subtasks-titelbox-overlay">
-                    <div>
-                        <input type="checkbox" checked>
-                    </div>
-                    <div> 
-                        <span>Implement Recipe Recommendation</span>
-                    </div>    
+        <div class="task-assigned-container-overlay">
+            <span>Assigned To:</span>
+            ${element.contacts.map(contact => `
+                <div class="person-container-overlay">
+                    <span class="person-circle-overlay" style="background-color: ${getColor(contact)};">${getInitials(contact)}</span>
+                    <span class="person-name-overlay">${contact}</span>
                 </div>
-            </div>
-        </div>    
+            `).join('')}
+        </div>
         <div class="actions-overlay">
             <p class="action-btn-overlay">
             <img src="./assets/img/delete.svg" alt="delete">Delete
@@ -643,6 +646,28 @@ function generateTodoHTML(element) {
     updateHTML();
 });
 
+// Liste der Farben für die Icons
+const colors = [
+    "#FF7A00", "#FF5EB3", "#6E52FF", "#9327FF", "#00BEE8",
+    "#1FD7C1", "#FF745E", "#FFA35E", "#FC71FF", "#FFC701",
+    "#0038FF", "#C3FF2B", "#FFE62B", "#FF4646", "#FFBB2B"
+];
+
+// Funktion zum Abrufen einer Farbe basierend auf dem ersten Buchstaben des Namens
+function getColor(name) {
+    if (!name || typeof name !== 'string') return '#000000'; // Standardfarbe
+    const firstLetter = name.charAt(0).toUpperCase();
+    const index = firstLetter.charCodeAt(0) - 65; // 'A' hat den charCode 65
+    return colors[index % colors.length];
+}
+
+// Funktion zum Erhalten der Initialen des Namens
+function getInitials(name) {
+    if (!name || typeof name !== 'string') return '';
+    const nameParts = name.trim().split(' ');
+    const initials = nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '');
+    return initials.toUpperCase();
+}
       
 
     </script>
