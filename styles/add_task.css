@@ -11,9 +11,9 @@ body {
 }
 
 .addTaskContainer {
-    padding-top: 206px;
+    padding-top: 190px;
     padding-left: 328px;
-    padding-right: 135px;
+
 }
 
 .addTaskHeadline {
@@ -199,10 +199,9 @@ input[type="date"] {
 }
 
 .dropDownImageAssignedToContainer:hover {
-    position: absolute;
-    top: 66.17%;
-    left: 39.1%;
-    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 25px;
     height: 25px;
     background-color: rgba(0, 0, 0, 0.1);
@@ -210,9 +209,14 @@ input[type="date"] {
     transition: opacity 0.3s ease;
 }
 
+.dropDownImageAssignedToContainer:hover .dropDownImageContacts {
+    margin-right: 0;
+}
+
 .dropDownImageContacts {
     height: 9px;
     width: 9px;
+    margin-right: 8px;
 }
 
 .contactDropdown {
@@ -405,10 +409,9 @@ input[type="text"]:focus,
 }
 
 .dropDownImageCategoryContainer:hover {
-    position: absolute;
-    top: 51.01%;
-    left: 96.05%;
-    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 25px;
     height: 25px;
     background-color: rgba(0, 0, 0, 0.1);
@@ -416,9 +419,14 @@ input[type="text"]:focus,
     transition: opacity 0.3s ease;
 }
 
+.dropDownImageCategoryContainer:hover .dropDownImageCategory {
+    margin-right: 0;
+}
+
 .dropDownImageCategory {
     height: 9px;
     width: 9px;
+    margin-right: 8px;
 }
 
 .dropDownContent {
@@ -599,28 +607,21 @@ input[type="text"]:focus,
     flex-grow: 1;
 }
 
-
 .addSubTaskButtonContainer {
-    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-left: -37px;
+    width: 25px;
+    height: 25px;
 }
 
 .addSubTaskButtonContainer:hover {
-    position: absolute;
-    top: 50%;
-    left: 96.14%;
-    transform: translate(-50%, -50%);
-    width: 25px;
-    height: 25px;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     transition: opacity 0.3s ease;
 }
+
 
 .addSubTaskButton {
     height: 14px;
@@ -655,6 +656,8 @@ input[type="text"]:focus,
 }
 
 .subTask {
+    width: 440px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -670,6 +673,8 @@ input[type="text"]:focus,
 }
 
 .subTaskEdit {
+    width: 440px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;

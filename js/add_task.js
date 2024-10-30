@@ -448,6 +448,11 @@ async function initializeContactDropdown() {
     setupEventListeners(elements);
     await loadAndAddContacts(elements.contactDropdown);
     contactDropdownInitialized = true;
+    document.addEventListener('click', (event) => {
+        if (!elements.assignedTo.contains(event.target) && !elements.contactDropdown.contains(event.target)) {
+            closeDropdown(elements);
+        }
+    });
 }
 
 async function loadAndAddContacts(contactDropdown) {
@@ -588,13 +593,24 @@ function resetNewTask() {
     document.getElementById('subTaskList').innerHTML = '';
     document.getElementById('subTaskInput').value = '';
     document.getElementById('aktivContacts').innerHTML = '';
+    
+    // Reset contact items and checkboxes
+    document.querySelectorAll('.contactItem').forEach(item => {
+        item.classList.remove('active');
+        const checkbox = item.querySelector('.contactCheckbox');
+        if (checkbox) {
+            checkbox.checked = false;
+        }
+    });
 }
+
 
 function showTaskAddedNotification() {
     const notification = document.getElementById('taskAddedNotification');
     notification.classList.add('show');
     setTimeout(() => {
       notification.classList.remove('show');
+      window.location.href = 'board.html'; // Weiterleitung zur board.html
     }, 3000);
   }
 
