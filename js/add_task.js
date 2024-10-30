@@ -186,6 +186,7 @@ function validateCategoryField() {
 function getDateToday() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
+        dateInput.min = new Date().toISOString().split('T')[0]; // Aktuellstes Datum wird angezeigt, wenn es kleiner ist das heutige Datum
         dateInput.onclick = function() {
             if (this.value === "YYYY-MM-DD") {
                 this.value = new Date().toISOString().split('T')[0];
@@ -193,8 +194,21 @@ function getDateToday() {
             updateDateColor.call(this);
         };
         dateInput.onchange = function() {
+            validateDate(this);
             updateDateColor.call(this);
         };
+    }
+}
+
+function validateDate(input) {
+    const selectedDate = new Date(input.value);
+    const currentDate = new Date();
+    const maxYear = 2999;
+
+    if (selectedDate < currentDate) {
+        input.value = currentDate.toISOString().split('T')[0];
+    } else if (selectedDate.getFullYear() > maxYear) {
+        input.value = `${maxYear}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
     }
 }
 
