@@ -243,29 +243,30 @@
 
     <script>
       // titel carde  
-      let todos = JSON.parse(localStorage.getItem("todos")) || [
-        {
-          id: 0,
-          titel: "CSS Architecture Planning",
-          type: "User Story",
-          category: "done",
-          description: "Define CSS naming conventions and structure.",
-          priority: "High",
-          subtasks: 2,
-          completedSubtasks: 2,
-          contacts: ["SM", "BZ"],
-        },{
-          id: 1,
-          titel: "CSS Architecture Planning",
-          type: "Technical Task",
-          category: "todo",
-          description: "njdnjsnfejknflakdsnjlsdnvanfbvoafbv.",
-          priority: "Low",
-          subtasks: 2,
-          completedSubtasks: 1,
-          contacts: ["SM", "BZ"],
-        }
-      ];
+      let todos =[];
+
+      console.log("Initial Todos:", todos);
+
+      async function loadTodosFromFirebase() {
+    const tasksData = await loadData("tasks");
+    todos = Object.keys(tasksData).map((key, index) => {
+        const task = tasksData[key];
+        console.log("Loaded task from Firebase:", task); // Debugging: Anzeigen des geladenen Task-Objekts
+        return {
+            id: index,
+            titel: task.title || "Untitled",
+            type: task.category || "General",
+            category: task.type || "todo",
+            description: task.description || "No description",
+            priority: task.prio || "low",  // Verwenden Sie den `prio`-Wert aus Firebase
+            subtasks: task.subtasks ? Object.keys(task.subtasks).length : 0,
+            completedSubtasks: 0,
+            contacts: task.assignedTo ? task.assignedTo.map(name => name.charAt(0)) : []
+        };
+    });
+    console.log("Todos Array nach dem Laden:", todos); // Debugging: Überprüfen Sie das `todos`-Array
+    updateHTML();
+}
 
       document.addEventListener("DOMContentLoaded", (event) => {
         updateHTML();
@@ -286,13 +287,17 @@
         ev.target.classList.add("dragging");
         ev.target.style.cursor = "grabbing";
       }
+function generateTodoHTML(element) {
+    console.log("Element an generateTodoHTML übergeben:", element); // Debugging: Anzeigen des übergebenen Elements
 
-      function generateTodoHTML(element) {
-        let progressHTML = "";
-        if (element["subtasks"] > 0) {
-          let percentage =
-            (element["completedSubtasks"] / element["subtasks"]) * 100;
-          progressHTML = `
+    const taskTypeStyle = element.type === "Technical Task"
+        ? `height: 27px; width: 144px; border-radius: 8px; padding: 4px 16px; background-color: #1FD7C1; color: #FFFFFF; font-size: 16px; font-weight: 400;`
+        : `width: 113px; height: 27px; border-radius: 8px; padding: 4px 16px; background-color: #0038ff; color: white; font-weight: 400; font-size: 16px; display: flex; align-items: center; justify-content: center;`;
+
+    let progressHTML = "";
+    if (element["subtasks"] > 0) {
+        const percentage = (element["completedSubtasks"] / element["subtasks"]) * 100;
+        progressHTML = `
             <div class="task-progress">
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: ${percentage}%;"></div>
@@ -300,38 +305,51 @@
                 <span class="progress-text">${element["completedSubtasks"]}/${element["subtasks"]} Subtasks</span>
             </div>
         `;
-        }
+    } else {
+        progressHTML = `<div class="task-progress-placeholder"></div>`;
+    }
 
-        let contactsHTML = "";
-        if (element["contacts"]) {
-          contactsHTML = `
+    // Priorität als Icon festlegen
+    let priorityIcon = "";
+    if (element.priority === "urgent") {
+        priorityIcon = `<img src="./assets/img/urgent-titel-card.svg" alt="Urgent Priority" />`;
+    } else if (element.priority === "medium") {
+        priorityIcon = `<img src="./assets/img/medium-titel-card.svg" alt="Medium Priority" />`;
+    } else if (element.priority === "low") {
+        priorityIcon = `<img src="./assets/img/low-titel-card.svg" alt="Low Priority" />`;
+    } else {
+        priorityIcon = `<img src="./assets/img/default-titel-card.svg" alt="Default Priority" />`;
+    }
+
+    let contactsHTML = "";
+    if (element["contacts"]) {
+        contactsHTML = `
             <div class="task-assigned">
                 ${element["contacts"]
-                  .map(
-                    (contact) => `
-                    <span class="person-circle">${contact}</span>
-                `
-                  )
-                  .join("")}
+                    .map(
+                        (contact) => `
+                        <span class="person-circle">${contact}</span>
+                    `
+                    )
+                    .join("")}
             </div>
         `;
-        }
+    }
 
-        return `
-    <div id="${element["id"]}" class="titel-card" draggable="true" ondragstart="dragTask(event)" onclick="openCardOverlay(${element["id"]})">
-        <div class="user-story">${element["type"]}</div>
-        <div class="task-details">
-            <h3 class="task-title">${element["titel"]}</h3>
-            <p class="task-description">${element["description"]}</p>
-        </div>
-        ${progressHTML}
-        ${contactsHTML}
-        <div class="priority-icon">
-            <img src="./assets/img/medium-titel-card.svg" alt="medium-titel-card">
-        </div>
-    </div>`;
-      }
-
+    return `
+        <div id="${element["id"]}" class="titel-card" draggable="true" ondragstart="dragTask(event)" onclick="openCardOverlay(${element["id"]})">
+            <div class="user-story" style="${taskTypeStyle}">${element["type"]}</div>
+            <div class="task-details">
+                <h3 class="task-title">${element["titel"]}</h3>
+                <p class="task-description">${element["description"]}</p>
+            </div>
+            ${progressHTML}
+            ${contactsHTML}
+            <div class="priority-icon">
+                ${priorityIcon}
+            </div>
+        </div>`;
+}
       function dropTask(ev) {
         ev.preventDefault();
         const taskId = ev.dataTransfer.getData("text");
@@ -620,6 +638,10 @@
         }
       }
     
+      document.addEventListener("DOMContentLoaded", async () => {
+    await loadTodosFromFirebase();
+    updateHTML();
+});
 
       
 

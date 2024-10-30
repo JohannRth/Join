@@ -220,6 +220,9 @@ body.no-scroll {
     font-size: 16px;
     color: #2a3647;
     margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .task-description {
@@ -229,6 +232,9 @@ body.no-scroll {
     font-size: 16px;
     color: #a8a8a8;
     margin: 4px 0 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .task-progress {
@@ -252,6 +258,13 @@ body.no-scroll {
     background-color: #4589ff;
     border-radius: 8px;
   }
+
+  .task-progress-placeholder {
+    width: 220px; /* gleiche Breite wie task-progress */
+    height: 16px; /* gleiche Höhe wie task-progress */
+    visibility: hidden; /* Unsichtbar, aber reserviert Platz */
+    margin-top: 8px; /* Optionaler Abstand, um die gleiche Höhe zu erhalten */
+}
 
   .progress-text {
     font-size: 12px;
