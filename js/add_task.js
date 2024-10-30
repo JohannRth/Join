@@ -362,7 +362,7 @@ function addContact(contact, contactDropdown) {
                 ${getInitials(contact)}
             </div>
             <div>
-                <span>${contact}</span>
+                <span class="contactName">${contact}</span>
             </div>
         </div>
         <div>
@@ -398,20 +398,21 @@ function toggleContactState(contactItem, checkbox, contact) {
 }
 
 function addToActiveContacts(contact) {
-    const aktivContacts = document.querySelector('.aktivContacts');
-    const contactElement = document.createElement('div');
-    contactElement.textContent = contact;
+    const aktivContacts = document.getElementById('aktivContacts');
+    const contactElement = document.createElement('span');
+    contactElement.className = 'contactIcon';
+    contactElement.style.backgroundColor = getColor(contact);
+    contactElement.textContent = getInitials(contact);
+    contactElement.setAttribute('data-contact', contact); // für einfaches Entfernen
     aktivContacts.appendChild(contactElement);
 }
 
 function removeFromActiveContacts(contact) {
-    const aktivContacts = document.querySelector('.aktivContacts');
-    const contactElements = aktivContacts.querySelectorAll('div');
-    contactElements.forEach(element => {
-        if (element.textContent === contact) {
-            aktivContacts.removeChild(element);
-        }
-    });
+    const aktivContacts = document.getElementById('aktivContacts');
+    const contactElement = aktivContacts.querySelector(`[data-contact="${contact}"]`);
+    if (contactElement) {
+        aktivContacts.removeChild(contactElement);
+    }
 }
 
 // Funktion zum Erhalten der Initialen des Namens
