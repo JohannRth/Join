@@ -111,6 +111,7 @@
 .add-contact-right .close:hover {
     background-color: #EEEEEE;
     border-radius: 50%;
+    transition: all 0.3s ease;
 }
 
 .profileImg {

@@ -41,6 +41,7 @@ body {
 
 .helpImageHeader:hover{
     filter: drop-shadow(0px 0px 1px #2A3647);
+    transition: all 0.3s ease;
 }
 
 .helpImage{
@@ -69,6 +70,7 @@ body {
 
 .profile-picture:hover{
     background-color: #0C2E621F;
+    transition: all 0.3s ease;
 }
 
 .user-name {
@@ -109,6 +111,7 @@ body {
     background-color: #1f2a3a;
     border-radius: 20px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .desktopSideMenu {
@@ -151,6 +154,7 @@ body {
 .desktopLinkAndImage:hover {
     cursor: pointer;
     background-color: #2A3D59;
+    transition: all 0.3s ease;
 }
 
 .desktopLinkAndImage img {
@@ -191,6 +195,7 @@ body {
     cursor: pointer;
     color: #29ABE2;
     font-weight: bolder;
+    transition: all 0.3s ease;
 }
 
 /* Stil für das aktive Menüelement */
