@@ -77,6 +77,7 @@ button#signUp:hover {
     cursor: pointer;
     font-family: "inter", sans-serif;
     box-shadow: 0px 4px 4px 0px #00000040;
+    transition: all 0.3s ease;
 }
 
 button#signUpButton,
@@ -93,6 +94,7 @@ button#signUpButton:hover {
     color: #29ABE2;
     box-shadow: 0px 4px 4px 0px #00000040;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .login-box {
@@ -227,6 +229,7 @@ input#confirmedPassword {
     height: 32px;
     width: 32px;
     border-radius: 50%;
+    transition: all 0.3s ease;
 }
 
 .login-error {

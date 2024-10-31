@@ -111,6 +111,7 @@
 .add-contact-right .close:hover {
     background-color: #EEEEEE;
     border-radius: 50%;
+    transition: all 0.3s ease;
 }
 
 .profileImg {
@@ -171,9 +172,11 @@
     border: 1px solid #29ABE2;
     color: #29ABE2;
     box-shadow: 0px 4px 4px 0px #00000040;
+    transition: all 0.3s ease;
 }
 
 .cancel-button:hover img {
+    transition: all 0.3s ease;
     filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg) brightness(100%) contrast(100%);
 }
 
@@ -192,6 +195,7 @@
     cursor: pointer;
     font-family: "inter", sans-serif;
     box-shadow: 0px 4px 4px 0px #00000040;
+    transition: all 0.3s ease;
 }
 
 input#newContactName,
