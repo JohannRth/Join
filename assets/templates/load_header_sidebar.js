@@ -1,8 +1,8 @@
 // Funktion zum dynamischen Laden von HTML-Dateien mit einer Callback-Funktion
 function loadHTML(elementID, fileName, callback) {
-    var xhttp = new XMLHttpRequest();
+    const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
+        if (this.readyState === 4 && (this.status === 200 || this.status === 304)) {
             document.getElementById(elementID).innerHTML = this.responseText;
             if (callback) callback(); // Führe die Callback-Funktion aus, falls vorhanden
         }
@@ -24,6 +24,10 @@ window.onload = function () {
     loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", function() {
         highlightCurrentPage();
         checkAuthentication(); // Nach dem Laden der Sidebar prüfen
+    });
+
+    loadHTML("mobile-nav-placeholder", "/assets/templates/mobile_navbar.html", function() {
+        highlightCurrentPageMobile(); // Funktion zum Hervorheben der aktiven Seite in der mobilen Navbar
     });
 };
 
@@ -65,6 +69,20 @@ function highlightCurrentPage() {
 
     menuItems.forEach(function(item) {
         var onclickAttr = item.getAttribute('onclick');
+        if (onclickAttr && onclickAttr.includes(page)) {
+            item.classList.add('active'); // Fügt die 'active'-Klasse hinzu, um das Menüelement hervorzuheben
+        }
+    });
+}
+
+// Neue Funktion zum Hervorheben der aktuellen Seite in der mobilen Navbar
+function highlightCurrentPageMobile() {
+    const path = window.location.pathname;
+    const page = path.split("/").pop(); // Holt den aktuellen Seitennamen (z.B. 'summary.html')
+    const mobileMenuItems = document.querySelectorAll('.mobile-nav-bar .mobile-bar');
+
+    mobileMenuItems.forEach(function(item) {
+        const onclickAttr = item.getAttribute('onclick');
         if (onclickAttr && onclickAttr.includes(page)) {
             item.classList.add('active'); // Fügt die 'active'-Klasse hinzu, um das Menüelement hervorzuheben
         }

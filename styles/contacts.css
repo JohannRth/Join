@@ -284,3 +284,12 @@ button#addContactBtn:hover {
 .contact-list-separator {
     width: 100%;
 }
+
+/* ///////////////////////////Mobile-Screen//////////////////////////////////////////////////// */
+
+@media (max-width: 1020px) {
+    body {
+        padding-left: unset;
+    }
+
+}
