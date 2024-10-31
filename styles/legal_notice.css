@@ -38,8 +38,7 @@ body {
 
 .arrowLeft:hover {
     background-color: #EEEEEE;
-    height: 35px;
-    width: 35px;
+    transform: scale(1.2);
     border-radius: 50%;
     transition: all 0.3s ease;
 }
@@ -93,4 +92,26 @@ h3{
 ::-webkit-scrollbar-thumb:hover {
     background: #29ABE2;
     border-radius: 4px;
+}
+
+/* ///////////////////////////////Mobile-Screen///////////////////////////////////////////// */
+
+@media (max-width: 1020px) {
+
+    .legalNotice {
+        color: #000000;
+        padding-left: 20px;
+        padding-bottom: 87px;
+        padding-right: 20px;
+    }
+
+    .arrowLeft {
+        height: 45px;
+        width: 45px;
+        cursor: pointer;
+        position: fixed;
+        top: 160px;
+        right: 40px;
+    }
+
 }
