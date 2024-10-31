@@ -251,8 +251,8 @@
             category: task.type || "todo",
             description: task.description || "No description",
             priority: task.prio || "low",
-            dueDate: task.dueDate || null, // Füge dueDate hinzu
-            subtasks: task.subtasks ? Object.keys(task.subtasks).length : 0,
+            dueDate: task.dueDate || null,
+            subtasks: task.subtasks ? Object.values(task.subtasks) : [], // Füge subtasks als Array hinzu
             completedSubtasks: 0,
             contacts: task.assignedTo ? task.assignedTo.map(name => name.trim()) : []
         };
