@@ -99,6 +99,7 @@ button#addContactBtn:hover {
     cursor: pointer;
     font-family: "inter", sans-serif;
     box-shadow: 0px 4px 4px 0px #00000040;
+    transition: all 0.3s ease;
 }
 
 .contact-item {
@@ -114,6 +115,7 @@ button#addContactBtn:hover {
 .contact-item:hover {
     background-color: #f1f1f1;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .contact-icon {
@@ -237,6 +239,7 @@ button#addContactBtn:hover {
 
 .contact-actions button:hover {
     color: #007CEE;
+    transition: all 0.3s ease;
     filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg) brightness(100%) contrast(100%);
 }
 
