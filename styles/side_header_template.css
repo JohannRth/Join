@@ -203,6 +203,14 @@ body {
     background-color: #091931; /* Ersetzen Sie dies durch Ihre gewünschte Hintergrundfarbe */
 }
 
+.desktopLinkAndImage.active img, .singleNavLink .mobile-bar.active img {
+    filter: brightness(0) invert(1); /* Beispielhafte Farbänderung für aktive Icons */
+}
+
+.desktopLinkAndImage.active p {
+    color: #ecf0f1; /* Beispielhafte Textfarbe für aktive Links */
+}
+
 /* ////////////////////////Mobile-Screen///////////////////////////////////// */
 
 /* responsive.css */

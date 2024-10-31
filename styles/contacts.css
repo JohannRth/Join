@@ -5,6 +5,11 @@
     justify-content: flex-end;
 }
 
+.main-board-content {
+    display: flex;
+    flex-direction: column;
+}
+
 *::-webkit-scrollbar {
     width: 16px;
 }
@@ -19,14 +24,16 @@
     border: 3px solid #ffffff;
     border-radius: 15px;
 }
+
 /*/////////////////////////////////////////////////////////////////////////////////////*/
 @keyframes slideInRight {
     from {
-        transform: translateX(100%); 
+        transform: translateX(100%);
         opacity: 0;
     }
+
     to {
-        transform: translateX(0); 
+        transform: translateX(0);
         opacity: 1;
     }
 }
@@ -34,14 +41,16 @@
 /* Animation für das Verschwinden nach unten */
 @keyframes slideOutDown {
     from {
-        transform: translateY(0); 
+        transform: translateY(0);
         opacity: 1;
     }
+
     to {
-        transform: translateY(100%); 
+        transform: translateY(100%);
         opacity: 0;
     }
 }
+
 /*/////////////////////////////////////////////////////////////////////////////////////*/
 .contact-headline {
     display: flex;
@@ -55,14 +64,19 @@
     margin-right: 30px
 }
 
+.horizontalline {
+    display: block;
+    height: 59px;
+    margin-right: 24px;
+}
+
 .contact-headline h2 {
     font-size: 32px;
     font-weight: 500;
 }
 
-.contact-headline img {
-    height: 59px;
-    margin-right: 24px;
+.text-underline {
+    display: none;
 }
 
 .contacts-list {
@@ -71,7 +85,7 @@
     overflow: auto;
     scroll-behavior: smooth;
     width: 456px;
-    height: calc(100svh - 101px);
+    height: calc(100svh - 97px);
     background-color: white;
     box-shadow: 4px 0px 6px 0px #00000014;
 }
@@ -146,6 +160,11 @@ button#addContactBtn:hover {
     font-size: 16px;
     font-weight: 400;
     color: #007CEE;
+    padding: 12px 0px;
+}
+
+.contact-details-phone {
+    padding: 12px 0px;
 }
 
 .close {
@@ -163,22 +182,24 @@ button#addContactBtn:hover {
 .contact-details {
     margin-top: 20px;
     margin-left: 60px;
-    background-color: #f9f9f9;
     /*/////////////////////////////////////////////////////////////////////////////////////*/
     position: relative;
     transition: all 0.5s ease;
     opacity: 0;
-    display: none; 
+    display: none;
     animation-fill-mode: forwards;
     transform: translateX(0);
     /*/////////////////////////////////////////////////////////////////////////////////////*/
 }
+
 /*/////////////////////////////////////////////////////////////////////////////////////*/
 .contact-details.active {
-    display: block; 
+    display: flex;
+    flex-direction: column;
     opacity: 1;
     animation: slideInRight 0.5s ease;
 }
+
 /*/////////////////////////////////////////////////////////////////////////////////////*/
 /*/////////////////////////////////////////////////////////////////////////////////////*/
 /* Kontakt-Details beim Verstecken */
@@ -187,18 +208,22 @@ button#addContactBtn:hover {
     opacity: 0;
     display: block;
 }
+
 /*/////////////////////////////////////////////////////////////////////////////////////*/
 
 .contact-details-header {
     display: flex;
     align-items: center;
+    margin-top: 20px;
     margin-bottom: 20px;
     gap: 54px;
 }
 
 .contact-icon-large {
-    height: 120px;
-    width: 120px;
+    min-height: 120px;
+    min-width: 120px;
+    max-height: 120px;
+    max-width: 120px;
     border-radius: 50%;
     font-size: 48px;
     color: white;
@@ -249,17 +274,11 @@ button#addContactBtn:hover {
 
 .contact-details-body h3 {
     padding-bottom: 50px;
-    padding-top: 50px;
+    padding-top: 30px;
     font-size: 20px;
     font-weight: 500;
 }
 
-.contact-details-email,
-.contact-details-phone {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 10px;
-}
 
 .active-contact {
     background-color: #2A3647 !important;
@@ -287,9 +306,79 @@ button#addContactBtn:hover {
 
 /* ///////////////////////////Mobile-Screen//////////////////////////////////////////////////// */
 
+@media (max-width: 1300px) {
+
+    .contact-headline {
+        display: flex;
+        align-items: flex-start;
+        padding: 90px 0px 0px 20px;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .horizontalline {
+        display: none;
+    }
+
+    .text-underline {
+        display: flex;
+    }
+
+    .contact-details {
+        margin-left: 20px;
+    }
+
+    .contact-details-header {
+        gap: 8px;
+    }
+
+    .contacts-list {
+        padding: 20px 10px;
+        width: 380px;
+    }
+}
+
+
 @media (max-width: 1020px) {
+
     body {
         padding-left: unset;
     }
 
+    .contact-headline {
+        padding: 70px 0px 0px 20px;
+        gap: 10px;
+    }
+
+    .contacts-list {
+        height: calc(100svh - 184px);
+    }
+
+    .main-board {
+        margin-bottom: 87px;
+    }
+
+    .contact-details-header {
+        flex-direction: column;
+    }
+
+    .contact-details {
+        display: flex;
+        flex-direction: column;
+        margin-left: 120px;
+    }
+
+    .contact-details-body h3 {
+        padding-bottom: 20px;
+        padding-top: 20px;
+    }
+}
+
+@media (max-width:900px) {
+
+    .contact-details {
+        display: flex;
+        flex-direction: column;
+        margin-left: 40px;
+    }
 }
