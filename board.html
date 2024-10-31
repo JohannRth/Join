@@ -299,19 +299,20 @@ function generateTodoHTML(element) {
         : `width: 113px; height: 27px; border-radius: 8px; padding: 4px 16px; background-color: #0038ff; color: white; font-weight: 400; font-size: 16px; display: flex; align-items: center; justify-content: center;`;
 
     let progressHTML = "";
-    if (element["subtasks"] > 0) {
-        const percentage = (element["completedSubtasks"] / element["subtasks"]) * 100;
-        progressHTML = `
-            <div class="task-progress">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: ${percentage}%;"></div>
-                </div>
-                <span class="progress-text">${element["completedSubtasks"]}/${element["subtasks"]} Subtasks</span>
+    if (element.subtasks && element.subtasks.length > 0) {
+    const completed = element.completedSubtasks || 0;
+    const percentage = (completed / element.subtasks.length) * 100;
+    progressHTML = `
+        <div class="task-progress">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: ${percentage}%"></div>
             </div>
-        `;
-    } else {
-        progressHTML = `<div class="task-progress-placeholder"></div>`;
-    }
+            <span class="progress-text">${completed}/${element.subtasks.length} Subtasks</span>
+        </div>
+    `;
+} else {
+    progressHTML = `<div class="task-progress-placeholder"></div>`;
+}
 
     // Priorität als Icon festlegen
     let priorityIcon = "";
@@ -449,13 +450,10 @@ function generateTodoHTML(element) {
 
       // ExpandedCard
       function generateExpandedCardHTML(element) {
-    console.log("Generiere HTML für Aufgabe:", element);
-
     const taskTypeStyle = element.type === "Technical Task"
-        ? `height: 27px; width: 144px; border-radius: 8px; padding: 4px 16px; background-color: #1FD7C1; color: #FFFFFF; font-size: 16px; font-weight: 400;`
-        : `width: 113px; height: 27px; border-radius: 8px; padding: 4px 16px; background-color: #0038ff; color: white; font-weight: 400; font-size: 16px; display: flex; align-items: center; justify-content: center;`;
+        ? `height: 36px; width: 208px; border-radius: 8px; padding: 4px 16px; background-color: #1FD7C1; color: #FFFFFF; font-size: 23px; font-weight: 400;`
+        : `width: 164px; height: 36px; border-radius: 8px; padding: 4px 16px; background-color: #0038ff; color: white; font-weight: 400; font-size: 23px; display: flex; align-items: center; justify-content: center;`;
 
-    // Priority icon and label based on element priority
     let priorityLabel = "";
     let priorityIconSrc = "";
     if (element.priority === "urgent") {
@@ -472,8 +470,17 @@ function generateTodoHTML(element) {
         priorityIconSrc = "./assets/img/default-titel-card.svg";
     }
 
-    // Formatierung des Due Date aus dem Firebase-Element
     const dueDate = element.dueDate ? new Date(element.dueDate).toLocaleDateString("de-DE") : "Kein Datum";
+
+    const subtasksHTML = element.subtasks.map((subtask, index) => `
+        <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
+            <img src="./assets/img/${subtask.completed ? 'check-button-subtask-okay.svg' : 'check-button-subtask-no-okay.svg'}" 
+                 id="subtask-checkbox-${element.id}-${index}" 
+                 onclick="toggleSubtask(${element.id}, ${index})" 
+                 class="subtask-checkbox">
+            <span>${subtask.title || subtask}</span>
+        </div>
+    `).join('');
 
     return `
     <div class="expanded-card-overlay">
@@ -503,6 +510,12 @@ function generateTodoHTML(element) {
                 </div>
             `).join('')}
         </div>
+        <div class="subtask-conatiner-overlay">
+            <span class="subtask-line-overlay">Subtasks:</span>
+            <div class="subtasks-box-overlay">
+                ${subtasksHTML}
+            </div>
+        </div>
         <div class="actions-overlay">
             <p class="action-btn-overlay">
             <img src="./assets/img/delete.svg" alt="delete">Delete
@@ -513,7 +526,30 @@ function generateTodoHTML(element) {
             </p>
         </div>
     </div>`;
-      }
+}
+
+
+
+function toggleSubtask(taskId, subtaskIndex) {
+    // Suche den Task anhand seiner ID
+    const task = todos.find(t => t.id === taskId);
+    if (task && task.subtasks[subtaskIndex]) {
+        // Ändere den Status des Subtasks
+        task.subtasks[subtaskIndex].completed = !task.subtasks[subtaskIndex].completed;
+        
+        // Update das Bild der Checkbox basierend auf dem neuen Status
+        const checkboxImg = document.getElementById(`subtask-checkbox-${taskId}-${subtaskIndex}`);
+        if (checkboxImg) {
+            checkboxImg.src = `./assets/img/${task.subtasks[subtaskIndex].completed ? 'check-button-subtask-okay.svg' : 'check-button-subtask-no-okay.svg'}`;
+        }
+
+        // Zähle die erledigten Subtasks neu und aktualisiere die Anzeige
+        task.completedSubtasks = task.subtasks.filter(subtask => subtask.completed).length;
+
+        // Rufe `updateHTML()` auf, um das Haupt-HTML zu aktualisieren
+        updateHTML();
+    }
+}
 
       //card-overlay
       function openCardOverlay(taskId) {
@@ -647,12 +683,6 @@ function generateTodoHTML(element) {
     updateHTML();
 });
 
-// Liste der Farben für die Icons
-const colors = [
-    "#FF7A00", "#FF5EB3", "#6E52FF", "#9327FF", "#00BEE8",
-    "#1FD7C1", "#FF745E", "#FFA35E", "#FC71FF", "#FFC701",
-    "#0038FF", "#C3FF2B", "#FFE62B", "#FF4646", "#FFBB2B"
-];
 
 // Funktion zum Abrufen einer Farbe basierend auf dem ersten Buchstaben des Namens
 function getColor(name) {

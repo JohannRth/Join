@@ -369,7 +369,7 @@ body.no-scroll {
     background-color: #0038ff;
     color: white;
     font-weight: 500;
-    font-size: 12px;
+    font-size: 23px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -518,14 +518,28 @@ body.no-scroll {
     flex-direction: column;
   }
 
-  .subtasks-titelbox-overlay{
+  .subtasks-item{
     width: 344px;
     height: 32px;
     padding: 6px 16px 6px 16px;
     gap: 16px;
     display: flex;
     justify-content: center;
+    font-size: 16px;
+    font-weight: 400;
   }
+
+  .subtask-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.subtask-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
 
   /* Aktion overlay*/
   .actions-overlay {
