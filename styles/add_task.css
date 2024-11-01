@@ -11,9 +11,13 @@ body {
 }
 
 .addTaskContainer {
-    padding-top: 190px;
+    padding-top: 206px;
     padding-left: 328px;
 
+}
+
+.headlineContainer {
+    margin-bottom: 48px;
 }
 
 .addTaskHeadline {
@@ -22,10 +26,14 @@ body {
 }
 
 .addTaskContent {
-    display: flex;
-    align-items: flex-start;
-    padding-top: 48px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.leftAndRightTaskContainer {
+    display: flex;
 }
 
 .leftAddTaskContainer {
@@ -645,6 +653,7 @@ input[type="text"]:focus,
     overflow-y: auto;
     margin-top: 10px;
 }
+
 
 .subTaskList::-webkit-scrollbar {
     width: 5px;   

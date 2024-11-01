@@ -6,6 +6,8 @@
     <script src="./js/firebase.js" defer></script>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="/styles/add_task.css">
+    <link rel="stylesheet" href="./styles/add_task_responsive.css">
+    <script src="./js/add_task_templates.js"></script>
     <script src="script.js"></script>
     <script src="./js/add_task.js" defer></script>
     <script src="./js/login.js" defer></script>
@@ -22,86 +24,88 @@
     <div id="mobile-nav-placeholder"></div> <!-- Neuer Platzhalter für mobile Navbar -->
     <div id="header-placeholder"></div>
     <div class="addTaskContainer">
-        <div>
-            <h1 class="addTaskHeadline">Add Task</h1>
-        </div>
         <div class="addTaskContent">
-            <div class="leftAddTaskContainer">
-                <form onsubmit="createTask(); return false;">
-                    <div class="inputContainerTitle">
-                        <div class="inputContainer">
-                            <span class="addTaskInputTitle required">Title</span>
-                            <input class="inputAddTask" id="title" type="text" placeholder="Enter a title">
-                            <div class="errorMessage"></div>
-                        </div>
-                    </div>
-                    <div class="inputContainerDescription">
-                        <div class="inputContainer">
-                            <span class="addTaskInputTitle">Description</span>
-                            <textarea class="textAreaAddTask" id="description" placeholder="Enter a Description"></textarea>
-                        </div>
-                    </div>
-                    <div class="inputContainer">
-                        <span class="addTaskInputTitle">Assigned To</span>
-                        <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
-                            <div>
-                                <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
-                            </div>
-                            <div class="dropDownImageAssignedToContainer">
-                                <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
-                            </div>
-                        </div>
-                        <div class="contactDropdown" id="contactDropdown">
-                        </div>
-                        <div id="aktivContacts" class="aktivContacts"></div>
-                    </div>
+            <div class="headlineContainer">
+                <h1 class="addTaskHeadline">Add Task</h1>
             </div>
-            <div class="addTaskSeparateContainer"></div>
-            <div class="rightAddTaskContainer">
-                    <div class="inputContainerDueDate">
+            <div class="leftAndRightTaskContainer">
+                <div class="leftAddTaskContainer">
+                    <form onsubmit="createTask(); return false;">
+                        <div class="inputContainerTitle">
+                            <div class="inputContainer">
+                                <span class="addTaskInputTitle required">Title</span>
+                                <input class="inputAddTask" id="title" type="text" placeholder="Enter a title">
+                                <div class="errorMessage"></div>
+                            </div>
+                        </div>
+                        <div class="inputContainerDescription">
+                            <div class="inputContainer">
+                                <span class="addTaskInputTitle">Description</span>
+                                <textarea class="textAreaAddTask" id="description" placeholder="Enter a Description"></textarea>
+                            </div>
+                        </div>
                         <div class="inputContainer">
-                            <span class="addTaskInputTitle required">Due date</span>
-                            <input onclick="getDateToday()" class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
-                            <div class="errorMessage"></div>
-                        </div>
-                    </div>
-                    <div class="prioContainer">
-                        <span class="addTaskInputTitle">Prio</span>
-                        <div class="prioButtonContainer">
-                            <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
-                            <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
-                            <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
-                        </div>
-                    </div>
-                    <div class="inputContainer">
-                        <span class="addTaskInputTitle required">Category</span>
-                        <div id="categorySelector" class="customDropdown" onclick="initializeCategoryDropdown()">
-                            <div class="selectedOption">
+                            <span class="addTaskInputTitle">Assigned To</span>
+                            <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
                                 <div>
-                                    <span class="selectedCategoryHeadline" id="selectedCategory">Select task category</span>
+                                    <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
                                 </div>
-                                <div class="dropDownImageCategoryContainer">
-                                    <img class="dropDownImageCategory" id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
+                                <div class="dropDownImageAssignedToContainer">
+                                    <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
                                 </div>
                             </div>
-                            <div id="categoryDropdown" class="dropDownContent"></div>
-                            <div class="errorMessage"></div>
-                        </div>
-                    </div>
-                    <div class="inputContainer">
-                        <span class="addTaskInputTitle">Subtasks</span>
-                        <div class="subTaskInputContainer">
-                            <div>
-                                <input onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
+                            <div class="contactDropdown" id="contactDropdown">
                             </div>
-                            <div class="addSubTaskButtonContainer">
-                                <img onclick="addNewSubtask()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
+                            <div id="aktivContacts" class="aktivContacts"></div>
+                        </div>
+                </div>
+                <div class="addTaskSeparateContainer"></div>
+                <div class="rightAddTaskContainer">
+                        <div class="inputContainerDueDate">
+                            <div class="inputContainer">
+                                <span class="addTaskInputTitle required">Due date</span>
+                                <input onclick="getDateToday()" class="inputAddTaskDueDate" type="date" id="date" value="YYYY-MM-DD">
+                                <div class="errorMessage"></div>
                             </div>
                         </div>
-                        <div class="subTaskErrorMessage" id="subTaskErrorMessage"></div>
-                        <div class="subTaskList" id="subTaskList"></div>
-                    </div>
-                </form>
+                        <div class="prioContainer">
+                            <span class="addTaskInputTitle">Prio</span>
+                            <div class="prioButtonContainer">
+                                <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
+                                <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
+                                <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
+                            </div>
+                        </div>
+                        <div class="inputContainer">
+                            <span class="addTaskInputTitle required">Category</span>
+                            <div id="categorySelector" class="customDropdown" onclick="initializeCategoryDropdown()">
+                                <div class="selectedOption">
+                                    <div>
+                                        <span class="selectedCategoryHeadline" id="selectedCategory">Select task category</span>
+                                    </div>
+                                    <div class="dropDownImageCategoryContainer">
+                                        <img class="dropDownImageCategory" id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
+                                    </div>
+                                </div>
+                                <div id="categoryDropdown" class="dropDownContent"></div>
+                                <div class="errorMessage"></div>
+                            </div>
+                        </div>
+                        <div class="inputContainer">
+                            <span class="addTaskInputTitle">Subtasks</span>
+                            <div class="subTaskInputContainer">
+                                <div>
+                                    <input onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
+                                </div>
+                                <div class="addSubTaskButtonContainer">
+                                    <img onclick="addNewSubtask()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
+                                </div>
+                            </div>
+                            <div class="subTaskErrorMessage" id="subTaskErrorMessage"></div>
+                            <div class="subTaskList" id="subTaskList"></div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div> 
         <div class="addTaskCreateButtonContainer">

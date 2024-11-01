@@ -5,7 +5,7 @@ let newTasks = [];
 let subTasks = [];
 
 // Liste der Farben für die Icons
-const colors = [
+let colors = [
     "#FF7A00",
     "#FF5EB3",
     "#6E52FF",
@@ -23,6 +23,7 @@ const colors = [
     "#FFBB2B"
 ];
 
+
 // Funktion zum Setzen der Priorität
 function setPriority(priority) {
     let buttons = document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow');
@@ -36,6 +37,7 @@ function setPriority(priority) {
         selectedButton.classList.add('active');
     }
 }
+
 
 function addNewSubtask() {
     let newSubTask = document.getElementById('subTaskInput');
@@ -51,50 +53,24 @@ function addNewSubtask() {
     renderSubtasks();
 }
 
+
 function renderSubtasks(editIndex = -1) {
     let subTaskList = document.getElementById('subTaskList');
     subTaskList.innerHTML = '';
     subTasks.forEach((subTask, index) => {
         if (index === editIndex) {
-            subTaskList.innerHTML += `
-                <div class="subTaskEdit">
-                    <div class="leftContainerSubTask">
-                        <input type="text" id="editInput${index}" value="${subTask}" class="subTaskEditInput">
-                    </div>
-                    <div class="rightContainerSubTask">
-                        <div>
-                            <img class="subTaskSaveButton" onclick="saveSubTask(${index})" src="./assets/img/check-dark.svg" alt="Save">
-                        </div>
-                        <div class="partingLine"></div>
-                        <div>
-                            <img class="subTaskDeleteButton" onclick="deleteSubTask(${index})" src="./assets/img/delete.svg" alt="Delete">
-                        </div>
-                    </div>
-                </div>
-            `;
+            subTaskList.innerHTML += subtaskInProgressTemplate(index, subTask);
         } else {
-            subTaskList.innerHTML += `
-                <div class="subTask" ondblclick="editSubTask(${index})">
-                    <div class="leftContainerSubTask">
-                        <span>${subTask}</span>
-                    </div>
-                    <div class="rightContainerSubTask">
-                        <div>
-                            <img class="subTaskEditButton" onclick="editSubTask(${index})" src="./assets/img/edit.svg" alt="Edit">
-                        </div>
-                        <div class="partingLine"></div>
-                        <div>
-                            <img class="subTaskDeleteButton" onclick="deleteSubTask(${index})" src="./assets/img/delete.svg" alt="Delete">
-                        </div>
-                    </div>
-                </div>
-            `;
+            subTaskList.innerHTML += subTaskCreatedTemplate(index, subTask);
         }
     });
 }
+
+
 function editSubTask(index) {
     renderSubtasks(index);
 }
+
 
 function saveSubTask(index) {
     let editedText = document.getElementById(`editInput${index}`).value;
@@ -110,6 +86,7 @@ function deleteSubTask(index) {
     renderSubtasks();
 }
 
+
 function fieldRequiredTitle() {
     let titleInput = document.getElementById('title');
     if (titleInput) {
@@ -119,6 +96,7 @@ function fieldRequiredTitle() {
         validateTitleField.call(titleInput); 
     }
 }
+
 
 function validateTitleField() {
     let errorMessage = this.nextElementSibling;
@@ -132,6 +110,7 @@ function validateTitleField() {
     }
 }
 
+
 function fieldRequiredDate() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
@@ -144,6 +123,7 @@ function fieldRequiredDate() {
     }
 }
 
+
 function validateDateField() {
     let errorMessage = this.nextElementSibling;
     if (!this.value) {
@@ -155,6 +135,7 @@ function validateDateField() {
         errorMessage.style.display = 'none';
     }
 }
+
 
 function fieldRequiredCategory() {
     let categorySelector = document.getElementById('categorySelector');
@@ -171,6 +152,7 @@ function fieldRequiredCategory() {
     }
 }
 
+
 function validateCategoryField() {
     let selectedCategory = this.querySelector('.selectedCategoryHeadline');
     let errorMessage = this.querySelector('.errorMessage');
@@ -183,10 +165,11 @@ function validateCategoryField() {
     }
 }
 
+
 function getDateToday() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
-        dateInput.min = new Date().toISOString().split('T')[0]; // Aktuellstes Datum wird angezeigt, wenn es kleiner ist das heutige Datum
+        dateInput.min = new Date().toISOString().split('T')[0];
         dateInput.onclick = function() {
             if (this.value === "YYYY-MM-DD") {
                 this.value = new Date().toISOString().split('T')[0];
@@ -200,17 +183,18 @@ function getDateToday() {
     }
 }
 
-function validateDate(input) {
-    const selectedDate = new Date(input.value);
-    const currentDate = new Date();
-    const maxYear = 2999;
 
+function validateDate(input) {
+    let selectedDate = new Date(input.value);
+    let currentDate = new Date();
+    let maxYear = 2999;
     if (selectedDate < currentDate) {
         input.value = currentDate.toISOString().split('T')[0];
     } else if (selectedDate.getFullYear() > maxYear) {
         input.value = `${maxYear}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
     }
 }
+
 
 function updateDateColor() {
     this.style.color = this.value && this.value !== "YYYY-MM-DD" ? 'black' : '#D1D1D1';
@@ -219,9 +203,10 @@ function updateDateColor() {
 
 let categoryDropdownInitialized = false;
 
+
 function initializeCategoryDropdown() {
     if (categoryDropdownInitialized) return;
-    const elements = getCategoryElements();
+    let elements = getCategoryElements();
     setupCategoryEventListeners(elements);
     addCategoryOptions(elements.categoryDropdown);
     categoryDropdownInitialized = true;
@@ -232,6 +217,7 @@ function initializeCategoryDropdown() {
     });
 }
 
+
 function getCategoryElements() {
     return {
         categorySelector: document.getElementById('categorySelector'),
@@ -241,6 +227,7 @@ function getCategoryElements() {
     };
 }
 
+
 function setupCategoryEventListeners(elements) {
     elements.categorySelector.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -248,23 +235,27 @@ function setupCategoryEventListeners(elements) {
     });
 }
 
+
 function toggleCategoryDropdown(elements) {
     const isOpen = elements.categoryDropdown.classList.toggle('show');
     elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);
 }
+
 
 function closeCategoryDropdown(elements) {
     elements.categoryDropdown.classList.remove('show');
     elements.dropDownImage.classList.remove('dropDownImageRotation180');
 }
 
+
 function selectCategory(category, elements) {
     elements.selectedCategory.textContent = category;
     closeCategoryDropdown(elements);
 }
 
+
 function addCategoryOption(category, categoryDropdown) {
-    const categoryItem = document.createElement('div');
+    let categoryItem = document.createElement('div');
     categoryItem.className = 'categoryItem';
     categoryItem.textContent = category;
     categoryItem.addEventListener('click', (event) => {
@@ -274,25 +265,31 @@ function addCategoryOption(category, categoryDropdown) {
     categoryDropdown.appendChild(categoryItem);
 }
 
+
 function addCategoryOptions(categoryDropdown) {
     addCategoryOption('Technical Task', categoryDropdown);
     addCategoryOption('User Story', categoryDropdown);
 }
 
+
 document.addEventListener('DOMContentLoaded', initializeCategoryDropdown);
 
+
 let isDropdownOpen = false;
+
 
 function toggleRotationDownImage() {
     let downImage = document.getElementById('dropDownImageCategory');
     downImage.classList.add('dropDownImageRotation180');
 }
 
+
 let contactDropdownInitialized = false;
+
 
 function initializeContactDropdown() {
     if (contactDropdownInitialized) return;
-    const elements = getElements();
+    let elements = getElements();
     setupEventListeners(elements);
     addExampleContacts(elements.contactDropdown);
     contactDropdownInitialized = true;
@@ -301,17 +298,17 @@ function initializeContactDropdown() {
             closeDropdown(elements);
         }
     });
- 
 }
+
 
 function getElements() {
     return {
         assignedTo: document.getElementById('assignedTo'),
         contactDropdown: document.getElementById('contactDropdown'),
         dropDownImage: document.getElementById('dropDownImageContacts'),
-        // contactsDisplay: document.getElementById('contacts')  // Fügt die Namen der Kontakte in den div ein
     };
 }
+
 
 function setupEventListeners(elements) {
     elements.assignedTo.addEventListener('click', (event) => {
@@ -320,71 +317,53 @@ function setupEventListeners(elements) {
     });
 }
 
+
 function toggleDropdown(elements) {
-    const isOpen = elements.contactDropdown.classList.toggle('show');
+    let isOpen = elements.contactDropdown.classList.toggle('show');
     elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);
 }
+
 
 function closeDropdown(elements) {
     elements.contactDropdown.classList.remove('show');
     elements.dropDownImage.classList.remove('dropDownImageRotation180');
 }
 
+
 function preventClose(event) {
     event.stopPropagation();
 }
 
-function selectContact(contact, elements) {
-    const contactItem = event.target.closest('.contactItem');
-    const checkbox = contactItem.querySelector('.contactCheckbox');
-    // Toggle checkbox
+
+function selectContact(contact) {
+    let contactItem = Event.target.closest('.contactItem');
+    let checkbox = contactItem.querySelector('.contactCheckbox');
     checkbox.checked = !checkbox.checked;
-    
-    // Update active contacts
     updateActiveContacts(contact, checkbox.checked);
 }
 
+
 function updateActiveContacts(contact, isChecked) {
-    const activeContactsDiv = document.getElementById('aktivContacts');
-    
+    let activeContactsDiv = document.getElementById('aktivContacts');
     if (isChecked) {
-        // Add contact to aktivContacts
-        const contactElement = document.createElement('div');
+        let contactElement = document.createElement('div');
         contactElement.textContent = contact;
         contactElement.setAttribute('data-contact', contact);
         activeContactsDiv.appendChild(contactElement);
     } else {
-        // Remove contact from aktivContacts
-        const existingContact = activeContactsDiv.querySelector(`[data-contact="${contact}"]`);
+        let existingContact = activeContactsDiv.querySelector(`[data-contact="${contact}"]`);
         if (existingContact) {
             existingContact.remove();
         }
     }
 }
-// function selectContact(contact, elements) {
-//     // elements.contactsDisplay.textContent = contact;
-//     // elements.contactDropdown.classList.remove('show'); // lässt beim anklicken des Kontaktes das DropDownMenü schließen.
-//     elements.dropDownImage.classList.remove('dropDownImageRotation180');
-//     document.removeEventListener('click', preventClose);
-// }
+
 
 function addContact(contact, contactDropdown) {
     let contactItem = document.createElement('div');
     contactItem.className = 'contactItem';
-    contactItem.innerHTML = `
-        <div class="contactIconAndName">
-            <div class="contactIcon" style="background-color: ${getColor(contact)};">
-                ${getInitials(contact)}
-            </div>
-            <div>
-                <span class="contactName">${contact}</span>
-            </div>
-        </div>
-        <div>
-            <input type="checkbox" class="contactCheckbox">
-        </div>
-    `;
-    const checkbox = contactItem.querySelector('.contactCheckbox');
+    contactItem.innerHTML = addContactTemplate(contact);
+    let checkbox = contactItem.querySelector('.contactCheckbox');
     contactItem.addEventListener('click', (event) => {
         if (event.target !== checkbox) {
             event.preventDefault();
@@ -397,13 +376,13 @@ function addContact(contact, contactDropdown) {
     sortContactAlphabetically(contactDropdown, contactItem);
 }
 
+
 function sortContactAlphabetically(container, newItem) {
-    const contactName = newItem.querySelector('.contactName').textContent;
-    const items = container.querySelectorAll('.contactItem');
-    const insertIndex = Array.from(items).findIndex(item => 
+    let contactName = newItem.querySelector('.contactName').textContent;
+    let items = container.querySelectorAll('.contactItem');
+    let insertIndex = Array.from(items).findIndex(item => 
         item.querySelector('.contactName').textContent.localeCompare(contactName) > 0
     );
-    
     if (insertIndex === -1) {
         container.appendChild(newItem);
     } else {
@@ -411,10 +390,10 @@ function sortContactAlphabetically(container, newItem) {
     }
 }
 
+
 function toggleContactState(contactItem, checkbox, contact) {
     contactItem.classList.toggle('active');
     checkbox.checked = contactItem.classList.contains('active');
-    
     if (contactItem.classList.contains('active')) {
         addToActiveContacts(contact);
     } else {
@@ -422,9 +401,10 @@ function toggleContactState(contactItem, checkbox, contact) {
     }
 }
 
+
 function addToActiveContacts(contact) {
-    const aktivContacts = document.getElementById('aktivContacts');
-    const contactElement = document.createElement('span');
+    let aktivContacts = document.getElementById('aktivContacts');
+    let contactElement = document.createElement('span');
     contactElement.className = 'contactIcon';
     contactElement.style.backgroundColor = getColor(contact);
     contactElement.textContent = getInitials(contact);
@@ -432,9 +412,10 @@ function addToActiveContacts(contact) {
     aktivContacts.appendChild(contactElement);
 }
 
+
 function removeFromActiveContacts(contact) {
-    const aktivContacts = document.getElementById('aktivContacts');
-    const contactElement = aktivContacts.querySelector(`[data-contact="${contact}"]`);
+    let aktivContacts = document.getElementById('aktivContacts');
+    let contactElement = aktivContacts.querySelector(`[data-contact="${contact}"]`);
     if (contactElement) {
         aktivContacts.removeChild(contactElement);
     }
@@ -443,22 +424,23 @@ function removeFromActiveContacts(contact) {
 // Funktion zum Erhalten der Initialen des Namens
 function getInitials(name) {
     if (!name || typeof name !== 'string') return '';
-    const nameParts = name.trim().split(' ');
-    const initials = nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '');
+    let nameParts = name.trim().split(' ');
+    let initials = nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '');
     return initials.toUpperCase();
 }
 
 // Funktion zum Abrufen einer Farbe basierend auf dem ersten Buchstaben des Namens
 function getColor(name) {
-    if (!name || typeof name !== 'string') return '#000000'; // Standardfarbe
-    const firstLetter = name.charAt(0).toUpperCase();
-    const index = firstLetter.charCodeAt(0) - 65; // 'A' hat den charCode 65
+    if (!name || typeof name !== 'string') return '#000000'; 
+    let firstLetter = name.charAt(0).toUpperCase();
+    let index = firstLetter.charCodeAt(0) - 65;
     return colors[index % colors.length];
 }
 
+
 async function initializeContactDropdown() {
     if (contactDropdownInitialized) return;
-    const elements = getElements();
+    let elements = getElements();
     setupEventListeners(elements);
     await loadAndAddContacts(elements.contactDropdown);
     contactDropdownInitialized = true;
@@ -468,6 +450,7 @@ async function initializeContactDropdown() {
         }
     });
 }
+
 
 async function loadAndAddContacts(contactDropdown) {
     try {
@@ -481,57 +464,51 @@ async function loadAndAddContacts(contactDropdown) {
     }
 }
 
+
 document.addEventListener('DOMContentLoaded', initializeContactDropdown);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-async function createNewTask() {
-    // Formulareingaben sammeln
+// Funktion 1: Sammelt und validiert die Eingabedaten
+function collectAndValidateTaskData() {
     let title = document.getElementById('title').value.trim();
     let description = document.getElementById('description').value.trim();
     let dueDate = document.getElementById('date').value;
     let category = document.getElementById('selectedCategory').textContent.trim();
-    let prio = getSelectedPriority(); // Funktion, die die ausgewählte Priorität zurückgibt
-    let assignedTo = getAssignedContacts(); // Funktion, die die zugewiesenen Kontakte sammelt
-    let subtasks = [...subTasks]; // Kopie des Subtasks-Arrays
-
-    // Validierung (bereits in createNewTask() integriert)
+    let prio = getSelectedPriority(); 
+    let assignedTo = getAssignedContacts(); 
+    let subtasks = [...subTasks]; 
     let isValid = validateTaskForm(title, dueDate, category);
-
     if (!isValid) {
         console.log('Form validation failed.');
-        return;
-    }
-
-    // Erstellen des Task-Objekts
-    let task = {
-        title: title,
-        description: description,
-        assignedTo: assignedTo,
-        dueDate: dueDate,
-        prio: prio,
-        category: category,
-        subtasks: subtasks,
-        createdAt: new Date().toISOString() // Optional: Zeitstempel
+        return null;
+    } return {
+        title, description, assignedTo, dueDate, prio, category, subtasks, createdAt: new Date().toISOString()
     };
+}
 
+// Funktion 2: Speichert die Aufgabe in der Datenbank
+async function saveTaskToDatabase(task) {
     try {
-        // Speichern des Tasks in Firebase
-        const result = await saveData('tasks', task);
+        let result = await saveData('tasks', task);
         console.log('Task successfully created with key:', result.name);
-
-        // Aufgabe zum localen Array hinzufügen (optional)
         task.key = result.name;
-        newTasks.push(task);
-
-        // Formular zurücksetzen
-        resetNewTask();
-
-        // Benachrichtigung anzeigen
-        showTaskAddedNotification();
-
+        return task;
     } catch (error) {
         console.error('Error creating task:', error);
         showErrorNotification('Fehler beim Erstellen der Aufgabe. Bitte versuchen Sie es erneut.');
+        return null;
+    }
+}
+
+// Funktion 3: Hauptfunktion, die den gesamten Prozess koordiniert
+async function createNewTask() {
+    let taskData = collectAndValidateTaskData();
+    if (!taskData) return;
+    let savedTask = await saveTaskToDatabase(taskData);
+    if (savedTask) {
+        newTasks.push(savedTask);
+        resetNewTask();
+        showTaskAddedNotification();
     }
 }
 
@@ -550,10 +527,10 @@ function getSelectedPriority() {
 
 // Funktion zum Sammeln der zugewiesenen Kontakte
 function getAssignedContacts() {
-    const aktivContactsDiv = document.getElementById('aktivContacts');
+    let aktivContactsDiv = document.getElementById('aktivContacts');
     let contacts = [];
     aktivContactsDiv.querySelectorAll('span.contactIcon').forEach(contactSpan => {
-        contacts.push(contactSpan.dataset.contact); // data-contact-Attribut extrahieren und hinzufügen
+        contacts.push(contactSpan.dataset.contact); 
     });
     return contacts;
 }
@@ -561,38 +538,34 @@ function getAssignedContacts() {
 // Validierungsfunktion für das Task-Formular
 function validateTaskForm(title, dueDate, category) {
     let isValid = true;
-
     if (!title) {
         fieldRequiredTitle();
         isValid = false;
     }
-
     if (!dueDate) {
         fieldRequiredDate();
         isValid = false;
     }
-
     if (category === 'Select task category') {
         fieldRequiredCategory();
         isValid = false;
     }
-
     return isValid;
 }
 
 // Funktion zum Anzeigen von Fehlerbenachrichtigungen (optional)
 function showErrorNotification(message) {
-    // Implementieren Sie eine Benachrichtigungsfunktion ähnlich wie showTaskAddedNotification()
-    const errorPopup = document.getElementById('popupError'); // Fügen Sie dieses Element in Ihr HTML ein
+    let errorPopup = document.getElementById('popupError'); 
     if (errorPopup) {
         errorPopup.querySelector('p').textContent = message;
         errorPopup.classList.add('show');
-
         setTimeout(() => {
             errorPopup.classList.remove('show');
         }, 3000);
     }
 }
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Funktion zum Zurücksetzen des Formulars
 function resetNewTask() {
@@ -600,31 +573,25 @@ function resetNewTask() {
     document.getElementById('description').value = '';
     document.getElementById('contacts').textContent = 'Select contacts to assign';
     document.getElementById('date').value = '';
-    document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => {
-        btn.classList.remove('active');
-    });
+    document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => {btn.classList.remove('active');});
     document.getElementById('selectedCategory').textContent = 'Select task category';
     document.getElementById('subTaskList').innerHTML = '';
     document.getElementById('subTaskInput').value = '';
     document.getElementById('aktivContacts').innerHTML = '';
-    
-    // Reset contact items and checkboxes
     document.querySelectorAll('.contactItem').forEach(item => {
         item.classList.remove('active');
-        const checkbox = item.querySelector('.contactCheckbox');
-        if (checkbox) {
-            checkbox.checked = false;
-        }
+        let checkbox = item.querySelector('.contactCheckbox');
+        if (checkbox) {checkbox.checked = false;}
     });
 }
 
 
 function showTaskAddedNotification() {
-    const notification = document.getElementById('taskAddedNotification');
+    let notification = document.getElementById('taskAddedNotification');
     notification.classList.add('show');
     setTimeout(() => {
       notification.classList.remove('show');
-      window.location.href = 'board.html'; // Weiterleitung zur board.html
+      window.location.href = 'board.html';
     }, 3000);
   }
 
