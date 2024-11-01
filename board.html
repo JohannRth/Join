@@ -473,14 +473,15 @@ function generateTodoHTML(element) {
     const dueDate = element.dueDate ? new Date(element.dueDate).toLocaleDateString("de-DE") : "Kein Datum";
 
     const subtasksHTML = element.subtasks.map((subtask, index) => `
-        <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
-            <img src="./assets/img/${subtask.completed ? 'check-button-subtask-okay.svg' : 'check-button-subtask-no-okay.svg'}" 
-                 id="subtask-checkbox-${element.id}-${index}" 
-                 onclick="toggleSubtask(${element.id}, ${index})" 
-                 class="subtask-checkbox">
-            <span>${subtask.title || subtask}</span>
-        </div>
-    `).join('');
+    <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
+        <input type="checkbox" ${subtask.completed ? 'checked' : ''} 
+               id="subtask-checkbox-${element.id}-${index}" 
+               onclick="toggleSubtask(${element.id}, ${index})" 
+               class="styled-checkbox">
+        <span>${subtask.title || subtask}</span>
+    </div>
+`).join('');
+
 
     return `
     <div class="expanded-card-overlay">
@@ -501,9 +502,9 @@ function generateTodoHTML(element) {
                 <img src="${priorityIconSrc}" alt="Priority ${priorityLabel}" class="priority-img-overlay">
             </div>    
         </div>
+        <span class="task-assigned-line-overlay">Assigned To:</span>
         <div class="task-assigned-container-overlay">
-            <span>Assigned To:</span>
-            ${element.contacts.map(contact => `
+                ${element.contacts.map(contact => `
                 <div class="person-container-overlay">
                     <span class="person-circle-overlay" style="background-color: ${getColor(contact)};">${getInitials(contact)}</span>
                     <span class="person-name-overlay">${contact}</span>
@@ -516,41 +517,37 @@ function generateTodoHTML(element) {
                 ${subtasksHTML}
             </div>
         </div>
-        <div class="actions-overlay">
-            <p class="action-btn-overlay">
-            <img src="./assets/img/delete.svg" alt="delete">Delete
+         <div class="actions-overlay">
+            <p class="action-btn-overlay" onclick="deleteTask(${element.id})">
+                <img src="./assets/img/delete.svg" alt="delete">Delete
             </p>
             <img src="./assets/img/sep-delet-edit.svg" alt="delete">
-            <p class="action-btn-overlay">
-            <img src="./assets/img/edit.svg" alt="edit">Edit
+            <p class="action-btn-overlay" onclick="enableEditMode(${element.id})">
+                <img src="./assets/img/edit.svg" alt="edit">Edit
             </p>
         </div>
     </div>`;
 }
 
-
-
-function toggleSubtask(taskId, subtaskIndex) {
-    // Suche den Task anhand seiner ID
+async function toggleSubtask(taskId, subtaskIndex) {
+    // Find task and subtask
     const task = todos.find(t => t.id === taskId);
-    if (task && task.subtasks[subtaskIndex]) {
-        // Ändere den Status des Subtasks
-        task.subtasks[subtaskIndex].completed = !task.subtasks[subtaskIndex].completed;
-        
-        // Update das Bild der Checkbox basierend auf dem neuen Status
-        const checkboxImg = document.getElementById(`subtask-checkbox-${taskId}-${subtaskIndex}`);
-        if (checkboxImg) {
-            checkboxImg.src = `./assets/img/${task.subtasks[subtaskIndex].completed ? 'check-button-subtask-okay.svg' : 'check-button-subtask-no-okay.svg'}`;
-        }
+    if (!task || !task.subtasks || !task.subtasks[subtaskIndex]) return;
 
-        // Zähle die erledigten Subtasks neu und aktualisiere die Anzeige
-        task.completedSubtasks = task.subtasks.filter(subtask => subtask.completed).length;
+    // Toggle completion status
+    task.subtasks[subtaskIndex].completed = !task.subtasks[subtaskIndex].completed;
 
-        // Rufe `updateHTML()` auf, um das Haupt-HTML zu aktualisieren
-        updateHTML();
-    }
+    // Berechne Fortschritt und aktualisiere ProgressBar
+    task.completedSubtasks = task.subtasks.filter(st => st.completed).length;
+    updateProgressBar(taskId);
+
+    // Speichere aktualisierte Task-Daten auf Firebase
+    const path = `tasks/${task.id}`;  // Hier Task-Pfad auf Firebase anpassen
+    await updateData(path, task);
+
+    // HTML-Ansicht aktualisieren
+    updateHTML();
 }
-
       //card-overlay
       function openCardOverlay(taskId) {
         const overlay = document.getElementById("card-overlay");
@@ -692,15 +689,87 @@ function getColor(name) {
     return colors[index % colors.length];
 }
 
-// Funktion zum Erhalten der Initialen des Namens
-function getInitials(name) {
-    if (!name || typeof name !== 'string') return '';
-    const nameParts = name.trim().split(' ');
-    const initials = nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '');
-    return initials.toUpperCase();
-}
-      
+async function deleteTask(taskId) {
+    // Task im `todos` Array finden und entfernen
+    todos = todos.filter(task => task.id !== taskId);
 
+    // Task auf Firebase löschen
+    const path = `tasks/${taskId}`;
+    await deleteData(path); // Hier stell sicher, dass du eine Funktion `deleteData` hast, die das Firebase-Dokument löscht
+
+    // HTML aktualisieren
+    updateHTML();
+    closeCardOverlay(); // Schließe das Overlay nach dem Löschen
+}
+
+function enableEditMode(taskId) {
+    const overlay = document.getElementById("card-overlay");
+    const task = todos.find((t) => t.id === taskId);
+
+    // Erzeugen der Editierfelder in HTML
+    overlay.innerHTML = `
+        <div class="expanded-card-overlay">
+            <div class="close-story-container-overlay">
+                <span></span>
+                <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeCardOverlay()">
+            </div>
+            <div>
+              <span class="priority-line-overlay">Title</span>
+              <input class="inputAddTask" id="edit-title" type="text" value="${task.titel}">
+            </div>
+            <div>
+              <span class="priority-line-overlay">Description</span>
+              <textarea class="textAreaAddTask" id="edit-description">${task.description}</textarea>
+            </div>
+            <div>
+              <span class="date-line-overlay">Due date</span>
+              <input class="inputAddTaskDueDate" type="date" id="edit-due-date" value="${task.dueDate}">
+            </div>
+              <span class="priority-line-overlay">Priority</span>
+            <div class="prioButtonContainer">
+              <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
+              <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
+              <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
+            </div>  
+            <span class="addTaskInputTitle">Assigned To</span>
+              <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
+                <div>
+                  <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
+                </div>
+                <div class="dropDownImageAssignedToContainer">
+                  <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
+                </div>
+              </div>
+              <div class="contactDropdown" id="contactDropdown"></div>
+                <div id="aktivContacts" class="aktivContacts"></div>
+                <span class="addTaskInputTitle">Subtasks</span>
+                <div class="subTaskInputContainer">
+                <div>
+                  <input onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
+                </div>
+                <div class="addSubTaskButtonContainer">
+                  <img onclick="addNewSubtask()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
+                </div>
+                
+            <div class="actions-overlay">
+                <button class="btn-check-edit" onclick="saveTask(${taskId})">Ok<img src="./assets/img/check.svg" alt=""></button>
+            </div>
+        </div>`;
+}
+
+function saveTask(taskId) {
+    const task = todos.find((t) => t.id === taskId);
+
+    // Neue Werte abrufen
+    task.titel = document.getElementById("edit-title").value;
+    task.description = document.getElementById("edit-description").value;
+    task.dueDate = document.getElementById("edit-due-date").value;
+    task.priority = document.getElementById("edit-priority").value;
+
+    // HTML aktualisieren und Overlay schließen
+    updateHTML();
+    closeCardOverlay();
+}
     </script>
   </body>
 </html>

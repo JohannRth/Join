@@ -376,20 +376,26 @@ body.no-scroll {
     padding: 4px 16px;
   }
 
-  .expanded-card-overlay .task-title-overlay {
+   .task-title-overlay {
     width: 445px;
-    height: 219px;
+    height: 150px;
     font-weight: 700;
     font-size: 61px;
     color: #000000;
+    overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   }
 
-  .expanded-card-overlay .task-description-overlay {
+  .task-description-overlay {
     width: 445px;
-    height: 24px;
+    height: 54px;
     font-weight: 400;
     font-size: 20px;
     color: #000000;
+    overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   }
 
   .due-date-overlay {
@@ -448,11 +454,10 @@ body.no-scroll {
 
   .task-assigned-container-overlay {
     width: 445px;
-    height: 160px;
-    gap: 8px;
+    height: 110px;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    overflow-x: hidden;  
   }
 
   .task-assigned-line-overlay {
@@ -516,6 +521,8 @@ body.no-scroll {
     gap: 4px;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden; 
+    padding-left: 16px;
   }
 
   .subtasks-item{
@@ -529,16 +536,42 @@ body.no-scroll {
     font-weight: 400;
   }
 
-  .subtask-item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+/* Grundstil für die versteckte Checkbox */
+.styled-checkbox {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  appearance: none;
+  border: 2px solid #000; 
+  border-radius: 4px;
+  background-color: #fff; 
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.subtask-checkbox {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
+.styled-checkbox:checked {
+  background-color: #ffffff;
+  border: 1px solid #000; 
+  border-radius: 4px;
+}
+
+/* Stil für das Häkchen*/
+.styled-checkbox:checked::after {
+  content: '✔';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000000; 
+  font-size: 16px;
+}
+
+.styled-checkbox:not(:checked) {
+  background-color: #fff; /* weißer Hintergrund */
+}
+
+.styled-checkbox:not(:checked)::after {
+  content: ''; /* kein Häkchen */
 }
 
   /* Aktion overlay*/
@@ -600,4 +633,18 @@ body.no-scroll {
     height: 56px;
     display: flex;
     justify-content: center;
+  }
+
+  .btn-check-edit{
+    width: 89px;
+    height: 57px;
+    border-radius: 10px;
+    padding: 9px;
+    color: #FFFFFF;
+    background-color: #2a3647;
+    font-size: 21px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
   }
