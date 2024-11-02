@@ -622,6 +622,30 @@ input[type="text"]:focus,
     position: relative;
 }
 
+.inputSubTaksClickContainer {
+    display: none;
+}
+
+.inputSubTaksClickContainer.visible {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+}
+
+.deleteCurrentTextButton {
+    margin-top: 3px;
+    height: 15px;
+    width: 14px;
+    cursor: pointer;
+}
+
+.addNewTextButton {
+    margin-top: 1px;
+    height: 18px;
+    width: 17px;
+    cursor: pointer;
+}
+
 .subTaskInput {
     flex-grow: 1;
 }
@@ -639,6 +663,10 @@ input[type="text"]:focus,
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     transition: opacity 0.3s ease;
+}
+
+.addSubTaskButtonContainer.no-hover:hover {
+    background-color: transparent;
 }
 
 
@@ -684,12 +712,19 @@ input[type="text"]:focus,
     margin-bottom: 8px;
     padding: 7px 12px;
     border-radius: 10px;
-    background-color:  #d3d3d354;
+}
+
+.subTask .subTaskButtons {
+    display: none;
+}
+
+.subTask:hover .subTaskButtons {
+    display: flex;
 }
 
 .subTask:hover {
     cursor: pointer;
-    background-color:  #d3d3d3af;
+    background-color:  #d3d3d354;
 }
 
 .subTaskEdit {

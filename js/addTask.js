@@ -37,10 +37,41 @@ document.addEventListener('DOMContentLoaded', function() {
     setPriority('medium');
 });
 
+function showinputSubTaksClickContainer() {
+    let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
+    let addSubTaskButton = document.getElementById('addSubTaskButton');
+    let addSubTaskButtonContainer = document.querySelector('.addSubTaskButtonContainer');
+    let subTaskInput = document.getElementById('subTaskInput');
+    
+    inputSubTaksClickContainer.classList.add('visible');
+    addSubTaskButton.style.display = 'none';
+    addSubTaskButtonContainer.classList.add('no-hover');
+    
+    // Event-Listener für Klicks auf das Eingabefeld hinzufügen
+    subTaskInput.addEventListener('click', showinputSubTaksClickContainer);
+}
+
+function deleteCurrentText() {
+    let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
+    let addSubTaskButton = document.getElementById('addSubTaskButton');
+    let addSubTaskButtonContainer = document.querySelector('.addSubTaskButtonContainer');
+    let subTaskInput = document.getElementById('subTaskInput');
+    
+    subTaskInput.value = "";
+    addSubTaskButton.style.display = 'block';
+    inputSubTaksClickContainer.classList.remove('visible');
+    addSubTaskButtonContainer.classList.remove('no-hover');
+    
+    // Event-Listener für Klicks auf das Eingabefeld entfernen
+    subTaskInput.removeEventListener('click', showinputSubTaksClickContainer);
+}
 
 function addNewSubtask() {
     let newSubTask = document.getElementById('subTaskInput');
     let errorMessage = document.getElementById('subTaskErrorMessage');
+    let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
+    let addSubTaskButton = document.getElementById('addSubTaskButton');
+    let addSubTaskButtonContainer = document.querySelector('.addSubTaskButtonContainer');
     if(newSubTask.value == 0) {
         errorMessage.textContent = 'Please add a text';
         errorMessage.classList.add('visible');
@@ -50,8 +81,30 @@ function addNewSubtask() {
     subTasks.push(newSubTask.value);
     newSubTask.value = '';
     renderSubtasks();
+    inputSubTaksClickContainer.classList.remove('visible');
+    addSubTaskButton.style.display = 'block';
+    addSubTaskButtonContainer.classList.remove('no-hover');
 }
 
+function hideInputSubTaksClickContainerOnOutsideClick() {
+    document.addEventListener('click', function(event) {
+        let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
+        let addSubTaskButton = document.getElementById('addSubTaskButton');
+        let addSubTaskButtonContainer = document.querySelector('.addSubTaskButtonContainer');
+        let subTaskInput = document.getElementById('subTaskInput');
+
+        if (!inputSubTaksClickContainer.contains(event.target) && 
+            !subTaskInput.contains(event.target) &&
+            !addSubTaskButton.contains(event.target)) {
+            
+            inputSubTaksClickContainer.classList.remove('visible');
+            addSubTaskButton.style.display = 'block';
+            addSubTaskButtonContainer.classList.remove('no-hover');
+        }
+    });
+}
+
+hideInputSubTaksClickContainerOnOutsideClick();
 
 function renderSubtasks(editIndex = -1) {
     let subTaskList = document.getElementById('subTaskList');
@@ -595,15 +648,7 @@ function resetNewTask() {
     resetFormFields();
     setPriority('medium');
     updateAktivContactsVisibility();
-    clearErrorMessages();
 }
-
-function clearErrorMessages() {
-    // Hier können Sie den Code zum Entfernen aller Fehlermeldungen hinzufügen
-    // Zum Beispiel:
-    document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-}
-
 
 function showTaskAddedNotification() {
     let notification = document.getElementById('taskAddedNotification');
