@@ -41,3 +41,18 @@
         opacity: 1;
     }
 }
+
+/* //////////////////////////////////Mobile-Screen/////////////////////////////////////////////////// */
+
+@media (max-width: 680px) {
+
+    @keyframes moveAndResize {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+        100% {
+            transform: translate(calc(-50vw + 77px), calc(-50vh + 104px)) scale(0.5);
+        }
+    }
+
+}
