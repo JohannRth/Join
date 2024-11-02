@@ -252,26 +252,42 @@
       console.log("Initial Todos:", todos);
 
       async function loadTodosFromFirebase() {
-    const tasksData = await loadData("tasks");
-    todos = Object.keys(tasksData).map((key, index) => {
-        const task = tasksData[key];
-        console.log("Loaded Task:", task);  // Debugging: Überprüfe den Task-Inhalt
+    try {
+        // Daten von Firebase laden
+        const tasksData = await loadData("tasks");
+        console.log("Geladene Daten aus Firebase:", tasksData); // Debugging: Überprüfen der geladenen Daten
 
-        return {
-            id: index,
-            titel: task.title || "Untitled",
-            type: task.category || "General",
-            category: task.type || "todo",
-            description: task.description || "No description",
-            priority: task.prio || "low",
-            dueDate: task.dueDate || null,
-            subtasks: task.subtasks ? Object.values(task.subtasks) : [], // Füge subtasks als Array hinzu
-            completedSubtasks: 0,
-            contacts: task.assignedTo ? task.assignedTo.map(name => name.trim()) : []
-        };
-    });
-    console.log("Todos Array:", todos);  // Debugging: Überprüfe das vollständige todos-Array
-    updateHTML();
+        // Transformiere die Daten und lade sie ins `todos`-Array
+        todos = Object.keys(tasksData).map((key, index) => {
+            const task = tasksData[key];
+            
+            // Überprüfen, ob die Task-Daten vollständig sind, und Standardwerte setzen
+            const subtasks = task.subtasks
+                ? Object.values(task.subtasks).map(subtask => ({
+                      ...subtask,
+                      completed: subtask.completed || false  // Setze `completed` auf `false`, wenn es nicht existiert
+                  }))
+                : [];
+
+            return {
+                id: index, // oder `key`, wenn du den Firebase-Key als ID verwenden möchtest
+                titel: task.title || "Untitled", // Standardwert "Untitled", wenn kein Titel vorhanden
+                type: task.category || "General",
+                category: task.type || "todo", // Fallback auf "todo"
+                description: task.description || "No description",
+                priority: task.prio || "low", // Standardwert "low"
+                dueDate: task.dueDate || null,
+                subtasks: subtasks, 
+                completedSubtasks: subtasks.filter(st => st.completed).length,
+                contacts: task.assignedTo ? task.assignedTo.map(name => name.trim()) : []
+            };
+        });
+
+        // Aktualisiere das HTML, um die geladenen Tasks anzuzeigen
+        updateHTML();
+    } catch (error) {
+        console.error("Fehler beim Laden der Daten aus Firebase:", error);
+    }
 }
 
       document.addEventListener("DOMContentLoaded", (event) => {
@@ -310,23 +326,25 @@ function generateTodoHTML(element) {
         ? `height: 27px; width: 144px; border-radius: 8px; padding: 4px 16px; background-color: #1FD7C1; color: #FFFFFF; font-size: 16px; font-weight: 400;`
         : `width: 113px; height: 27px; border-radius: 8px; padding: 4px 16px; background-color: #0038ff; color: white; font-weight: 400; font-size: 16px; display: flex; align-items: center; justify-content: center;`;
 
-    let progressHTML = "";
-    if (element.subtasks && element.subtasks.length > 0) {
+    // Fortschrittsdaten berechnen
     const completed = element.completedSubtasks || 0;
-    const percentage = (completed / element.subtasks.length) * 100;
-    progressHTML = `
-        <div class="task-progress">
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: ${percentage}%"></div>
-            </div>
-            <span class="progress-text">${completed}/${element.subtasks.length} Subtasks</span>
-        </div>
-    `;
-} else {
-    progressHTML = `<div class="task-progress-placeholder"></div>`;
-}
+    const totalSubtasks = element.subtasks ? element.subtasks.length : 0;
+    const percentage = totalSubtasks > 0 ? (completed / totalSubtasks) * 100 : 0;
 
-    // Priorität als Icon festlegen
+    let progressHTML = "";
+    if (totalSubtasks > 0) {
+        progressHTML = `
+            <div class="task-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${percentage}%"></div>
+                </div>
+                <span class="progress-text">${completed}/${totalSubtasks} Subtasks</span>
+            </div>
+        `;
+    } else {
+        progressHTML = `<div class="task-progress-placeholder"></div>`;
+    }
+
     let priorityIcon = "";
     if (element.priority === "urgent") {
         priorityIcon = `<img src="./assets/img/urgent-titel-card.svg" alt="Urgent Priority" />`;
@@ -338,15 +356,14 @@ function generateTodoHTML(element) {
         priorityIcon = `<img src="./assets/img/default-titel-card.svg" alt="Default Priority" />`;
     }
 
-    // Kontakte mit farbigen Icons und Initialen erstellen
     let contactsHTML = "";
     if (element["contacts"]) {
         contactsHTML = `
             <div class="task-assigned">
                 ${element["contacts"]
                     .map(contact => {
-                        const initials = getInitials(contact); // Initialen des Kontakts abrufen
-                        const color = getColor(contact); // Farbe basierend auf Namen abrufen
+                        const initials = getInitials(contact);
+                        const color = getColor(contact);
                         return `<span class="person-circle" style="background-color: ${color};">${initials}</span>`;
                     })
                     .join("")}
@@ -369,29 +386,30 @@ function generateTodoHTML(element) {
         </div>`;
 }
 
+function dropTask(ev) {
+    ev.preventDefault();
+    const taskId = ev.dataTransfer.getData("text");
+    const taskElement = document.getElementById(taskId);
+    const newCategory = ev.currentTarget.id;
 
-      function dropTask(ev) {
-        ev.preventDefault();
-        const taskId = ev.dataTransfer.getData("text");
-        const taskElement = document.getElementById(taskId);
-        ev.currentTarget.appendChild(taskElement);
+    ev.currentTarget.appendChild(taskElement);
+    taskElement.classList.remove("dragging");
 
-        taskElement.classList.remove("dragging");
+    // Speichere die Position in Firebase unter `positionDropArea`
+    savePosition(taskId, newCategory);
 
-        const newCategory = ev.currentTarget.id;
-            todos = todos.map((task) =>
-            task.id == taskId ? { ...task, category: newCategory } : task
-        );
+    // Lokale Änderungen, falls nötig
+    todos = todos.map((task) =>
+        task.id == taskId ? { ...task, category: newCategory } : task
+    );
 
-        saveTodosToLocalStorage();
-
-        updateTodoCount();
-        updateDoneCount();
-        updateBoardTaskCount();
-        updateInProgressCount();
-        updateAwaitFeedbackCount();
-        updateHTML();
-      }
+    updateTodoCount();
+    updateDoneCount();
+    updateBoardTaskCount();
+    updateInProgressCount();
+    updateAwaitFeedbackCount();
+    updateHTML();
+}
 
       function saveTodosToLocalStorage() {
         localStorage.setItem("todos", JSON.stringify(todos));
@@ -485,14 +503,15 @@ function generateTodoHTML(element) {
     const dueDate = element.dueDate ? new Date(element.dueDate).toLocaleDateString("de-DE") : "Kein Datum";
 
     const subtasksHTML = element.subtasks.map((subtask, index) => `
-    <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
-        <input type="checkbox" ${subtask.completed ? 'checked' : ''} 
-               id="subtask-checkbox-${element.id}-${index}" 
-               onclick="toggleSubtask(${element.id}, ${index})" 
-               class="styled-checkbox">
-        <span>${subtask.title || subtask}</span>
-    </div>
-`).join('');
+        <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
+    <input type="checkbox" 
+           ${subtask.completed ? 'checked' : ''} 
+           id="subtask-checkbox-${element.id}-${index}" 
+           onclick="toggleSubtask(${element.id}, ${index})" 
+           class="styled-checkbox">
+    <label for="subtask-checkbox-${element.id}-${index}">${subtask.title || subtask}</label>
+</div>
+    `).join('');
 
 
     return `
@@ -542,24 +561,42 @@ function generateTodoHTML(element) {
 }
 
 async function toggleSubtask(taskId, subtaskIndex) {
-    // Find task and subtask
-    const task = todos.find(t => t.id === taskId);
-    if (!task || !task.subtasks || !task.subtasks[subtaskIndex]) return;
+    const task = todos.find(t => t.id == taskId);
+    if (!task || !task.subtasks || !task.subtasks[subtaskIndex]) {
+        console.error("Subtask nicht gefunden oder ungültiger Index:", taskId, subtaskIndex);
+        return;
+    }
 
-    // Toggle completion status
-    task.subtasks[subtaskIndex].completed = !task.subtasks[subtaskIndex].completed;
+    // Status umschalten
+    const subtask = task.subtasks[subtaskIndex];
+    subtask.completed = !subtask.completed;
 
-    // Berechne Fortschritt und aktualisiere ProgressBar
+    // Speichere den neuen Status
+    await saveSubtaskStatus(taskId, subtaskIndex, subtask.completed);
+
+    // Aktualisiere die Anzahl abgeschlossener Subtasks
     task.completedSubtasks = task.subtasks.filter(st => st.completed).length;
-    updateProgressBar(taskId);
 
-    // Speichere aktualisierte Task-Daten auf Firebase
-    const path = `tasks/${task.id}`;  // Hier Task-Pfad auf Firebase anpassen
-    await updateData(path, task);
+    // Berechne das Fortschrittsverhältnis und aktualisiere die progressBar
+    const totalSubtasks = task.subtasks.length;
+    const percentage = totalSubtasks > 0 ? (task.completedSubtasks / totalSubtasks) * 100 : 0;
 
-    // HTML-Ansicht aktualisieren
-    updateHTML();
+    updateProgressBar(taskId, percentage, task.completedSubtasks, totalSubtasks);
 }
+
+function updateProgressBar(taskId, percentage, completed, total) {
+    const taskElement = document.getElementById(taskId);
+    if (!taskElement) return;
+
+    const progressBar = taskElement.querySelector(".progress-fill");
+    const progressText = taskElement.querySelector(".progress-text");
+
+    if (progressBar && progressText) {
+        progressBar.style.width = `${percentage}%`;
+        progressText.textContent = `${completed}/${total} Subtasks`;
+    }
+}
+
       //card-overlay
       function openCardOverlay(taskId) {
         const overlay = document.getElementById("card-overlay");
@@ -768,19 +805,69 @@ function enableEditMode(taskId) {
         </div>`;
 }
 
-function saveTask(taskId) {
-    const task = todos.find((t) => t.id === taskId);
+async function saveSubtaskStatus(taskId, subtaskId, isChecked) {
+    if (isChecked === undefined) {
+        console.error("Subtask-Status ist undefined, wird nicht gespeichert.");
+        return;
+    }
 
-    // Neue Werte abrufen
-    task.titel = document.getElementById("edit-title").value;
-    task.description = document.getElementById("edit-description").value;
-    task.dueDate = document.getElementById("edit-due-date").value;
-    task.priority = document.getElementById("edit-priority").value;
-
-    // HTML aktualisieren und Overlay schließen
-    updateHTML();
-    closeCardOverlay();
+    // Speichere nur im `subtaskStatus`-Pfad und nicht in `tasks`
+    const path = `subtaskStatus/${taskId}/${subtaskId}`;
+    console.log(`Speichere Subtask-Status an Pfad ${path}:`, isChecked); // Debugging
+    await updateData(path, isChecked);
 }
+
+async function loadSubtaskStatuses() {
+    const statusData = await loadData("subtaskStatus");
+
+    for (const taskId in statusData) {
+        const task = todos.find(t => t.id == taskId || t.id === parseInt(taskId));
+        if (task) {
+            for (const subtaskId in statusData[taskId]) {
+                const isChecked = statusData[taskId][subtaskId];
+                if (task.subtasks[subtaskId]) {
+                    task.subtasks[subtaskId].completed = isChecked;
+                }
+            }
+            // Anzahl der abgeschlossenen Subtasks berechnen
+            task.completedSubtasks = task.subtasks.filter(st => st.completed).length;
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadTodosFromFirebase();         // Lade die `todos` Daten
+    await loadPositionsFromFirebase();     // Lade und setze die Positionen
+    await loadSubtaskStatuses();           // Lade und setze die Subtask-Checkbox-Status
+    updateHTML();                          // Aktualisiere das HTML mit allen geladenen Daten
+});
+
+async function savePosition(taskId, position) {
+    const path = `positionDropArea/${taskId}`;
+    await updateData(path, position);
+}
+
+async function loadPositionsFromFirebase() {
+    const positionsData = await loadData("positionDropArea");
+    console.log("Geladene Positionen:", positionsData); // Debugging: Überprüfen der geladenen Positionen
+    
+    for (const taskId in positionsData) {
+        const position = positionsData[taskId];
+        const task = todos.find((t) => t.id === taskId || t.id === parseInt(taskId));
+        
+        if (task) {
+            task.category = position; // Setze die Position basierend auf den Daten in `positionDropArea`
+            console.log(`Task ${taskId} auf Position ${position} gesetzt`); // Debugging: Überprüfen der aktualisierten Positionen
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadTodosFromFirebase();      // Lade die `todos` Daten
+    await loadPositionsFromFirebase();  // Lade und setze die Positionen
+    updateHTML();                       // Aktualisiere das HTML mit den geladenen Positionen
+});
+
     </script>
   </body>
 </html>

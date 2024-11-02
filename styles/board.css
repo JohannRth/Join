@@ -243,7 +243,6 @@ body.no-scroll {
     width: 220px;
     height: 16px;
     display: flex;
-    justify-content: flex-start;
     align-items: center;
   }
 
@@ -253,12 +252,15 @@ body.no-scroll {
     background-color: #e0e0e0;
     border-radius: 8px;
     position: relative;
+    overflow: hidden;
   }
 
   .progress-fill {
     height: 100%;
+    width: 0; /* Standardmäßig auf 0 gesetzt; Javascript ändert die Breite dynamisch */
     background-color: #4589ff;
     border-radius: 8px;
+    transition: width 0.3s ease; /* Animation, um die Breite zu aktualisieren */
   }
 
   .task-progress-placeholder {
@@ -338,7 +340,7 @@ body.no-scroll {
     position: relative;
     box-shadow: 0px 0px 4px 0px #00000029;
     animation: slideInOverlay 0.5s forwards;
-    z-index: 1001;
+    overflow-y: auto;
   }
 
   @keyframes slideInOverlay {
@@ -383,8 +385,8 @@ body.no-scroll {
     font-size: 61px;
     color: #000000;
     overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
   }
 
   .task-description-overlay {
@@ -394,8 +396,8 @@ body.no-scroll {
     font-size: 20px;
     color: #000000;
     overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
   }
 
   .due-date-overlay {
