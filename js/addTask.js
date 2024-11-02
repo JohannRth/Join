@@ -24,19 +24,20 @@ let colors = [
 ];
 
 
-// Funktion zum Setzen der Priorität
+// Funktion zum Setzen der Priorität anpassen
 function setPriority(priority) {
     let buttons = document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow');
     let selectedButton = document.querySelector(`.prioButton${priority.charAt(0).toUpperCase() + priority.slice(1)}`);
-    if (selectedButton.classList.contains('active')) {
-        selectedButton.classList.remove('active');
-    } else {
-        buttons.forEach(button => {
-            button.classList.remove('active');
-        });
-        selectedButton.classList.add('active');
-    }
+    buttons.forEach(button => {
+        button.classList.remove('active');
+    });
+    selectedButton.classList.add('active');
 }
+
+// Beim Laden der Seite den Medium-Button auswählen
+document.addEventListener('DOMContentLoaded', function() {
+    setPriority('medium');
+});
 
 
 function addNewSubtask() {
