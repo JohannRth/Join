@@ -341,7 +341,7 @@ input#newContactPhone {
         color: white;
         padding: 0px 0px 0px 48px;
         width: unset;
-        height: 40%;
+        height: 45%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -349,15 +349,60 @@ input#newContactPhone {
         text-align: center;
     }
 
+    .add-contact-left h2 {
+        font-size: 47px;
+    }
+
+    .add-contact-left p {
+        font-size: 20px;
+    }
+
     .add-contact-right {
         background-color: #fff;
         width: unset;
-        height: 60%;
+        height: 55%;
         position: relative;
         display: flex;
         align-items: center;
     }
 
+    .profileImg {
+        position: absolute;
+        top: -70px;
+        margin-left: unset;
+        margin-bottom: unset;
+    }
+
+    #addContactForm {
+        gap: 15px;
+    }
+
+    .cancel-button {
+        display: none;
+    }
+
+    .form-actions {
+        justify-content: center;
+    }
+
+    .add-contact-right {
+        background-color: #fff;
+        width: unset;
+        height: 55%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #addContactForm {
+        width: 90%;
+        margin-left: unset;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
     .add-contact-right .close {
         display: none;
     }
