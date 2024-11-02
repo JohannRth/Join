@@ -6,14 +6,13 @@
 
 @media(max-width: 1240px) {
     .addTaskContainer {
-        padding-left: 0px;
+        padding-left: 250px;
     }
 
     .addTaskContent {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        padding-top: 48px;
+        align-items: flex-start;
         width: 100%;
     }
 
@@ -25,8 +24,261 @@
     .addTaskSeparateContainer{
         display: none;
     }
+
+    .addTaskCreateButtonContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 461px;
+        padding-top: 5px;
+        padding-bottom: 79px;
+    }
+
+    .clearAndCreateButtons {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    .aktivContacts {
+        display: none;
+    }
+
 }
 
-@media(max-width: 1240px) {
+@media(max-width: 1020px) {
+    .header {
+        width: 320px;
+        height: 80px;
+        z-index: 9000;
+    }
 
+    .addTaskContainer {
+        padding-left: 16px;
+    }
+
+    .addTaskContent {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-bottom: 104px;
+    }
+
+    .leftAndRightTaskContainer {
+        padding-top: 32px;
+    }
+
+    .headlineContainer {
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 320px;
+        height: 160px;
+        background-color: #F6F7F8;
+        z-index: 1000;
+        padding-left: 16px;
+    }
+
+    .addTaskHeadline {
+        font-size: 47px;
+        font-weight: 700;
+    }
+
+    .addTaskInputTitle {
+        font-size: 16px;
+    }
+
+    .inputAddTask {
+        width: 286px;
+        height: 40px;
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    ::placeholder {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .textAreaAddTask {
+        width: 286px;
+        height: 80px;
+        font-size: 16px;
+        font-weight: 400
+    }
+
+    .selectedContactsHeadline {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .assignedAddTask {
+        width: 286px;
+        height: 40px;
+    }
+
+    .contactIcon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .contactName {
+        font-size: 16px;
+        font-weight: 400;
+        margin-left: 12px;
+    }
+
+    .contactDropdown {
+        max-height: 290px;
+        width: 286px;
+    }
+
+    .inputAddTaskDueDate {
+        width: 286px;
+        height: 40px;
+    }
+
+    .inputAddTaskDueDate::-webkit-datetime-edit {
+        font-size: 16px; /* Passen Sie die Größe nach Bedarf an */
+    }
+    
+    .prioButtonUrgent {
+        width: 93px;
+        height: 46px;
+        margin-right: 5px;
+        font-size: 14px;
+        font-weight: 400;
+       
+    }
+
+    .prioButtonMedium {
+        width: 93px;
+        height: 46px;
+        margin-right: 5px;
+        font-size: 14px;
+        font-weight: 400;
+       
+    }
+
+    .prioButtonLow {
+        width: 93px;
+        height: 46px;
+        margin-right: 5px;
+        font-size: 14px;
+        font-weight: 400;
+       
+    }
+
+    .prioButtonUrgent img {
+        height: 16px;
+        width: 16px;
+    }
+    
+
+    .prioButtonMedium img {
+        height: 20px;
+        width: 20px;
+        padding-left: 5px;
+    }
+    
+    .prioButtonLow img {
+        height: 16px;
+        width: 16px;
+    }
+    
+    .selectedOption{
+        width: 286px;
+        height: 40px;
+    }
+
+    .selectedCategoryHeadline {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .dropDownContent {
+        z-index: 1000;
+        width: 286px;
+    }
+
+    .categoryItem {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .clearAndCreateButtons {
+        display: flex;
+        align-items: center;
+        position:fixed;
+        bottom: 85px;
+        left: 0;
+        width: 320px;
+        height: 80px;
+        background-color: #F6F7F8;
+        z-index: 999;
+        padding-left: 50px;
+    }
+
+    .inputContainerDueDate {
+        padding-bottom: 16px;
+    }
+
+    .clearButton {
+        font-size: 16px;
+        font-weight: 400;
+        border: 1px solid #2A3647;
+        width: 97px;
+        height: 49px;
+        margin-right: 10px
+    }
+
+    .createButton {
+        font-size: 16px;
+        font-weight: 700;
+        width: 141px;
+        height: 49px;
+    
+    }
+
+    .mobile-nav-bar {
+        width: 320px;
+    }
+
+    .subTask {
+        width: 286px;
+        height: 40px;
+    }
+
+    .subTaskEdit {
+        width: 286px;
+        height: 40px;
+    }
+
+    .subTaskSaveButton {
+        height: 16px;
+        cursor: pointer;
+    }
+
+    .subTaskEditButton {
+        height: 20px;
+    }
+
+    .subTaskDeleteButton {
+        height: 20px;
+    }
+
+    .subTaskList {
+        max-height: 141px;
+    }
+
+    .subTaskErrorMessage.visible {
+      font-size: 14px;
+    }
+
+    .inputError {
+        height: 42px;
+    }
 }
