@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./js/firebase.js" defer></script>
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="/styles/add_task.css">
-    <link rel="stylesheet" href="./styles/add_task_responsive.css">
-    <script src="./js/add_task_templates.js"></script>
+    <link rel="stylesheet" href="/styles/addTask.css">
+    <link rel="stylesheet" href="./styles/addTaskResponsive.css">
+    <script src="./js/addTaskTemplates.js"></script>
     <script src="script.js"></script>
-    <script src="./js/add_task.js" defer></script>
+    <script src="./js/addTask.js" defer></script>
     <script src="./js/login.js" defer></script>
     <script src="./assets/templates/load_header_sidebar.js" defer></script>
     <link rel="stylesheet" href="./assets/fonts/font.css" />
@@ -107,16 +107,16 @@
                     </form>
                 </div>
             </div>
+            <div class="addTaskCreateButtonContainer">
+                <div>
+                    <span class="requiredBefore requiredTextAddTask">This field is required</span>
+                </div>
+                <div class="clearAndCreateButtons">
+                    <button onclick="resetNewTask()" type="button" class="clearButton">Clear <img class="clearAndCreateButtonImage" src="./assets/img/clear-x-image.svg"></button>
+                    <button onclick="createNewTask()" type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
+                </div>
+            </div>
         </div> 
-        <div class="addTaskCreateButtonContainer">
-            <div>
-                <span class="requiredBefore requiredTextAddTask">This field is required</span>
-            </div>
-            <div class="clearAndCreateButtons">
-                <button onclick="resetNewTask()" type="button" class="clearButton">Clear <img class="clearAndCreateButtonImage" src="./assets/img/clear-x-image.svg"></button>
-                <button onclick="createNewTask()" type="submit" class="createButton">Create Task <img class="clearAndCreateButtonImage" src="./assets/img/check.svg"></button>
-            </div>
-        </div>
     </div> 
     <div id="taskAddedNotification" class="taskAddedNotification">
         <div>
