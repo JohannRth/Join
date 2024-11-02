@@ -100,6 +100,21 @@
     align-items: center;
 }
 
+.add-contact-left .close {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.add-contact-left .close:hover {
+    background-color: #EEEEEE;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
 .add-contact-right .close {
     position: absolute;
     top: 20px;
@@ -282,4 +297,76 @@ input#newContactPhone {
     display: flex; /* Sichtbar machen */
     animation: slideInBottom 0.5s forwards; /* Slide-In Animation anwenden */
     pointer-events: auto; /* Klicks auf das Popup erlauben */
+}
+
+@media (max-width:1200px) {
+
+    .add-contact-modal-content {
+        zoom: 90%;
+    }
+}
+
+@media (max-width:1020px) {
+
+    .add-contact-modal-content {
+        zoom: 80%;
+    }
+}
+
+@media (max-width:900px) {
+
+    .add-contact-modal-content {
+        zoom: 75%;
+    }
+}
+
+@media (max-width:800px) {
+
+    .add-contact-modal-content {
+        zoom: 100%;
+    }
+    
+    .add-contact-modal-content {
+        display: flex;
+        width: 95%; 
+        height: 80%; 
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        flex-direction: column;
+    }
+
+    .add-contact-left {
+        background-color: #2A3647;
+        color: white;
+        padding: 0px 0px 0px 48px;
+        width: unset;
+        height: 40%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        text-align: center;
+    }
+
+    .add-contact-right {
+        background-color: #fff;
+        width: unset;
+        height: 60%;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .add-contact-right .close {
+        display: none;
+    }
+
+    .add-contact-left .close {
+        display: flex;
+    }
+
+    .modal-logo {
+        display: none;
+    }
 }

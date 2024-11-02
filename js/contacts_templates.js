@@ -32,6 +32,7 @@ function getContactModalHTML(contact, isEditMode, contactKey, initials, color) {
         <div class="add-contact-modal-content">
             <div class="add-contact-left">
                 <img class="modal-logo" src="./assets/img/join_logo_white.svg" alt="Join Logo">
+                <img src="./assets/img/close_white.svg" class="close" onclick="closeAddContactModal()">
                 <h2>${isEditMode ? 'Edit contact' : 'Add contact'}</h2>
                 <p>${isEditMode ? '' : 'Tasks are better with a team!'}</p>
                 <img class="modal-underline" src="./assets/img/underline_login.svg" alt="Underline">
