@@ -26,12 +26,10 @@ let colors = [
 
 // Funktion zum Setzen der Priorität anpassen
 function setPriority(priority) {
-    let buttons = document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow');
-    let selectedButton = document.querySelector(`.prioButton${priority.charAt(0).toUpperCase() + priority.slice(1)}`);
-    buttons.forEach(button => {
-        button.classList.remove('active');
+    document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => {
+        btn.classList.remove('active');
     });
-    selectedButton.classList.add('active');
+    document.querySelector(`.prioButton${priority.charAt(0).toUpperCase() + priority.slice(1)}`).classList.add('active');
 }
 
 // Beim Laden der Seite den Medium-Button auswählen
@@ -403,6 +401,11 @@ function toggleContactState(contactItem, checkbox, contact) {
 }
 
 
+function updateAktivContactsVisibility() {
+    const aktivContacts = document.getElementById('aktivContacts');
+    aktivContacts.style.display = aktivContacts.children.length > 0 ? 'flex' : 'none';
+}
+
 function addToActiveContacts(contact) {
     let aktivContacts = document.getElementById('aktivContacts');
     let contactElement = document.createElement('span');
@@ -411,8 +414,8 @@ function addToActiveContacts(contact) {
     contactElement.textContent = getInitials(contact);
     contactElement.setAttribute('data-contact', contact);
     aktivContacts.appendChild(contactElement);
+    updateAktivContactsVisibility();
 }
-
 
 function removeFromActiveContacts(contact) {
     let aktivContacts = document.getElementById('aktivContacts');
@@ -420,6 +423,7 @@ function removeFromActiveContacts(contact) {
     if (contactElement) {
         aktivContacts.removeChild(contactElement);
     }
+    updateAktivContactsVisibility();
 }
 
 // Funktion zum Erhalten der Initialen des Namens
@@ -450,6 +454,7 @@ async function initializeContactDropdown() {
             closeDropdown(elements);
         }
     });
+    updateAktivContactsVisibility();
 }
 
 
@@ -569,7 +574,7 @@ function showErrorNotification(message) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Funktion zum Zurücksetzen des Formulars
-function resetNewTask() {
+function resetFormFields() {
     document.getElementById('title').value = '';
     document.getElementById('description').value = '';
     document.getElementById('contacts').textContent = 'Select contacts to assign';
@@ -584,6 +589,19 @@ function resetNewTask() {
         let checkbox = item.querySelector('.contactCheckbox');
         if (checkbox) {checkbox.checked = false;}
     });
+}
+
+function resetNewTask() {
+    resetFormFields();
+    setPriority('medium');
+    updateAktivContactsVisibility();
+    clearErrorMessages();
+}
+
+function clearErrorMessages() {
+    // Hier können Sie den Code zum Entfernen aller Fehlermeldungen hinzufügen
+    // Zum Beispiel:
+    document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
 }
 
 
