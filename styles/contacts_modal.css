@@ -377,7 +377,7 @@ input#newContactPhone {
         gap: 15px;
     }
 
-    .cancel-button {
+    .cancel-display-none {
         display: none;
     }
 
@@ -403,12 +403,14 @@ input#newContactPhone {
         flex-direction: column;
         gap: 20px;
     }
+
     .add-contact-right .close {
         display: none;
     }
 
     .add-contact-left .close {
         display: flex;
+        width: 45px;
     }
 
     .modal-logo {

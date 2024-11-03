@@ -66,7 +66,7 @@ function getContactModalHTML(contact, isEditMode, contactKey, initials, color) {
                         ${isEditMode ? `
                         <button type="button" class="cancel-button" onclick="deleteContactFromModal('${contact ? contact.key : ''}')">Delete <img src="./assets/img/delete.svg"></button>
                         ` : `
-                        <button type="button" class="cancel-button" onclick="closeAddContactModal()">Cancel <img src="./assets/img/clear-x-image.svg"></button>
+                        <button type="button" class="cancel-button cancel-display-none" onclick="closeAddContactModal()">Cancel <img src="./assets/img/clear-x-image.svg"></button>
                         `}
                         <button type="submit" class="create-button">${isEditMode ? 'Save' : 'Create contact'} <img src="./assets/img/check.svg"></button>
                     </div>
