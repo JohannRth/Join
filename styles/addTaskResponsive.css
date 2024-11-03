@@ -41,11 +41,14 @@
         width: 461px;
         padding-top: 5px;
         padding-bottom: 79px;
+        position: relative;
+        bottom: 0;
     }
 
     .clearAndCreateButtons {
         display: flex;
         margin-top: 20px;
+        padding-left: 132px;
     }
 
     .aktivContacts {
@@ -67,8 +70,8 @@
     }
 
     .addTaskContainer {
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 13px;
+        padding-right: 13px;
     }
 
     .addTaskContent {
@@ -76,8 +79,17 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        margin-bottom: 104px;
+        margin-bottom: 104px;     
+        overflow: scroll; 
+        max-height: calc(90vh - 240px); 
+        scrollbar-width: none; 
+        -ms-overflow-style: none; 
     }
+
+    .addTaskContent::-webkit-scrollbar {
+        display: none; 
+    }
+    
 
     .leftAndRightTaskContainer {
         padding-top: 32px;
@@ -115,11 +127,12 @@
         padding-bottom: 16px;
         display: flex;
         justify-content: center;
+        height: 90px;
     }
 
     .inputContainerDescription {
         width: 440px;
-        padding-bottom: 16px;
+        padding-bottom: 3px;
         display: flex;
         justify-content: center;
     }
@@ -133,6 +146,7 @@
         padding-bottom: 16px;
         display: flex;
         justify-content: center;
+        height: 95px;
     }
 
     .prioButtonContainer {
@@ -147,12 +161,68 @@
         width: 100%;
         display: flex;
         justify-content: center;
+        height: 82px;
     }
 
     .subTaskContainer {
-        width: 428px;
-        display: flex;
-        justify-content: center;
+        width: 78%;
+        max-width: 440px;
+        margin: 0 auto;
+    }
+
+    .subTaskInputContainer {
+        width: 100%;
+    }
+
+    .inputAddSubTask {
+        width: 342px;
+        height: 40px;
+        font-size: 16px;
+        padding-right: 72px;
+    }
+
+    .listSubTask {
+        width: 250px;
+    }
+
+    .subTaskList {
+        width: 100%;
+    }
+
+    .subTask {
+        width: 341px;
+        min-height: fit-content;
+    }
+
+    .subTaskEditInput {
+        width: 267px;
+    
+    }
+
+    .subTaskEdit {
+        width: 337px;
+        height: 40px;
+    }
+
+    .subTaskSaveButton {
+        height: 16px;
+        cursor: pointer;
+    }
+
+    .subTaskEditButton {
+        height: 20px;
+    }
+
+    .subTaskDeleteButton {
+        height: 20px;
+    }
+
+    .subTaskList {
+        max-height: 141px;
+    }
+
+    .subTaskErrorMessage.visible {
+      font-size: 14px;
     }
 
     .addTaskInputTitle {
@@ -289,7 +359,7 @@
         height: 80px;
         background-color: #F6F7F8;
         z-index: 999;
-        padding-left: 101px;
+        padding-left: 89px;
     }
 
     .requiredBefore {
@@ -318,40 +388,21 @@
     
     }
 
-    .subTask {
-        width: 342px;
-        height: 40px;
-    }
-
-    .subTaskEdit {
-        width: 342px;
-        height: 40px;
-    }
-
-    .subTaskSaveButton {
-        height: 16px;
-        cursor: pointer;
-    }
-
-    .subTaskEditButton {
-        height: 20px;
-    }
-
-    .subTaskDeleteButton {
-        height: 20px;
-    }
-
-    .subTaskList {
-        max-height: 141px;
-    }
-
-    .subTaskErrorMessage.visible {
-      font-size: 14px;
-    }
-
     .inputError {
         height: 42px;
     }
+
+    .deleteCurrentTextButton {
+        margin-top: 2px;
+        height: 12px;
+        width: 12px;
+    }
+
+    .addNewTextButton {
+        height: 14px;
+        width: 14px;
+    }
+
     
 }
 
@@ -413,8 +464,26 @@
     }
 
     .subTaskContainer {
-        width: 100%;
-        
+        width: 295px;
+    }
+
+    .inputAddSubTask {
+        width: 294px;
+        height: 40px;
+        font-size: 16px;
+        padding-right: 72px;
+    }
+
+    .listSubTask {
+        width: 200px;
+    }
+
+    .subTaskEditInput {
+        width: 220px;
+    }
+
+    .addSubTaskButtonContainer {
+        margin-left: -30px;
     }
 
     .selectedOption {
@@ -446,7 +515,7 @@
     }
 
     .subTaskEdit {
-        width: 290px;
+        width: 100%;
     }
 
     .contactIcon {

@@ -37,7 +37,9 @@ function subTaskCreatedTemplate(index, subTask) {
     return `
         <div class="subTask" ondblclick="editSubTask(${index})">
             <div class="leftContainerSubTask">
-                <li><span>${subTask}</span></li>
+                <ul class="subTaskListContainer">
+                    <li class="listSubTask"><span>${subTask}</span></li>
+                </ul>
             </div>
             <div class="rightContainerSubTask">
                 <div class="subTaskButtons">

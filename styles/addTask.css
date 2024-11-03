@@ -58,7 +58,7 @@ body {
 
 .inputContainerTitle {
     width: 440px;
-    padding-bottom: 16px;
+    height: 113px;
 }
 
 .inputContainerDescription {
@@ -68,7 +68,7 @@ body {
 
 .inputContainerDueDate {
     width: 440px;
-    padding-bottom: 24px;
+    height: 113px;
 }
 
 .inputContainer {
@@ -85,6 +85,7 @@ body {
 }
 
 .inputError {
+    height: 50px;
     border: 1px solid red !important;
     border-radius: 12px;
 }
@@ -93,11 +94,13 @@ body {
     color: red;
     font-size: 12px;
     margin-top: 5px;
-    position: absolute;
+    width: 100%;
+    height: 0px;
 }
 
 .errorMessage.visible {
     display: block;
+    position: absolute;
 }
 
 .inputAddTask {
@@ -105,7 +108,10 @@ body {
     flex-direction: column;
     width: 440px;
     height: 48px;
-    padding: 12px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 12px;
+    padding-right: 19px;
     border: 1px solid #D1D1D1;
     border-radius: 10px;
     font-size: 20px;
@@ -230,7 +236,6 @@ input[type="date"] {
 
 .contactDropdown {
     display: none;
-    position: absolute;
     background-color: #fff;
     max-height: 201px;
     overflow-y: auto;
@@ -428,6 +433,7 @@ input[type="text"]:focus,
 .customDropdown {
     position: relative;
     width: 100%;
+    height: 50px;
     cursor: pointer;
     border: 1px solid rgba(128, 128, 128, 0);
 }
@@ -444,7 +450,7 @@ input[type="text"]:focus,
 }
 
 .categoryContainer {
-    min-height: 105px;
+    height: 105px;
     position: relative;
 }
 
@@ -513,8 +519,25 @@ input[type="text"]:focus,
     display: block;
 }
 
+.inputAddSubTask {
+    display: flex;
+    flex-direction: column;
+    width: 440px;
+    height: 48px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 12px;
+    padding-right: 80px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: left;
+    cursor: pointer;
+}
+
 .subTaskEditInput {
-    width: auto;
+    width: 350px;
     padding: 4px 0;
     font-size: 16px;
     border: none;
@@ -753,15 +776,32 @@ input[type="text"]:focus,
     display: none; 
 }
 
+.subTaskListContainer {
+    padding-left: 10px;
+    border-radius: 10px;
+    position: relative;
+    margin-top: 5px;
+
+}
+
+.listSubTask {
+    height: 100%;
+    font-size: 16px;
+    width: 349px;
+    text-align: start;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
 
 .subTask {
     width: 440px;
-    height: 40px;
+    min-height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
-    padding: 7px 12px;
+    margin-bottom: 2px;
+    padding: 0px 16px;
     border-radius: 10px;
 }
 
