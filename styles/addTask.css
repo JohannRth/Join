@@ -876,8 +876,9 @@ input[type="text"]:focus,
     justify-content: space-between;
     align-items: center;
     width: 980px;
-    position: absolute;
-    bottom: 46px;
+    position: relative;
+    bottom: -100px;
+    padding-bottom: 20px;
 }
 
 .requiredTextAddTask{
