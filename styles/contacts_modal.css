@@ -398,42 +398,46 @@ input#newContactPhone {
         flex-direction: column;
         align-items: center;
     }
-}
 
-.form-actions {
-    justify-content: center;
-}
+    .form-actions {
+        justify-content: center;
+    }
 
-.add-contact-right {
-    background-color: #fff;
-    width: unset;
-    height: 55%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-}
+    .add-contact-right {
+        background-color: #fff;
+        width: unset;
+        height: 55%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
 
-#addContactForm {
-    width: 90%;
-    margin-left: unset;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+    #addContactForm {
+        width: 90%;
+        margin-left: unset;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 
-.add-contact-right .close {
-    display: none;
-}
+    .add-contact-right .close {
+        display: none;
+    }
 
-.add-contact-left .close {
-    display: flex;
-    width: 45px;
-}
+    .add-contact-left .close {
+        display: flex;
+        width: 45px;
+    }
 
-.modal-logo {
-    display: none;
+    .modal-logo {
+        display: none;
+    }
+
+    button#addContactBtn {
+        display: none;
+    }
 }
 
 /* /////////////////////////////Test Contacts-Details/////////////////////////////////////////// */
@@ -575,5 +579,45 @@ input#newContactPhone {
         width: 80px;
         height: 80px;
         font-size: 32px;
+    }
+}
+
+/* Standardmäßig ist der kompakte Button ausgeblendet */
+#addContactBtnCompact {
+    display: none;
+}
+
+/* Bei Bildschirmbreite unter 800px */
+@media (max-width: 800px) {
+
+    /* Verstecken Sie den großen Button */
+    #addContactBtn {
+        display: none;
+    }
+
+    /* Zeigen Sie den kompakten Button an */
+    #addContactBtnCompact {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        bottom: 120px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: #2A3647;
+        box-shadow: 0px 0px 4px 0px #0000001A;
+        cursor: pointer;
+        border: none;
+    }
+
+    #addContactBtnCompact:hover {
+        background-color: #29ABE2;
+        font-weight: bolder;
+        cursor: pointer;
+        font-family: "inter", sans-serif;
+        box-shadow: 0px 4px 4px 0px #00000040;
+        transition: all 0.3s ease;
     }
 }

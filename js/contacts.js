@@ -516,12 +516,13 @@ function phoneValidation() {
     }
 }
 
-// Funktion zum Einrichten des "Add Contact" Buttons
+// Funktion zum Einrichten der "Add Contact" Buttons
 function setupAddContactButton() {
-    const addContactBtn = document.getElementById('addContactBtn');
-    if (addContactBtn) {
-        addContactBtn.addEventListener('click', () => openAddContactModal());
-    }
+    const addContactButtons = document.querySelectorAll('.add-contact-button');
+
+    addContactButtons.forEach(button => {
+        button.addEventListener('click', () => openAddContactModal());
+    });
 }
 
 // Funktion zum Einrichten des Formulars für das Hinzufügen eines neuen Kontakts
