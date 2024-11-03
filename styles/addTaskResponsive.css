@@ -63,9 +63,9 @@
 }
 
 @media(max-width: 1020px) {
-    body {
+    /* body {
         overflow: hidden;
-    }
+    } */
 
     .header {
         width: 100%;
