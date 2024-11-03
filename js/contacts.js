@@ -59,8 +59,8 @@ function contactComparator(a, b) {
     const bInitials = getFirstAndLastInitials(b.name);
 
     return aInitials.firstInitial.localeCompare(bInitials.firstInitial) ||
-           aInitials.lastInitial.localeCompare(bInitials.lastInitial) ||
-           a.name.localeCompare(b.name);
+        aInitials.lastInitial.localeCompare(bInitials.lastInitial) ||
+        a.name.localeCompare(b.name);
 }
 
 // Hilfsfunktion zum Extrahieren der Initialen
@@ -140,25 +140,106 @@ const createContactInfo = contact => {
     return contactInfoElement;
 };
 
-// Funktion, um die Details eines Kontakts anzuzeigen
-function displayContactDetails(contact) {
-    const contactDetailsDiv = document.getElementById('contactDetails');
-    const mainBoard = document.querySelector('.main-board');
+// Hilfsfunktion zum Überprüfen der Bildschirmbreite
+function isSmallScreen() {
+    return window.innerWidth < 800;
+}
 
-    mainBoard.style.overflow = 'hidden';
+// Funktion zum Ausblenden des Hauptinhalts
+function hideMainContent() {
+    const mainBoardContent = document.querySelector('.main-board-content');
+    if (mainBoardContent) {
+        mainBoardContent.style.display = 'none';
+    }
+}
+
+// Funktion zum Einblenden des Hauptinhalts
+function showMainContent() {
+    const mainBoardContent = document.querySelector('.main-board-content');
+    if (mainBoardContent) {
+        mainBoardContent.style.display = 'flex';
+    }
+}
+
+// Funktion zum Setzen des Overflows
+function setMainBoardOverflow(hidden) {
+    const mainBoard = document.querySelector('.main-board');
+    if (mainBoard) {
+        mainBoard.style.overflow = hidden ? 'hidden' : '';
+    }
+}
+
+// Funktion zum Anzeigen der Kontaktinformationen auf kleinen Bildschirmen
+function displayContactInModal(contact) {
+    hideMainContent();
+    openContactInfoModal(contact);
+    removeActiveContactMarker();
+}
+
+// Funktion zum Anzeigen der Kontaktinformationen auf großen Bildschirmen
+function displayContactInDetails(contact) {
+    showMainContent();
+    setMainBoardOverflow(true);
+    const contactDetailsDiv = document.getElementById('contactDetails');
 
     if (contactDetailsDiv.classList.contains('active')) {
         transitionContactDetails(contactDetailsDiv, contact);
     } else {
         renderContactDetails(contact);
         contactDetailsDiv.classList.add('active');
+
+        // Overflow nach Animation entfernen
+        contactDetailsDiv.addEventListener('animationend', () => {
+            setMainBoardOverflow(false);
+        }, { once: true });
     }
 
     updateActiveContactMarker(contact);
 }
 
+function displayContactDetails(contact) {
+    if (isSmallScreen()) {
+        displayContactInModal(contact);
+    } else {
+        displayContactInDetails(contact);
+    }
+}
+
+// Funktion zum Öffnen des Kontaktinformationen Modals
+function openContactInfoModal(contact) {
+    const modal = document.getElementById('contactInfoModal');
+    if (modal) {
+        modal.innerHTML = getContactInfoModalHTML(contact);
+        modal.style.display = 'flex';
+
+        // Schließen-Button Event Listener hinzufügen
+        const closeBtn = modal.querySelector('.close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeContactInfoModal);
+        }
+
+        // Event Listener für Klick außerhalb des Modals zum Schließen
+        modal.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                closeContactInfoModal();
+            }
+        });
+    }
+}
+
+
+function closeContactInfoModal() {
+    const modal = document.getElementById('contactInfoModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.innerHTML = ''; // Inhalt zurücksetzen
+    }
+}
+
 // Funktion zur Transition der Kontakt-Details
 function transitionContactDetails(contactDetailsDiv, newContact) {
+    setMainBoardOverflow(true);
+
     contactDetailsDiv.classList.remove('active');
     contactDetailsDiv.classList.add('fade-out');
 
@@ -166,13 +247,24 @@ function transitionContactDetails(contactDetailsDiv, newContact) {
         contactDetailsDiv.classList.remove('fade-out');
         renderContactDetails(newContact);
         contactDetailsDiv.classList.add('active');
+
+        contactDetailsDiv.addEventListener('animationend', () => {
+            setMainBoardOverflow(false);
+        }, { once: true });
     }, { once: true });
 }
 
+
 // Funktion zur Aktualisierung der aktiven Kontaktmarkierung
 function updateActiveContactMarker(contact) {
-    removeActiveContactMarker();
-    setActiveContactMarker(contact);
+    const screenWidth = window.innerWidth;
+    if (screenWidth >= 800) {
+        removeActiveContactMarker();
+        setActiveContactMarker(contact);
+    } else {
+        // Bei Bildschirmbreite unter 800px entfernen wir die aktive Markierung
+        removeActiveContactMarker();
+    }
 }
 
 // Funktion, um die aktive Markierung von allen Kontakten zu entfernen
@@ -476,30 +568,45 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Event Listener für Bearbeitungs- und Löschbuttons
+// Event Listener für Bearbeitungs- und Löschbuttons
 document.addEventListener('click', event => {
     const editBtn = event.target.closest('.edit-button');
     const deleteBtn = event.target.closest('.delete-button');
 
     if (editBtn) {
-        const contactDetailsHeader = document.querySelector('.contact-details-header');
+        const contactDetailsHeader = editBtn.closest('.contact-details-header');
         if (contactDetailsHeader) {
             const contactKey = contactDetailsHeader.dataset.contactKey;
             if (contactKey) {
                 const contact = contacts.find(c => c.key === contactKey);
                 if (contact) {
                     openAddContactModal(contact);
+                    // Falls das Modal für Kontaktinformationen geöffnet ist, schließen wir es
+                    closeContactInfoModal();
                 }
             }
         }
     }
 
     if (deleteBtn) {
-        const contactDetailsHeader = document.querySelector('.contact-details-header');
+        const contactDetailsHeader = deleteBtn.closest('.contact-details-header');
         if (contactDetailsHeader) {
             const contactKey = contactDetailsHeader.dataset.contactKey;
             if (contactKey) {
                 deleteContact(contactKey);
+                // Falls das Modal für Kontaktinformationen geöffnet ist, schließen wir es
+                closeContactInfoModal();
             }
         }
+    }
+});
+
+window.addEventListener('resize', () => {
+    if (isSmallScreen()) {
+        removeActiveContactMarker();
+        hideMainContent();
+    } else {
+        closeContactInfoModal();
+        showMainContent();
     }
 });

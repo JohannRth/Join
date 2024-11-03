@@ -267,6 +267,7 @@ input#newContactPhone {
         transform: translate(-50%, 100%);
         opacity: 0;
     }
+
     100% {
         transform: translate(-50%, -50%);
         opacity: 1;
@@ -286,17 +287,22 @@ input#newContactPhone {
     padding: 0px 25px;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: none; /* Standardmäßig ausgeblendet */
+    display: none;
+    /* Standardmäßig ausgeblendet */
     justify-content: center;
     align-items: center;
     opacity: 0;
-    pointer-events: none; /* Verhindert, dass Popup fälschlicherweise angeklickt werden kann */
+    pointer-events: none;
+    /* Verhindert, dass Popup fälschlicherweise angeklickt werden kann */
 }
 
 .success.show {
-    display: flex; /* Sichtbar machen */
-    animation: slideInBottom 0.5s forwards; /* Slide-In Animation anwenden */
-    pointer-events: auto; /* Klicks auf das Popup erlauben */
+    display: flex;
+    /* Sichtbar machen */
+    animation: slideInBottom 0.5s forwards;
+    /* Slide-In Animation anwenden */
+    pointer-events: auto;
+    /* Klicks auf das Popup erlauben */
 }
 
 @media (max-width:1200px) {
@@ -325,11 +331,11 @@ input#newContactPhone {
     .add-contact-modal-content {
         zoom: 100%;
     }
-    
+
     .add-contact-modal-content {
         display: flex;
-        width: 95%; 
-        height: 80%; 
+        width: 95%;
+        height: 80%;
         border-radius: 15px;
         overflow: hidden;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -381,39 +387,193 @@ input#newContactPhone {
         display: none;
     }
 
-    .form-actions {
-        justify-content: center;
+    .main-board-content {
+        display: none !important;
+        flex-direction: column;
     }
 
-    .add-contact-right {
-        background-color: #fff;
-        width: unset;
-        height: 55%;
-        position: relative;
+    .contacts-list {
+        width: 100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        flex-direction: column;
-        justify-content: center;
+    }
+}
+
+.form-actions {
+    justify-content: center;
+}
+
+.add-contact-right {
+    background-color: #fff;
+    width: unset;
+    height: 55%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#addContactForm {
+    width: 90%;
+    margin-left: unset;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add-contact-right .close {
+    display: none;
+}
+
+.add-contact-left .close {
+    display: flex;
+    width: 45px;
+}
+
+.modal-logo {
+    display: none;
+}
+
+/* /////////////////////////////Test Contacts-Details/////////////////////////////////////////// */
+
+/* Modal Styles für Kontaktinformationen */
+#contactInfoModal {
+    display: none;
+    /* Standardmäßig ausgeblendet */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 2;
+    /* Höher als andere Elemente */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Halbdurchsichtiger Hintergrund */
+    backdrop-filter: blur(5px);
+    overflow-y: auto;
+    /* Ermöglicht Scrollen, falls Inhalt größer als Bildschirm */
+}
+
+/* Inhalt des Modals */
+.contact-info-modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    position: relative;
+    animation: slideInFromRight 0.3s ease-out forwards;
+}
+
+/* Strukturierung des Modals */
+.modal-main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Anpassung der Kontakt-Headline im Modal */
+.contact-info-modal-content .contact-headline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+}
+
+.contact-info-modal-content .contact-headline h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.contact-info-modal-content .contact-headline h2 {
+    font-size: 24px;
+    font-weight: 500;
+    margin: 10px 0;
+}
+
+.contact-info-modal-content .horizontalline {
+    height: auto;
+    margin: 10px 0;
+}
+
+.contact-info-modal-content .text-underline {
+    display: none;
+    /* Kann ausgeblendet werden, falls nicht benötigt */
+}
+
+/* Schließen-Button */
+.contact-info-modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.contact-info-modal-content .close:hover {
+    color: #000;
+}
+
+/* Anpassung der Kontaktinformationen im Modal */
+.contact-info-modal-content .contact-details-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.contact-info-modal-content .contact-details-info h2 {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.contact-info-modal-content .contact-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.contact-info-modal-content .contact-actions button {
+    margin: 0 5px;
+}
+
+/* Kontakt-Details-Body */
+.contact-info-modal-content .contact-details-body {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.contact-info-modal-content .contact-details-body h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Für kleinere Bildschirmgrößen */
+@media (max-width: 800px) {
+    .contact-info-modal-content {
+        width: 95%;
+        max-width: none;
+        padding: 20px;
     }
 
-    #addContactForm {
-        width: 90%;
-        margin-left: unset;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+    .contact-info-modal-content .contact-headline h1 {
+        font-size: 28px;
     }
 
-    .add-contact-right .close {
-        display: none;
+    .contact-info-modal-content .contact-headline h2 {
+        font-size: 20px;
     }
 
-    .add-contact-left .close {
-        display: flex;
-        width: 45px;
-    }
-
-    .modal-logo {
-        display: none;
+    .contact-info-modal-content .contact-icon-large {
+        width: 80px;
+        height: 80px;
+        font-size: 32px;
     }
 }
