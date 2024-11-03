@@ -102,15 +102,18 @@
                                 <span class="addTaskInputTitle">Subtasks</span>
                                 <div class="subTaskInputContainer">
                                     <div>
-                                        <!-- <input onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask"> -->
                                         <input onclick="showinputSubTaksClickContainer()" onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
                                     </div>
                                     <div class="addSubTaskButtonContainer" id="addSubTaskButtonContainer">
                                         <img onclick="showinputSubTaksClickContainer()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
                                         <div class="inputSubTaksClickContainer" id="inputSubTaksClickContainer">
-                                            <div><img onclick="deleteCurrentText()" class="deleteCurrentTextButton" src="./assets/img/clear-x-image.svg"></div>
+                                            <div class="deleteCurrentTextButtonContainer">
+                                                <img onclick="deleteCurrentText()" class="deleteCurrentTextButton" src="./assets/img/clear-x-image.svg">
+                                            </div>
                                             <div class="partingLine"></div>
-                                            <div><img onclick="addNewSubtask()"class="addNewTextButton" src="./assets/img/check-dark.svg"></div>
+                                            <div class="addNewTextButtonContainer">
+                                                <img onclick="addNewSubtask(event)" class="addNewTextButton" id="addNewTextButton" src="./assets/img/check-dark.svg">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
