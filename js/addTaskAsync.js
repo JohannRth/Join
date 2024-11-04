@@ -1,5 +1,9 @@
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Funktion 1: Sammelt und validiert die Eingabedaten
+/**
+ * This function collects and validates task data from the form
+ * 
+ * @returns {Object|null} The collected task data if valid, null otherwise
+ * 
+ */
 function collectAndValidateTaskData() {
     let title = document.getElementById('title').value.trim();
     let description = document.getElementById('description').value.trim();
@@ -17,7 +21,13 @@ function collectAndValidateTaskData() {
     };
 }
 
-// Funktion 2: Speichert die Aufgabe in der Datenbank
+
+/**
+ * This function saves a task to the database
+ * 
+ * @param {Object} task - The task object to be saved
+ * @returns {Object|null} The saved task with its key if successful, null otherwise
+ */
 async function saveTaskToDatabase(task) {
     try {
         let result = await saveData('tasks', task);
@@ -31,7 +41,11 @@ async function saveTaskToDatabase(task) {
     }
 }
 
-// Funktion 3: Hauptfunktion, die den gesamten Prozess koordiniert
+
+/**
+ * This function coordinates the entire process of creating a new task
+ *  
+ */
 async function createNewTask() {
     let taskData = collectAndValidateTaskData();
     if (!taskData) return;
@@ -43,7 +57,12 @@ async function createNewTask() {
     }
 }
 
-// Funktion zum Ermitteln der ausgewählten Priorität
+
+/**
+ * This function determines the selected priority for a task
+ * 
+ * @returns {string} The selected priority ('urgent', 'medium', or 'low')
+ */
 function getSelectedPriority() {
     let prio = '';
     if (document.querySelector('.prioButtonUrgent.active')) {
@@ -56,7 +75,12 @@ function getSelectedPriority() {
     return prio;
 }
 
-// Funktion zum Sammeln der zugewiesenen Kontakte
+
+/**
+ * This function collects the assigned contacts for a task
+ * 
+ * @returns {Array} An array of assigned contact names
+ */
 function getAssignedContacts() {
     let aktivContactsDiv = document.getElementById('aktivContacts');
     let contacts = [];
@@ -66,7 +90,15 @@ function getAssignedContacts() {
     return contacts;
 }
 
-// Validierungsfunktion für das Task-Formular
+
+/**
+ * This function validates the task form inputs
+ * 
+ * @param {string} title - The task title
+ * @param {string} dueDate - The task due date 
+ * @param {string} category - The task category
+ * @returns {boolean} True if the form is valid, false otherwise
+ */
 function validateTaskForm(title, dueDate, category) {
     let isValid = true;
     if (!title) {
@@ -84,7 +116,12 @@ function validateTaskForm(title, dueDate, category) {
     return isValid;
 }
 
-// Funktion zum Anzeigen von Fehlerbenachrichtigungen (optional)
+
+/**
+ * This function displays an error notification
+ * 
+ * @param {string} message - The error message to display
+ */
 function showErrorNotification(message) {
     let errorPopup = document.getElementById('popupError'); 
     if (errorPopup) {
