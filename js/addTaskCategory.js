@@ -106,7 +106,10 @@ function resetCategorySelector() {
 }
 
 
-initializeCategorySelector();
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCategoryDropdown();
+});
+
 
 /**
  * This function adds category options to the dropdown

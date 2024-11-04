@@ -256,3 +256,41 @@ function getColor(name) {
 }
 
 
+/**
+ * This function initializes the contact dropdown asynchronously@returns {Promise}
+ * 
+ *
+ */
+async function initializeContactDropdown() {
+    if (contactDropdownInitialized) return;
+    let elements = getElements();
+    setupEventListeners(elements);
+    await loadAndAddContacts(elements.contactDropdown);
+    contactDropdownInitialized = true;
+    document.addEventListener('click', (event) => {
+        if (!elements.assignedTo.contains(event.target) && !elements.contactDropdown.contains(event.target)) {
+            closeDropdown(elements);
+        }
+    });
+    updateAktivContactsVisibility();
+}
+
+
+/**
+ * This function loads contacts from storage and adds them to the dropdown
+ * 
+ * @param {HTMLElement} contactDropdown - The dropdown element to populate@returns {Promise} 
+ */
+async function loadAndAddContacts(contactDropdown) {
+    try {
+        const contacts = await loadData('contacts');
+        Object.values(contacts).forEach(contact => {
+            addContact(contact.name, contactDropdown);
+        });
+    } catch (error) {
+        console.error('Fehler beim Laden der Kontakte:', error);
+        addExampleContacts(contactDropdown);
+    }
+}
+
+
