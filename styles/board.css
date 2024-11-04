@@ -330,7 +330,7 @@ body.no-scroll {
   /* Erweiterte Titel-Karte */
   .expanded-card-overlay {
     width: 525px;
-    height: 870px;
+    height: 830px;
     border-radius: 30px;
     padding: 48px 40px;
     background-color: white;
@@ -380,7 +380,7 @@ body.no-scroll {
 
    .task-title-overlay {
     width: 345px;
-    height: 150px;
+    height: 120px;
     font-weight: 700;
     font-size: 61px;
     color: #000000;
@@ -654,29 +654,6 @@ body.no-scroll {
     display: none;
   }
 
-  .add-task-expanded-overlay {
-    width: 1116px;
-    height: 870px;
-    padding: 62px;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 30px;
-  }
-
-  .board-add-task-h1-conatiner-cross{
-    display: flex;
-    justify-content: space-between;
-    width: 968px;
-  }
-
-  .board-add-task-h1{
-    font-size: 40px;
-    font-weight: 700;
-    color: #000000;
-  }
-
   .required-button-expanded-conatiner{
     display: flex;
     justify-content: space-between;
@@ -702,4 +679,33 @@ body.no-scroll {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+  }
+
+  .edit-card-overlay {
+    width: 525px;
+    height: 820px;
+    border-radius: 30px;
+    padding: 48px 40px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    animation: slideInOverlay 0.5s forwards;
+    overflow-y: auto;
+  }
+  
+  .edit-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .edit-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
