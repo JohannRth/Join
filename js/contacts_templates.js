@@ -80,11 +80,10 @@ function getContactModalHTML(contact, isEditMode, contactKey, initials, color) {
 function getContactInfoModalHTML(contact) {
     return `
         <div class="contact-info-modal-content">
-            <span class="close">&times;</span>
+            <img src="./assets/img/arrow-left-line.svg" class="arrowLeft close"></img>
             <div class="modal-main-content">
                 <div class="contact-headline">
                     <h1>Contacts</h1>
-                    <img class="horizontalline" src="./assets/img/horizontalline_contacts.svg" alt="Line">
                     <h2>Better with a Team</h2>
                     <img class="text-underline" src="./assets/img/underline_login.svg" alt="Underline">
                 </div>
