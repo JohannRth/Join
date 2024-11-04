@@ -245,10 +245,28 @@ function setupMenuOptions(modal, contact) {
 }
 
 function addMenuButtonListener(menuOptionsBtn, dropdownOptions) {
-    menuOptionsBtn.addEventListener('click', function(event) {
+    function toggleMenu(event) {
         event.stopPropagation();
+
         dropdownOptions.classList.toggle('show');
-    });
+
+        if (dropdownOptions.classList.contains('show')) {
+            // Menü ist geöffnet, Listener hinzufügen
+            document.addEventListener('click', outsideClickListener);
+        } else {
+            // Menü ist geschlossen, Listener entfernen
+            document.removeEventListener('click', outsideClickListener);
+        }
+    }
+
+    function outsideClickListener(event) {
+        if (!event.target.closest('.dropdown-contact-options') && !event.target.closest('.menu-contact-options')) {
+            dropdownOptions.classList.remove('show');
+            document.removeEventListener('click', outsideClickListener);
+        }
+    }
+
+    menuOptionsBtn.addEventListener('click', toggleMenu);
 }
 
 function addOutsideClickListener(dropdownOptions) {
