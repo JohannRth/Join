@@ -1,0 +1,126 @@
+@media(max-width: 500px) {
+    
+    .headlineContainer {
+        padding-left: 16px;
+        justify-content: center;
+    }
+
+    .addTaskHeadline {
+        padding-right: 85px;
+    }
+
+    .clearAndCreateButtons {
+        padding-left: 0px;
+    }
+
+    .addTaskCreateButtonContainer {
+        padding-left: 0px;
+        width: 100%;
+    }
+
+    .inputContainerTitle {
+        width: 100%;
+    }
+
+    .inputContainerDescription {
+        width: 100%;
+    }
+
+    .inputAddTask {
+        width: 290px;
+    }
+
+    .textAreaAddTask {
+        width: 290px;
+        height: 88px;
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .assignedAddTask {
+        width: 290px;
+        height: 40px;
+    }
+
+    .aktivContacts {
+        width: 289px;
+    }
+
+    .inputContainerDueDate {
+        width: 100%;
+    }
+
+    .inputAddTaskDueDate {
+        width: 290px;
+        height: 40px;
+    }
+
+    .prioButtonContainer {
+        padding-right: 0px;
+    }
+
+    .subTaskContainer {
+        width: 290px;
+    }
+
+    .inputAddSubTask {
+        width: 290px;
+        height: 40px;
+        font-size: 16px;
+        padding-right: 72px;
+    }
+
+    .listSubTask {
+        width: 200px;
+    }
+
+    .subTaskEditInput {
+        width: 220px;
+    }
+
+    .addSubTaskButtonContainer {
+        margin-left: -30px;
+    }
+
+    .selectedOption {
+        width: 290px;
+        height: 40px;
+    }
+
+    .subTaskInputContainer {
+        width: 290px;
+    }
+
+    .requiredBefore {
+        padding-left: 0px;
+        padding-right: 126px;
+    }
+
+    .addTaskCreateButtonContainer {
+        justify-content: flex-start;
+        align-items: center;
+      
+    }
+
+    .contactDropdown {
+        max-height: 174px;
+        width: 290px;
+    }
+
+    .subTask {
+        width: 290px;
+    }
+
+    .subTaskEdit {
+        width: 100%;
+    }
+
+    .contactIcon {
+        margin-right: 3px;
+    }
+
+    .dropDownContent {
+        z-index: 999;
+        width: 290px;
+    }
+}

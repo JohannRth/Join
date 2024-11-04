@@ -132,7 +132,6 @@ body {
     cursor: pointer;
 }
 
-
 .inputAddTaskDueDate {
     display: flex;
     flex-direction: column;
@@ -155,7 +154,6 @@ body {
     appearance: none;
 }
 
-
 input[type="date"]::-webkit-calendar-picker-indicator {
     opacity: 0;
     position: absolute;
@@ -176,7 +174,6 @@ input[type="date"] {
     cursor: pointer;
 }
 
-
 .inputAddTaskDueDate:not([value="YYYY-MM-DD"]) {
     color: black;
 }
@@ -194,8 +191,19 @@ input[type="date"] {
     font-weight: 400;
     text-align: left;
     cursor: pointer;
+    resize: none;
+    background-image: url(/assets/img/textAreaImage.svg);
+    background-repeat: no-repeat;
+    background-position: right 4px bottom 4px;
+    background-size: 18px;
+    overflow-y: auto;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
 }
 
+.textAreaAddTask::-webkit-scrollbar {
+    display: none;
+}
 
 .assignedAddTask {
     display: flex;
@@ -216,177 +224,6 @@ input[type="date"] {
 .assignedAddTask:hover {
     box-shadow: 0px -1.5px 0px 0px rgba(0, 0, 0, 0.2);
 }
-
-.dropDownImageAssignedToContainer{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.dropDownImageAssignedToContainer:hover {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 25px;
-    height: 25px;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    transition: opacity 0.3s ease;
-}
-
-.dropDownImageAssignedToContainer:hover .dropDownImageContacts {
-    margin-right: 0;
-}
-
-.dropDownImageContacts {
-    height: 9px;
-    width: 9px;
-    margin-right: 8px;
-}
-
-
-.contactDropdown {
-    display: none;
-    background-color: #fff;
-    max-height: 201px;
-    overflow-y: auto;
-    z-index: 1000;
-    width: 440px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    position: absolute;
-    left: 0;
-    z-index: 999;
-}
-
-
-.contactDropdown::-webkit-scrollbar {
-    width: 10px;
-}
-
-.contactDropdown::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 8px;
-    max-height: 20px;
-}
-
-.contactDropdown::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 10px;
-    min-height: 10px;
-    max-height: 10px; 
-}
-
-.contactDropdown::-webkit-scrollbar-thumb:hover {
-    background: #a1a0a0;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.contactDropdown::-webkit-scrollbar-button:vertical:start:decrement,
-.contactDropdown::-webkit-scrollbar-button:vertical:end:increment {
-    display: block;
-    height: 16px;
-}
-
-.contactDropdown::-webkit-scrollbar-button:vertical:start:decrement {
-    background:
-    linear-gradient(120deg, #fff 40%, rgba(0, 0, 0, 0) 41%),
-    linear-gradient(240deg, #fff 40%, rgba(0, 0, 0, 0) 41%),
-    linear-gradient(0deg, #fff 30%, #888 30%);
-    background-color: #888;
-}
-
-.contactDropdown::-webkit-scrollbar-button:vertical:end:increment {
-    background:
-    linear-gradient(300deg, #fff 40%, rgba(0, 0, 0, 0) 41%),
-    linear-gradient(60deg, #fff 40%, rgba(0, 0, 0, 0) 41%),
-    linear-gradient(180deg, #fff 30%, #888 30%);
-    background-color: #888;
-}
-
-.contactDropdown.show {
-    display: block;
-}
-
-.selectedContactsHeadline {
-    font-size: 20px;
-    font-weight: 400;
-}
-
-.contactItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 12px;
-    cursor: pointer;
-    height: 56px;
-    font-size: 20px;
-    font-weight: 400;
-    margin-bottom: 3px;
-}
-
-.contactItem:hover {
-    background-color: #f0f0f0;
-    border-radius: 10px;
-}
-
-.contactItem.active {
-    background-color: #2A3647;
-    border-radius: 10px;
-    color: white;
-}
-
-.contactItem.active:hover {
-    background-color: #091931;
-    border-radius: 10px;
-    color: white;
-}
-
-
-.aktivContacts {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-top: 10px;
-    max-width: 400px;
-    min-height: 40px;
-}
-
-.contactIconAndName {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.contactIcon {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: solid 2px rgb(255, 255, 255);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 12px;
-    font-weight: 400;
-    margin-right: 5px;
-}
-
-.contactCheckbox {
-    width: 16px;
-    height: 16px;
-    margin-right: 6px;
-}
-
-.contactName {
-    font-size: 20px;
-    font-weight: 400;
-    margin-left: 12px;
-}
-
 
 input[type="checkbox"] {
     display: inline-block;
@@ -432,79 +269,14 @@ input[type="text"]:focus,
     background-image: h;
 }
 
-
-.dropDownImageRotation180 {
-    transform: rotate(180deg);
-    transition: transform 0.2s ease;
-    padding-top: 4px;
-}
-
-.customDropdown.active .options {
-    display: block !important;
-    z-index: 1000;
-}
-
-.customDropdown {
-    position: relative;
-    width: 100%;
-    height: 50px;
-    cursor: pointer;
-    border: 1px solid rgba(128, 128, 128, 0);
-}
-
 .selectedCategoryHeadline {
     font-size: 20px;
     font-weight: 400;
 }
 
-.dropDownImageCategoryContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .categoryContainer {
     height: 105px;
     position: relative;
-}
-
-.dropDownImageCategoryContainer:hover {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 25px;
-    height: 25px;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    transition: opacity 0.3s ease;
-}
-
-.dropDownImageCategoryContainer:hover .dropDownImageCategory {
-    margin-right: 0;
-}
-
-.dropDownImageCategory {
-    height: 9px;
-    width: 9px;
-    margin-right: 8px;
-}
-
-.dropDownContent {
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    max-height: 201px;
-    overflow-y: auto;
-    z-index: 1000;
-    width: 440px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.dropDownContent.show {
-    display: block;
 }
 
 .categoryItem {
@@ -520,44 +292,8 @@ input[type="text"]:focus,
     border-radius: 10px;
 }
 
-.customDropdown.active .dropdownOptions {
-    display: block;
-}
-
-.customDropdown.error .selectedOption {
-    border-color: red;
-}
-
-
 .errorMessage.visible {
     display: block;
-}
-
-.inputAddSubTask {
-    display: flex;
-    flex-direction: column;
-    width: 440px;
-    height: 48px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 12px;
-    padding-right: 80px;
-    border: 1px solid #D1D1D1;
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: 400;
-    text-align: left;
-    cursor: pointer;
-}
-
-.subTaskEditInput {
-    width: 350px;
-    padding: 4px 0;
-    font-size: 16px;
-    border: none;
-    outline: none;
-    background-color: transparent;
-    display: inline-block;
 }
 
 #title::placeholder,
@@ -572,333 +308,10 @@ input[type="text"]:focus,
     margin-left: 4px;
 }
 
-.prioButtonContainer {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-bottom: 24px;
-}
-
-.prioButtonUrgent{
-    width: 136px;
-    height: 56px;
-    padding: 10px;
-    background-color: white;
-    border: 1px solid #D1D1D1;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-right: 16px;
-    font-size: 20px;
-    font-weight: 400;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.prioButtonUrgent:hover {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    transition: all 0.3s ease;
-}
-
-.prioButtonMedium {
-    width: 136px;
-    height: 56px;
-    padding: 10px;
-    background-color: white;
-    border: 1px solid #D1D1D1;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-right: 16px;
-    font-size: 20px;
-    font-weight: 400;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.prioButtonMedium img {
-    filter: brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(342%) hue-rotate(360deg) brightness(103%) contrast(103%);
-}
-
-.prioButtonMedium:hover {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    transition: all 0.3s ease;
-}
-
-.prioButtonLow {
-    width: 136px;
-    height: 56px;
-    padding: 10px;
-    background-color: white;
-    border: 1px solid #D1D1D1;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-right: 16px;
-    font-size: 20px;
-    font-weight: 400;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.prioButtonLow:hover {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    transition: all 0.3s ease;
-}
-
-.prioButtonUrgent.active:hover,
-.prioButtonMedium.active:hover,
-.prioButtonLow.active:hover {
-    box-shadow: none;
-}
-
-.prioButtonUrgent.active {
-    background-color: #FF3D00;
-    color: white;
-}
-  
-.prioButtonUrgent.active img {
-    filter: brightness(0) invert(1);
-}
-  
-.prioButtonMedium.active {
-    background-color: #FFA800;
-    color: white;
-}
-  
-.prioButtonMedium.active img {
-    filter: brightness(0) invert(1);
-}
-  
-.prioButtonLow.active {
-    background-color: #7AE229;
-    color: white;
-}
-  
-.prioButtonLow.active img {
-    filter: brightness(0) invert(1);
-}
-
-.subTaskInputContainer {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    position: relative;
-}
-
-.inputSubTaksClickContainer {
-    display: none;
-}
-
-.inputSubTaksClickContainer.visible {
-    display: flex;
-    align-items: center;
-    margin-right: 12px;
-}
-
-.deleteCurrentTextButtonContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: -37px;
-    width: 25px;
-    height: 25px;
-}
-
-.deleteCurrentTextButtonContainer:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    transition: opacity 0.3s ease;
-}
-
-.deleteCurrentTextButtonContainer.no-hover:hover {
-    background-color: transparent;
-}
-
-.deleteCurrentTextButton {
-    margin-top: 3px;
-    height: 15px;
-    width: 14px;
-    cursor: pointer;
-}
-
-.addNewTextButtonContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 25px;
-    height: 25px;
-}
-
-.addNewTextButtonContainer:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    transition: opacity 0.3s ease;
-}
-
-.addNewTextButtonContainer.no-hover:hover {
-    background-color: transparent;
-}
-
-.addNewTextButton {
-    margin-top: 1px;
-    height: 18px;
-    width: 17px;
-    cursor: pointer;
-}
-
 .assignedToContainer {
     margin-bottom: 20px;
     position: relative;
     width: 100%;
-}
-
-.subTaskInput {
-    flex-grow: 1;
-}
-
-.addSubTaskButtonContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: -37px;
-    width: 25px;
-    height: 25px;
-}
-
-.addSubTaskButtonContainer:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    transition: opacity 0.3s ease;
-}
-
-.addSubTaskButtonContainer.no-hover:hover {
-    background-color: transparent;
-}
-
-
-.addSubTaskButton {
-    height: 14px;
-    width: 14px;
-    cursor: pointer;
-}
-
-
-.subTaskList {
-    max-height: 150px;
-    overflow-y: auto;
-    margin-top: 10px;
-    scrollbar-width: none; 
-    -ms-overflow-style: none; 
-}
-
-.subTaskList::-webkit-scrollbar {
-    display: none; 
-}
-
-.subTaskListContainer {
-    padding-left: 10px;
-    border-radius: 10px;
-    position: relative;
-    margin-top: 5px;
-
-}
-
-.listSubTask {
-    height: 100%;
-    font-size: 16px;
-    width: 349px;
-    text-align: start;
-    white-space: normal;
-    overflow-wrap: break-word;
-    word-break: normal;
-}
-
-.subTask {
-    width: 440px;
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2px;
-    padding: 0px 16px;
-    border-radius: 10px;
-}
-
-.subTask .subTaskButtons {
-    display: none;
-}
-
-.subTask:hover .subTaskButtons {
-    display: flex;
-}
-
-.subTask:hover {
-    cursor: pointer;
-    background-color:  #d3d3d354;
-}
-
-.subTaskEdit {
-    width: 440px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    padding: 7px 12px;
-    background-color:  #d3d3d354;
-    border-bottom: 2px solid #29ABE2;
-}
-
-.subTask span {
-    flex-grow: 1;
-    margin-right: 10px;
-}
-
-.rightContainerSubTask {
-    display: flex;
-}
-
-.subTaskEditButton {
-    cursor: pointer;
-}
-
-.partingLine{
-    height: 25px;
-    width: 2px;
-    background-color: #D1D1D1;
-    margin-right: 5px;
-    margin-left: 5px;
-}
-
-.subTaskSaveButton {
-    height: 20px;
-    cursor: pointer;
-    padding-top: 5px;
-}
-
-.subTaskDeleteButton {
-    cursor: pointer;
-}
-
-.subTaskErrorMessage {
-    color: red;
-    display: none;
-}
-
-.subTaskErrorMessage.visible {
-    padding-top: 10px;
-    display: block;
-}
-
-.addTaskCreateButtonContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 980px;
-    position: relative;
-    bottom: -100px;
-    padding-bottom: 20px;
 }
 
 .requiredTextAddTask{
@@ -909,67 +322,6 @@ input[type="text"]:focus,
     content: "*";
     color: red;
     margin-left: 4px;
-}
-
-.clearAndCreateButtons {
-    display: flex;
-}
-
-.clearButton, .createButton {
-    padding: 18px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 21px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.clearButton {
-    font-size: 20px;
-    font-weight: 400;
-    background-color: white;
-    color: #2A3647;
-    border: 1px solid #2A3647;
-    width: 110px;
-    height: 56px;
-    margin-right: 18px;
-    display: flex;
-    align-items: center;
-}
-
-.clearButton:hover {
-    border-color: #29ABE2;
-    color: #29ABE2;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.clearButton:hover .clearAndCreateButtonImage {
-    filter: invert(48%) sepia(85%) saturate(2476%) hue-rotate(165deg) brightness(100%) contrast(119%);
-}
-
-.createButton {
-    font-size: 21px;
-    font-weight: 700;
-    background: #2A3647;
-    color: white;
-    border: none;
-    width: 183px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-}
-
-.createButton:hover {
-    background: #29ABE2;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.clearAndCreateButtonImage {
-    width: 14px;
-    height: 14px;
-    margin-left: 10px;
 }
 
 .taskAddedNotification {
@@ -988,15 +340,15 @@ input[type="text"]:focus,
     align-items: center;
     justify-content: space-between;
     font-size: 20px;
-  }
+}
   
-  .taskAddedNotification.show {
+.taskAddedNotification.show {
     bottom: 500px;
-  }
+}
 
-  .taskAddedNotificationImage {
+.taskAddedNotificationImage {
     height: 30px;
-  }
+}
 
 .scroll {
     overflow-y: scroll;

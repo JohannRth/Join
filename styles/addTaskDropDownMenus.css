@@ -1,0 +1,246 @@
+
+.dropDownImageAssignedToContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropDownImageAssignedToContainer:hover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    transition: opacity 0.3s ease;
+}
+
+.dropDownImageAssignedToContainer:hover .dropDownImageContacts {
+    margin-right: 0;
+}
+
+.dropDownImageContacts {
+    height: 9px;
+    width: 9px;
+    margin-right: 8px;
+}
+
+
+.contactDropdown {
+    display: none;
+    background-color: #fff;
+    max-height: 201px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 440px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    position: absolute;
+    left: 0;
+    z-index: 999;
+}
+
+
+.contactDropdown::-webkit-scrollbar {
+    width: 10px;
+}
+
+.contactDropdown::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+    max-height: 20px;
+}
+
+.contactDropdown::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+    min-height: 10px;
+    max-height: 10px; 
+}
+
+.contactDropdown::-webkit-scrollbar-thumb:hover {
+    background: #a1a0a0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.contactDropdown::-webkit-scrollbar-button:vertical:start:decrement,
+.contactDropdown::-webkit-scrollbar-button:vertical:end:increment {
+    display: block;
+    height: 16px;
+}
+
+.contactDropdown::-webkit-scrollbar-button:vertical:start:decrement {
+    background:
+    linear-gradient(120deg, #fff 40%, rgba(0, 0, 0, 0) 41%),
+    linear-gradient(240deg, #fff 40%, rgba(0, 0, 0, 0) 41%),
+    linear-gradient(0deg, #fff 30%, #888 30%);
+    background-color: #888;
+}
+
+.contactDropdown::-webkit-scrollbar-button:vertical:end:increment {
+    background:
+    linear-gradient(300deg, #fff 40%, rgba(0, 0, 0, 0) 41%),
+    linear-gradient(60deg, #fff 40%, rgba(0, 0, 0, 0) 41%),
+    linear-gradient(180deg, #fff 30%, #888 30%);
+    background-color: #888;
+}
+
+.contactDropdown.show {
+    display: block;
+}
+
+
+.dropDownImageRotation180 {
+    transform: rotate(180deg);
+    transition: transform 0.2s ease;
+    padding-top: 4px;
+}
+
+.customDropdown.active .options {
+    display: block !important;
+    z-index: 1000;
+}
+
+.customDropdown {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+    border: 1px solid rgba(128, 128, 128, 0);
+}
+
+
+.dropDownImageCategoryContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.dropDownImageCategoryContainer:hover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    transition: opacity 0.3s ease;
+}
+
+.dropDownImageCategoryContainer:hover .dropDownImageCategory {
+    margin-right: 0;
+}
+
+.dropDownImageCategory {
+    height: 9px;
+    width: 9px;
+    margin-right: 8px;
+}
+
+.dropDownContent {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    max-height: 201px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 440px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.dropDownContent.show {
+    display: block;
+}
+
+
+.customDropdown.active .dropdownOptions {
+    display: block;
+}
+
+.customDropdown.error .selectedOption {
+    border-color: red;
+}
+
+.selectedContactsHeadline {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.contactItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 12px;
+    cursor: pointer;
+    height: 56px;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 3px;
+}
+
+.contactItem:hover {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+}
+
+.contactItem.active {
+    background-color: #2A3647;
+    border-radius: 10px;
+    color: white;
+}
+
+.contactItem.active:hover {
+    background-color: #091931;
+    border-radius: 10px;
+    color: white;
+}
+
+.aktivContacts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 10px;
+    max-width: 400px;
+    min-height: 40px;
+}
+
+.contactIconAndName {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contactIcon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: solid 2px rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+    margin-right: 5px;
+}
+
+.contactCheckbox {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+}
+
+.contactName {
+    font-size: 20px;
+    font-weight: 400;
+    margin-left: 12px;
+}
+

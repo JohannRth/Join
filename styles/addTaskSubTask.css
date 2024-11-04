@@ -1,0 +1,140 @@
+.subTaskEditInput {
+    width: 350px;
+    padding: 4px 0;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    display: inline-block;
+}
+
+.subTaskInputContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.inputSubTaksClickContainer {
+    display: none;
+}
+
+.inputSubTaksClickContainer.visible {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+}
+
+.subTaskInput {
+    flex-grow: 1;
+}
+
+.subTaskList {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 10px;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+.subTaskList::-webkit-scrollbar {
+    display: none; 
+}
+
+.subTaskListContainer {
+    padding-left: 10px;
+    border-radius: 10px;
+    position: relative;
+    margin-top: 5px;
+
+}
+
+.listSubTask {
+    height: 100%;
+    font-size: 16px;
+    width: 349px;
+    text-align: start;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+.subTask {
+    width: 440px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px;
+    padding: 0px 16px;
+    border-radius: 10px;
+}
+
+.subTask .subTaskButtons {
+    display: none;
+}
+
+.subTask:hover .subTaskButtons {
+    display: flex;
+}
+
+.subTask:hover {
+    cursor: pointer;
+    background-color:  #d3d3d354;
+}
+
+.subTaskEdit {
+    width: 440px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 7px 12px;
+    background-color:  #d3d3d354;
+    border-bottom: 2px solid #29ABE2;
+}
+
+.subTask span {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.rightContainerSubTask {
+    display: flex;
+}
+
+.partingLine{
+    height: 25px;
+    width: 2px;
+    background-color: #D1D1D1;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.subTaskErrorMessage {
+    color: red;
+    display: none;
+}
+
+.subTaskErrorMessage.visible {
+    padding-top: 10px;
+    display: block;
+}
+
+.inputAddSubTask {
+    display: flex;
+    flex-direction: column;
+    width: 440px;
+    height: 48px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 12px;
+    padding-right: 80px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: left;
+    cursor: pointer;
+}

@@ -1,5 +1,3 @@
-// add_task.js
-
 // Initialisierung der Arrays
 let newTasks = [];
 let subTasks = [];
@@ -24,18 +22,21 @@ let colors = [
 ];
 
 
-// Funktion zum Setzen der Priorität anpassen
+function init() {
+    setPriority('medium');
+    initializeDatePicker();
+    initializeContactDropdown();
+    initializeCategoryDropdown();
+    hideInputSubTaksClickContainerOnOutsideClick();
+}
+
+
 function setPriority(priority) {
     document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => {
         btn.classList.remove('active');
     });
     document.querySelector(`.prioButton${priority.charAt(0).toUpperCase() + priority.slice(1)}`).classList.add('active');
-}
-
-// Beim Laden der Seite den Medium-Button auswählen
-document.addEventListener('DOMContentLoaded', function() {
-    setPriority('medium');
-});
+} 
 
 
 function showinputSubTaksClickContainer() {
@@ -94,9 +95,6 @@ function hideInputSubTaksClickContainerOnOutsideClick() {
         }
     });
 }
-
-
-hideInputSubTaksClickContainerOnOutsideClick();
 
 
 function renderSubtasks(editIndex = -1) {
@@ -211,6 +209,21 @@ function validateCategoryField() {
 }
 
 
+function initializeDatePicker() {
+    let dateInput = document.getElementById('date');
+    if (dateInput) {
+        dateInput.addEventListener('click', function(e) {
+            let rect = this.getBoundingClientRect();
+            let clickX = e.clientX - rect.left;
+            if (clickX > rect.width - 30) {
+                e.preventDefault();
+                this.showPicker();
+            }
+        });
+    }
+}
+
+
 function getDateToday() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
@@ -282,7 +295,7 @@ function setupCategoryEventListeners(elements) {
 
 
 function toggleCategoryDropdown(elements) {
-    const isOpen = elements.categoryDropdown.classList.toggle('show');
+    let isOpen = elements.categoryDropdown.classList.toggle('show');
     elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);
 }
 
@@ -299,25 +312,45 @@ function selectCategory(category, elements) {
 }
 
 
-function addCategoryOption(category, categoryDropdown) {
-    let categoryItem = document.createElement('div');
-    categoryItem.className = 'categoryItem';
-    categoryItem.textContent = category;
-    categoryItem.addEventListener('click', (event) => {
-        event.stopPropagation();
-        selectCategory(category, getCategoryElements());
+function initializeCategorySelector() {
+    let categorySelector = document.getElementById('categorySelector');
+    categorySelector.addEventListener('click', function(event) {
+        let selectedCategory = this.querySelector('#selectedCategory');
+        if (selectedCategory.textContent !== 'Select task category') {
+            event.stopPropagation();
+            resetCategorySelector();
+        }
     });
-    categoryDropdown.appendChild(categoryItem);
 }
+
+function resetCategorySelector() {
+    let selectedCategory = document.getElementById('selectedCategory');
+    selectedCategory.textContent = 'Select task category';
+    let categoryItems = document.querySelectorAll('.categoryItem');
+    categoryItems.forEach(item => item.classList.remove('active'));
+    let categoryDropdown = document.getElementById('categoryDropdown');
+    categoryDropdown.classList.remove('show');
+    let dropDownImage = document.getElementById('dropDownImageCategory');
+    dropDownImage.classList.remove('dropDownImageRotation180');
+}
+
+
+initializeCategorySelector();
 
 
 function addCategoryOptions(categoryDropdown) {
-    addCategoryOption('Technical Task', categoryDropdown);
-    addCategoryOption('User Story', categoryDropdown);
+    const categories = ['Technical Task', 'User Story'];
+    categories.forEach(category => {
+        let categoryItem = document.createElement('div');
+        categoryItem.className = 'categoryItem';
+        categoryItem.textContent = category;
+        categoryItem.addEventListener('click', (event) => {
+            event.stopPropagation();
+            selectCategory(category, getCategoryElements());
+        });
+        categoryDropdown.appendChild(categoryItem);
+    });
 }
-
-
-document.addEventListener('DOMContentLoaded', initializeCategoryDropdown);
 
 
 let isDropdownOpen = false;
@@ -344,6 +377,7 @@ function initializeContactDropdown() {
         }
     });
 }
+
 
 function toggleContactDropdown() {
     activeContacts = document.getElementById('aktivContacts').add.classList('displayNone');
@@ -417,8 +451,7 @@ function addContact(contact, contactDropdown) {
     contactItem.addEventListener('click', (event) => {
         if (event.target !== checkbox) {
             event.preventDefault();
-            toggleContactState(contactItem, checkbox, contact);
-        }
+            toggleContactState(contactItem, checkbox, contact);}
     });
     checkbox.addEventListener('change', () => {
         toggleContactState(contactItem, checkbox, contact);
@@ -452,8 +485,9 @@ function toggleContactState(contactItem, checkbox, contact) {
 }
 
 
+
 function updateAktivContactsVisibility() {
-    const aktivContacts = document.getElementById('aktivContacts');
+    let aktivContacts = document.getElementById('aktivContacts');
     aktivContacts.style.display = aktivContacts.children.length > 0 ? 'flex' : 'none';
 }
 
@@ -522,8 +556,6 @@ async function loadAndAddContacts(contactDropdown) {
     }
 }
 
-
-document.addEventListener('DOMContentLoaded', initializeContactDropdown);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Funktion 1: Sammelt und validiert die Eingabedaten
@@ -657,4 +689,6 @@ function showTaskAddedNotification() {
       window.location.href = 'board.html';
     }, 3000);
   }
+
+  init();
 

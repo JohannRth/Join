@@ -6,7 +6,12 @@
     <script src="./js/firebase.js" defer></script>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="/styles/addTask.css">
-    <link rel="stylesheet" href="./styles/addTaskResponsive.css">
+    <link rel="stylesheet" href="/styles/addTaskButtons.css">
+    <link rel="stylesheet" href="/styles/addTaskSubTask.css">
+    <link rel="stylesheet" href="/styles/addTaskDropDownMenus.css">
+    <link rel="stylesheet" href="./styles/addTaskResponsiveLaptop.css">
+    <link rel="stylesheet" href="./styles/addTaskResponsiveTablet.css">
+    <link rel="stylesheet" href="./styles/addTaskResponsiveMobile.css">
     <script src="./js/addTaskTemplates.js"></script>
     <script src="script.js"></script>
     <script src="./js/addTask.js" defer></script>
@@ -19,7 +24,7 @@
     <link rel="icon" type="image/x-icon" href="./assets/img/favicon.svg" />
     <title>Add Task</title>
 </head>
-<body>
+<body onload="init()">
     <div id="sidebar-placeholder"></div>
     <div id="mobile-nav-placeholder"></div>
     <div id="header-placeholder"></div>

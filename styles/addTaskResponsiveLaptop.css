@@ -1,0 +1,62 @@
+@media(max-width: 1330px) {
+
+    .addTaskContainer {
+        padding-left: 250px;
+    }
+}
+
+@media(max-width: 1245px) {
+    
+    .addTaskContainer {
+        padding-left: 250px;
+    }
+
+    .addTaskContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .addTaskHeadline {
+        padding-right: 176px;
+    }
+
+    .leftAndRightTaskContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .addTaskSeparateContainer{
+        display: none;
+    }
+
+    .addTaskCreateButtonContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 461px;
+        padding-top: 5px;
+        padding-bottom: 79px;
+        position: relative;
+        bottom: 0;
+    }
+
+    .clearAndCreateButtons {
+        display: flex;
+        margin-top: 20px;
+        padding-left: 132px;
+    }
+
+    .aktivContacts {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        width: 380px;
+        min-height: 40px;
+        max-height: 76px;
+    }
+}
+
+
