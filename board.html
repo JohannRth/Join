@@ -11,13 +11,13 @@
     <link rel="stylesheet" href="./assets/fonts/font.css" />
     <link rel="stylesheet" href="./styles/side_header_template.css" />
     <link rel="stylesheet" href="./styles/board.css">
-    <link rel="stylesheet" href="/styles/add_task.css">
+    <link rel="stylesheet" href="/styles/addTask.css">
     <script src="./js/firebase.js" defer></script>
     <script src="script.js" defer></script>
     <script src="./js/login.js" defer></script>
     <script src="./assets/templates/load_header_sidebar.js" defer></script>
-    <script src="./js/add_task.js" defer></script>
-    <script src="./js/add_task_templates.js"></script>
+    <script src="./js/addTask.js" defer></script>
+    <script src="./js/addTaskTemplates.js"></script>
     <!-- Link-Fonts -->
     <link rel="stylesheet" href="./assets/fonts/font.css" />
     <!-- Favicon -->
@@ -503,16 +503,14 @@ function dropTask(ev) {
     const dueDate = element.dueDate ? new Date(element.dueDate).toLocaleDateString("de-DE") : "Kein Datum";
 
     const subtasksHTML = element.subtasks.map((subtask, index) => `
-        <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
-    <input type="checkbox" 
-           ${subtask.completed ? 'checked' : ''} 
-           id="subtask-checkbox-${element.id}-${index}" 
-           onclick="toggleSubtask(${element.id}, ${index})" 
-           class="styled-checkbox">
-    <label for="subtask-checkbox-${element.id}-${index}">${subtask.title || subtask}</label>
-</div>
-    `).join('');
-
+    <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
+        <input type="checkbox" 
+               id="subtask-checkbox-${element.id}-${index}" 
+               onclick="toggleSubtask(${element.id}, ${index})" 
+               class="styled-checkbox">
+        <label for="subtask-checkbox-${element.id}-${index}">${subtask}</label>
+    </div>
+`).join('');
 
     return `
     <div class="expanded-card-overlay">
