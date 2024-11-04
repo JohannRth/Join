@@ -320,7 +320,7 @@ body.no-scroll {
     align-items: center;
     z-index: 1000;
     transition: opacity 0.5s ease;
-  }
+}
 
   .card-overlay.hidden {
     display: none;
@@ -341,7 +341,7 @@ body.no-scroll {
     box-shadow: 0px 0px 4px 0px #00000029;
     animation: slideInOverlay 0.5s forwards;
     overflow-y: auto;
-  }
+}
 
   @keyframes slideInOverlay {
     from {
@@ -379,7 +379,7 @@ body.no-scroll {
   }
 
    .task-title-overlay {
-    width: 445px;
+    width: 345px;
     height: 150px;
     font-weight: 700;
     font-size: 61px;
@@ -537,6 +537,59 @@ body.no-scroll {
     font-size: 16px;
     font-weight: 400;
   }
+
+  /* Styles nur für Add-Task-Container */
+  .add-task-overlay {
+    width: 1116px;
+    height: 870px;
+    padding: 62px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+}
+
+.add-task-container-header {
+    display: flex;
+    justify-content: space-between;
+    width: 968px;
+}
+
+.add-task-title {
+    font-size: 40px;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* Add Task Button Container */
+.required-button-expanded-container {
+    display: flex;
+    justify-content: space-between;
+    width: 986px;
+}
+
+.required-expanded-button {
+    width: 334px;
+    height: 56px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-check-edit {
+    width: 89px;
+    height: 57px;
+    border-radius: 10px;
+    padding: 9px;
+    color: #FFFFFF;
+    background-color: #2a3647;
+    font-size: 21px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
 
 /* Grundstil für die versteckte Checkbox */
 .styled-checkbox {

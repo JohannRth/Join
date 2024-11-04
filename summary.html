@@ -571,7 +571,17 @@
 
             // Begrüßung setzen
             document.querySelector('.greet-time').textContent = getGreeting();
+             // Lade die Anzahl der "Urgent"-Aufgaben und das nächste Fälligkeitsdatum
+            const urgentCount = localStorage.getItem("urgentCount") || 0;
+            const nearestDeadline = localStorage.getItem("nearestDeadline") || "No upcoming deadline";
+
+            // Zeige die Anzahl der "Urgent"-Aufgaben an
+            document.querySelector(".urgent-number").innerText = urgentCount;
+
+            // Zeige das nächste Fälligkeitsdatum an
+            document.getElementById("datum").innerText = nearestDeadline ? new Date(nearestDeadline).toLocaleDateString('de-DE') : "Keine Frist";
         });
+        
         /////////////////////////////////////////////////////////////////////////////////////////
         // Datum //
         const heute = new Date();

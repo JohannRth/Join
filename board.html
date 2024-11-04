@@ -12,11 +12,20 @@
     <link rel="stylesheet" href="./styles/side_header_template.css" />
     <link rel="stylesheet" href="./styles/board.css">
     <link rel="stylesheet" href="/styles/addTask.css">
+    <link rel="stylesheet" href="/styles/addTaskButtons.css">
+    <link rel="stylesheet" href="/styles/addTaskSubTask.css">
+    <link rel="stylesheet" href="/styles/addTaskDropDownMenus.css">
+    <link rel="stylesheet" href="./styles/addTaskResponsiveLaptop.css">
+    <link rel="stylesheet" href="./styles/addTaskResponsiveTablet.css">
+    <link rel="stylesheet" href="./styles/addTaskResponsiveMobile.css">
     <script src="./js/firebase.js" defer></script>
     <script src="script.js" defer></script>
     <script src="./js/login.js" defer></script>
     <script src="./assets/templates/load_header_sidebar.js" defer></script>
     <script src="./js/addTask.js" defer></script>
+    <script src="./js/addTaskAsync.js" ></script>
+    <script src="./js/addTaskCategory.js" ></script>
+    <script src="./js/addTaskContacts.js" ></script>
     <script src="./js/addTaskTemplates.js"></script>
     <!-- Link-Fonts -->
     <link rel="stylesheet" href="./assets/fonts/font.css" />
@@ -130,9 +139,9 @@
       </div>
     </div>
     <div class="card-overlay hidden" id="add-task-overlay" onclick="closeAddTaskOverlay(event)">
-        <div class="expanded-card-overlay add-task-expanded-overlay">
-            <div class="board-add-task-h1-conatiner-cross">
-                <div class="board-add-task-h1">
+        <div class="add-task-overlay">
+            <div class="add-task-container-header">
+                <div class="add-task-title">
                     <h1 class="">Add Task</h1>
                 </div>
                 <div>
@@ -156,20 +165,22 @@
                                   <textarea class="textAreaAddTask" id="description" placeholder="Enter a Description"></textarea>
                               </div>
                           </div>
-                          <div class="inputContainer">
-                              <span class="addTaskInputTitle">Assigned To</span>
-                              <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
-                                  <div>
-                                      <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
-                                  </div>
-                                  <div class="dropDownImageAssignedToContainer">
-                                      <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
-                                  </div>
-                              </div>
-                              <div class="contactDropdown" id="contactDropdown">
-                              </div>
-                              <div id="aktivContacts" class="aktivContacts"></div>
-                          </div>
+                          <div class="assignedAddTaskContainer">
+                            <div class="assignedToContainer">
+                                <span class="addTaskInputTitle">Assigned To</span>
+                                <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
+                                    <div>
+                                        <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
+                                    </div>
+                                    <div class="dropDownImageAssignedToContainer">
+                                        <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
+                                    </div>
+                                </div>
+                                <div class="contactDropdown" id="contactDropdown">
+                                </div>
+                                <div id="aktivContacts" class="aktivContacts"></div>
+                            </div>
+                        </div>
                   </div>
                   <div class="addTaskSeparateContainer"></div>
                   <div class="rightAddTaskContainer">
@@ -180,47 +191,61 @@
                                   <div class="errorMessage"></div>
                               </div>
                           </div>
-                          <div class="prioContainer">
-                              <span class="addTaskInputTitle">Prio</span>
-                              <div class="prioButtonContainer">
-                                  <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
-                                  <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
-                                  <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
-                              </div>
-                          </div>
-                          <div class="inputContainer">
-                              <span class="addTaskInputTitle required">Category</span>
-                              <div id="categorySelector" class="customDropdown" onclick="initializeCategoryDropdown()">
-                                  <div class="selectedOption">
-                                      <div>
-                                          <span class="selectedCategoryHeadline" id="selectedCategory">Select task category</span>
-                                      </div>
-                                      <div class="dropDownImageCategoryContainer">
-                                          <img class="dropDownImageCategory" id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
-                                      </div>
-                                  </div>
-                                  <div id="categoryDropdown" class="dropDownContent"></div>
-                                  <div class="errorMessage"></div>
-                              </div>
-                          </div>
+                          <div class="prioButtonContainer">
+                            <div class="prioContainer">
+                                <span class="addTaskInputTitle">Prio</span>
+                                <div class="prioButtonContainer">
+                                    <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
+                                    <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
+                                    <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
+                                </div>
+                            </div>
+                        </div>
+                          <div class="categoryContainer">
+                            <div class="inputContainer">
+                                <span class="addTaskInputTitle required">Category</span>
+                                <div id="categorySelector" class="customDropdown" onclick="initializeCategoryDropdown()">
+                                    <div class="selectedOption">
+                                        <div>
+                                            <span class="selectedCategoryHeadline" id="selectedCategory">Select task category</span>
+                                        </div>
+                                        <div class="dropDownImageCategoryContainer">
+                                            <img class="dropDownImageCategory" id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
+                                        </div>
+                                    </div>
+                                    <div id="categoryDropdown" class="dropDownContent"></div>
+                                    <div class="errorMessage"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="subTaskContainer">
                           <div class="inputContainer">
                               <span class="addTaskInputTitle">Subtasks</span>
                               <div class="subTaskInputContainer">
                                   <div>
-                                      <input onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
+                                      <input onclick="showinputSubTaksClickContainer()" onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddSubTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
                                   </div>
-                                  <div class="addSubTaskButtonContainer">
-                                      <img onclick="addNewSubtask()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
+                                  <div class="addSubTaskButtonContainer" id="addSubTaskButtonContainer">
+                                      <img onclick="showinputSubTaksClickContainer()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
+                                      <div class="inputSubTaksClickContainer" id="inputSubTaksClickContainer">
+                                          <div class="deleteCurrentTextButtonContainer">
+                                              <img onclick="deleteCurrentText()" class="deleteCurrentTextButton" src="./assets/img/clear-x-image.svg">
+                                          </div>
+                                          <div class="partingLine"></div>
+                                          <div class="addNewTextButtonContainer">
+                                              <img onclick="addNewSubtask(event)" class="addNewTextButton" id="addNewTextButton" src="./assets/img/check-dark.svg">
+                                          </div>
+                                      </div>
                                   </div>
                               </div>
-                              <div class="subTaskErrorMessage" id="subTaskErrorMessage"></div>
                               <div class="subTaskList" id="subTaskList"></div>
                           </div>
+                      </div>
                       </form>
                   </div>
               </div>
-          </div> 
-            <div class="required-button-expanded-conatiner">
+              </div> 
+              <div class="required-button-expanded-conatiner">
                 <div>
                     <span class="requiredBefore requiredTextAddTask">This field is required</span>
                 </div>
@@ -253,42 +278,52 @@
 
       async function loadTodosFromFirebase() {
     try {
-        // Daten von Firebase laden
         const tasksData = await loadData("tasks");
-        console.log("Geladene Daten aus Firebase:", tasksData); // Debugging: Überprüfen der geladenen Daten
+        const subtaskStatusData = await loadData("subtaskStatus"); // Lade Subtask-Status
 
-        // Transformiere die Daten und lade sie ins `todos`-Array
-        todos = Object.keys(tasksData).map((key, index) => {
+        todos = Object.keys(tasksData).map((key) => {
             const task = tasksData[key];
-            
-            // Überprüfen, ob die Task-Daten vollständig sind, und Standardwerte setzen
             const subtasks = task.subtasks
-                ? Object.values(task.subtasks).map(subtask => ({
-                      ...subtask,
-                      completed: subtask.completed || false  // Setze `completed` auf `false`, wenn es nicht existiert
+                ? Object.entries(task.subtasks).map(([index, title]) => ({
+                      title: title || "Untitled Subtask",
+                      completed: subtaskStatusData[key] && subtaskStatusData[key][index]
+                          ? subtaskStatusData[key][index].completed
+                          : false
                   }))
                 : [];
 
             return {
-                id: index, // oder `key`, wenn du den Firebase-Key als ID verwenden möchtest
-                titel: task.title || "Untitled", // Standardwert "Untitled", wenn kein Titel vorhanden
+                id: key,
+                titel: task.title || "Untitled",
                 type: task.category || "General",
-                category: task.type || "todo", // Fallback auf "todo"
+                category: task.type || "todo",
                 description: task.description || "No description",
-                priority: task.prio || "low", // Standardwert "low"
-                dueDate: task.dueDate || null,
-                subtasks: subtasks, 
+                priority: task.prio || "low",
+                dueDate: task.dueDate ? new Date(task.dueDate) : null,
+                subtasks: subtasks,
                 completedSubtasks: subtasks.filter(st => st.completed).length,
                 contacts: task.assignedTo ? task.assignedTo.map(name => name.trim()) : []
             };
         });
 
-        // Aktualisiere das HTML, um die geladenen Tasks anzuzeigen
+        // Berechne die Anzahl und das nächste Fälligkeitsdatum der "Urgent"-Aufgaben
+        const urgentTasks = todos.filter(task => task.priority === "urgent");
+        const urgentCount = urgentTasks.length;
+        const nearestDeadline = urgentTasks
+            .filter(task => task.dueDate) // nur Aufgaben mit Datum
+            .sort((a, b) => a.dueDate - b.dueDate) // Sortiere nach Datum
+            .map(task => task.dueDate)[0]; // Nimm das früheste Datum
+
+        // Speichere die Werte in localStorage
+        localStorage.setItem("urgentCount", urgentCount);
+        localStorage.setItem("nearestDeadline", nearestDeadline ? nearestDeadline.toISOString().split("T")[0] : "");
+
         updateHTML();
     } catch (error) {
         console.error("Fehler beim Laden der Daten aus Firebase:", error);
     }
 }
+
 
       document.addEventListener("DOMContentLoaded", (event) => {
         updateHTML();
@@ -372,7 +407,7 @@ function generateTodoHTML(element) {
     }
 
     return `
-        <div id="${element["id"]}" class="titel-card" draggable="true" ondragstart="dragTask(event)" onclick="openCardOverlay(${element["id"]})">
+        <div id="${element["id"]}" class="titel-card" draggable="true" ondragstart="dragTask(event)" onclick="openCardOverlay('${element["id"]}')">
             <div class="user-story" style="${taskTypeStyle}">${element["type"]}</div>
             <div class="task-details">
                 <h3 class="task-title">${element["titel"]}</h3>
@@ -503,14 +538,15 @@ function dropTask(ev) {
     const dueDate = element.dueDate ? new Date(element.dueDate).toLocaleDateString("de-DE") : "Kein Datum";
 
     const subtasksHTML = element.subtasks.map((subtask, index) => `
-    <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
-        <input type="checkbox" 
-               id="subtask-checkbox-${element.id}-${index}" 
-               onclick="toggleSubtask(${element.id}, ${index})" 
-               class="styled-checkbox">
-        <label for="subtask-checkbox-${element.id}-${index}">${subtask}</label>
-    </div>
-`).join('');
+        <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
+            <input type="checkbox" 
+                   id="subtask-checkbox-${element.id}-${index}" 
+                   onclick="toggleSubtask('${element.id}', ${index})" 
+                   class="styled-checkbox"
+                   ${subtask.completed ? "checked" : ""}>
+            <label for="subtask-checkbox-${element.id}-${index}">${subtask.title}</label>
+        </div>
+    `).join('');
 
     return `
     <div class="expanded-card-overlay">
@@ -547,19 +583,20 @@ function dropTask(ev) {
             </div>
         </div>
          <div class="actions-overlay">
-            <p class="action-btn-overlay" onclick="deleteTask(${element.id})">
+            <p class="action-btn-overlay" onclick="deleteTask('${element.id}')">
                 <img src="./assets/img/delete.svg" alt="delete">Delete
             </p>
             <img src="./assets/img/sep-delet-edit.svg" alt="delete">
-            <p class="action-btn-overlay" onclick="enableEditMode(${element.id})">
+            <p class="action-btn-overlay" onclick="enableEditMode('${element.id}')">
                 <img src="./assets/img/edit.svg" alt="edit">Edit
             </p>
         </div>
     </div>`;
 }
 
+// Subtasks //
 async function toggleSubtask(taskId, subtaskIndex) {
-    const task = todos.find(t => t.id == taskId);
+    const task = todos.find(t => t.id === taskId);
     if (!task || !task.subtasks || !task.subtasks[subtaskIndex]) {
         console.error("Subtask nicht gefunden oder ungültiger Index:", taskId, subtaskIndex);
         return;
@@ -569,7 +606,7 @@ async function toggleSubtask(taskId, subtaskIndex) {
     const subtask = task.subtasks[subtaskIndex];
     subtask.completed = !subtask.completed;
 
-    // Speichere den neuen Status
+    // Speichere den neuen Status in `subtaskStatus` in Firebase
     await saveSubtaskStatus(taskId, subtaskIndex, subtask.completed);
 
     // Aktualisiere die Anzahl abgeschlossener Subtasks
@@ -582,6 +619,30 @@ async function toggleSubtask(taskId, subtaskIndex) {
     updateProgressBar(taskId, percentage, task.completedSubtasks, totalSubtasks);
 }
 
+async function saveSubtaskStatus(taskId, subtaskIndex, isChecked) {
+    const path = `subtaskStatus/${taskId}/${subtaskIndex}`;
+    console.log(`Speichere Subtask-Status an Pfad ${path}:`, isChecked);
+    await updateData(path, { completed: isChecked });
+}
+
+async function loadSubtaskStatusesFromFirebase() {
+    const subtaskStatuses = await loadData("subtaskStatus");
+
+    // Zuweisung des Subtask-Status in `todos`
+    todos.forEach(task => {
+        if (subtaskStatuses[task.id]) {
+            task.subtasks.forEach((subtask, index) => {
+                if (subtaskStatuses[task.id][index] !== undefined) {
+                    subtask.completed = subtaskStatuses[task.id][index].completed || false;
+                }
+            });
+        }
+    });
+}
+
+// Subtasks //
+
+//Progress Bar //
 function updateProgressBar(taskId, percentage, completed, total) {
     const taskElement = document.getElementById(taskId);
     if (!taskElement) return;
@@ -594,160 +655,171 @@ function updateProgressBar(taskId, percentage, completed, total) {
         progressText.textContent = `${completed}/${total} Subtasks`;
     }
 }
+//Progress Bar //
+//card-overlay
+function openCardOverlay(taskId) {
+    const overlay = document.getElementById("card-overlay");
+    const task = todos.find((t) => t.id === taskId); // Hier wird die id als String verglichen
+    overlay.innerHTML = generateExpandedCardHTML(task); 
+    overlay.classList.remove("hidden");
 
-      //card-overlay
-      function openCardOverlay(taskId) {
-        const overlay = document.getElementById("card-overlay");
-        const task = todos.find((t) => t.id === taskId); 
-        overlay.innerHTML = generateExpandedCardHTML(task); 
-        overlay.classList.remove("hidden");
+    document.body.classList.add("no-scroll");
 
-        document.body.classList.add("no-scroll");
+    // Hinzufügen des taskId als Attribut für Delete-Button
+    const deleteButton = overlay.querySelector(".action-btn-overlay");
+    deleteButton.setAttribute("onclick", `deleteTask('${taskId}')`);
 
-        overlay.addEventListener('click', function(event) {
-        
+    overlay.addEventListener('click', function(event) {
         if (event.target === overlay) {
             closeCardOverlay();
         }
+    });
+}
 
-        });
-      }
+  function closeCardOverlay() {
+    const overlay = document.getElementById("card-overlay");
+    overlay.classList.add("hidden");
 
-      function closeCardOverlay() {
-        const overlay = document.getElementById("card-overlay");
-        overlay.classList.add("hidden");
+    document.body.classList.remove("no-scroll");
+  }
 
-        document.body.classList.remove("no-scroll");
-      }
-
-      function handleInputClick() {
-        const inputWrapper = document.querySelector('.input-field-complett');
+  function handleInputClick() {
+    const inputWrapper = document.querySelector('.input-field-complett');
 
  
-        inputWrapper.classList.add('focused');
+    inputWrapper.classList.add('focused');
 
   
-        const inputField = document.querySelector('.input-find-task');
-        inputField.setAttribute('placeholder', '');
-      }
+    const inputField = document.querySelector('.input-find-task');
+    inputField.setAttribute('placeholder', '');
+  }
 
 
-        document.addEventListener('click', function(event) {
-        const inputWrapper = document.querySelector('.input-field-complett');
-        const inputField = document.querySelector('.input-find-task');
+    document.addEventListener('click', function(event) {
+    const inputWrapper = document.querySelector('.input-field-complett');
+    const inputField = document.querySelector('.input-find-task');
 
   
-        if (!inputWrapper.contains(event.target)) {
-            inputWrapper.classList.remove('focused');
+      if (!inputWrapper.contains(event.target)) {
+          inputWrapper.classList.remove('focused');
 
     
-        if (!inputField.value) {
-            inputField.setAttribute('placeholder', 'Find Task');
-            }
-        }
-      });
-
-      // Drag-Area zähler //
-
-      function getTodoCount() { // ToDo
-        const todoContainer = document.getElementById("todo");
-        const tasks = todoContainer.querySelectorAll(".titel-card");
-        return tasks.length;
+      if (!inputField.value) {
+          inputField.setAttribute('placeholder', 'Find Task');
+          }
       }
+    });
 
-      function updateTodoCount() {
-        const todoCount = getTodoCount();
-        localStorage.setItem('todoCount', todoCount);
-      }
+// Drag-Area zähler //
 
-      function getDoneCount() { // Done
-        const doneContainer = document.getElementById("done");
-        const tasks = doneContainer.querySelectorAll(".titel-card");
-        return tasks.length;
-      }
+  function getTodoCount() { // ToDo
+      const todoContainer = document.getElementById("todo");
+      const tasks = todoContainer.querySelectorAll(".titel-card");
+      return tasks.length;
+  }
 
-      function updateDoneCount() {
-        const doneCount = getDoneCount();
-        localStorage.setItem('doneCount', doneCount);
-      }
+  function updateTodoCount() {
+      const todoCount = getTodoCount();
+      localStorage.setItem('todoCount', todoCount);
+  }
 
-      function getBoardTaskCount() { // Alle
-        const todoTasks = document.getElementById("todo").querySelectorAll(".titel-card");
-        const inProgressTasks = document.getElementById("inProgress").querySelectorAll(".titel-card");
-        const feedbackTasks = document.getElementById("awaitFeedback").querySelectorAll(".titel-card");
-        const doneTasks = document.getElementById("done").querySelectorAll(".titel-card");
+  function getDoneCount() { // Done
+      const doneContainer = document.getElementById("done");
+      const tasks = doneContainer.querySelectorAll(".titel-card");
+      return tasks.length;
+  }
 
-        const totalTasks = todoTasks.length + inProgressTasks.length + feedbackTasks.length + doneTasks.length;
-        return totalTasks;
-      }
+  function updateDoneCount() {
+      const doneCount = getDoneCount();
+      localStorage.setItem('doneCount', doneCount);
+  }
 
-      function updateBoardTaskCount() {
-        const boardTaskCount = getBoardTaskCount();
-        localStorage.setItem('boardTaskCount', boardTaskCount);
-      }
+  function getBoardTaskCount() { // Alle
+      const todoTasks = document.getElementById("todo").querySelectorAll(".titel-card");
+      const inProgressTasks = document.getElementById("inProgress").querySelectorAll(".titel-card");
+      const feedbackTasks = document.getElementById("awaitFeedback").querySelectorAll(".titel-card");
+      const doneTasks = document.getElementById("done").querySelectorAll(".titel-card");
 
-      function getInProgressCount() { // In Progress
-        const inProgressTasks = document.getElementById("inProgress").querySelectorAll(".titel-card");
-        return inProgressTasks.length;
-      }
+      const totalTasks = todoTasks.length + inProgressTasks.length + feedbackTasks.length + doneTasks.length;
+      return totalTasks;
+  }
+
+  function updateBoardTaskCount() {
+      const boardTaskCount = getBoardTaskCount();
+      localStorage.setItem('boardTaskCount', boardTaskCount);
+  }
+
+  function getInProgressCount() { // In Progress
+      const inProgressTasks = document.getElementById("inProgress").querySelectorAll(".titel-card");
+      return inProgressTasks.length;
+  }
       
-      function updateInProgressCount() {
-        const inProgressCount = getInProgressCount();
-        localStorage.setItem('inProgressCount', inProgressCount);
-      }
+  function updateInProgressCount() {
+      const inProgressCount = getInProgressCount();
+      localStorage.setItem('inProgressCount', inProgressCount);
+  }
 
-      function getAwaitFeedbackCount() { // Await Feedback
-        const feedbackTasks = document.getElementById("awaitFeedback").querySelectorAll(".titel-card");
-        return feedbackTasks.length;
-      }
+  function getAwaitFeedbackCount() { // Await Feedback
+      const feedbackTasks = document.getElementById("awaitFeedback").querySelectorAll(".titel-card");
+      return feedbackTasks.length;
+  }
 
-      function updateAwaitFeedbackCount() {
-        const feedbackCount = getAwaitFeedbackCount();
-        localStorage.setItem('feedbackCount', feedbackCount);
-      }
+  function updateAwaitFeedbackCount() {
+      const feedbackCount = getAwaitFeedbackCount();
+      localStorage.setItem('feedbackCount', feedbackCount);
+  }
 
-      // Add Task Overlay Card //
+// Add Task Overlay Card //
       
-      function addTaskExpanded() {
-        const overlay = document.getElementById('add-task-overlay');
-        overlay.classList.remove('hidden'); 
-        document.body.classList.add('no-scroll'); 
-      }
+  function addTaskExpanded() {
+      const overlay = document.getElementById('add-task-overlay');
+      overlay.classList.remove('hidden'); 
+      document.body.classList.add('no-scroll'); 
+  }
 
-      function closeAddTaskOverlay(event) {
-        const overlay = document.getElementById('add-task-overlay');
-        if (event.target === overlay || event.target.classList.contains('close-btn-overlay')) {
-            overlay.classList.add('hidden'); 
-            document.body.classList.remove('no-scroll');
-        }
+  function closeAddTaskOverlay(event) {
+      const overlay = document.getElementById('add-task-overlay');
+      if (event.target === overlay || event.target.classList.contains('close-btn-overlay')) {
+          overlay.classList.add('hidden'); 
+          document.body.classList.remove('no-scroll');
       }
+  }
     
-      document.addEventListener("DOMContentLoaded", async () => {
+    document.addEventListener("DOMContentLoaded", async () => {
     await loadTodosFromFirebase();
     updateHTML();
 });
 
-
 // Funktion zum Abrufen einer Farbe basierend auf dem ersten Buchstaben des Namens
-function getColor(name) {
-    if (!name || typeof name !== 'string') return '#000000'; // Standardfarbe
-    const firstLetter = name.charAt(0).toUpperCase();
-    const index = firstLetter.charCodeAt(0) - 65; // 'A' hat den charCode 65
-    return colors[index % colors.length];
-}
+  function getColor(name) {
+      if (!name || typeof name !== 'string') return '#000000'; // Standardfarbe
+      const firstLetter = name.charAt(0).toUpperCase();
+      const index = firstLetter.charCodeAt(0) - 65; // 'A' hat den charCode 65
+      return colors[index % colors.length];
+  }
 
-async function deleteTask(taskId) {
-    // Task im `todos` Array finden und entfernen
+  async function deleteTask(taskId) {
+    // Finde die Aufgabe in `todos` und entferne sie
     todos = todos.filter(task => task.id !== taskId);
 
-    // Task auf Firebase löschen
+    // Lösche die Aufgabe in Firebase unter dem Pfad `tasks/taskId`
     const path = `tasks/${taskId}`;
-    await deleteData(path); // Hier stell sicher, dass du eine Funktion `deleteData` hast, die das Firebase-Dokument löscht
+    await deleteData(path);
 
-    // HTML aktualisieren
+    // Aktualisiere das HTML, um die gelöschte Aufgabe zu entfernen
     updateHTML();
     closeCardOverlay(); // Schließe das Overlay nach dem Löschen
-}
+  }
+
+  async function deleteData(path) {
+    try {
+        const taskRef = firebase.database().ref(path);
+        await taskRef.remove();
+        console.log(`Task bei Pfad ${path} wurde erfolgreich gelöscht.`);
+    } catch (error) {
+        console.error("Fehler beim Löschen der Daten aus Firebase:", error);
+    }
+  }
 
 function enableEditMode(taskId) {
     const overlay = document.getElementById("card-overlay");
@@ -803,68 +875,34 @@ function enableEditMode(taskId) {
         </div>`;
 }
 
-async function saveSubtaskStatus(taskId, subtaskId, isChecked) {
-    if (isChecked === undefined) {
-        console.error("Subtask-Status ist undefined, wird nicht gespeichert.");
-        return;
-    }
+  document.addEventListener("DOMContentLoaded", async () => {
+      await loadTodosFromFirebase();         // Lade die `todos` Daten
+      await loadPositionsFromFirebase();     // Lade und setze die Positionen
+      await loadSubtaskStatusesFromFirebase(); // Lade und setze die Subtask-Checkbox-Status
+      updateHTML();                          // Aktualisiere das HTML mit allen geladenen Daten
+  });
 
-    // Speichere nur im `subtaskStatus`-Pfad und nicht in `tasks`
-    const path = `subtaskStatus/${taskId}/${subtaskId}`;
-    console.log(`Speichere Subtask-Status an Pfad ${path}:`, isChecked); // Debugging
-    await updateData(path, isChecked);
-}
+// Todo's position //
+  async function savePosition(taskId, position) {
+      const path = `positionDropArea/${taskId}`;
+      await updateData(path, position);
+  }
 
-async function loadSubtaskStatuses() {
-    const statusData = await loadData("subtaskStatus");
-
-    for (const taskId in statusData) {
-        const task = todos.find(t => t.id == taskId || t.id === parseInt(taskId));
-        if (task) {
-            for (const subtaskId in statusData[taskId]) {
-                const isChecked = statusData[taskId][subtaskId];
-                if (task.subtasks[subtaskId]) {
-                    task.subtasks[subtaskId].completed = isChecked;
-                }
-            }
-            // Anzahl der abgeschlossenen Subtasks berechnen
-            task.completedSubtasks = task.subtasks.filter(st => st.completed).length;
-        }
-    }
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadTodosFromFirebase();         // Lade die `todos` Daten
-    await loadPositionsFromFirebase();     // Lade und setze die Positionen
-    await loadSubtaskStatuses();           // Lade und setze die Subtask-Checkbox-Status
-    updateHTML();                          // Aktualisiere das HTML mit allen geladenen Daten
-});
-
-async function savePosition(taskId, position) {
-    const path = `positionDropArea/${taskId}`;
-    await updateData(path, position);
-}
-
-async function loadPositionsFromFirebase() {
-    const positionsData = await loadData("positionDropArea");
-    console.log("Geladene Positionen:", positionsData); // Debugging: Überprüfen der geladenen Positionen
+  async function loadPositionsFromFirebase() {
+      const positionsData = await loadData("positionDropArea");
+      console.log("Geladene Positionen:", positionsData); // Debugging: Überprüfen der geladenen Positionen
     
-    for (const taskId in positionsData) {
-        const position = positionsData[taskId];
-        const task = todos.find((t) => t.id === taskId || t.id === parseInt(taskId));
+      for (const taskId in positionsData) {
+          const position = positionsData[taskId];
+          const task = todos.find((t) => t.id === taskId || t.id === parseInt(taskId));
         
-        if (task) {
+          if (task) {
             task.category = position; // Setze die Position basierend auf den Daten in `positionDropArea`
             console.log(`Task ${taskId} auf Position ${position} gesetzt`); // Debugging: Überprüfen der aktualisierten Positionen
-        }
-    }
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadTodosFromFirebase();      // Lade die `todos` Daten
-    await loadPositionsFromFirebase();  // Lade und setze die Positionen
-    updateHTML();                       // Aktualisiere das HTML mit den geladenen Positionen
-});
+          }
+      }
+  }
+// Todo's position //
 
     </script>
   </body>
