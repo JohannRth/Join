@@ -209,24 +209,79 @@ function displayContactDetails(contact) {
 function openContactInfoModal(contact) {
     const modal = document.getElementById('contactInfoModal');
     if (modal) {
-        modal.innerHTML = getContactInfoModalHTML(contact);
-        modal.style.display = 'flex';
-
-        // Schließen-Button Event Listener hinzufügen
-        const closeBtn = modal.querySelector('.close');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', closeContactInfoModal);
-        }
-
-        // Event Listener für Klick außerhalb des Modals zum Schließen
-        modal.addEventListener('click', function (event) {
-            if (event.target === modal) {
-                closeContactInfoModal();
-            }
-        });
+        setModalContent(modal, contact);
+        addModalCloseListeners(modal);
+        setupMenuOptions(modal, contact);
     }
 }
 
+function setModalContent(modal, contact) {
+    modal.innerHTML = getContactInfoModalHTML(contact);
+    modal.style.display = 'flex';
+}
+
+function addModalCloseListeners(modal) {
+    const closeBtn = modal.querySelector('.close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeContactInfoModal);
+    }
+
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeContactInfoModal();
+        }
+    });
+}
+
+function setupMenuOptions(modal, contact) {
+    const menuOptionsBtn = modal.querySelector('.menu-contact-options');
+    const dropdownOptions = modal.querySelector('.dropdown-contact-options');
+
+    if (menuOptionsBtn && dropdownOptions) {
+        addMenuButtonListener(menuOptionsBtn, dropdownOptions);
+        addOutsideClickListener(dropdownOptions);
+        addDropdownButtonListeners(dropdownOptions, contact);
+    }
+}
+
+function addMenuButtonListener(menuOptionsBtn, dropdownOptions) {
+    menuOptionsBtn.addEventListener('click', function(event) {
+        event.stopPropagation();
+        dropdownOptions.classList.toggle('show');
+    });
+}
+
+function addOutsideClickListener(dropdownOptions) {
+    function outsideClickListener(event) {
+        if (!event.target.closest('.dropdown-contact-options') && !event.target.closest('.menu-contact-options')) {
+            dropdownOptions.classList.remove('show');
+            document.removeEventListener('click', outsideClickListener);
+        }
+    }
+
+    document.addEventListener('click', outsideClickListener);
+}
+
+function addDropdownButtonListeners(dropdownOptions, contact) {
+    const editBtn = dropdownOptions.querySelector('.edit-button');
+    const deleteBtn = dropdownOptions.querySelector('.delete-button');
+
+    if (editBtn) {
+        editBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            openAddContactModal(contact);
+            closeContactInfoModal();
+        });
+    }
+
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            deleteContact(contact.key);
+            closeContactInfoModal();
+        });
+    }
+}
 
 function closeContactInfoModal() {
     const modal = document.getElementById('contactInfoModal');

@@ -109,7 +109,7 @@
     transition: all 0.3s ease;
 }
 
-.menue-contact-options {
+.menu-contact-options {
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -125,7 +125,7 @@
     padding: 8px;
 }
 
-.menue-contact-options:hover {
+.menu-contact-options:hover {
     background-color: #29ABE2;
     font-weight: bolder;
     cursor: pointer;
@@ -135,12 +135,14 @@
 }
 
 .dropdown-contact-options {
-    display: none !important;
+    display: flex;
     justify-content: center;
     width: 102px;
     height: 90px;
     position: fixed;
-    right: 0%;
+    right: 0;
+    transform: translateX(100%); /* Start außerhalb des Bildschirms */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     flex-direction: column;
     box-shadow: -3px 2px 4px 0px #00000040;
     border-top-left-radius: 20px;
@@ -170,6 +172,13 @@
     color: #007CEE;
     transition: all 0.3s ease;
     filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg) brightness(100%) contrast(100%);
+}
+
+/* Dropdown-Menü sichtbar */
+.dropdown-contact-options.show {
+    transform: translateX(0); /* Hereinsliden */
+    opacity: 1;
+    pointer-events: auto;
 }
 
 /* Für kleinere Bildschirmgrößen */

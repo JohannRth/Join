@@ -107,7 +107,7 @@ function getContactInfoModalHTML(contact) {
                     <p class="contact-details-phone">${contact.phone}</p>
                 </div>
             </div>
-            <img src="./assets/img/menue-contact-options.svg" class="menue-contact-options"></img>
+            <img src="./assets/img/menu-contact-options.svg" class="menu-contact-options"></img>
             <div class="dropdown-contact-options">
                 <button class="edit-button"><img src="./assets/img/edit.svg" alt="Edit"> Edit</button>
                 <button class="delete-button"><img src="./assets/img/delete.svg" alt="Delete"> Delete</button>
