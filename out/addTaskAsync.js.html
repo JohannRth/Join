@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: addTaskAsync.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: addTaskAsync.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This function collects and validates task data from the form
+ * 
+ * @returns {Object|null} The collected task data if valid, null otherwise
+ * 
+ */
+function collectAndValidateTaskData() {
+    let title = document.getElementById('title').value.trim();
+    let description = document.getElementById('description').value.trim();
+    let dueDate = document.getElementById('date').value;
+    let category = document.getElementById('selectedCategory').textContent.trim();
+    let prio = getSelectedPriority(); 
+    let assignedTo = getAssignedContacts(); 
+    let subtasks = [...subTasks]; 
+    let isValid = validateTaskForm(title, dueDate, category);
+    if (!isValid) {
+        console.log('Form validation failed.');
+        return null;
+    } return {
+        title, description, assignedTo, dueDate, prio, category, subtasks, createdAt: new Date().toISOString()
+    };
+}
+
+
+/**
+ * This function saves a task to the database
+ * 
+ * @param {Object} task - The task object to be saved
+ * @returns {Object|null} The saved task with its key if successful, null otherwise
+ */
+async function saveTaskToDatabase(task) {
+    try {
+        let result = await saveData('tasks', task);
+        console.log('Task successfully created with key:', result.name);
+        task.key = result.name;
+        return task;
+    } catch (error) {
+        console.error('Error creating task:', error);
+        showErrorNotification('Fehler beim Erstellen der Aufgabe. Bitte versuchen Sie es erneut.');
+        return null;
+    }
+}
+
+
+/**
+ * This function coordinates the entire process of creating a new task
+ *  
+ */
+async function createNewTask() {
+    let taskData = collectAndValidateTaskData();
+    if (!taskData) return;
+    let savedTask = await saveTaskToDatabase(taskData);
+    if (savedTask) {
+        newTasks.push(savedTask);
+        resetNewTask();
+        showTaskAddedNotification();
+    }
+}
+
+
+/**
+ * This function determines the selected priority for a task
+ * 
+ * @returns {string} The selected priority ('urgent', 'medium', or 'low')
+ */
+function getSelectedPriority() {
+    let prio = '';
+    if (document.querySelector('.prioButtonUrgent.active')) {
+        prio = 'urgent';
+    } else if (document.querySelector('.prioButtonMedium.active')) {
+        prio = 'medium';
+    } else if (document.querySelector('.prioButtonLow.active')) {
+        prio = 'low';
+    }
+    return prio;
+}
+
+
+/**
+ * This function collects the assigned contacts for a task
+ * 
+ * @returns {Array} An array of assigned contact names
+ */
+function getAssignedContacts() {
+    let aktivContactsDiv = document.getElementById('aktivContacts');
+    let contacts = [];
+    aktivContactsDiv.querySelectorAll('span.contactIcon').forEach(contactSpan => {
+        contacts.push(contactSpan.dataset.contact); 
+    });
+    return contacts;
+}
+
+
+/**
+ * This function validates the task form inputs
+ * 
+ * @param {string} title - The task title
+ * @param {string} dueDate - The task due date 
+ * @param {string} category - The task category
+ * @returns {boolean} True if the form is valid, false otherwise
+ */
+function validateTaskForm(title, dueDate, category) {
+    let isValid = true;
+    if (!title) {
+        fieldRequiredTitle();
+        isValid = false;
+    }
+    if (!dueDate) {
+        fieldRequiredDate();
+        isValid = false;
+    }
+    if (category === 'Select task category') {
+        fieldRequiredCategory();
+        isValid = false;
+    }
+    return isValid;
+}
+
+
+/**
+ * This function displays an error notification
+ * 
+ * @param {string} message - The error message to display
+ */
+function showErrorNotification(message) {
+    let errorPopup = document.getElementById('popupError'); 
+    if (errorPopup) {
+        errorPopup.querySelector('p').textContent = message;
+        errorPopup.classList.add('show');
+        setTimeout(() => {
+            errorPopup.classList.remove('show');
+        }, 3000);
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addCategoryOptions">addCategoryOptions</a></li><li><a href="global.html#addContactTemplate">addContactTemplate</a></li><li><a href="global.html#addNewSubtask">addNewSubtask</a></li><li><a href="global.html#closeCategoryDropdown">closeCategoryDropdown</a></li><li><a href="global.html#collectAndValidateTaskData">collectAndValidateTaskData</a></li><li><a href="global.html#createNewTask">createNewTask</a></li><li><a href="global.html#deleteCurrentText">deleteCurrentText</a></li><li><a href="global.html#deleteSubTask">deleteSubTask</a></li><li><a href="global.html#editSubTask">editSubTask</a></li><li><a href="global.html#fieldRequiredCategory">fieldRequiredCategory</a></li><li><a href="global.html#fieldRequiredDate">fieldRequiredDate</a></li><li><a href="global.html#fieldRequiredTitle">fieldRequiredTitle</a></li><li><a href="global.html#getAssignedContacts">getAssignedContacts</a></li><li><a href="global.html#getCategoryElements">getCategoryElements</a></li><li><a href="global.html#getDateToday">getDateToday</a></li><li><a href="global.html#getSelectedPriority">getSelectedPriority</a></li><li><a href="global.html#hideInputSubTaksClickContainerOnOutsideClick">hideInputSubTaksClickContainerOnOutsideClick</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initializeCategoryDropdown">initializeCategoryDropdown</a></li><li><a href="global.html#initializeCategorySelector">initializeCategorySelector</a></li><li><a href="global.html#initializeDatePicker">initializeDatePicker</a></li><li><a href="global.html#renderSubtasks">renderSubtasks</a></li><li><a href="global.html#resetCategorySelector">resetCategorySelector</a></li><li><a href="global.html#resetFormFields">resetFormFields</a></li><li><a href="global.html#resetNewTask">resetNewTask</a></li><li><a href="global.html#saveSubTask">saveSubTask</a></li><li><a href="global.html#saveTaskToDatabase">saveTaskToDatabase</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#setPriority">setPriority</a></li><li><a href="global.html#setupCategoryEventListeners">setupCategoryEventListeners</a></li><li><a href="global.html#showErrorNotification">showErrorNotification</a></li><li><a href="global.html#showTaskAddedNotification">showTaskAddedNotification</a></li><li><a href="global.html#showinputSubTaksClickContainer">showinputSubTaksClickContainer</a></li><li><a href="global.html#subTaskCreatedTemplate">subTaskCreatedTemplate</a></li><li><a href="global.html#subtaskInProgressTemplate">subtaskInProgressTemplate</a></li><li><a href="global.html#toggleCategoryDropdown">toggleCategoryDropdown</a></li><li><a href="global.html#toggleRotationDownImage">toggleRotationDownImage</a></li><li><a href="global.html#updateDateColor">updateDateColor</a></li><li><a href="global.html#validateCategoryField">validateCategoryField</a></li><li><a href="global.html#validateDate">validateDate</a></li><li><a href="global.html#validateDateField">validateDateField</a></li><li><a href="global.html#validateTaskForm">validateTaskForm</a></li><li><a href="global.html#validateTitleField">validateTitleField</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Nov 04 2024 21:59:29 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

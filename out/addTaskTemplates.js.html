@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: addTaskTemplates.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,92 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: addTaskTemplates.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This function generates a contact template for display
+ * 
+ * @param {string} contact - The name of the contact
+ * @returns {string} HTML template for the contact
+ */
+function addContactTemplate(contact) {
+    return `
+        &lt;div class="contactIconAndName">
+            &lt;div class="contactIcon" style="background-color: ${getColor(contact)};">
+                ${getInitials(contact)}
+            &lt;/div>
+            &lt;div>
+                &lt;span class="contactName">${contact}&lt;/span>
+            &lt;/div>
+        &lt;/div>
+        &lt;div>
+            &lt;input type="checkbox" class="contactCheckbox">
+        &lt;/div>
+    `;
+}
 
 
-    <h3> </h3>
+/**
+ * This function creates a template for a subtask in progress (editing mode)
+ * 
+ * @param {number} index - The index of the subtask
+ * @param {string} subTask - The content of the subtask
+ * @returns {string} HTML template for the subtask in editing mode
+ */
+function subtaskInProgressTemplate(index, subTask) {
+    return `
+                &lt;div class="subTaskEdit">
+                    &lt;div class="leftContainerSubTask">
+                        &lt;input type="text" id="editInput${index}" value="${subTask}" class="subTaskEditInput">
+                    &lt;/div>
+                    &lt;div class="rightContainerSubTask">
+                        &lt;div>
+                            &lt;img class="subTaskDeleteButton" onclick="deleteSubTask(${index})" src="./assets/img/delete.svg" alt="Delete">
+                        &lt;/div>
+                        &lt;div class="partingLine">&lt;/div>
+                        &lt;div>
+                            &lt;img class="subTaskSaveButton" onclick="saveSubTask(${index})" src="./assets/img/check-dark.svg" alt="Save">
+                        &lt;/div>
+                    &lt;/div>
+                &lt;/div>
+            `;
+}
 
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * This function generates a template for a created subtask
+ * 
+ * @param {number} index - The index of the subtask
+ * @param {string} subTask - The content of the subtask
+ * @returns {string} HTML template for the created subtas
+ */
+function subTaskCreatedTemplate(index, subTask) {
+    return `
+        &lt;div class="subTask" ondblclick="editSubTask(${index})">
+            &lt;div class="leftContainerSubTask">
+                &lt;ul class="subTaskListContainer">
+                    &lt;li class="listSubTask">&lt;span>${subTask}&lt;/span>&lt;/li>
+                &lt;/ul>
+            &lt;/div>
+            &lt;div class="rightContainerSubTask">
+                &lt;div class="subTaskButtons">
+                    &lt;img class="subTaskEditButton" onclick="editSubTask(${index})" src="./assets/img/edit.svg" alt="Edit">
+                    &lt;div class="partingLine">&lt;/div>
+                    &lt;img class="subTaskDeleteButton" onclick="deleteSubTask(${index})" src="./assets/img/delete.svg" alt="Delete">
+                &lt;/div>
+            &lt;/div>
+        &lt;/div>
+    `;
+}</code></pre>
+        </article>
+    </section>
 
 
 
