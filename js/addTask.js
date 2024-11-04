@@ -1,8 +1,7 @@
-// Initialisierung der Arrays
 let newTasks = [];
 let subTasks = [];
 
-// Liste der Farben für die Icons
+
 let colors = [
     "#FF7A00",
     "#FF5EB3",
@@ -22,7 +21,7 @@ let colors = [
 ];
 
 /**
- * 
+ * This function loads the necessary other functions
  * 
  */
 function init() {
@@ -36,7 +35,7 @@ function init() {
 /**
  * This function sets the button to activated
  * 
- * @param {string} priority -
+ * @param {string} priority - The priority level to set
  */
 function setPriority(priority) {
     document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => {
@@ -45,7 +44,10 @@ function setPriority(priority) {
     document.querySelector(`.prioButton${priority.charAt(0).toUpperCase() + priority.slice(1)}`).classList.add('active');
 } 
 
-
+/**
+ * This function displays the input container for subtasks
+ * 
+ */
 function showinputSubTaksClickContainer() {
     let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
     let addSubTaskButton = document.getElementById('addSubTaskButton');
@@ -57,7 +59,10 @@ function showinputSubTaksClickContainer() {
     subTaskInput.addEventListener('click', showinputSubTaksClickContainer);
 }
 
-
+/**
+ * This function deletes the current text in the subtask input
+ * 
+ */
 function deleteCurrentText() {
     let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
     let addSubTaskButton = document.getElementById('addSubTaskButton');
@@ -70,7 +75,12 @@ function deleteCurrentText() {
     subTaskInput.removeEventListener('click', showinputSubTaksClickContainer);
 }
 
-
+/**
+ * This function adds a new subtask to the list
+ * 
+ * @param {event} event - The event that triggered the function
+ *
+ */
 function addNewSubtask(event) {
     let newSubTask = document.getElementById('subTaskInput');
     if(newSubTask.value == 0) {
@@ -86,7 +96,10 @@ function addNewSubtask(event) {
     }
 }
 
-
+/**
+ * This function hides the subtask input container when clicking outside
+ * 
+ */
 function hideInputSubTaksClickContainerOnOutsideClick() {
     document.addEventListener('click', function(event) {
         let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
@@ -103,7 +116,11 @@ function hideInputSubTaksClickContainerOnOutsideClick() {
     });
 }
 
-
+/**
+ * This function renders the list of subtasks
+ * 
+ * @param {number} editIndex - The index of the subtask to edit
+ */
 function renderSubtasks(editIndex = -1) {
     let subTaskList = document.getElementById('subTaskList');
     subTaskList.innerHTML = '';
@@ -116,12 +133,20 @@ function renderSubtasks(editIndex = -1) {
     });
 }
 
-
+/**
+ * This function enables editing mode for a specific subtask
+ * 
+ * @param {number} index - The index of the subtask to edit
+ */
 function editSubTask(index) {
     renderSubtasks(index);
 }
 
-
+/**
+ * This function saves the edited subtask
+ * 
+ * @param {number} index - The index of the subtask to save 
+ */
 function saveSubTask(index) {
     let editedText = document.getElementById(`editInput${index}`).value;
     if (editedText.trim() !== '') {
@@ -130,13 +155,20 @@ function saveSubTask(index) {
     renderSubtasks();
 }
 
-
+/**
+ * This function deletes a subtask from the list
+ * 
+ * @param {number} index - The index of the subtask to delete
+ */
 function deleteSubTask(index) {
     subTasks.splice(index, 1);
     renderSubtasks();
 }
 
-
+/**
+ * This function sets up validation for the title field
+ * 
+ */
 function fieldRequiredTitle() {
     let titleInput = document.getElementById('title');
     if (titleInput) {
@@ -147,7 +179,10 @@ function fieldRequiredTitle() {
     }
 }
 
-
+/**
+ * This function validates the title field
+ * 
+ */
 function validateTitleField() {
     let errorMessage = this.nextElementSibling;
     if (!this.value) {
@@ -160,7 +195,10 @@ function validateTitleField() {
     }
 }
 
-
+/**
+ * This function sets up validation for the date field
+ * 
+ */
 function fieldRequiredDate() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
@@ -173,7 +211,10 @@ function fieldRequiredDate() {
     }
 }
 
-
+/**
+ * This function validates the date field
+ * 
+ */
 function validateDateField() {
     let errorMessage = this.nextElementSibling;
     if (!this.value) {
@@ -186,7 +227,10 @@ function validateDateField() {
     }
 }
 
-
+/**
+ * - This function sets up validation for the category field
+ * 
+ */
 function fieldRequiredCategory() {
     let categorySelector = document.getElementById('categorySelector');
     let dropdownContent = document.getElementById('categoryDropdown');
@@ -202,7 +246,10 @@ function fieldRequiredCategory() {
     }
 }
 
-
+/**
+ * This function validates the category field
+ * 
+ */
 function validateCategoryField() {
     let selectedCategory = this.querySelector('.selectedCategoryHeadline');
     let errorMessage = this.querySelector('.errorMessage');
@@ -215,7 +262,10 @@ function validateCategoryField() {
     }
 }
 
-
+/**
+ * This function initializes the date picker
+ * 
+ */
 function initializeDatePicker() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
@@ -230,7 +280,10 @@ function initializeDatePicker() {
     }
 }
 
-
+/**
+ * This function sets the date input to today's date
+ * 
+ */
 function getDateToday() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
@@ -248,7 +301,11 @@ function getDateToday() {
     }
 }
 
-
+/**
+ * This function validates the selected date
+ * 
+ * @param {HTMLInputElement} input - The date input element
+ */
 function validateDate(input) {
     let selectedDate = new Date(input.value);
     let currentDate = new Date();
@@ -260,13 +317,18 @@ function validateDate(input) {
     }
 }
 
-
+/**
+ * This function updates the color of the date input
+ * 
+ */
 function updateDateColor() {
     this.style.color = this.value && this.value !== "YYYY-MM-DD" ? 'black' : '#D1D1D1';
 }
 
-
-// Funktion zum Zurücksetzen des Formulars
+/**
+ * This function resets all form fields to their default state
+ * 
+ */
 function resetFormFields() {
     document.getElementById('title').value = '';
     document.getElementById('description').value = '';
@@ -284,12 +346,20 @@ function resetFormFields() {
     });
 }
 
+/**
+ * This function resets the new task form
+ * 
+ */
 function resetNewTask() {
     resetFormFields();
     setPriority('medium');
     updateAktivContactsVisibility();
 }
 
+/**
+ * This function shows a notification when a task is added
+ * 
+ */
 function showTaskAddedNotification() {
     let notification = document.getElementById('taskAddedNotification');
     notification.classList.add('show');
@@ -299,5 +369,6 @@ function showTaskAddedNotification() {
     }, 3000);
   }
 
+  initializeCategorySelector();
   init();
 

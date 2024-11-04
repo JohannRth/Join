@@ -1,6 +1,9 @@
 let categoryDropdownInitialized = false;
 
-
+/**
+ * This function initializes the category dropdown
+ * 
+ */
 function initializeCategoryDropdown() {
     if (categoryDropdownInitialized) return;
     let elements = getCategoryElements();
@@ -14,7 +17,11 @@ function initializeCategoryDropdown() {
     });
 }
 
-
+/**
+ * This function retrieves the necessary DOM elements for the category dropdown
+ * 
+ *@returns {Object} An object containing references to the category-related DOM elements
+ */
 function getCategoryElements() {
     return {
         categorySelector: document.getElementById('categorySelector'),
@@ -24,7 +31,11 @@ function getCategoryElements() {
     };
 }
 
-
+/**
+ * This function sets up event listeners for the category dropdown
+ * 
+ * @param {Object} elements - The object containing references to category-related DOM elements 
+ */
 function setupCategoryEventListeners(elements) {
     elements.categorySelector.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -32,25 +43,41 @@ function setupCategoryEventListeners(elements) {
     });
 }
 
-
+/**
+ * This function toggles the visibility of the category dropdown
+ * 
+ * @param {Object} elements - The object containing references to category-related DOM elements
+ */
 function toggleCategoryDropdown(elements) {
     let isOpen = elements.categoryDropdown.classList.toggle('show');
     elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);
 }
 
-
+/**
+ * This function closes the category dropdown
+ * 
+ * @param {Object} elements - The object containing references to category-related DOM elements
+ */
 function closeCategoryDropdown(elements) {
     elements.categoryDropdown.classList.remove('show');
     elements.dropDownImage.classList.remove('dropDownImageRotation180');
 }
 
-
+/**
+ * This function selects a category and updates the UI
+ * 
+ * @param {string} category - The selected category 
+ * @param {Object} elements - The object containing references to category-related DOM elements
+ */
 function selectCategory(category, elements) {
     elements.selectedCategory.textContent = category;
     closeCategoryDropdown(elements);
 }
 
-
+/**
+ * This function initializes the category selector with event listeners
+ * 
+ */
 function initializeCategorySelector() {
     let categorySelector = document.getElementById('categorySelector');
     categorySelector.addEventListener('click', function(event) {
@@ -62,6 +89,11 @@ function initializeCategorySelector() {
     });
 }
 
+
+/**
+ * This function resets the category selector to its default state
+ * 
+ */
 function resetCategorySelector() {
     let selectedCategory = document.getElementById('selectedCategory');
     selectedCategory.textContent = 'Select task category';
@@ -76,7 +108,11 @@ function resetCategorySelector() {
 
 initializeCategorySelector();
 
-
+/**
+ * This function adds category options to the dropdown
+ * 
+ * @param {HTMLElement} categoryDropdown - The dropdown element to populate with options 
+ */
 function addCategoryOptions(categoryDropdown) {
     const categories = ['Technical Task', 'User Story'];
     categories.forEach(category => {
@@ -94,7 +130,10 @@ function addCategoryOptions(categoryDropdown) {
 
 let isDropdownOpen = false;
 
-
+/**
+ * This function toggles the rotation of the dropdown image
+ * 
+ */
 function toggleRotationDownImage() {
     let downImage = document.getElementById('dropDownImageCategory');
     downImage.classList.add('dropDownImageRotation180');

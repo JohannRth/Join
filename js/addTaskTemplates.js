@@ -1,3 +1,9 @@
+/**
+ * This function generates a contact template for display
+ * 
+ * @param {string} contact - The name of the contact
+ * @returns {string} HTML template for the contact
+ */
 function addContactTemplate(contact) {
     return `
         <div class="contactIconAndName">
@@ -14,6 +20,14 @@ function addContactTemplate(contact) {
     `;
 }
 
+
+/**
+ * This function creates a template for a subtask in progress (editing mode)
+ * 
+ * @param {number} index - The index of the subtask
+ * @param {string} subTask - The content of the subtask
+ * @returns {string} HTML template for the subtask in editing mode
+ */
 function subtaskInProgressTemplate(index, subTask) {
     return `
                 <div class="subTaskEdit">
@@ -33,6 +47,14 @@ function subtaskInProgressTemplate(index, subTask) {
             `;
 }
 
+
+/**
+ * This function generates a template for a created subtask
+ * 
+ * @param {number} index - The index of the subtask
+ * @param {string} subTask - The content of the subtask
+ * @returns {string} HTML template for the created subtas
+ */
 function subTaskCreatedTemplate(index, subTask) {
     return `
         <div class="subTask" ondblclick="editSubTask(${index})">
