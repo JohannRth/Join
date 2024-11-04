@@ -345,6 +345,11 @@ function initializeContactDropdown() {
     });
 }
 
+function toggleContactDropdown() {
+    activeContacts = document.getElementById('aktivContacts').add.classList('displayNone');
+
+}
+
 
 function getElements() {
     return {
@@ -380,6 +385,7 @@ function preventClose(event) {
 }
 
 
+
 function selectContact(contact) {
     let contactItem = Event.target.closest('.contactItem');
     let checkbox = contactItem.querySelector('.contactCheckbox');
@@ -402,7 +408,6 @@ function updateActiveContacts(contact, isChecked) {
         }
     }
 }
-
 
 function addContact(contact, contactDropdown) {
     let contactItem = document.createElement('div');
@@ -451,6 +456,7 @@ function updateAktivContactsVisibility() {
     const aktivContacts = document.getElementById('aktivContacts');
     aktivContacts.style.display = aktivContacts.children.length > 0 ? 'flex' : 'none';
 }
+
 
 function addToActiveContacts(contact) {
     let aktivContacts = document.getElementById('aktivContacts');

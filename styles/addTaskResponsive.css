@@ -55,8 +55,9 @@
         display: flex;
         align-items: center;
         margin-top: 10px;
-        width: 100%;
-        height: 40px;
+        width: 380px;
+        min-height: 40px;
+        max-height: 76px;
     }
 
 
@@ -140,6 +141,16 @@
     .assignedAddTaskContainer{
         display: flex;
         justify-content: center;
+        width: 100%;
+    }
+
+    .assignedToContainer {
+        width: auto;
+    }
+
+    .aktivContacts {
+        width: 340px;
+    
     }
 
     .inputContainerDueDate {
@@ -339,7 +350,7 @@
     }
 
     .dropDownContent {
-        z-index: 1000;
+        z-index: 999;
         width: 342px;
     }
 
@@ -450,6 +461,10 @@
         height: 40px;
     }
 
+    .aktivContacts {
+        width: 289px;
+    }
+
     .inputContainerDueDate {
         width: 100%;
     }
@@ -507,6 +522,7 @@
     }
 
     .contactDropdown {
+        max-height: 174px;
         width: 290px;
     }
 
@@ -523,7 +539,7 @@
     }
 
     .dropDownContent {
-        z-index: 1000;
+        z-index: 999;
         width: 290px;
     }
 

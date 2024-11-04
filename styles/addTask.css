@@ -10,6 +10,18 @@ body {
     max-width: 1920px;
 }
 
+.header {
+    z-index: 1000;
+}
+
+.displayNone {
+    display: none;
+}
+
+.displayShow {
+    display: block;
+}
+
 .addTaskContainer {
     padding-top: 206px;
     padding-left: 328px;
@@ -160,7 +172,6 @@ input[type="date"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    position: relative;
     padding-right: 30px;
     cursor: pointer;
 }
@@ -245,6 +256,9 @@ input[type="date"] {
     border-bottom-right-radius: 10px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    position: absolute;
+    left: 0;
+    z-index: 999;
 }
 
 
@@ -731,6 +745,12 @@ input[type="text"]:focus,
     height: 18px;
     width: 17px;
     cursor: pointer;
+}
+
+.assignedToContainer {
+    margin-bottom: 20px;
+    position: relative;
+    width: 100%;
 }
 
 .subTaskInput {
