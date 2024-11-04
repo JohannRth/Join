@@ -304,4 +304,8 @@ body {
     .helpImage {
         display: none;
     }
+
+    .dropdown-menu {
+        right: 10px;
+    }
 }

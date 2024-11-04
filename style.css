@@ -29,8 +29,14 @@ body {
     align-items: center;
 }
 
-.notajoinUser {
+.not-a-join-user {
     margin-right: 20px;
+    font-weight: 400;
+}
+
+.content-field {
+    display: flex;
+    flex-direction: column;
 }
 
 .login-content {
@@ -198,6 +204,10 @@ input#confirmedPassword {
     display: flex;
     justify-content: center;
     gap: 30px;
+    position: fixed;
+    left: 5%;
+    right: 5%;
+    bottom: 5%;
 }
 
 .login-footer a {
@@ -221,13 +231,12 @@ input#confirmedPassword {
     cursor: pointer;
     width: 32px;
     height: 32px;
-    margin-right: 95%;
+    margin-right: 90%;
 }
 
 .back-button:hover {
     background-color: #EEEEEE;
-    height: 32px;
-    width: 32px;
+    transform: scale(1.2);
     border-radius: 50%;
     transition: all 0.3s ease;
 }
@@ -289,5 +298,73 @@ input#confirmedPassword {
     to {
         transform: translate(-50%, -50%); /* Beendet in der Mitte des Bildschirms */
         opacity: 1;
+    }
+}
+
+
+
+/* ///////////////////////////////////////Mobile-Screen////////////////////////////////////////////////////// */
+
+@media (max-width: 680px) {
+    
+    .login-content {
+        padding: 0px 16px;
+    }
+
+    .login-modal {
+        padding: 48px 40px;
+    }
+
+    .image-container img {
+        width: 150px !important;
+    }
+
+    .login-header {
+        padding: 40px 40px;
+    }
+
+    .register-header {
+        padding: 40px 40px;
+    }
+
+    .register-header img{
+        height: 90px;
+    }
+
+    .back-button {
+        cursor: pointer;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .login-modal {
+        padding: 48px 16px;
+    }
+
+    .content-field {
+        flex-direction: column-reverse;
+        margin-top: 208px;
+    }
+
+    .login-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: unset;
+        height: 130px;
+    }
+
+    .login-btn-sec {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .login-mobile {
+        width: 177px !important;
     }
 }

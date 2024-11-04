@@ -26,12 +26,10 @@ let colors = [
 
 // Funktion zum Setzen der Priorität anpassen
 function setPriority(priority) {
-    let buttons = document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow');
-    let selectedButton = document.querySelector(`.prioButton${priority.charAt(0).toUpperCase() + priority.slice(1)}`);
-    buttons.forEach(button => {
-        button.classList.remove('active');
+    document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => {
+        btn.classList.remove('active');
     });
-    selectedButton.classList.add('active');
+    document.querySelector(`.prioButton${priority.charAt(0).toUpperCase() + priority.slice(1)}`).classList.add('active');
 }
 
 // Beim Laden der Seite den Medium-Button auswählen
@@ -40,19 +38,65 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-function addNewSubtask() {
+function showinputSubTaksClickContainer() {
+    let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
+    let addSubTaskButton = document.getElementById('addSubTaskButton');
+    let addSubTaskButtonContainer = document.querySelector('.addSubTaskButtonContainer');
+    let subTaskInput = document.getElementById('subTaskInput');
+    inputSubTaksClickContainer.classList.add('visible');
+    addSubTaskButton.style.display = 'none';
+    addSubTaskButtonContainer.classList.add('no-hover');
+    subTaskInput.addEventListener('click', showinputSubTaksClickContainer);
+}
+
+
+function deleteCurrentText() {
+    let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
+    let addSubTaskButton = document.getElementById('addSubTaskButton');
+    let addSubTaskButtonContainer = document.querySelector('.addSubTaskButtonContainer');
+    let subTaskInput = document.getElementById('subTaskInput');
+    subTaskInput.value = "";
+    addSubTaskButton.style.display = 'block';
+    inputSubTaksClickContainer.classList.remove('visible');
+    addSubTaskButtonContainer.classList.remove('no-hover');
+    subTaskInput.removeEventListener('click', showinputSubTaksClickContainer);
+}
+
+
+function addNewSubtask(event) {
     let newSubTask = document.getElementById('subTaskInput');
-    let errorMessage = document.getElementById('subTaskErrorMessage');
     if(newSubTask.value == 0) {
-        errorMessage.textContent = 'Please add a text';
-        errorMessage.classList.add('visible');
         return false;
     }
-    errorMessage.classList.remove('visible');
     subTasks.push(newSubTask.value);
     newSubTask.value = '';
     renderSubtasks();
+    if (event && event.type === 'click') {
+        document.getElementById('inputSubTaksClickContainer').classList.remove('visible');
+        document.getElementById('addSubTaskButton').style.display = 'block';
+        document.querySelector('.addSubTaskButtonContainer').classList.remove('no-hover');
+    }
 }
+
+
+function hideInputSubTaksClickContainerOnOutsideClick() {
+    document.addEventListener('click', function(event) {
+        let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
+        let addSubTaskButton = document.getElementById('addSubTaskButton');
+        let addSubTaskButtonContainer = document.querySelector('.addSubTaskButtonContainer');
+        let subTaskInput = document.getElementById('subTaskInput');
+        if (!inputSubTaksClickContainer.contains(event.target) && 
+            !subTaskInput.contains(event.target) &&
+            !addSubTaskButton.contains(event.target)) {
+            inputSubTaksClickContainer.classList.remove('visible');
+            addSubTaskButton.style.display = 'block';
+            addSubTaskButtonContainer.classList.remove('no-hover');
+        }
+    });
+}
+
+
+hideInputSubTaksClickContainerOnOutsideClick();
 
 
 function renderSubtasks(editIndex = -1) {
@@ -403,6 +447,11 @@ function toggleContactState(contactItem, checkbox, contact) {
 }
 
 
+function updateAktivContactsVisibility() {
+    const aktivContacts = document.getElementById('aktivContacts');
+    aktivContacts.style.display = aktivContacts.children.length > 0 ? 'flex' : 'none';
+}
+
 function addToActiveContacts(contact) {
     let aktivContacts = document.getElementById('aktivContacts');
     let contactElement = document.createElement('span');
@@ -411,8 +460,8 @@ function addToActiveContacts(contact) {
     contactElement.textContent = getInitials(contact);
     contactElement.setAttribute('data-contact', contact);
     aktivContacts.appendChild(contactElement);
+    updateAktivContactsVisibility();
 }
-
 
 function removeFromActiveContacts(contact) {
     let aktivContacts = document.getElementById('aktivContacts');
@@ -420,6 +469,7 @@ function removeFromActiveContacts(contact) {
     if (contactElement) {
         aktivContacts.removeChild(contactElement);
     }
+    updateAktivContactsVisibility();
 }
 
 // Funktion zum Erhalten der Initialen des Namens
@@ -450,6 +500,7 @@ async function initializeContactDropdown() {
             closeDropdown(elements);
         }
     });
+    updateAktivContactsVisibility();
 }
 
 
@@ -569,7 +620,7 @@ function showErrorNotification(message) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Funktion zum Zurücksetzen des Formulars
-function resetNewTask() {
+function resetFormFields() {
     document.getElementById('title').value = '';
     document.getElementById('description').value = '';
     document.getElementById('contacts').textContent = 'Select contacts to assign';
@@ -586,6 +637,11 @@ function resetNewTask() {
     });
 }
 
+function resetNewTask() {
+    resetFormFields();
+    setPriority('medium');
+    updateAktivContactsVisibility();
+}
 
 function showTaskAddedNotification() {
     let notification = document.getElementById('taskAddedNotification');

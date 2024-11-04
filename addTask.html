@@ -44,19 +44,21 @@
                                 <textarea class="textAreaAddTask" id="description" placeholder="Enter a Description"></textarea>
                             </div>
                         </div>
-                        <div class="inputContainer">
-                            <span class="addTaskInputTitle">Assigned To</span>
-                            <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
-                                <div>
-                                    <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
+                        <div class="assignedAddTaskContainer">
+                            <div class="inputContainer">
+                                <span class="addTaskInputTitle">Assigned To</span>
+                                <div class="assignedAddTask" id="assignedTo" onclick="initializeContactDropdown()">
+                                    <div>
+                                        <div class="selectedContactsHeadline" id="contacts">Select contacts to assign</div>
+                                    </div>
+                                    <div class="dropDownImageAssignedToContainer">
+                                        <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
+                                    </div>
                                 </div>
-                                <div class="dropDownImageAssignedToContainer">
-                                    <img class="dropDownImageContacts" id="dropDownImageContacts" src="./assets/img/arrow_drop_down.svg">
+                                <div class="contactDropdown" id="contactDropdown">
                                 </div>
+                                <div id="aktivContacts" class="aktivContacts"></div>
                             </div>
-                            <div class="contactDropdown" id="contactDropdown">
-                            </div>
-                            <div id="aktivContacts" class="aktivContacts"></div>
                         </div>
                 </div>
                 <div class="addTaskSeparateContainer"></div>
@@ -68,41 +70,55 @@
                                 <div class="errorMessage"></div>
                             </div>
                         </div>
-                        <div class="prioContainer">
-                            <span class="addTaskInputTitle">Prio</span>
-                            <div class="prioButtonContainer">
-                                <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
-                                <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
-                                <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
+                        <div class="prioButtonContainer">
+                            <div class="prioContainer">
+                                <span class="addTaskInputTitle">Prio</span>
+                                <div class="prioButtonContainer">
+                                    <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
+                                    <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
+                                    <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
+                                </div>
                             </div>
                         </div>
-                        <div class="inputContainer">
-                            <span class="addTaskInputTitle required">Category</span>
-                            <div id="categorySelector" class="customDropdown" onclick="initializeCategoryDropdown()">
-                                <div class="selectedOption">
+                        <div class="categoryContainer">
+                            <div class="inputContainer">
+                                <span class="addTaskInputTitle required">Category</span>
+                                <div id="categorySelector" class="customDropdown" onclick="initializeCategoryDropdown()">
+                                    <div class="selectedOption">
+                                        <div>
+                                            <span class="selectedCategoryHeadline" id="selectedCategory">Select task category</span>
+                                        </div>
+                                        <div class="dropDownImageCategoryContainer">
+                                            <img class="dropDownImageCategory" id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
+                                        </div>
+                                    </div>
+                                    <div id="categoryDropdown" class="dropDownContent"></div>
+                                    <div class="errorMessage"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="subTaskContainer">
+                            <div class="inputContainer">
+                                <span class="addTaskInputTitle">Subtasks</span>
+                                <div class="subTaskInputContainer">
                                     <div>
-                                        <span class="selectedCategoryHeadline" id="selectedCategory">Select task category</span>
+                                        <input onclick="showinputSubTaksClickContainer()" onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddSubTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
                                     </div>
-                                    <div class="dropDownImageCategoryContainer">
-                                        <img class="dropDownImageCategory" id="dropDownImageCategory" src="./assets/img/arrow_drop_down.svg" alt="Dropdown">
+                                    <div class="addSubTaskButtonContainer" id="addSubTaskButtonContainer">
+                                        <img onclick="showinputSubTaksClickContainer()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
+                                        <div class="inputSubTaksClickContainer" id="inputSubTaksClickContainer">
+                                            <div class="deleteCurrentTextButtonContainer">
+                                                <img onclick="deleteCurrentText()" class="deleteCurrentTextButton" src="./assets/img/clear-x-image.svg">
+                                            </div>
+                                            <div class="partingLine"></div>
+                                            <div class="addNewTextButtonContainer">
+                                                <img onclick="addNewSubtask(event)" class="addNewTextButton" id="addNewTextButton" src="./assets/img/check-dark.svg">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="categoryDropdown" class="dropDownContent"></div>
-                                <div class="errorMessage"></div>
+                                <div class="subTaskList" id="subTaskList"></div>
                             </div>
-                        </div>
-                        <div class="inputContainer">
-                            <span class="addTaskInputTitle">Subtasks</span>
-                            <div class="subTaskInputContainer">
-                                <div>
-                                    <input onkeydown="if(event.key === 'Enter') addNewSubtask()" class="inputAddTask" type="text" class="subTaskInput" id="subTaskInput" placeholder="Add new subtask">
-                                </div>
-                                <div class="addSubTaskButtonContainer">
-                                    <img onclick="addNewSubtask()" class="addSubTaskButton" id="addSubTaskButton" src="./assets/img/add dark.svg">
-                                </div>
-                            </div>
-                            <div class="subTaskErrorMessage" id="subTaskErrorMessage"></div>
-                            <div class="subTaskList" id="subTaskList"></div>
                         </div>
                     </form>
                 </div>

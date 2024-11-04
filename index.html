@@ -26,41 +26,42 @@
         <img src="./assets/img/join_logo_dark.svg" alt="Join Logo">
     </div>
 
-    <header class="login-header">
-        <div class="sign-up-field">
-            <h3 class="notajoinUser">Not a Join user?</h3>
-            <button id="signUp" onclick="window.location.href='register.html'">Sign up</button>
-        </div>
-    </header>
+    <div class="content-field">
+        <header class="login-header">
+            <div class="sign-up-field">
+                <h3 class="not-a-join-user">Not a Join user?</h3>
+                <button id="signUp" onclick="window.location.href='register.html'">Sign up</button>
+            </div>
+        </header>
 
-    <div class="login-content">
-        <div class="login-modal">
-            <h1 class="login-fsize">Log in</h1>
-            <img src="./assets/img/underline_login.svg" alt="Underline">
+        <div class="login-content">
+            <div class="login-modal">
+                <h1 class="login-fsize">Log in</h1>
+                <img src="./assets/img/underline_login.svg" alt="Underline">
 
-            <form class="login-box" onsubmit="login(event)">
-                <div>
-                    <input type="text" id="loginEmail" placeholder="Email" autocomplete="email">
-                    <span class="error-message" id="loginEmailError"></span>
-                </div>
-                <div>
-                    <input type="password" id="loginPassword" placeholder="Password"
-                        autocomplete="new-password">
-                    <span class="error-message" id="loginPasswordError"></span>
-                </div>
-                <div id="loginError" class="login-error">
-                </div>
-                <div class="checkbox-sec">
-                    <input id="checkboxLogin" type="checkbox">
-                    <span>Remember me</span>
-                </div>
-                <div class="login-btn-sec">
-                    <button id="logIn" type="submit">Log in</button>
-                    <button id="guestLogIn" type="button" onclick="guestLogin()">Guest Log in</button>
-                </div>
-            </form>
+                <form class="login-box" onsubmit="login(event)">
+                    <div>
+                        <input type="text" id="loginEmail" placeholder="Email" autocomplete="email">
+                        <span class="error-message" id="loginEmailError"></span>
+                    </div>
+                    <div>
+                        <input type="password" id="loginPassword" placeholder="Password" autocomplete="new-password">
+                        <span class="error-message" id="loginPasswordError"></span>
+                    </div>
+                    <div id="loginError" class="login-error">
+                    </div>
+                    <div class="checkbox-sec">
+                        <input id="checkboxLogin" type="checkbox">
+                        <span>Remember me</span>
+                    </div>
+                    <div class="login-btn-sec">
+                        <button class="login-mobile" id="logIn" type="submit">Log in</button>
+                        <button id="guestLogIn" type="button" onclick="guestLogin()">Guest Log in</button>
+                    </div>
+                </form>
 
-            <div id="msgBox"></div>
+                <div id="msgBox"></div>
+            </div>
         </div>
     </div>
 
