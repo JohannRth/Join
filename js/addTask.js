@@ -21,7 +21,10 @@ let colors = [
     "#FFBB2B"
 ];
 
-
+/**
+ * 
+ * 
+ */
 function init() {
     setPriority('medium');
     initializeDatePicker();
@@ -30,7 +33,11 @@ function init() {
     hideInputSubTaksClickContainerOnOutsideClick();
 }
 
-
+/**
+ * This function sets the button to activated
+ * 
+ * @param {string} priority -
+ */
 function setPriority(priority) {
     document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => {
         btn.classList.remove('active');
