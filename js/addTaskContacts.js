@@ -1,6 +1,11 @@
 let contactDropdownInitialized = false;
 
 
+/**
+ * This function initializes the contact dropdown
+ * 
+ * 
+ */
 function initializeContactDropdown() {
     if (contactDropdownInitialized) return;
     let elements = getElements();
@@ -15,12 +20,21 @@ function initializeContactDropdown() {
 }
 
 
+/**
+ * This function toggles the visibility of the contact dropdown
+ * 
+ */
 function toggleContactDropdown() {
     activeContacts = document.getElementById('aktivContacts').add.classList('displayNone');
 
 }
 
 
+/**
+ * This function retrieves necessary DOM elements
+ * 
+ * @returns {Object} An object containing DOM elements
+ */
 function getElements() {
     return {
         assignedTo: document.getElementById('assignedTo'),
@@ -30,6 +44,11 @@ function getElements() {
 }
 
 
+/**
+ * This function sets up event listeners for the dropdown
+ * 
+ * @param {Object} elements - The DOM elements object
+ */
 function setupEventListeners(elements) {
     elements.assignedTo.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -38,24 +57,44 @@ function setupEventListeners(elements) {
 }
 
 
+/**
+ * This function toggles the dropdown's visibility
+ * 
+ * @param {Object} elements - The DOM elements object
+ */
 function toggleDropdown(elements) {
     let isOpen = elements.contactDropdown.classList.toggle('show');
     elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);
 }
 
 
+/**
+ * This function closes the dropdown
+ * 
+ * @param {Object} elements - The DOM elements object 
+ */
 function closeDropdown(elements) {
     elements.contactDropdown.classList.remove('show');
     elements.dropDownImage.classList.remove('dropDownImageRotation180');
 }
 
 
+/**
+ * This function prevents event propagation
+ * 
+ * @param {Event} event - The event object 
+ */
 function preventClose(event) {
     event.stopPropagation();
 }
 
 
 
+/**
+ * This function handles contact selection
+ * 
+ * @param {string} contact - The selected contact
+ */
 function selectContact(contact) {
     let contactItem = Event.target.closest('.contactItem');
     let checkbox = contactItem.querySelector('.contactCheckbox');
@@ -64,6 +103,12 @@ function selectContact(contact) {
 }
 
 
+/**
+ * This function updates the active contacts display
+ * 
+ * @param {string} contact - The contact to update
+ * @param {boolean} isChecked - Whether the contact is selected
+ */
 function updateActiveContacts(contact, isChecked) {
     let activeContactsDiv = document.getElementById('aktivContacts');
     if (isChecked) {
@@ -79,6 +124,13 @@ function updateActiveContacts(contact, isChecked) {
     }
 }
 
+
+/**
+ * This function adds a contact to the dropdown
+ * 
+ * @param {string} contact - The contact to add
+ * @param {HTMLElement} contactDropdown - The dropdown element
+ */
 function addContact(contact, contactDropdown) {
     let contactItem = document.createElement('div');
     contactItem.className = 'contactItem';
@@ -96,6 +148,12 @@ function addContact(contact, contactDropdown) {
 }
 
 
+/**
+ * This function sorts contacts alphabetically in the dropdown
+ * 
+ * @param {HTMLElement} container - The container element
+ * @param {HTMLElement} newItem - The new item to insert
+ */
 function sortContactAlphabetically(container, newItem) {
     let contactName = newItem.querySelector('.contactName').textContent;
     let items = container.querySelectorAll('.contactItem');
@@ -110,6 +168,13 @@ function sortContactAlphabetically(container, newItem) {
 }
 
 
+/**
+ * This function toggles the state of a contact
+ * 
+ * @param {HTMLElement} contactItem - The contact item element
+ * @param {HTMLElement} checkbox - The checkbox element
+ * @param {string} contact - The contact name
+ */
 function toggleContactState(contactItem, checkbox, contact) {
     contactItem.classList.toggle('active');
     checkbox.checked = contactItem.classList.contains('active');
@@ -121,13 +186,21 @@ function toggleContactState(contactItem, checkbox, contact) {
 }
 
 
-
+/**
+ * This function updates the visibility of active contacts
+ * 
+ */
 function updateAktivContactsVisibility() {
     let aktivContacts = document.getElementById('aktivContacts');
     aktivContacts.style.display = aktivContacts.children.length > 0 ? 'flex' : 'none';
 }
 
 
+/**
+ * This function adds a contact to the active contacts display
+ * 
+ * @param {string} contact - The contact to add 
+ */
 function addToActiveContacts(contact) {
     let aktivContacts = document.getElementById('aktivContacts');
     let contactElement = document.createElement('span');
@@ -139,6 +212,12 @@ function addToActiveContacts(contact) {
     updateAktivContactsVisibility();
 }
 
+
+/**
+ * This function removes a contact from the active contacts display
+ * 
+ * @param {string} contact - The contact to remove
+ */
 function removeFromActiveContacts(contact) {
     let aktivContacts = document.getElementById('aktivContacts');
     let contactElement = aktivContacts.querySelector(`[data-contact="${contact}"]`);
@@ -148,7 +227,13 @@ function removeFromActiveContacts(contact) {
     updateAktivContactsVisibility();
 }
 
-// Funktion zum Erhalten der Initialen des Namens
+
+/**
+ * This function gets the initials of a name
+ * 
+ * @param {string} name - The full name
+ * @returns {string} The initials of the name 
+ */
 function getInitials(name) {
     if (!name || typeof name !== 'string') return '';
     let nameParts = name.trim().split(' ');
@@ -156,7 +241,13 @@ function getInitials(name) {
     return initials.toUpperCase();
 }
 
-// Funktion zum Abrufen einer Farbe basierend auf dem ersten Buchstaben des Namens
+
+/**
+ * This function gets a color based on the first letter of a name
+ * 
+ * @param {string} name - The name
+ * @returns {string} A color in hexadecimal format
+ */
 function getColor(name) {
     if (!name || typeof name !== 'string') return '#000000'; 
     let firstLetter = name.charAt(0).toUpperCase();
@@ -165,6 +256,11 @@ function getColor(name) {
 }
 
 
+/**
+ * This function initializes the contact dropdown asynchronously@returns {Promise}
+ * 
+ *
+ */
 async function initializeContactDropdown() {
     if (contactDropdownInitialized) return;
     let elements = getElements();
@@ -180,6 +276,11 @@ async function initializeContactDropdown() {
 }
 
 
+/**
+ * This function loads contacts from storage and adds them to the dropdown
+ * 
+ * @param {HTMLElement} contactDropdown - The dropdown element to populate@returns {Promise} 
+ */
 async function loadAndAddContacts(contactDropdown) {
     try {
         const contacts = await loadData('contacts');
