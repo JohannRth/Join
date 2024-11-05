@@ -15,18 +15,18 @@ function loadHTML(elementID, fileName, callback) {
 window.onload = function () {
     checkAuthentication();
 
-    loadHTML("header-placeholder", "/assets/templates/header.html", function() {
-        setupProfileDropdown(); 
+    loadHTML("header-placeholder", "/assets/templates/header.html", function () {
+        setupProfileDropdown();
         displayUserInitials();
         checkAuthentication(); // Nach dem Laden des Headers prüfen
     });
 
-    loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", function() {
+    loadHTML("sidebar-placeholder", "/assets/templates/sidebar.html", function () {
         highlightCurrentPage();
         checkAuthentication(); // Nach dem Laden der Sidebar prüfen
     });
 
-    loadHTML("mobile-nav-placeholder", "/assets/templates/mobile_navbar.html", function() {
+    loadHTML("mobile-nav-placeholder", "/assets/templates/mobileNavbar.html", function () {
         highlightCurrentPageMobile(); // Funktion zum Hervorheben der aktiven Seite in der mobilen Navbar
     });
 };
@@ -35,7 +35,7 @@ window.onload = function () {
 function checkAuthentication() {
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     const currentPage = window.location.pathname.split('/').pop();
-    const allowedPages = ['index.html', 'legal_notice.html', 'privacy_policy.html'];
+    const allowedPages = ['index.html', 'legalNotice.html', 'privacyPolicy.html'];
 
     if (!loggedInUser) {
         if (!allowedPages.includes(currentPage)) {
@@ -67,7 +67,7 @@ function highlightCurrentPage() {
     var page = path.split("/").pop(); // Holt den aktuellen Seitennamen (z.B. 'summary.html')
     var menuItems = document.querySelectorAll('.desktopLinkAndImage');
 
-    menuItems.forEach(function(item) {
+    menuItems.forEach(function (item) {
         var onclickAttr = item.getAttribute('onclick');
         if (onclickAttr && onclickAttr.includes(page)) {
             item.classList.add('active'); // Fügt die 'active'-Klasse hinzu, um das Menüelement hervorzuheben
@@ -81,7 +81,7 @@ function highlightCurrentPageMobile() {
     const page = path.split("/").pop(); // Holt den aktuellen Seitennamen (z.B. 'summary.html')
     const mobileMenuItems = document.querySelectorAll('.mobile-nav-bar .mobile-bar');
 
-    mobileMenuItems.forEach(function(item) {
+    mobileMenuItems.forEach(function (item) {
         const onclickAttr = item.getAttribute('onclick');
         if (onclickAttr && onclickAttr.includes(page)) {
             item.classList.add('active'); // Fügt die 'active'-Klasse hinzu, um das Menüelement hervorzuheben
@@ -117,7 +117,7 @@ function displayUserInitials() {
         }
     } else {
         // Falls kein Benutzer eingeloggt ist, Weiterleitung zur Login-Seite
-/////////////////// muss wieder aktiviert werden wenn die seite abgegeben wird --> window.location.href = 'index.html';
+        window.location.href = 'index.html';
     }
 }
 
@@ -125,10 +125,10 @@ function displayUserInitials() {
 function setupProfileDropdown() {
     const profilePicture = document.getElementById("profilePicture");
     const dropdownMenu = document.getElementById("dropdownMenu");
-    const arrowLeft = document.querySelector(".arrowLeft"); 
+    const arrowLeft = document.querySelector(".arrowLeft");
 
     if (profilePicture && dropdownMenu) {
-        profilePicture.addEventListener("click", function(event) {
+        profilePicture.addEventListener("click", function (event) {
             event.stopPropagation();
 
             if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
@@ -146,7 +146,7 @@ function setupProfileDropdown() {
             }
         });
 
-        document.addEventListener("click", function() {
+        document.addEventListener("click", function () {
             if (dropdownMenu.style.display === "block") {
                 dropdownMenu.style.display = "none";
 

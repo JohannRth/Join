@@ -16,6 +16,37 @@
     transition: opacity 0.3s ease;
 }
 
+.inputSearchContacts {
+    width: 380px;
+    height: 39px;
+    background-color: transparent;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 10px;
+    background-color: white;
+    padding-left: 21px;
+    padding-right: 35px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 20px;
+    position: relative;
+    left: -7px;
+}
+
+.inputSearchContacts:hover {
+    cursor: pointer;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.inputSearchContacts:focus {
+    outline: none;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
 .dropDownImageAssignedToContainer:hover .dropDownImageContacts {
     margin-right: 0;
 }

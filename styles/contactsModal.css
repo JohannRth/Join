@@ -440,6 +440,13 @@ input#newContactPhone {
     }
 }
 
+@media (max-width:500px) {
+
+    .add-contact-left {
+        padding: 0px 8px 0px 12px;
+    }
+}
+
 
 
 

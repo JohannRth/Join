@@ -11,9 +11,9 @@
     <script src="script.js" defer></script>
     <script src="./js/login.js" defer></script>
     <script src="./js/firebase.js" defer></script>
-    <script src="./assets/templates/load_header_sidebar.js"></script>
+    <script src="./assets/templates/loadHeaderSidebar.js"></script>
     <link rel="stylesheet" href="./assets/fonts/font.css" />
-    <link rel="stylesheet" href="./styles/side_header_template.css" />
+    <link rel="stylesheet" href="./styles/sideHeaderTemplate.css" />
     <link rel="stylesheet" href="./styles/summary.css">
     <!-- Link-Fonts -->
     <link rel="stylesheet" href="./assets/fonts/font.css" />
@@ -116,7 +116,7 @@
                 document.getElementById('greetUser').textContent = loggedInUser.name;
             } else {
                 // Falls kein Benutzer eingeloggt ist, Weiterleitung zur Login-Seite
-                // muss wieder aktiviert werden --> window.location.href = 'index.html';
+                window.location.href = 'index.html';
             }
         });
 

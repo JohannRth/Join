@@ -1,5 +1,59 @@
 let contactDropdownInitialized = false;
 
+function initializeAssignedToInput() {
+    const assignedToDiv = document.getElementById('assignedTo');
+    const contactsDiv = document.getElementById('contacts');
+    const contactList = document.getElementById('contactList');
+    let inputField = null;
+    const originalText = 'Select contacts to assign';
+
+    assignedToDiv.addEventListener('click', function(event) {
+        event.stopPropagation(); // Verhindert, dass der Klick auf das Dokument weitergeleitet wird
+        if (!inputField) {
+            contactsDiv.textContent = '';
+            
+            inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.className = 'inputSearchContacts'; // Neue Klasse hinzugefügt
+            contactsDiv.appendChild(inputField);
+            inputField.focus();
+
+            inputField.addEventListener('input', function() {
+                filterContacts(this.value);
+            });
+
+            contactList.addEventListener('click', function(e) {
+                if (e.target.closest('.contactItem')) {
+                    resetContactSelection();
+                }
+            });
+        }
+    });
+
+    // Event-Listener für Klicks auf das gesamte Dokument
+    document.addEventListener('click', function(event) {
+        if (inputField && !assignedToDiv.contains(event.target)) {
+            resetContactSelection();
+        }
+    });
+
+    function resetContactSelection() {
+        if (inputField) {
+            contactsDiv.textContent = originalText;
+            inputField = null;
+        }
+        filterContacts('');
+    }
+}
+
+function filterContacts(searchTerm) {
+    const contacts = document.querySelectorAll('.contactItem');
+    searchTerm = searchTerm.toLowerCase();
+    contacts.forEach(contact => {
+        const contactName = contact.textContent.toLowerCase();
+        contact.style.display = searchTerm === '' || contactName.includes(searchTerm) ? '' : 'none';
+    });
+}
 
 /**
  * This function initializes the contact dropdown
@@ -292,5 +346,4 @@ async function loadAndAddContacts(contactDropdown) {
         addExampleContacts(contactDropdown);
     }
 }
-
 
