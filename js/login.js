@@ -12,6 +12,11 @@ function guestLogin() {
     window.location.href = 'summary.html';
 }
 
+function validateEmail(email) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+}
+
 async function login(event) {
     event.preventDefault(); // Verhindert das standardmäßige Absenden des Formulars
 
