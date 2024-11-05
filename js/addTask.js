@@ -30,6 +30,7 @@ function init() {
     initializeContactDropdown();
     initializeCategoryDropdown();
     hideInputSubTaksClickContainerOnOutsideClick();
+    initializeAssignedToInput();
 }
 
 /**
