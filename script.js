@@ -81,6 +81,11 @@ async function register(event) {
     document.querySelector('form').reset();
 }
 
+function validateEmail(email) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+}
+
 function showSuccessMessage() {
     const successMessage = document.getElementById('successMessage');
     successMessage.classList.add('show');
