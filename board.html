@@ -270,35 +270,101 @@
     </div>
     <div class="card-overlay hidden" id="edit-overlay">
       <div class="edit-card-overlay">
+  
+          <!-- Header -->
           <div class="edit-card-header">
               <span></span>
               <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeEditOverlay()">
           </div>
+  
+          <!-- Body -->
           <div class="edit-card-body">
-              <div>
+              <div class="input-group-edit">
                   <span class="priority-line-overlay">Title</span>
                   <input class="inputAddTask" id="edit-title" type="text">
               </div>
-              <div>
+  
+              <div class="input-group-edit">
                   <span class="priority-line-overlay">Description</span>
                   <textarea class="textAreaAddTask" id="edit-description"></textarea>
               </div>
-              <div>
+  
+              <div class="input-group-edit">
                   <span class="date-line-overlay">Due date</span>
                   <input class="inputAddTaskDueDate" type="date" id="edit-due-date">
               </div>
-              <span class="priority-line-overlay">Priority</span>
-              <div class="prioButtonContainer">
-                  <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
-                  <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
-                  <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
+  
+              <!-- Priority Buttons -->
+              <div class="input-group-edit">
+                  <span class="priority-line-overlay">Priority</span>
+                  <div class="prioButtonContainer">
+                      <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
+                      <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
+                      <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
+                  </div>
               </div>
-              <div class="actions-overlay">
-                <button class="btn-check-edit" onclick="saveTask(taskId)">Save <img src="./assets/img/check.svg" alt=""></button>
+  
+              <!-- Assigned to Section -->
+              <div class="assignedAddTaskContainer">
+                  <span class="addTaskInputTitle">Assigned to</span>
+                  <div class="assignedAddTask" id="assignedToEdit" onclick="initializeContactDropdownEdit()">
+                      <div>
+                          <div class="selectedContactsHeadline" id="contactsEdit">Select contacts to assign</div>
+                      </div>
+                      <div class="dropDownImageAssignedToContainer">
+                          <img class="dropDownImageContacts" id="dropDownImageContactsEdit" src="./assets/img/arrow_drop_down.svg">
+                      </div>
+                  </div>
+                  <div class="contactDropdown" id="contactDropdownEdit"></div>
+                  <div id="aktivContactsEdit" class="aktivContacts"></div>
               </div>
+  
+              <!-- Subtasks Section -->
+              <div class="subTaskContainer">
+                <div class="inputContainer">
+                    <span class="addTaskInputTitle">Subtasks</span>
+                    <div class="subTaskInputContainer">
+                        <div>
+                            <input onclick="showInputSubTasksEdit()" onkeydown="if(event.key === 'Enter') addNewSubtaskEdit(event)" class="inputAddSubTask" type="text" id="subTaskInputEdit" placeholder="Add new subtask">
+                        </div>
+                        <div class="addSubTaskButtonContainer" id="addSubTaskButtonContainerEdit">
+                            <img onclick="showInputSubTasksEdit()" class="addSubTaskButton" id="addSubTaskButtonEdit" src="./assets/img/add dark.svg">
+                            <div class="inputSubTaksClickContainer" id="inputSubTaksClickContainerEdit">
+                                <div class="deleteCurrentTextButtonContainer">
+                                    <img onclick="deleteCurrentTextEdit()" class="deleteCurrentTextButton" src="./assets/img/clear-x-image.svg">
+                                </div>
+                                <div class="partingLine"></div>
+                                <div class="addNewTextButtonContainer">
+                                    <img onclick="addNewSubtaskEdit(event)" class="addNewTextButton" id="addNewTextButtonEdit" src="./assets/img/check-dark.svg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subTaskList" id="subTaskListEdit">
+                        <!-- Beispiel-Subtask-Eintrag -->
+                        <div class="subTask" onclick="editSubTaskEdit(0)">
+                            <div class="leftContainerSubTask">
+                                <!-- Text oder Checkbox des Subtasks -->
+                            </div>
+                            <div class="rightContainerSubTask">
+                                <!-- Editieren- und Löschen-Icons -->
+                                <img onclick="editSubtaskEdit(0)" src="./assets/img/edit.svg" alt="Edit">
+                                <img onclick="deleteSubtaskEdit(0)" src="./assets/img/delete.svg" alt="Delete">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+  
+              <!-- Ok Button -->
+              <div class="btn-check-edit-container">
+                  <button class="btn-check-edit" onclick="saveTask(taskId)">Ok <img src="./assets/img/check.svg" alt=""></button>
+              </div>
+  
           </div>
       </div>
   </div>
+  
     
 
     <script>
@@ -482,24 +548,145 @@ function dropTask(ev) {
 
 // Edit Card //
 function enableEditMode(taskId) {
-            const overlay = document.getElementById("edit-overlay");
-            overlay.classList.remove("hidden");  
-            document.body.classList.add("no-scroll");  
+    const overlay = document.getElementById("edit-overlay");
+    overlay.classList.remove("hidden");
+    document.body.classList.add("no-scroll");
 
-            const task = todos.find((t) => t.id === taskId);
+    // Finde die aktuelle Aufgabe, die bearbeitet wird
+    const task = todos.find((t) => t.id === taskId);
 
-            document.getElementById("edit-title").value = task.titel;
-            document.getElementById("edit-description").value = task.description;
-            document.getElementById("edit-due-date").value = task.dueDate ? task.dueDate.toISOString().split("T")[0] : "";
+    // Setze die aktuellen Werte im Overlay
+    document.getElementById("edit-title").value = task.titel;
+    document.getElementById("edit-description").value = task.description;
+    document.getElementById("edit-due-date").value = task.dueDate ? task.dueDate.toISOString().split("T")[0] : "";
 
-            if (task.priority === "urgent") {
-                setPriority("urgent");
-            } else if (task.priority === "medium") {
-                setPriority("medium");
-            } else {
-                setPriority("low");
-            }
-        }
+    // Setze die Priorität
+    if (task.priority === "urgent") {
+        setPriority("urgent");
+    } else if (task.priority === "medium") {
+        setPriority("medium");
+    } else {
+        setPriority("low");
+    }
+
+    // Anzeige der zugewiesenen Kontakte
+    const aktivContactsContainer = document.getElementById("aktivContactsEdit");
+    aktivContactsContainer.innerHTML = ""; // Vorherigen Inhalt entfernen
+
+    if (task.contacts && task.contacts.length > 0) {
+        task.contacts.forEach(contact => {
+            const initials = getInitials(contact);
+            const color = getColor(contact);
+            aktivContactsContainer.innerHTML += `<span class="person-circle" style="background-color: ${color};">${initials}</span>`;
+        });
+    } else {
+        aktivContactsContainer.innerHTML = "<span class='no-contacts'>No contacts assigned</span>";
+    }
+
+    // Anzeige der vorhandenen Subtasks
+    const subTaskListEdit = document.getElementById("subTaskListEdit");
+    subTaskListEdit.innerHTML = ""; // Vorherigen Inhalt entfernen
+
+    if (task.subtasks && task.subtasks.length > 0) {
+        task.subtasks.forEach((subtask, index) => {
+            subTaskListEdit.innerHTML += `
+                <div class="subtask-item" style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" 
+                           id="subtask-checkbox-${task.id}-${index}" 
+                           onclick="toggleSubtaskEdit('${task.id}', ${index})" 
+                           class="styled-checkbox"
+                           ${subtask.completed ? "checked" : ""}>
+                    <label for="subtask-checkbox-${task.id}-${index}">${subtask.title}</label>
+                </div>
+            `;
+        });
+    } else {
+        subTaskListEdit.innerHTML = "<span class='no-subtasks'>No subtasks added</span>";
+    }
+}
+
+function showInputSubTasksEdit() {
+    const inputContainer = document.getElementById('inputSubTaksClickContainerEdit');
+    inputContainer.style.display = 'flex';
+}
+
+function addNewSubtaskEdit(event) {
+    event.preventDefault();
+    const inputField = document.getElementById('subTaskInputEdit');
+    const subTaskList = document.getElementById('subTaskListEdit');
+    const subtaskText = inputField.value.trim();
+
+    if (subtaskText) {
+        const newSubtaskItem = document.createElement('div');
+        newSubtaskItem.classList.add('subTask');
+        newSubtaskItem.setAttribute("onclick", "editSubTaskEdit(0)"); // Zum Bearbeiten klicken
+        newSubtaskItem.innerHTML = `
+            <div class="leftContainerSubTask">
+                <input type="checkbox" class="styled-checkbox"> <!-- Optional: Checkbox -->
+                <label>${subtaskText}</label>
+            </div>
+            <div class="rightContainerSubTask">
+                <img onclick="editSubtaskEdit(0)" src="./assets/img/edit.svg" alt="Edit">
+                <img onclick="deleteSubtaskEdit(0)" src="./assets/img/delete.svg" alt="Delete">
+            </div>
+        `;
+        subTaskList.appendChild(newSubtaskItem);
+
+        // Eingabefeld leeren und Eingabecontainer ausblenden
+        inputField.value = '';
+        document.getElementById('inputSubTaksClickContainerEdit').style.display = 'none';
+    }
+}
+
+function editSubtaskEdit(index) {
+    // Hole den Subtask-Eintrag aus dem DOM
+    const subTaskList = document.getElementById('subTaskListEdit');
+    const subTaskItem = subTaskList.children[index];
+    
+    // Beispiel: Ändere den Text oder aktiviere das Bearbeiten
+    const label = subTaskItem.querySelector('label');
+    const newText = prompt("Edit subtask:", label.innerText);
+    if (newText) {
+        label.innerText = newText;
+    }
+}
+
+function deleteSubtaskEdit(index) {
+    const subTaskList = document.getElementById('subTaskListEdit');
+    const subTaskItem = subTaskList.children[index];
+    subTaskList.removeChild(subTaskItem);
+}
+
+async function saveTask(taskId) {
+    if (!taskId) return; // Sicherheitsprüfung
+    const updatedTitle = document.getElementById("edit-title").value;
+    const updatedDescription = document.getElementById("edit-description").value;
+    const updatedDueDate = document.getElementById("edit-due-date").value;
+    
+    const priority = getSelectedPriority();
+
+    // Finde die Aufgabe im `todos` Array und aktualisiere die Werte
+    const taskIndex = todos.findIndex((t) => t.id === taskId);
+    if (taskIndex > -1) {
+        todos[taskIndex].titel = updatedTitle;
+        todos[taskIndex].description = updatedDescription;
+        todos[taskIndex].dueDate = updatedDueDate;
+        todos[taskIndex].priority = priority;
+    }
+
+    // Aktualisierung in Firebase oder einer anderen Datenbank, falls erforderlich
+    const path = `tasks/${taskId}`;
+    await updateData(path, {
+        title: updatedTitle,
+        description: updatedDescription,
+        dueDate: updatedDueDate,
+        prio: priority
+    });
+
+    // Schließen Sie das Bearbeitungs-Overlay und öffnen Sie die erweiterte Karte
+    closeEditOverlay();
+    openCardOverlay(taskId); // Öffnet die erweiterte Ansicht mit den aktualisierten Daten
+}
 
         function closeEditOverlay() {
             const overlay = document.getElementById("edit-overlay");
@@ -986,6 +1173,22 @@ function openCardOverlay(taskId) {
       }
   }
 // Todo's position //
+
+// cross link //
+document.addEventListener("DOMContentLoaded", () => {
+    const crossTitleButtons = document.querySelectorAll(".cross-titel-button");
+
+    crossTitleButtons.forEach(button => {
+        button.addEventListener("click", openAddTaskOverlay);
+    });
+});
+
+function openAddTaskOverlay() {
+    const overlay = document.getElementById("add-task-overlay");
+    overlay.classList.remove("hidden");
+    document.body.classList.add("no-scroll"); // Verhindert das Scrollen im Hintergrund
+}
+// cross link //
 
     </script>
   </body>

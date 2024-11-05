@@ -330,7 +330,7 @@ body.no-scroll {
   /* Erweiterte Titel-Karte */
   .expanded-card-overlay {
     width: 525px;
-    height: 830px;
+    height: 810px;
     border-radius: 30px;
     padding: 48px 40px;
     background-color: white;
@@ -380,7 +380,7 @@ body.no-scroll {
 
    .task-title-overlay {
     width: 345px;
-    height: 120px;
+    height: 140px;
     font-weight: 700;
     font-size: 61px;
     color: #000000;
@@ -391,7 +391,7 @@ body.no-scroll {
 
   .task-description-overlay {
     width: 445px;
-    height: 54px;
+    height: 50px;
     font-weight: 400;
     font-size: 20px;
     color: #000000;
@@ -685,7 +685,7 @@ body.no-scroll {
     width: 525px;
     height: 820px;
     border-radius: 30px;
-    padding: 48px 40px;
+    padding: 32px 40px;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -707,5 +707,16 @@ body.no-scroll {
   .edit-card-body {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
+  }
+
+  .input-group-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Abstand von 8px zwischen span und Input */
+    margin-bottom: 16px; /* Abstand zwischen den Gruppen */
+  }
+  
+  .aktivContacts{
+    gap: 15px;
   }
