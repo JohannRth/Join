@@ -435,3 +435,20 @@ body {
     font-weight: 700;
     color: #29ABE2;
 }
+
+
+/* ///////////////////////////////////////Mobile-Screen//////////////////////////////////////////////////// */
+
+@media (max-width: 1020px) {
+
+    .title-container  {
+        margin-left: 98px;
+        width: unset;
+        height: unset;
+    }
+
+    .main-summary  {
+        margin-left: 98px;
+        width: unset;
+    }
+}
