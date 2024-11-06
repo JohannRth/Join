@@ -10,27 +10,6 @@ body.no-scroll {
   font-family: "Inter", sans-serif;
 }
 
-  .card-overlay.hidden {
-    display: none;
-    opacity: 0;
-  }
-
-  /* Erweiterte Titel-Karte */
-  .expanded-card-overlay {
-    width: 525px;
-    height: 830px;
-    border-radius: 30px;
-    padding: 48px 40px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    position: relative;
-    box-shadow: 0px 0px 4px 0px #00000029;
-    animation: slideInOverlay 0.5s forwards;
-    overflow-y: auto;
-}
-
 .board-add-task {
   width: 1056px;
   height: 73px;
@@ -343,20 +322,33 @@ body.no-scroll {
 }
 
 /* Erweiterte Titel-Karte */
-.expanded-card-overlay {
+.around-container-epended-card{
   width: 525px;
-  height: 810px;
+  height: 800px;
   border-radius: 30px;
-  padding: 48px 40px;
+  background-color: white;
+  animation: slideInOverlay 0.5s forwards;
+  display: flex;
+  justify-content: center;
+}
+
+.expanded-card-overlay {
+  width: 513px;
+  min-height: 650px;
+  padding: 36px 20px;
   background-color: white;
   display: flex;
   flex-direction: column;
+  border-radius: 30px;
   gap: 24px;
-  position: relative;
-  box-shadow: 0px 0px 4px 0px #00000029;
-  animation: slideInOverlay 0.5s forwards;
   overflow-y: auto;
 }
+
+.expanded-card-overlay::-webkit-scrollbar-track {
+  margin-top: 50px; 
+  margin-bottom: 50px; 
+}
+
 
 @keyframes slideInOverlay {
   from {
@@ -381,25 +373,26 @@ body.no-scroll {
 }
 
 .task-title-overlay {
-  width: 430px;
-  height: 240px;
+  width: 445px;
+  min-height: 150px; 
+  max-height: 250px; 
   font-weight: 700;
   font-size: 61px;
   color: #000000;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-}
+  line-height: 1.2; 
+  overflow-wrap: break-word;
+  overflow-y: auto; 
+}  
 
 .task-description-overlay {
-  width: 445px;
-  height: 50px;
+  min-height: 80px; 
+  max-height: 250px; 
   font-weight: 400;
   font-size: 20px;
   color: #000000;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
+  line-height: 1.2; 
+  overflow-wrap: break-word;
+  overflow-y: auto;
 }
 
 .due-date-overlay {
@@ -440,6 +433,11 @@ body.no-scroll {
   color: #2a3647;
 }
 
+.priority-focus-img-container{
+  display: flex;
+  align-items: center;
+}
+
 .priority-focus-overlay {
   font-size: 20px;
   font-weight: 400;
@@ -447,11 +445,9 @@ body.no-scroll {
 }
 
 .task-assigned-container-overlay {
-  width: 445px;
-  height: 110px;
+  width: 449px;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
 }
 
 .task-assigned-line-overlay {
@@ -494,7 +490,7 @@ body.no-scroll {
 
 .subtask-conatiner-overlay {
   width: 445px;
-  height: 100px;
+  margin-top: 1px;
   gap: 8px;
   display: flex;
   flex-direction: column;
@@ -511,11 +507,9 @@ body.no-scroll {
 
 .subtasks-box-overlay {
   width: 445px;
-  height: 68px;
   gap: 4px;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
   padding-left: 16px;
 }
 
@@ -528,6 +522,32 @@ body.no-scroll {
   justify-content: center;
   font-size: 16px;
   font-weight: 400;
+}
+
+/* Aktion overlay*/
+.actions-overlay {
+  display: flex;
+  justify-content: flex-end;
+  bottom: 48px;
+  right: 40px;
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn-overlay {
+  width: 81px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+  font-weight: 400;
+  font-size: 16px;
+  color: #2a3647;
+}
+
+.card-overlay.hidden {
+  display: none;
 }
 
 /* Styles nur für Add-Task-Container */
@@ -623,31 +643,6 @@ body.no-scroll {
   /* kein Häkchen */
 }
 
-/* Aktion overlay*/
-.actions-overlay {
-  position: absolute;
-  bottom: 48px;
-  right: 40px;
-  display: flex;
-  gap: 8px;
-}
-
-.action-btn-overlay {
-  width: 81px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  gap: 8px;
-  font-weight: 400;
-  font-size: 16px;
-  color: #2a3647;
-}
-
-.card-overlay.hidden {
-  display: none;
-}
-
 .required-button-expanded-conatiner {
   display: flex;
   justify-content: space-between;
@@ -659,6 +654,12 @@ body.no-scroll {
   height: 56px;
   display: flex;
   justify-content: center;
+}
+
+.btn-check-edit-container{
+  width: 440px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .btn-check-edit {
@@ -675,19 +676,29 @@ body.no-scroll {
   align-items: center;
 }
 
-.edit-card-overlay {
+.edit-card-around{
   width: 525px;
   height: 820px;
+  border-radius: 30px;
+  background-color: white;
+  animation: slideInOverlay 0.5s forwards;
+}
+
+.edit-card-overlay {
+  width: 513px;
+  height: 808px;
   border-radius: 30px;
   padding: 32px 40px;
   background-color: white;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  position: relative;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  animation: slideInOverlay 0.5s forwards;
   overflow-y: auto;
+}
+
+.edit-card-overlay::-webkit-scrollbar-track {
+  margin-top: 40px; 
+  margin-bottom: 40px; 
 }
 
 .edit-card-header {
@@ -708,9 +719,21 @@ body.no-scroll {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  /* Abstand von 8px zwischen span und Input */
   margin-bottom: 16px;
-  /* Abstand zwischen den Gruppen */
+}
+
+.edit-subtask-textarea {
+  width: 100%;
+  resize: none;
+  font-size: 14px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.save-subtask-button {
+  margin-top: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
 .aktivContacts {
