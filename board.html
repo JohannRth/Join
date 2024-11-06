@@ -87,6 +87,7 @@
 
     <!-- Erweiterte Karte im Overlay -->
     <div class="card-overlay hidden" id="card-overlay">
+    <div class="around-container-epended-card"> 
       <div class="expanded-card-overlay">
         <div class="user-story-overlay">User Story</div>
         <img
@@ -137,6 +138,7 @@
           />
         </div>
       </div>
+    </div>  
     </div>
     <div class="card-overlay hidden" id="add-task-overlay" onclick="closeAddTaskOverlay(event)">
         <div class="add-task-overlay">
@@ -873,7 +875,8 @@ function showSaveConfirmation() {
     `).join('');
 
     return `
-    <div class="expanded-card-overlay">
+    <div class="around-container-epended-card">    
+      <div class="expanded-card-overlay">
         <div class="close-story-container-overlay">
             <div class="user-story-overlay" style="${taskTypeStyle}">${element["type"]}</div>
             <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeCardOverlay()">
@@ -915,7 +918,8 @@ function showSaveConfirmation() {
                 <img src="./assets/img/edit.svg" alt="edit">Edit
             </p>
         </div>
-    </div>`;
+      </div>
+    </div> `;
 }
 
 // Subtasks //

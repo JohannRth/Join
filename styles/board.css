@@ -330,7 +330,7 @@ body.no-scroll {
   /* Erweiterte Titel-Karte */
   .expanded-card-overlay {
     width: 525px;
-    height: 810px;
+    height: 830px;
     border-radius: 30px;
     padding: 48px 40px;
     background-color: white;
@@ -380,7 +380,7 @@ body.no-scroll {
 
    .task-title-overlay {
     width: 430px;
-    height: 240px;
+    height: 150px;
     font-weight: 700;
     font-size: 61px;
     color: #000000;
@@ -456,7 +456,7 @@ body.no-scroll {
 
   .task-assigned-container-overlay {
     width: 445px;
-    height: 110px;
+    height: 120px;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;  
