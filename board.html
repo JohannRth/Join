@@ -672,6 +672,69 @@ function loadSubtasksForEdit(taskId) {
     }
 }
 
+async function initializeContactDropdownEdit() {
+    const dropdown = document.getElementById("contactDropdownEdit");
+    dropdown.innerHTML = ""; // Clear existing dropdown items
+
+    try {
+        // Fetch contacts data from Firebase
+        const contactsData = await firebase.database().ref("contacts").once("value");
+        const contacts = contactsData.val();
+
+        if (contacts) {
+            Object.keys(contacts).forEach(contactId => {
+                const contact = contacts[contactId];
+                const name = contact.name || "Unnamed";
+                const initials = getInitials(name);
+                const color = getColor(name);
+
+                // Create a new dropdown item
+                const dropdownItem = document.createElement("div");
+                dropdownItem.classList.add("dropdown-item");
+                dropdownItem.innerHTML = `
+                    <span class="person-circle" style="background-color: ${color};">${initials}</span>
+                    <span>${name}</span>
+                    <input type="checkbox" data-contact-id="${contactId}">
+                `;
+                
+                dropdownItem.querySelector("input").addEventListener("change", (e) => {
+                    if (e.target.checked) {
+                        addContactToAssignedList(name, color, initials);
+                    } else {
+                        removeContactFromAssignedList(contactId);
+                    }
+                });
+
+                dropdown.appendChild(dropdownItem);
+            });
+        }
+    } catch (error) {
+        console.error("Error loading contacts from Firebase:", error);
+    }
+}
+
+// Helper function to add selected contact to assigned list
+function addContactToAssignedList(name, color, initials) {
+    const assignedContainer = document.getElementById("aktivContactsEdit");
+    const assignedItem = document.createElement("span");
+    assignedItem.classList.add("person-circle");
+    assignedItem.style.backgroundColor = color;
+    assignedItem.textContent = initials;
+    assignedContainer.appendChild(assignedItem);
+}
+
+// Helper function to remove contact from assigned list
+function removeContactFromAssignedList(contactId) {
+    const assignedContainer = document.getElementById("aktivContactsEdit");
+    const contactItems = assignedContainer.querySelectorAll(".person-circle");
+
+    contactItems.forEach(item => {
+        if (item.getAttribute("data-contact-id") === contactId) {
+            assignedContainer.removeChild(item);
+        }
+    });
+}
+
 function showInputSubTasksEdit() {
     const inputContainer = document.getElementById('inputSubTaksClickContainerEdit');
     inputContainer.style.display = 'flex';
