@@ -46,6 +46,11 @@
         width: 289px;
     }
 
+    .inputSearchContacts {
+        width: 250px;
+        height: 37px;  
+    }
+
     .inputContainerDueDate {
         width: 100%;
     }

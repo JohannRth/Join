@@ -221,6 +221,12 @@
         width: 342px;
     }
 
+    .inputSearchContacts {
+      width: 300px;
+      height: 37px;  
+      font-size: 16px;
+    }
+
     .inputAddTaskDueDate {
         width: 341px;
         height: 40px;
