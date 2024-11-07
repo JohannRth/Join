@@ -139,7 +139,7 @@
 .customDropdown {
     position: relative;
     width: 100%;
-    height: 50px;
+    height: 49.5px;
     cursor: pointer;
     border: 1px solid rgba(128, 128, 128, 0);
 }
