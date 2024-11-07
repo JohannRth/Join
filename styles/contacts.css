@@ -25,7 +25,6 @@
     border-radius: 15px;
 }
 
-/*/////////////////////////////////////////////////////////////////////////////////////*/
 @keyframes slideInRight {
     from {
         transform: translateX(100%);
@@ -38,7 +37,6 @@
     }
 }
 
-/* Animation für das Verschwinden nach unten */
 @keyframes slideOutDown {
     from {
         transform: translateY(0);
@@ -51,7 +49,6 @@
     }
 }
 
-/*/////////////////////////////////////////////////////////////////////////////////////*/
 .contact-headline {
     display: flex;
     align-items: center;
@@ -160,6 +157,13 @@ button#addContactBtn:hover {
     font-size: 16px;
     font-weight: 400;
     color: #007CEE;
+    padding: 0px;
+}
+
+.contact-info-mail-details {
+    font-size: 16px;
+    font-weight: 400;
+    color: #007CEE;
     padding: 12px 0px;
 }
 
@@ -182,17 +186,16 @@ button#addContactBtn:hover {
 .contact-details {
     margin-top: 20px;
     margin-left: 60px;
-    /*/////////////////////////////////////////////////////////////////////////////////////*/
+   
     position: relative;
     transition: all 0.5s ease;
     opacity: 0;
     display: none;
     animation-fill-mode: forwards;
     transform: translateX(0);
-    /*/////////////////////////////////////////////////////////////////////////////////////*/
+
 }
 
-/*/////////////////////////////////////////////////////////////////////////////////////*/
 .contact-details.active {
     display: flex;
     flex-direction: column;
@@ -200,16 +203,11 @@ button#addContactBtn:hover {
     animation: slideInRight 0.5s ease;
 }
 
-/*/////////////////////////////////////////////////////////////////////////////////////*/
-/*/////////////////////////////////////////////////////////////////////////////////////*/
-/* Kontakt-Details beim Verstecken */
 .contact-details.fade-out {
     animation: slideOutDown 0.5s ease;
     opacity: 0;
     display: block;
 }
-
-/*/////////////////////////////////////////////////////////////////////////////////////*/
 
 .contact-details-header {
     display: flex;
@@ -283,7 +281,6 @@ button#addContactBtn:hover {
 .active-contact {
     background-color: #2A3647 !important;
     color: white;
-    /* Der Text wird weiß, damit er gut lesbar ist */
 }
 
 .active-contact:hover {
@@ -337,7 +334,6 @@ button#addContactBtn:hover {
         width: 380px;
     }
 }
-
 
 @media (max-width: 1020px) {
 

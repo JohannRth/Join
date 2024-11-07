@@ -1,5 +1,3 @@
-/* Modal Styles for Add Contact */
-
 .modal {
     display: none;
     justify-content: center;
@@ -14,7 +12,6 @@
     backdrop-filter: blur(5px);
 }
 
-/* Keyframes für die Slide-In-Animation */
 @keyframes slideInFromRight {
     0% {
         transform: translateX(100%);
@@ -27,7 +24,6 @@
     }
 }
 
-/* Keyframes für die Slide-Out-Animation */
 @keyframes slideOutToRight {
     0% {
         transform: translateX(0);
@@ -40,12 +36,10 @@
     }
 }
 
-/* CSS für das Add Contact Modal, während es angezeigt wird */
 .add-contact-modal-content {
     animation: slideInFromRight 0.12s ease-out forwards;
 }
 
-/* CSS für das Add Contact Modal, während es geschlossen wird */
 .add-contact-modal-content.slide-out {
     animation: slideOutToRight 0.12s ease-out forwards;
 }
@@ -261,7 +255,6 @@ input#newContactPhone {
     text-align: center;
 }
 
-/* Keyframes für Slide-In von unten */
 @keyframes slideInBottom {
     0% {
         transform: translate(-50%, 100%);
@@ -274,7 +267,6 @@ input#newContactPhone {
     }
 }
 
-/* Erfolgsmeldung-Popup */
 .success {
     width: 312px;
     height: 65px;
@@ -288,169 +280,14 @@ input#newContactPhone {
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: none;
-    /* Standardmäßig ausgeblendet */
     justify-content: center;
     align-items: center;
     opacity: 0;
     pointer-events: none;
-    /* Verhindert, dass Popup fälschlicherweise angeklickt werden kann */
 }
 
 .success.show {
     display: flex;
-    /* Sichtbar machen */
     animation: slideInBottom 0.5s forwards;
-    /* Slide-In Animation anwenden */
     pointer-events: auto;
-    /* Klicks auf das Popup erlauben */
 }
-
-@media (max-width:1200px) {
-
-    .add-contact-modal-content {
-        zoom: 90%;
-    }
-}
-
-@media (max-width:1020px) {
-
-    .add-contact-modal-content {
-        zoom: 80%;
-    }
-}
-
-@media (max-width:900px) {
-
-    .add-contact-modal-content {
-        zoom: 75%;
-    }
-}
-
-@media (max-width:800px) {
-
-    .add-contact-modal-content {
-        zoom: 100%;
-    }
-
-    .add-contact-modal-content {
-        display: flex;
-        width: 95%;
-        height: 80%;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        flex-direction: column;
-    }
-
-    .add-contact-left {
-        background-color: #2A3647;
-        color: white;
-        padding: 0px 0px 0px 48px;
-        width: unset;
-        height: 45%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        text-align: center;
-    }
-
-    .add-contact-left h2 {
-        font-size: 47px;
-    }
-
-    .add-contact-left p {
-        font-size: 20px;
-    }
-
-    .add-contact-right {
-        background-color: #fff;
-        width: unset;
-        height: 55%;
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-
-    .profileImg {
-        position: absolute;
-        top: -70px;
-        margin-left: unset;
-        margin-bottom: unset;
-    }
-
-    #addContactForm {
-        gap: 15px;
-    }
-
-    .cancel-display-none {
-        display: none;
-    }
-
-    .main-board-content {
-        display: none !important;
-        flex-direction: column;
-    }
-
-    .contacts-list {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .form-actions {
-        justify-content: center;
-    }
-
-    .add-contact-right {
-        background-color: #fff;
-        width: unset;
-        height: 55%;
-        position: relative;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    #addContactForm {
-        width: 90%;
-        margin-left: unset;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .add-contact-right .close {
-        display: none;
-    }
-
-    .add-contact-left .close {
-        display: flex;
-        width: 45px;
-    }
-
-    .modal-logo {
-        display: none;
-    }
-
-    button#addContactBtn {
-        display: none;
-    }
-}
-
-@media (max-width:500px) {
-
-    .add-contact-left {
-        padding: 0px 8px 0px 12px;
-    }
-}
-
-
-
-
-
-
-
-

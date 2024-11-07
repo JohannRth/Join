@@ -1,4 +1,9 @@
-// Funktion, um die Details eines Kontakts in den Kontakt-Details-Bereich einzufügen
+/**
+ * Renders the contact details in the contact details section.
+ * @function renderContactDetails
+ * @param {Object} contact - The contact object to render.
+ * @returns {void}
+ */
 function renderContactDetails(contact) {
     const contactDetails = document.getElementById('contactDetails');
     if (contactDetails) {
@@ -18,7 +23,7 @@ function renderContactDetails(contact) {
             <div class="contact-details-body">
                 <h3>Contact Information</h3>
                 <p><strong>Email</strong></p>
-                <p class="contact-info-mail">${contact.email}</p>
+                <p class="contact-info-mail-details">${contact.email}</p>
                 <p><strong>Phone</strong></p>
                 <p class="contact-details-phone">${contact.phone}</p>
             </div>
@@ -26,7 +31,16 @@ function renderContactDetails(contact) {
     }
 }
 
-// Funktion zum Generieren des Modal-HTML
+/**
+ * Generates the HTML content for the Add/Edit Contact modal.
+ * @function getContactModalHTML
+ * @param {Object|null} contact - The contact object to edit, or null to add a new contact.
+ * @param {boolean} isEditMode - Whether the modal is in edit mode.
+ * @param {string} contactKey - The key of the contact being edited.
+ * @param {string} initials - The initials of the contact.
+ * @param {string} color - The background color for the contact icon.
+ * @returns {string} The HTML string for the modal content.
+ */
 function getContactModalHTML(contact, isEditMode, contactKey, initials, color) {
     return `
         <div class="add-contact-modal-content">
@@ -55,7 +69,7 @@ function getContactModalHTML(contact, isEditMode, contactKey, initials, color) {
                         <span class="error-message" id="nameError"></span>
                     </div>
                     <div class="form-group">
-                        <input type="email" id="newContactEmail" placeholder="Email" autocomplete="email" value="${isEditMode ? contact.email : ''}">
+                        <input type="text" id="newContactEmail" placeholder="Email" autocomplete="email" value="${isEditMode ? contact.email : ''}">
                         <span class="error-message" id="emailError"></span>
                     </div>
                     <div class="form-group">
@@ -76,7 +90,12 @@ function getContactModalHTML(contact, isEditMode, contactKey, initials, color) {
     `;
 }
 
-// Funktion zum Generieren des Modal-HTML
+/**
+ * Generates the HTML content for the Contact Information modal.
+ * @function getContactInfoModalHTML
+ * @param {Object} contact - The contact object to display.
+ * @returns {string} The HTML string for the contact information modal.
+ */
 function getContactInfoModalHTML(contact) {
     return `
         <div class="contact-info-modal-content">
