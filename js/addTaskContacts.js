@@ -1,32 +1,19 @@
 let contactDropdownInitialized = false;
 
+let inputField = null;
+const originalText = 'Select contacts to assign';
+
 function initializeAssignedToInput() {
     const assignedToDiv = document.getElementById('assignedTo');
     const contactsDiv = document.getElementById('contacts');
     const contactList = document.getElementById('contactList');
-    let inputField = null;
-    const originalText = 'Select contacts to assign';
 
     assignedToDiv.addEventListener('click', function(event) {
-        event.stopPropagation(); // Verhindert, dass der Klick auf das Dokument weitergeleitet wird
+        event.stopPropagation();
         if (!inputField) {
-            contactsDiv.textContent = '';
-            
-            inputField = document.createElement('input');
-            inputField.type = 'text';
-            inputField.className = 'inputSearchContacts'; // Neue Klasse hinzugefügt
-            contactsDiv.appendChild(inputField);
-            inputField.focus();
-
-            inputField.addEventListener('input', function() {
-                filterContacts(this.value);
-            });
-
-            contactList.addEventListener('click', function(e) {
-                if (e.target.closest('.contactItem')) {
-                    resetContactSelection();
-                }
-            });
+            createInputField();
+        } else {
+            resetContactSelection();
         }
     });
 
@@ -37,6 +24,19 @@ function initializeAssignedToInput() {
         }
     });
 
+    function createInputField() {
+        contactsDiv.textContent = '';
+        inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.className = 'inputSearchContacts';
+        contactsDiv.appendChild(inputField);
+        inputField.focus();
+
+        inputField.addEventListener('input', function() {
+            filterContacts(this.value);
+        });
+    }
+
     function resetContactSelection() {
         if (inputField) {
             contactsDiv.textContent = originalText;
@@ -46,6 +46,7 @@ function initializeAssignedToInput() {
     }
 }
 
+
 function filterContacts(searchTerm) {
     const contacts = document.querySelectorAll('.contactItem');
     searchTerm = searchTerm.toLowerCase();
@@ -54,6 +55,7 @@ function filterContacts(searchTerm) {
         contact.style.display = searchTerm === '' || contactName.includes(searchTerm) ? '' : 'none';
     });
 }
+
 
 /**
  * This function initializes the contact dropdown
@@ -185,10 +187,10 @@ function updateActiveContacts(contact, isChecked) {
  * @param {string} contact - The contact to add
  * @param {HTMLElement} contactDropdown - The dropdown element
  */
-function addContact(contact, contactDropdown) {
+function addContact(contact, contactDropdown, loggedInUserPlusYou = '') {
     let contactItem = document.createElement('div');
     contactItem.className = 'contactItem';
-    contactItem.innerHTML = addContactTemplate(contact);
+    contactItem.innerHTML = addContactTemplate(contact, loggedInUserPlusYou);
     let checkbox = contactItem.querySelector('.contactCheckbox');
     contactItem.addEventListener('click', (event) => {
         if (event.target !== checkbox) {
@@ -210,8 +212,8 @@ function addContact(contact, contactDropdown) {
  */
 function sortContactAlphabetically(container, newItem) {
     let contactName = newItem.querySelector('.contactName').textContent;
-    let items = container.querySelectorAll('.contactItem');
-    let insertIndex = Array.from(items).findIndex(item => 
+    let items = Array.from(container.querySelectorAll('.contactItem'));
+    let insertIndex = items.findIndex(item => 
         item.querySelector('.contactName').textContent.localeCompare(contactName) > 0
     );
     if (insertIndex === -1) {
@@ -219,8 +221,20 @@ function sortContactAlphabetically(container, newItem) {
     } else {
         container.insertBefore(newItem, items[insertIndex]);
     }
+    moveLoggedInUserToTop(container);
 }
 
+function moveLoggedInUserToTop(container) {
+    let loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (loggedInUser) {
+        let loggedInUserItem = Array.from(container.querySelectorAll('.contactItem'))
+            .find(item => item.querySelector('.contactName').textContent.includes(loggedInUser.name));
+        
+        if (loggedInUserItem) {
+            container.insertBefore(loggedInUserItem, container.firstChild);
+        }
+    }
+}
 
 /**
  * This function toggles the state of a contact
@@ -310,16 +324,30 @@ function getColor(name) {
 }
 
 
+function addLoggedInUserToDropdown() {
+    let loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (loggedInUser && loggedInUser.name) {
+        const contactDropdown = document.getElementById('contactDropdown');
+        const contactName = loggedInUser.name;
+        addContact(contactName, contactDropdown, '(You)');
+    }
+}
+
+
+
 /**
  * This function initializes the contact dropdown asynchronously@returns {Promise}
  * 
  *
  */
-async function initializeContactDropdown() {
+function initializeContactDropdown() {
     if (contactDropdownInitialized) return;
     let elements = getElements();
     setupEventListeners(elements);
-    await loadAndAddContacts(elements.contactDropdown);
+    loadAndAddContacts(elements.contactDropdown).then(() => {
+        addLoggedInUserToDropdown();
+        moveLoggedInUserToTop(elements.contactDropdown);
+    });
     contactDropdownInitialized = true;
     document.addEventListener('click', (event) => {
         if (!elements.assignedTo.contains(event.target) && !elements.contactDropdown.contains(event.target)) {

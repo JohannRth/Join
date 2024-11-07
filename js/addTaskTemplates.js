@@ -4,14 +4,14 @@
  * @param {string} contact - The name of the contact
  * @returns {string} HTML template for the contact
  */
-function addContactTemplate(contact) {
+function addContactTemplate(contact, loggedInUserPlusYou = '') {
     return `
         <div class="contactIconAndName">
             <div class="contactIcon" style="background-color: ${getColor(contact)};">
                 ${getInitials(contact)}
             </div>
             <div>
-                <span class="contactName">${contact}</span>
+                <span class="contactName">${contact}${loggedInUserPlusYou}</span>
             </div>
         </div>
         <div>
