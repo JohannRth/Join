@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: addTaskAsync.js</title>
+    <title>JSDoc: Source: contacts/contactsEvents.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: addTaskAsync.js</h1>
+    <h1 class="page-title">Source: contacts/contactsEvents.js</h1>
 
     
 
@@ -27,140 +27,257 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * This function collects and validates task data from the form
- * 
- * @returns {Object|null} The collected task data if valid, null otherwise
- * 
+ * Initializes the application by loading contacts and setting up event listeners.
+ * @event DOMContentLoaded
+ * @fires loadContacts
+ * @fires setupAddContactButton
+ * @fires setupAddContactForm
+ * @fires setupCloseModalButton
+ * @fires setupWindowClickCloseModal
  */
-function collectAndValidateTaskData() {
-    let title = document.getElementById('title').value.trim();
-    let description = document.getElementById('description').value.trim();
-    let dueDate = document.getElementById('date').value;
-    let category = document.getElementById('selectedCategory').textContent.trim();
-    let prio = getSelectedPriority(); 
-    let assignedTo = getAssignedContacts(); 
-    let subtasks = [...subTasks]; 
-    let isValid = validateTaskForm(title, dueDate, category);
-    if (!isValid) {
-        console.log('Form validation failed.');
-        return null;
-    } return {
-        title, description, assignedTo, dueDate, prio, category, subtasks, createdAt: new Date().toISOString()
-    };
-}
-
+document.addEventListener('DOMContentLoaded', () => {
+    loadContacts(); // Load contacts
+    setupAddContactButton();
+    setupAddContactForm();
+    setupCloseModalButton();
+    setupWindowClickCloseModal();
+});
 
 /**
- * This function saves a task to the database
- * 
- * @param {Object} task - The task object to be saved
- * @returns {Object|null} The saved task with its key if successful, null otherwise
+ * Handles window resize events to adjust the UI based on screen size.
+ * @event resize
+ * @param {Event} event - The resize event.
  */
-async function saveTaskToDatabase(task) {
-    try {
-        let result = await saveData('tasks', task);
-        console.log('Task successfully created with key:', result.name);
-        task.key = result.name;
-        return task;
-    } catch (error) {
-        console.error('Error creating task:', error);
-        showErrorNotification('Fehler beim Erstellen der Aufgabe. Bitte versuchen Sie es erneut.');
-        return null;
+window.addEventListener('resize', () => {
+    if (isSmallScreen()) {
+        removeActiveContactMarker();
+        hideMainContent();
+    } else {
+        closeContactInfoModal();
+        showMainContent();
     }
-}
-
+});
 
 /**
- * This function coordinates the entire process of creating a new task
- *  
+ * Handles click events for edit and delete buttons within the contact details.
+ * @event click
+ * @param {Event} event - The click event.
  */
-async function createNewTask() {
-    let taskData = collectAndValidateTaskData();
-    if (!taskData) return;
-    let savedTask = await saveTaskToDatabase(taskData);
-    if (savedTask) {
-        newTasks.push(savedTask);
-        resetNewTask();
-        showTaskAddedNotification();
+document.addEventListener('click', event => {
+    const editBtn = event.target.closest('.edit-button');
+    const deleteBtn = event.target.closest('.delete-button');
+
+    if (editBtn) {
+        const contactDetailsHeader = editBtn.closest('.contact-details-header');
+        if (contactDetailsHeader) {
+            const contactKey = contactDetailsHeader.dataset.contactKey;
+            if (contactKey) {
+                const contact = contacts.find(c => c.key === contactKey);
+                if (contact) {
+                    openAddContactModal(contact);
+                    // Close the contact information modal if open
+                    closeContactInfoModal();
+                }
+            }
+        }
     }
-}
 
-
-/**
- * This function determines the selected priority for a task
- * 
- * @returns {string} The selected priority ('urgent', 'medium', or 'low')
- */
-function getSelectedPriority() {
-    let prio = '';
-    if (document.querySelector('.prioButtonUrgent.active')) {
-        prio = 'urgent';
-    } else if (document.querySelector('.prioButtonMedium.active')) {
-        prio = 'medium';
-    } else if (document.querySelector('.prioButtonLow.active')) {
-        prio = 'low';
+    if (deleteBtn) {
+        const contactDetailsHeader = deleteBtn.closest('.contact-details-header');
+        if (contactDetailsHeader) {
+            const contactKey = contactDetailsHeader.dataset.contactKey;
+            if (contactKey) {
+                deleteContact(contactKey);
+                // Close the contact information modal if open
+                closeContactInfoModal();
+            }
+        }
     }
-    return prio;
-}
-
+});
 
 /**
- * This function collects the assigned contacts for a task
- * 
- * @returns {Array} An array of assigned contact names
+ * Sets up event listeners for all "Add Contact" buttons.
+ * @function setupAddContactButton
+ * @returns {void}
  */
-function getAssignedContacts() {
-    let aktivContactsDiv = document.getElementById('aktivContacts');
-    let contacts = [];
-    aktivContactsDiv.querySelectorAll('span.contactIcon').forEach(contactSpan => {
-        contacts.push(contactSpan.dataset.contact); 
+function setupAddContactButton() {
+    const addContactButtons = document.querySelectorAll('.add-contact-button');
+
+    addContactButtons.forEach(button => {
+        button.addEventListener('click', () => openAddContactModal());
     });
-    return contacts;
 }
-
 
 /**
- * This function validates the task form inputs
- * 
- * @param {string} title - The task title
- * @param {string} dueDate - The task due date 
- * @param {string} category - The task category
- * @returns {boolean} True if the form is valid, false otherwise
+ * Sets up the form submission listener for adding a new contact.
+ * @function setupAddContactForm
+ * @returns {void}
  */
-function validateTaskForm(title, dueDate, category) {
-    let isValid = true;
-    if (!title) {
-        fieldRequiredTitle();
-        isValid = false;
+function setupAddContactForm() {
+    const addContactForm = document.getElementById('addContactForm');
+    if (addContactForm) {
+        addContactForm.addEventListener('submit', addNewContact);
     }
-    if (!dueDate) {
-        fieldRequiredDate();
-        isValid = false;
-    }
-    if (category === 'Select task category') {
-        fieldRequiredCategory();
-        isValid = false;
-    }
-    return isValid;
 }
-
 
 /**
- * This function displays an error notification
- * 
- * @param {string} message - The error message to display
+ * Sets up the close button listener for the Add Contact modal.
+ * @function setupCloseModalButton
+ * @returns {void}
  */
-function showErrorNotification(message) {
-    let errorPopup = document.getElementById('popupError'); 
-    if (errorPopup) {
-        errorPopup.querySelector('p').textContent = message;
-        errorPopup.classList.add('show');
-        setTimeout(() => {
-            errorPopup.classList.remove('show');
-        }, 3000);
+function setupCloseModalButton() {
+    const closeModalButton = document.querySelector('.close');
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', closeAddContactModal);
     }
 }
-</code></pre>
+
+/**
+ * Sets up an event listener to close the Add Contact modal when clicking outside of it.
+ * @function setupWindowClickCloseModal
+ * @returns {void}
+ */
+function setupWindowClickCloseModal() {
+    window.addEventListener('click', event => {
+        const modal = document.getElementById('addContactModal');
+        if (event.target === modal) {
+            closeAddContactModal();
+        }
+    });
+}
+
+/**
+ * Sets up the form submission listener within the Add Contact modal.
+ * @function setupAddContactFormListener
+ * @returns {void}
+ */
+function setupAddContactFormListener() {
+    const addContactForm = document.getElementById('addContactForm');
+    if (addContactForm) {
+        addContactForm.addEventListener('submit', addNewContact);
+    }
+}
+
+/**
+ * Adds a listener to the menu button to toggle the dropdown menu.
+ * @function addMenuButtonListener
+ * @param {HTMLElement} menuOptionsBtn - The menu button DOM element.
+ * @param {HTMLElement} dropdownOptions - The dropdown menu DOM element.
+ * @returns {void}
+ */
+function addMenuButtonListener(menuOptionsBtn, dropdownOptions) {
+    /**
+     * Shows the dropdown menu and adds an outside click listener.
+     * @function showMenu
+     */
+    function showMenu() {
+        dropdownOptions.classList.add('show');
+        addOutsideClickListener();
+    }
+
+    /**
+     * Hides the dropdown menu and removes the outside click listener.
+     * @function hideMenu
+     */
+    function hideMenu() {
+        dropdownOptions.classList.remove('show');
+        removeOutsideClickListener();
+    }
+
+    /**
+     * Toggles the dropdown menu's visibility.
+     * @function toggleMenu
+     * @param {Event} event - The click event.
+     */
+    function toggleMenu(event) {
+        event.stopPropagation();
+        if (dropdownOptions.classList.contains('show')) {
+            hideMenu();
+        } else {
+            showMenu();
+        }
+    }
+
+    /**
+     * Adds an event listener to detect clicks outside the dropdown menu.
+     * @function addOutsideClickListener
+     */
+    function addOutsideClickListener() {
+        document.addEventListener('click', outsideClickListener);
+    }
+
+    /**
+     * Removes the outside click event listener.
+     * @function removeOutsideClickListener
+     */
+    function removeOutsideClickListener() {
+        document.removeEventListener('click', outsideClickListener);
+    }
+
+    /**
+     * Handles clicks outside the dropdown menu to hide it.
+     * @function outsideClickListener
+     * @param {Event} event - The click event.
+     */
+    function outsideClickListener(event) {
+        if (!event.target.closest('.dropdown-contact-options') &amp;&amp; !event.target.closest('.menu-contact-options')) {
+            hideMenu();
+        }
+    }
+
+    // Add the toggleMenu event listener to the menu button
+    menuOptionsBtn.addEventListener('click', toggleMenu);
+}
+
+/**
+ * Adds listeners to the dropdown menu buttons (edit and delete).
+ * @function addDropdownButtonListeners
+ * @param {HTMLElement} dropdownOptions - The dropdown menu DOM element.
+ * @param {Object} contact - The contact object related to the dropdown menu.
+ * @returns {void}
+ */
+function addDropdownButtonListeners(dropdownOptions, contact) {
+    const editBtn = dropdownOptions.querySelector('.edit-button');
+    const deleteBtn = dropdownOptions.querySelector('.delete-button');
+
+    if (editBtn) {
+        editBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            openAddContactModal(contact);
+            closeContactInfoModal();
+        });
+    }
+
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            deleteContact(contact.key);
+            closeContactInfoModal();
+        });
+    }
+}
+
+/**
+ * Adds an outside click listener to hide the dropdown menu when clicking outside.
+ * @function addOutsideClickListener
+ * @param {HTMLElement} dropdownOptions - The dropdown menu DOM element.
+ * @returns {void}
+ */
+function addOutsideClickListener(dropdownOptions) {
+    /**
+     * Handles clicks outside the dropdown menu to hide it.
+     * @function outsideClickListener
+     * @param {Event} event - The click event.
+     */
+    function outsideClickListener(event) {
+        if (!event.target.closest('.dropdown-contact-options') &amp;&amp; !event.target.closest('.menu-contact-options')) {
+            dropdownOptions.classList.remove('show');
+            document.removeEventListener('click', outsideClickListener);
+        }
+    }
+
+    document.addEventListener('click', outsideClickListener);
+}</code></pre>
         </article>
     </section>
 

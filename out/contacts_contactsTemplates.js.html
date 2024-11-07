@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: addTaskAsync.js</title>
+    <title>JSDoc: Source: contacts/contactsTemplates.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: addTaskAsync.js</h1>
+    <h1 class="page-title">Source: contacts/contactsTemplates.js</h1>
 
     
 
@@ -27,140 +27,141 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * This function collects and validates task data from the form
- * 
- * @returns {Object|null} The collected task data if valid, null otherwise
- * 
+ * Renders the contact details in the contact details section.
+ * @function renderContactDetails
+ * @param {Object} contact - The contact object to render.
+ * @returns {void}
  */
-function collectAndValidateTaskData() {
-    let title = document.getElementById('title').value.trim();
-    let description = document.getElementById('description').value.trim();
-    let dueDate = document.getElementById('date').value;
-    let category = document.getElementById('selectedCategory').textContent.trim();
-    let prio = getSelectedPriority(); 
-    let assignedTo = getAssignedContacts(); 
-    let subtasks = [...subTasks]; 
-    let isValid = validateTaskForm(title, dueDate, category);
-    if (!isValid) {
-        console.log('Form validation failed.');
-        return null;
-    } return {
-        title, description, assignedTo, dueDate, prio, category, subtasks, createdAt: new Date().toISOString()
-    };
+function renderContactDetails(contact) {
+    const contactDetails = document.getElementById('contactDetails');
+    if (contactDetails) {
+        contactDetails.innerHTML = `
+            &lt;div class="contact-details-header" data-contact-key="${contact.key}">
+                &lt;div class="contact-icon-large" style="background-color: ${getColor(contact.name)};">
+                    ${getInitials(contact.name)}
+                &lt;/div>
+                &lt;div class="contact-details-info">
+                    &lt;h2>${contact.name}&lt;/h2>
+                    &lt;div class="contact-actions">
+                        &lt;button class="edit-button">&lt;img src="./assets/img/edit.svg" alt="Edit"> Edit&lt;/button>
+                        &lt;button class="delete-button">&lt;img src="./assets/img/delete.svg" alt="Delete"> Delete&lt;/button>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+            &lt;div class="contact-details-body">
+                &lt;h3>Contact Information&lt;/h3>
+                &lt;p>&lt;strong>Email&lt;/strong>&lt;/p>
+                &lt;p class="contact-info-mail-details">${contact.email}&lt;/p>
+                &lt;p>&lt;strong>Phone&lt;/strong>&lt;/p>
+                &lt;p class="contact-details-phone">${contact.phone}&lt;/p>
+            &lt;/div>
+        `;
+    }
 }
-
 
 /**
- * This function saves a task to the database
- * 
- * @param {Object} task - The task object to be saved
- * @returns {Object|null} The saved task with its key if successful, null otherwise
+ * Generates the HTML content for the Add/Edit Contact modal.
+ * @function getContactModalHTML
+ * @param {Object|null} contact - The contact object to edit, or null to add a new contact.
+ * @param {boolean} isEditMode - Whether the modal is in edit mode.
+ * @param {string} contactKey - The key of the contact being edited.
+ * @param {string} initials - The initials of the contact.
+ * @param {string} color - The background color for the contact icon.
+ * @returns {string} The HTML string for the modal content.
  */
-async function saveTaskToDatabase(task) {
-    try {
-        let result = await saveData('tasks', task);
-        console.log('Task successfully created with key:', result.name);
-        task.key = result.name;
-        return task;
-    } catch (error) {
-        console.error('Error creating task:', error);
-        showErrorNotification('Fehler beim Erstellen der Aufgabe. Bitte versuchen Sie es erneut.');
-        return null;
-    }
-}
+function getContactModalHTML(contact, isEditMode, contactKey, initials, color) {
+    return `
+        &lt;div class="add-contact-modal-content">
+            &lt;div class="add-contact-left">
+                &lt;img class="modal-logo" src="./assets/img/join_logo_white.svg" alt="Join Logo">
+                &lt;img src="./assets/img/close_white.svg" class="close" onclick="closeAddContactModal()">
+                &lt;h2>${isEditMode ? 'Edit contact' : 'Add contact'}&lt;/h2>
+                &lt;p>${isEditMode ? '' : 'Tasks are better with a team!'}&lt;/p>
+                &lt;img class="modal-underline" src="./assets/img/underline_login.svg" alt="Underline">
+            &lt;/div>
+            &lt;div class="add-contact-right">
+                &lt;img src="./assets/img/Close.svg" class="close" onclick="closeAddContactModal()">
 
+                ${isEditMode ? `
+                &lt;div class="contact-icon-large profileImg" style="background-color: ${color};">
+                    ${initials}
+                &lt;/div>
+                ` : `
+                &lt;img class="profileImg" src="./assets/img/addContact_person.svg">
+                `}
+
+                &lt;form id="addContactForm">
+                    &lt;input type="hidden" id="contactKey" value="${contact ? contact.key : ''}">
+                    &lt;div class="form-group">
+                        &lt;input type="text" id="newContactName" placeholder="Name" autocomplete="name" value="${isEditMode ? contact.name : ''}">
+                        &lt;span class="error-message" id="nameError">&lt;/span>
+                    &lt;/div>
+                    &lt;div class="form-group">
+                        &lt;input type="text" id="newContactEmail" placeholder="Email" autocomplete="email" value="${isEditMode ? contact.email : ''}">
+                        &lt;span class="error-message" id="emailError">&lt;/span>
+                    &lt;/div>
+                    &lt;div class="form-group">
+                        &lt;input type="text" id="newContactPhone" placeholder="Phone" autocomplete="tel" value="${isEditMode ? contact.phone : ''}">
+                        &lt;span class="error-message" id="phoneError">&lt;/span>
+                    &lt;/div>
+                    &lt;div class="form-actions">
+                        ${isEditMode ? `
+                        &lt;button type="button" class="cancel-button" onclick="deleteContactFromModal('${contact ? contact.key : ''}')">Delete &lt;img src="./assets/img/delete.svg">&lt;/button>
+                        ` : `
+                        &lt;button type="button" class="cancel-button cancel-display-none" onclick="closeAddContactModal()">Cancel &lt;img src="./assets/img/clear-x-image.svg">&lt;/button>
+                        `}
+                        &lt;button type="submit" class="create-button">${isEditMode ? 'Save' : 'Create contact'} &lt;img src="./assets/img/check.svg">&lt;/button>
+                    &lt;/div>
+                &lt;/form>
+            &lt;/div>
+        &lt;/div>
+    `;
+}
 
 /**
- * This function coordinates the entire process of creating a new task
- *  
+ * Generates the HTML content for the Contact Information modal.
+ * @function getContactInfoModalHTML
+ * @param {Object} contact - The contact object to display.
+ * @returns {string} The HTML string for the contact information modal.
  */
-async function createNewTask() {
-    let taskData = collectAndValidateTaskData();
-    if (!taskData) return;
-    let savedTask = await saveTaskToDatabase(taskData);
-    if (savedTask) {
-        newTasks.push(savedTask);
-        resetNewTask();
-        showTaskAddedNotification();
-    }
-}
-
-
-/**
- * This function determines the selected priority for a task
- * 
- * @returns {string} The selected priority ('urgent', 'medium', or 'low')
- */
-function getSelectedPriority() {
-    let prio = '';
-    if (document.querySelector('.prioButtonUrgent.active')) {
-        prio = 'urgent';
-    } else if (document.querySelector('.prioButtonMedium.active')) {
-        prio = 'medium';
-    } else if (document.querySelector('.prioButtonLow.active')) {
-        prio = 'low';
-    }
-    return prio;
-}
-
-
-/**
- * This function collects the assigned contacts for a task
- * 
- * @returns {Array} An array of assigned contact names
- */
-function getAssignedContacts() {
-    let aktivContactsDiv = document.getElementById('aktivContacts');
-    let contacts = [];
-    aktivContactsDiv.querySelectorAll('span.contactIcon').forEach(contactSpan => {
-        contacts.push(contactSpan.dataset.contact); 
-    });
-    return contacts;
-}
-
-
-/**
- * This function validates the task form inputs
- * 
- * @param {string} title - The task title
- * @param {string} dueDate - The task due date 
- * @param {string} category - The task category
- * @returns {boolean} True if the form is valid, false otherwise
- */
-function validateTaskForm(title, dueDate, category) {
-    let isValid = true;
-    if (!title) {
-        fieldRequiredTitle();
-        isValid = false;
-    }
-    if (!dueDate) {
-        fieldRequiredDate();
-        isValid = false;
-    }
-    if (category === 'Select task category') {
-        fieldRequiredCategory();
-        isValid = false;
-    }
-    return isValid;
-}
-
-
-/**
- * This function displays an error notification
- * 
- * @param {string} message - The error message to display
- */
-function showErrorNotification(message) {
-    let errorPopup = document.getElementById('popupError'); 
-    if (errorPopup) {
-        errorPopup.querySelector('p').textContent = message;
-        errorPopup.classList.add('show');
-        setTimeout(() => {
-            errorPopup.classList.remove('show');
-        }, 3000);
-    }
-}
-</code></pre>
+function getContactInfoModalHTML(contact) {
+    return `
+        &lt;div class="contact-info-modal-content">
+            &lt;img src="./assets/img/arrow-left-line.svg" class="arrowLeft close">&lt;/img>
+            &lt;div class="modal-main-content">
+                &lt;div class="contact-headline">
+                    &lt;h1>Contacts&lt;/h1>
+                    &lt;h2>Better with a Team&lt;/h2>
+                    &lt;img class="text-underline" src="./assets/img/underline_login.svg" alt="Underline">
+                &lt;/div>
+                &lt;div class="contact-details-header" data-contact-key="${contact.key}">
+                    &lt;div class="contact-icon-large" style="background-color: ${getColor(contact.name)};">
+                        ${getInitials(contact.name)}
+                    &lt;/div>
+                    &lt;div class="contact-details-info">
+                        &lt;h2>${contact.name}&lt;/h2>
+                        &lt;div class="contact-actions">
+                            &lt;button class="edit-button">&lt;img src="./assets/img/edit.svg" alt="Edit"> Edit&lt;/button>
+                            &lt;button class="delete-button">&lt;img src="./assets/img/delete.svg" alt="Delete"> Delete&lt;/button>
+                        &lt;/div>
+                    &lt;/div>
+                &lt;/div>
+                &lt;div class="contact-details-body">
+                    &lt;h3>Contact Information&lt;/h3>
+                    &lt;p>&lt;strong>Email&lt;/strong>&lt;/p>
+                    &lt;p class="contact-info-mail">${contact.email}&lt;/p>
+                    &lt;p>&lt;strong>Phone&lt;/strong>&lt;/p>
+                    &lt;p class="contact-details-phone">${contact.phone}&lt;/p>
+                &lt;/div>
+            &lt;/div>
+            &lt;img src="./assets/img/menu-contact-options.svg" class="menu-contact-options">&lt;/img>
+            &lt;div class="dropdown-contact-options">
+                &lt;button class="edit-button">&lt;img src="./assets/img/edit.svg" alt="Edit"> Edit&lt;/button>
+                &lt;button class="delete-button">&lt;img src="./assets/img/delete.svg" alt="Delete"> Delete&lt;/button>
+            &lt;/div>
+        &lt;/div>
+    `;
+}</code></pre>
         </article>
     </section>
 
