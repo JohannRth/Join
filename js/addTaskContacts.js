@@ -140,7 +140,7 @@ function toggleDropdown(elements) {
     let isOpen = elements.contactDropdown.classList.toggle('show');
     elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);
     if (!isOpen) {
-        resetAndCloseDropdown(elements);
+        closeDropdown(elements);
     }
 }
 
