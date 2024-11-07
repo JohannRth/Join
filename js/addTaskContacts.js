@@ -144,7 +144,6 @@ function toggleDropdown(elements) {
     }
 }
 
-
 /**
  * This function closes the dropdown
  * 
@@ -154,7 +153,6 @@ function closeDropdown(elements) {
     elements.contactDropdown.classList.remove('show');
     elements.dropDownImage.classList.remove('dropDownImageRotation180');
 }
-
 
 /**
  * This function prevents event propagation
@@ -399,5 +397,6 @@ async function loadAndAddContacts(contactDropdown) {
     }
 }
 
+initializeEventListeners();
 
 
