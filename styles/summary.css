@@ -76,7 +76,7 @@ body {
 }
 
 .toDo-container:hover .image-todo-container img {
-    content: url('./assets/img/Group 7.svg');
+    content: url('../assets/img/Group 7.svg');
 }
 
 .toDo-container:hover {
@@ -139,7 +139,7 @@ body {
 }
 
 .done-container:hover .image-done-container img {
-    content: url('./assets/img/Frame 59 (3).svg');
+    content: url('../assets/img/Frame 59 (3).svg');
 }
 
 .done-container:hover {
