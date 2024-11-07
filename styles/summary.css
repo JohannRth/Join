@@ -42,7 +42,7 @@ body {
     gap: 5%;
 }
 
-.summary-conatiner {
+.summary-container {
     height: 562px;
     width: 60%;
     display: flex;
@@ -245,6 +245,7 @@ body {
 .data-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     height: 57px;
     gap: 13px;
 }
@@ -425,12 +426,7 @@ body {
 
 /* ///////////////////////////////////////Mobile-Screen//////////////////////////////////////////////////// */
 
-@media (max-width: 1400px) {
 
-    .main-summary {
-        gap: 12px;
-    }
-}
 
 @media (max-width: 1020px) {
 
@@ -443,5 +439,32 @@ body {
     .main-summary  {
         margin-left: 98px;
         width: unset;
+    }
+}
+
+@media (max-width: 1020px) {
+    .main-greet {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 9999;
+        background-color: rgba(255, 255, 255, 0.549); /* Passen Sie die Hintergrundfarbe nach Bedarf an */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: greetAnimation 2s forwards;
+    }
+
+    @keyframes greetAnimation {
+        0% {
+            opacity: 1;
+            transform: translateY(50px);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(0);
+        }
     }
 }
