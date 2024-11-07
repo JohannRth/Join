@@ -17,6 +17,7 @@ function initializeCategoryDropdown() {
     });
 }
 
+
 /**
  * This function retrieves the necessary DOM elements for the category dropdown
  * 
@@ -31,6 +32,7 @@ function getCategoryElements() {
     };
 }
 
+
 /**
  * This function sets up event listeners for the category dropdown
  * 
@@ -43,6 +45,7 @@ function setupCategoryEventListeners(elements) {
     });
 }
 
+
 /**
  * This function toggles the visibility of the category dropdown
  * 
@@ -52,6 +55,7 @@ function toggleCategoryDropdown(elements) {
     let isOpen = elements.categoryDropdown.classList.toggle('show');
     elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);
 }
+
 
 /**
  * This function closes the category dropdown
@@ -63,6 +67,7 @@ function closeCategoryDropdown(elements) {
     elements.dropDownImage.classList.remove('dropDownImageRotation180');
 }
 
+
 /**
  * This function selects a category and updates the UI
  * 
@@ -73,6 +78,7 @@ function selectCategory(category, elements) {
     elements.selectedCategory.textContent = category;
     closeCategoryDropdown(elements);
 }
+
 
 /**
  * This function initializes the category selector with event listeners
@@ -141,3 +147,27 @@ function toggleRotationDownImage() {
     let downImage = document.getElementById('dropDownImageCategory');
     downImage.classList.add('dropDownImageRotation180');
 }
+
+
+/**
+ * This function initializes event listeners for drowdown functionality
+ * 
+ */
+function initializeEventListeners() {
+    document.addEventListener('DOMContentLoaded', function() {
+        const assignedToDiv = document.getElementById('assignedTo');
+        const contactsDiv = document.getElementById('contacts');
+        const contactDropdown = document.getElementById('contactDropdown');
+        if (assignedToDiv && contactsDiv && contactDropdown) {
+            assignedToDiv.addEventListener('click', function(event) {
+                event.stopPropagation();
+                if (!inputField) {createInputField();}});
+            document.addEventListener('click', function(event) {
+                if (!assignedToDiv.contains(event.target) && !contactDropdown.contains(event.target)) {
+                    resetContactSelection();}});
+        } else {console.error('One or more required elements not found');}
+    });
+}
+
+
+initializeEventListeners();
