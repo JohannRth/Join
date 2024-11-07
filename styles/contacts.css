@@ -378,3 +378,16 @@ button#addContactBtn:hover {
         margin-left: 40px;
     }
 }
+
+@media (max-width:600px) {
+
+    .contacts-list {
+        padding: 20px 0px;
+        width: 380px;
+    }
+
+    .contact-item {
+        padding: 15px 6px;
+    }
+    
+}
