@@ -2,7 +2,7 @@
  * This function generates a contact template for display
  * 
  * @param {string} contact - The name of the contact
- * @param {string} loggedInUserPlusYou - The Text (You) after the name of the contact
+ * @param {string} loggedInUserPlusYou - Additional text to append to the contact name, typically '(You)' for the logged-in user
  * @returns {string} HTML template for the contact
  */
 function addContactTemplate(contact, loggedInUserPlusYou = '') {

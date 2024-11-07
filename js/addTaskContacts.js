@@ -1,59 +1,76 @@
 let contactDropdownInitialized = false;
-
 let inputField = null;
-const originalText = 'Select contacts to assign';
+let originalText = 'Select contacts to assign';
 
+
+/**
+ * This function initializes the assigned-to input field
+ * 
+ */
 function initializeAssignedToInput() {
-    const assignedToDiv = document.getElementById('assignedTo');
-    const contactsDiv = document.getElementById('contacts');
-    const contactDropdown = document.getElementById('contactDropdown');
-
+    let assignedToDiv = document.getElementById('assignedTo');
+    let contactDropdown = document.getElementById('contactDropdown');
     assignedToDiv.addEventListener('click', function(event) {
         event.stopPropagation();
         if (!inputField) {
             createInputField();
         }
     });
-
     document.addEventListener('click', function(event) {
         if (!assignedToDiv.contains(event.target) && !contactDropdown.contains(event.target)) {
             resetContactSelection();
         }
     });
-
-    function createInputField() {
-        contactsDiv.textContent = '';
-        inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.className = 'inputSearchContacts';
-        contactsDiv.appendChild(inputField);
-        inputField.focus();
-    
-        inputField.addEventListener('input', function() {
-            filterContacts(this.value);
-        });
-    
-        inputField.addEventListener('click', function(event) {
-            event.stopPropagation();
-            resetContactSelection();
-        });
-    }
-    
-    function resetContactSelection() {
-        if (inputField) {
-            contactsDiv.textContent = originalText;
-            inputField = null;
-        }
-        filterContacts('');
-        closeDropdown(getElements());
-    }
 }
 
+
+/**
+ * This function creates an input field for searching contacts
+ * 
+ */
+function createInputField() {
+    let contactsDiv = document.getElementById('contacts');
+    contactsDiv.textContent = '';
+    inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.className = 'inputSearchContacts';
+    contactsDiv.appendChild(inputField);
+    inputField.focus();
+    inputField.addEventListener('input', function() {
+        filterContacts(this.value);
+    });
+    inputField.addEventListener('click', function(event) {
+        event.stopPropagation();
+        resetContactSelection();
+    });
+}
+
+
+/**
+ * This function resets the contact selection by clearing the input field and resetting the display of contacts
+ * 
+ */
+function resetContactSelection() {
+    let contactsDiv = document.getElementById('contacts');
+    if (inputField) {
+        contactsDiv.textContent = originalText;
+        inputField = null;
+    }
+    filterContacts('');
+    closeDropdown(getElements());
+}
+
+
+/**
+ * This function filters the displayed contacts based on the given search term, showing or hiding them accordingly
+ * 
+ * @param {string} searchTerm - The term to filter contacts by
+ */
 function filterContacts(searchTerm) {
-    const contacts = document.querySelectorAll('.contactItem');
+    let contacts = document.querySelectorAll('.contactItem');
     searchTerm = searchTerm.toLowerCase();
     contacts.forEach(contact => {
-        const contactName = contact.textContent.toLowerCase();
+        let contactName = contact.textContent.toLowerCase();
         contact.style.display = searchTerm === '' || contactName.includes(searchTerm) ? '' : 'none';
     });
 }
@@ -77,8 +94,6 @@ function initializeContactDropdown() {
     });
 }
 
-
-
 /**
  * This function toggles the visibility of the contact dropdown
  * 
@@ -90,7 +105,6 @@ function toggleContactDropdown() {
         inputField.focus();
     }
 }
-
 
 /**
  * This function retrieves necessary DOM elements
@@ -105,7 +119,6 @@ function getElements() {
     };
 }
 
-
 /**
  * This function sets up event listeners for the dropdown
  * 
@@ -115,10 +128,8 @@ function setupEventListeners(elements) {
     elements.assignedTo.addEventListener('click', (event) => {
         event.stopPropagation();
         toggleDropdown(elements);
-    });
-    
+    });    
 }
-
 
 /**
  * This function toggles the dropdown's visibility
@@ -144,6 +155,7 @@ function closeDropdown(elements) {
     elements.dropDownImage.classList.remove('dropDownImageRotation180');
 }
 
+
 /**
  * This function prevents event propagation
  * 
@@ -152,7 +164,6 @@ function closeDropdown(elements) {
 function preventClose(event) {
     event.stopPropagation();
 }
-
 
 
 /**
@@ -165,14 +176,10 @@ function selectContact(contact) {
     let checkbox = contactItem.querySelector('.contactCheckbox');
     checkbox.checked = !checkbox.checked;
     updateActiveContacts(contact, checkbox.checked);
-    
-    // Fokus auf das Input-Feld setzen
     if (inputField) {
         inputField.focus();
     }
 }
-
-
 
 /**
  * This function updates the active contacts display
@@ -194,7 +201,6 @@ function updateActiveContacts(contact, isChecked) {
         }
     }
 }
-
 
 /**
  * This function adds a contact to the dropdown
@@ -218,7 +224,6 @@ function addContact(contact, contactDropdown, loggedInUserPlusYou = '') {
     sortContactAlphabetically(contactDropdown, contactItem);
 }
 
-
 /**
  * This function sorts contacts alphabetically in the dropdown
  * 
@@ -239,12 +244,16 @@ function sortContactAlphabetically(container, newItem) {
     moveLoggedInUserToTop(container);
 }
 
+/**
+ * This function moves the logged-in user's contact item to the top of the contact list container
+ * 
+ * @param {HTMLElement} container - The container element holding the contact items 
+ */
 function moveLoggedInUserToTop(container) {
     let loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     if (loggedInUser) {
         let loggedInUserItem = Array.from(container.querySelectorAll('.contactItem'))
             .find(item => item.querySelector('.contactName').textContent.includes(loggedInUser.name));
-        
         if (loggedInUserItem) {
             container.insertBefore(loggedInUserItem, container.firstChild);
         }
@@ -273,7 +282,6 @@ function toggleContactState(contactItem, checkbox, contact) {
     }
 }
 
-
 /**
  * This function updates the visibility of active contacts
  * 
@@ -282,7 +290,6 @@ function updateAktivContactsVisibility() {
     let aktivContacts = document.getElementById('aktivContacts');
     aktivContacts.style.display = aktivContacts.children.length > 0 ? 'flex' : 'none';
 }
-
 
 /**
  * This function adds a contact to the active contacts display
@@ -300,7 +307,6 @@ function addToActiveContacts(contact) {
     updateAktivContactsVisibility();
 }
 
-
 /**
  * This function removes a contact from the active contacts display
  * 
@@ -315,7 +321,6 @@ function removeFromActiveContacts(contact) {
     updateAktivContactsVisibility();
 }
 
-
 /**
  * This function gets the initials of a name
  * 
@@ -328,7 +333,6 @@ function getInitials(name) {
     let initials = nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '');
     return initials.toUpperCase();
 }
-
 
 /**
  * This function gets a color based on the first letter of a name
@@ -343,7 +347,10 @@ function getColor(name) {
     return colors[index % colors.length];
 }
 
-
+/**
+ * This function adds the logged-in user to the contact dropdown with a special '(You)' label
+ * 
+ */
 function addLoggedInUserToDropdown() {
     let loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     if (loggedInUser && loggedInUser.name) {
@@ -352,8 +359,6 @@ function addLoggedInUserToDropdown() {
         addContact(contactName, contactDropdown, '(You)');
     }
 }
-
-
 
 /**
  * This function initializes the contact dropdown asynchronously@returns {Promise}
@@ -376,7 +381,6 @@ function initializeContactDropdown() {
     });
     updateAktivContactsVisibility();
 }
-
 
 /**
  * This function loads contacts from storage and adds them to the dropdown
