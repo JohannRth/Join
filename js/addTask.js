@@ -43,7 +43,7 @@ function setPriority(priority) {
         btn.classList.remove('active');
     });
     document.querySelector(`.prioButton${priority.charAt(0).toUpperCase() + priority.slice(1)}`).classList.add('active');
-} 
+}
 
 /**
  * This function displays the input container for subtasks
@@ -84,7 +84,7 @@ function deleteCurrentText() {
  */
 function addNewSubtask(event) {
     let newSubTask = document.getElementById('subTaskInput');
-    if(newSubTask.value == 0) {
+    if (newSubTask.value == 0) {
         return false;
     }
     subTasks.push(newSubTask.value);
@@ -102,12 +102,12 @@ function addNewSubtask(event) {
  * 
  */
 function hideInputSubTaksClickContainerOnOutsideClick() {
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         let inputSubTaksClickContainer = document.getElementById('inputSubTaksClickContainer');
         let addSubTaskButton = document.getElementById('addSubTaskButton');
         let addSubTaskButtonContainer = document.querySelector('.addSubTaskButtonContainer');
         let subTaskInput = document.getElementById('subTaskInput');
-        if (!inputSubTaksClickContainer.contains(event.target) && 
+        if (!inputSubTaksClickContainer.contains(event.target) &&
             !subTaskInput.contains(event.target) &&
             !addSubTaskButton.contains(event.target)) {
             inputSubTaksClickContainer.classList.remove('visible');
@@ -176,7 +176,7 @@ function fieldRequiredTitle() {
         titleInput.onfocus = validateTitleField;
         titleInput.oninput = validateTitleField;
         titleInput.onblur = validateTitleField;
-        validateTitleField.call(titleInput); 
+        validateTitleField.call(titleInput);
     }
 }
 
@@ -236,7 +236,7 @@ function fieldRequiredCategory() {
     let categorySelector = document.getElementById('categorySelector');
     let dropdownContent = document.getElementById('categoryDropdown');
     if (categorySelector && dropdownContent) {
-        categorySelector.onclick = function() {
+        categorySelector.onclick = function () {
             let errorMessage = this.querySelector('.errorMessage');
             this.classList.remove('inputError');
             if (errorMessage) {
@@ -270,7 +270,7 @@ function validateCategoryField() {
 function initializeDatePicker() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
-        dateInput.addEventListener('click', function(e) {
+        dateInput.addEventListener('click', function (e) {
             let rect = this.getBoundingClientRect();
             let clickX = e.clientX - rect.left;
             if (clickX > rect.width - 30) {
@@ -289,13 +289,13 @@ function getDateToday() {
     let dateInput = document.getElementById('date');
     if (dateInput) {
         dateInput.min = new Date().toISOString().split('T')[0];
-        dateInput.onclick = function() {
+        dateInput.onclick = function () {
             if (this.value === "YYYY-MM-DD") {
                 this.value = new Date().toISOString().split('T')[0];
             }
             updateDateColor.call(this);
         };
-        dateInput.onchange = function() {
+        dateInput.onchange = function () {
             validateDate(this);
             updateDateColor.call(this);
         };
@@ -335,7 +335,7 @@ function resetFormFields() {
     document.getElementById('description').value = '';
     document.getElementById('contacts').textContent = 'Select contacts to assign';
     document.getElementById('date').value = '';
-    document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => {btn.classList.remove('active');});
+    document.querySelectorAll('.prioButtonUrgent, .prioButtonMedium, .prioButtonLow').forEach(btn => { btn.classList.remove('active'); });
     document.getElementById('selectedCategory').textContent = 'Select task category';
     document.getElementById('subTaskList').innerHTML = '';
     document.getElementById('subTaskInput').value = '';
@@ -343,7 +343,7 @@ function resetFormFields() {
     document.querySelectorAll('.contactItem').forEach(item => {
         item.classList.remove('active');
         let checkbox = item.querySelector('.contactCheckbox');
-        if (checkbox) {checkbox.checked = false;}
+        if (checkbox) { checkbox.checked = false; }
     });
 }
 
@@ -365,11 +365,24 @@ function showTaskAddedNotification() {
     let notification = document.getElementById('taskAddedNotification');
     notification.classList.add('show');
     setTimeout(() => {
-      notification.classList.remove('show');
-      window.location.href = 'board.html';
+        notification.classList.remove('show');
+        window.location.href = 'board.html';
     }, 3000);
-  }
+}
 
-  initializeCategorySelector();
-  init();
-
+/**
+ * Initializes the category selector and other initialization functions once the DOM content is fully loaded.
+ * It checks whether the functions `initializeCategorySelector` and `init` are defined before invoking them
+ * to prevent ReferenceErrors.
+ *
+ * @event DOMContentLoaded
+ */
+document.addEventListener('DOMContentLoaded', function () {
+    // Überprüfen, ob die Funktionen definiert sind
+    if (typeof initializeCategorySelector === 'function') {
+        initializeCategorySelector();
+    }
+    if (typeof init === 'function') {
+        init();
+    }
+});

@@ -277,26 +277,26 @@ input#confirmedPassword {
     padding: 0px 25px;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: none; /* Standardmäßig ausgeblendet */
+    display: none; 
     justify-content: center;
     align-items: center;
     opacity: 0;
-    pointer-events: none; /* Verhindert, dass Popup fälschlicherweise angeklickt werden kann */
+    pointer-events: none; 
 }
 
 .success.show {
-    display: flex; /* Sichtbar machen */
-    animation: slideInBottom 0.5s forwards; /* Slide-In Animation anwenden */
-    pointer-events: auto; /* Klicks auf das Popup erlauben */
+    display: flex; 
+    animation: slideInBottom 0.5s forwards; 
+    pointer-events: auto; 
 }
 
 @keyframes slideInBottom {
     from {
-        transform: translate(-50%, 100%); /* Startet unterhalb des Bildschirms */
+        transform: translate(-50%, 100%); 
         opacity: 0;
     }
     to {
-        transform: translate(-50%, -50%); /* Beendet in der Mitte des Bildschirms */
+        transform: translate(-50%, -50%); 
         opacity: 1;
     }
 }
