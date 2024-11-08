@@ -1,10 +1,17 @@
-// Funktion zum dynamischen Laden von HTML-Dateien mit einer Callback-Funktion
+/**
+ * Dynamically loads an HTML file and injects its content into a specified DOM element.
+ * Executes an optional callback function after the HTML is successfully loaded.
+ *
+ * @param {string} elementID - The ID of the DOM element where the HTML content will be injected.
+ * @param {string} fileName - The path to the HTML file to be loaded.
+ * @param {Function} [callback] - An optional callback function to execute after the HTML is loaded.
+ */
 function loadHTML(elementID, fileName, callback) {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && (this.status === 200 || this.status === 304)) {
             document.getElementById(elementID).innerHTML = this.responseText;
-            if (callback) callback(); // Führe die Callback-Funktion aus, falls vorhanden
+            if (callback) callback(); // Execute the callback function if provided
         }
     };
     xhttp.open("GET", fileName, true);
@@ -31,7 +38,11 @@ window.onload = function () {
     });
 };
 
-// Authentifizierungsprüfung
+/**
+ * Checks if a user is authenticated by verifying the presence of user data in localStorage.
+ * Redirects to the login page if the user is not authenticated and is trying to access a restricted page.
+ * Otherwise, hides certain UI elements meant for logged-out users.
+ */
 function checkAuthentication() {
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     const currentPage = window.location.pathname.split('/').pop();
@@ -46,82 +57,101 @@ function checkAuthentication() {
     }
 }
 
-// Elemente für ausgeloggte Benutzer ausblenden
+/**
+ * Hides specific UI elements that should not be visible to users who are not logged in.
+ * Specifically, it hides elements with the classes 'navLinksContainer' and 'header-right'.
+ */
 function hideElementsForLoggedOutUser() {
-    // Elemente mit der Klasse 'navLinksContainer' ausblenden
     const navLinksContainers = document.querySelectorAll('.navLinksContainer');
     navLinksContainers.forEach(element => {
         element.style.display = 'none';
     });
 
-    // Elemente mit der Klasse 'header-right' ausblenden
     const headerRightElements = document.querySelectorAll('.header-right');
     headerRightElements.forEach(element => {
         element.style.display = 'none';
     });
 }
 
-// Funktion zum Hervorheben der aktuellen Seite im Menü
+/**
+ * Highlights the current page's menu item by adding the 'active' class.
+ * It compares the current page's filename with the 'onclick' attribute of menu items.
+ */
 function highlightCurrentPage() {
-    var path = window.location.pathname;
-    var page = path.split("/").pop(); // Holt den aktuellen Seitennamen (z.B. 'summary.html')
-    var menuItems = document.querySelectorAll('.desktopLinkAndImage');
+    const path = window.location.pathname;
+    const page = path.split("/").pop(); 
+    const menuItems = document.querySelectorAll('.desktopLinkAndImage');
 
     menuItems.forEach(function (item) {
-        var onclickAttr = item.getAttribute('onclick');
+        const onclickAttr = item.getAttribute('onclick');
         if (onclickAttr && onclickAttr.includes(page)) {
-            item.classList.add('active'); // Fügt die 'active'-Klasse hinzu, um das Menüelement hervorzuheben
+            item.classList.add('active'); 
         }
     });
 }
 
-// Neue Funktion zum Hervorheben der aktuellen Seite in der mobilen Navbar
+/**
+ * Highlights the current page's menu item in the mobile navigation bar by adding the 'active' class.
+ * It compares the current page's filename with the 'onclick' attribute of mobile menu items.
+ */
 function highlightCurrentPageMobile() {
     const path = window.location.pathname;
-    const page = path.split("/").pop(); // Holt den aktuellen Seitennamen (z.B. 'summary.html')
+    const page = path.split("/").pop(); 
     const mobileMenuItems = document.querySelectorAll('.mobile-nav-bar .mobile-bar');
 
     mobileMenuItems.forEach(function (item) {
         const onclickAttr = item.getAttribute('onclick');
         if (onclickAttr && onclickAttr.includes(page)) {
-            item.classList.add('active'); // Fügt die 'active'-Klasse hinzu, um das Menüelement hervorzuheben
+            item.classList.add('active');
         }
     });
 }
 
+/**
+ * Extracts initials from a full name.
+ * Takes the first letters of the first two words (first name and last name) and returns them in uppercase.
+ *
+ * @param {string} name - The full name of the user.
+ * @returns {string} The initials of the user.
+ */
 function getUserInitials(name) {
     const names = name.trim().split(' ');
     let initials = '';
 
-    // Nimmt die ersten beiden Wörter (Vorname und Nachname)
     for (let i = 0; i < Math.min(2, names.length); i++) {
         initials += names[i].charAt(0).toUpperCase();
     }
     return initials;
 }
 
+/**
+ * Displays the initials of the currently logged-in user in the profile picture area.
+ * Retrieves user data from localStorage and sets the initials in the corresponding DOM element.
+ * Redirects to the login page if no user is logged in.
+ */
 function displayUserInitials() {
-    // Benutzerdaten aus dem localStorage abrufen
+    
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
     if (loggedInUser && loggedInUser.name) {
-        // Initialen extrahieren
+    
         const initials = getUserInitials(loggedInUser.name);
 
-        // Element für die Profilbild-Anzeige finden
         const profilePictureDiv = document.getElementById('profilePicture');
 
         if (profilePictureDiv) {
-            // Initialen setzen
             profilePictureDiv.textContent = initials;
         }
     } else {
-        // Falls kein Benutzer eingeloggt ist, Weiterleitung zur Login-Seite
         window.location.href = 'index.html';
     }
 }
 
-// Funktionen zum Dropdown-Menü
+/**
+ * Sets up the dropdown menu for the user profile.
+ * Adds event listeners to toggle the dropdown menu visibility when clicking on the profile picture.
+ * Closes the dropdown menu when clicking outside of it.
+ */
 function setupProfileDropdown() {
     const profilePicture = document.getElementById("profilePicture");
     const dropdownMenu = document.getElementById("dropdownMenu");
@@ -158,10 +188,13 @@ function setupProfileDropdown() {
     }
 }
 
-// Logout-Funktion
+/**
+ * Logs out the currently authenticated user.
+ * Removes the user data from localStorage and redirects to the login page.
+ */
 function logout() {
-    // Entfernen des Benutzers aus dem localStorage
+    
     localStorage.removeItem('loggedInUser');
-    // Weiterleitung zur Login-Seite
+    
     window.location.href = 'index.html';
 }
