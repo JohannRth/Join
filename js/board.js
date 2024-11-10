@@ -242,19 +242,408 @@ function updateHTML() {
 // Edit Card //
 
 // Funktion zum Öffnen des Edit-Overlays und Laden der aktuellen Task-Daten
-function openEditOverlay(taskId) {
-    // Finde die Aufgabe basierend auf der taskId
-    const task = todos.find(t => t.id === taskId);
-    if (!task) {
-        console.error("Task nicht gefunden:", taskId);
-        return;
-    }
-
+async function openEditOverlay(taskId) {
+    await loadTaskDetails(taskId);
 
     const editOverlay = document.getElementById("edit-overlay");
     editOverlay.classList.remove("hidden");
-
     document.body.classList.add("no-scroll");
+}
+
+async function loadTaskTitle(taskId) {
+    try {
+        const taskData = await loadData(`tasks/${taskId}`);
+
+        if (taskData && taskData.title) {
+            document.getElementById("edit-title-edit").value = taskData.title;
+        } else {
+            console.error("Title not found for task:", taskId);
+        }
+    } catch (error) {
+        console.error("Error loading task title:", error);
+    }
+}
+
+async function loadTaskDetails(taskId) {
+    try {
+        const taskData = await loadData(`tasks/${taskId}`);
+
+        if (taskData) {
+            if (taskData.title) document.getElementById("edit-title-edit").value = taskData.title;
+            if (taskData.description) document.getElementById("edit-description").value = taskData.description;
+            if (taskData.dueDate) document.getElementById("edit-due-date").value = taskData.dueDate;
+            if (taskData.prio) setPriorityEdit(taskData.prio);
+
+            // Load and display assigned contacts
+            if (taskData.assignedTo) {
+                displayAssignedContacts(taskData.assignedTo);
+            }
+
+            // Load and display subtasks
+            if (taskData.subtasks) {
+                displaySubtasks(Object.values(taskData.subtasks)); // Convert subtasks object to array
+            } else {
+                console.warn("No subtasks found for task:", taskId);
+            }
+        } else {
+            console.error("Task data not found for task:", taskId);
+        }
+    } catch (error) {
+        console.error("Error loading task details:", error);
+    }
+}
+
+function highlightPriorityButton(priority) {
+    // Select the priority buttons with the updated class names
+    const urgentButton = document.querySelector(".prioButtonUrgentEdit");
+    const mediumButton = document.querySelector(".prioButtonMediumEdit");
+    const lowButton = document.querySelector(".prioButtonLowEdit");
+
+    // Remove 'active' class from all buttons
+    urgentButton.classList.remove("active");
+    mediumButton.classList.remove("active");
+    lowButton.classList.remove("active");
+
+    // Apply 'active' class based on priority
+    if (priority === "urgent") {
+        urgentButton.classList.add("active"); // Set urgent button active
+    } else if (priority === "medium") {
+        mediumButton.classList.add("active"); // Set medium button active
+    } else if (priority === "low") {
+        lowButton.classList.add("active"); // Set low button active
+    } else {
+        console.warn("Unknown priority level:", priority);
+    }
+
+    // Debugging: Log which button should be highlighted
+    console.log("Priority:", priority, "Urgent button:", urgentButton, "Medium button:", mediumButton, "Low button:", lowButton);
+}
+
+let currentPriority = ""; // To keep track of the selected priority
+
+function setPriorityEdit(priority) {
+    // Select the priority buttons
+    const urgentButton = document.querySelector(".prioButtonUrgentEdit");
+    const mediumButton = document.querySelector(".prioButtonMediumEdit");
+    const lowButton = document.querySelector(".prioButtonLowEdit");
+
+    // Remove 'active' class from all buttons
+    urgentButton.classList.remove("active");
+    mediumButton.classList.remove("active");
+    lowButton.classList.remove("active");
+
+    // Apply 'active' class to the selected priority button
+    if (priority === "urgent") {
+        urgentButton.classList.add("active");
+        currentPriority = "urgent";
+    } else if (priority === "medium") {
+        mediumButton.classList.add("active");
+        currentPriority = "medium";
+    } else if (priority === "low") {
+        lowButton.classList.add("active");
+        currentPriority = "low";
+    } else {
+        console.warn("Unknown priority level:", priority);
+    }
+
+    // Debugging: Log the current priority selection
+    console.log("Current priority set to:", currentPriority);
+}
+
+function displayAssignedContacts(contacts) {
+    const assignedToContainer = document.getElementById("aktivContactsEdit");
+    assignedToContainer.innerHTML = ""; // Clear existing contacts
+
+    contacts.forEach(contact => {
+        const initials = getInitials(contact);
+        const color = getRandomColor();
+
+        // Create contact bubble element
+        const contactElement = document.createElement("div");
+        contactElement.classList.add("contactBubble");
+        contactElement.style.backgroundColor = color;
+        contactElement.textContent = initials;
+
+        // Append to the container
+        assignedToContainer.appendChild(contactElement);
+    });
+}
+
+// Helper function to get initials from a name
+function getInitials(name) {
+    const nameParts = name.split(" ");
+    if (nameParts.length >= 2) {
+        return nameParts[0][0] + nameParts[1][0];
+    } else {
+        return nameParts[0][0];
+    }
+}
+
+// Helper function to generate a random color for each contact
+function getRandomColor() {
+    const colors = ["#FF5733", "#33C3FF", "#7D3CFF", "#FFC300", "#DAF7A6"];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function displayAssignedContacts(contacts) {
+    const assignedToContainer = document.getElementById("aktivContactsEdit");
+    assignedToContainer.innerHTML = ""; // Clear existing contacts
+
+    contacts.forEach(contact => {
+        const initials = getInitials(contact);
+        const color = getColor(contact); // Use getColor function to get color based on name
+
+        // Create contact bubble element
+        const contactElement = document.createElement("div");
+        contactElement.classList.add("contactBubble");
+        contactElement.style.backgroundColor = color;
+        contactElement.textContent = initials;
+
+        // Append to the container
+        assignedToContainer.appendChild(contactElement);
+    });
+}
+
+// Function to load contacts from Firebase
+async function loadContacts() {
+    try {
+        const contactsData = await loadData("contacts"); // Adjust path if needed
+        return contactsData ? Object.values(contactsData) : []; // Convert Firebase object to an array
+    } catch (error) {
+        console.error("Error loading contacts:", error);
+        return [];
+    }
+}
+
+async function populateContactDropdownFromFirebase() {
+    const contacts = await loadContacts(); // Load contacts from Firebase
+    const dropdownContainer = document.getElementById("contactDropdownEdit");
+    dropdownContainer.innerHTML = ""; // Clear any existing contacts in the dropdown
+
+    contacts.forEach(contact => {
+        const name = contact.name || contact; // Adjust if contact is an object with a 'name' property
+        const initials = getInitials(name);
+        const color = getColor(name);
+
+        // Create dropdown item container
+        const contactItem = document.createElement("div");
+        contactItem.classList.add("contactDropdownItem");
+
+        // Create contact bubble for the left side
+        const contactBubble = document.createElement("div");
+        contactBubble.classList.add("contactBubble");
+        contactBubble.style.backgroundColor = color;
+        contactBubble.textContent = initials;
+
+        // Create contact name for the right side
+        const contactName = document.createElement("span");
+        contactName.classList.add("contactName");
+        contactName.textContent = name;
+
+        // Append bubble and name to the dropdown item
+        contactItem.appendChild(contactBubble);
+        contactItem.appendChild(contactName);
+
+        // Add event listener for selecting a contact
+        contactItem.addEventListener("click", () => {
+            addContactToAssignedList(name, initials, color); // Add contact to assigned list
+            dropdownContainer.style.display = "none"; // Hide dropdown after selection
+        });
+
+        // Add the dropdown item to the container
+        dropdownContainer.appendChild(contactItem);
+    });
+}
+
+// Initialize the dropdown on page load
+populateContactDropdownFromFirebase();
+
+
+// Toggle dropdown visibility when "Select contacts to assign" is clicked
+document.getElementById("contactsEdit").addEventListener("click", () => {
+    const dropdown = document.getElementById("contactDropdownEdit");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", (event) => {
+    const dropdown = document.getElementById("contactDropdownEdit");
+    const target = event.target;
+    if (!dropdown.contains(target) && target.id !== "contactsEdit") {
+        dropdown.style.display = "none";
+    }
+});
+
+function addContactToAssignedList(name, initials, color) {
+    const assignedContainer = document.getElementById("aktivContactsEdit");
+
+    // Check if the contact is already assigned
+    const isAlreadyAssigned = Array.from(assignedContainer.children).some(
+        el => el.getAttribute("data-name") === name
+    );
+
+    if (isAlreadyAssigned) {
+        console.log(`Contact ${name} is already assigned.`); // Debugging information
+        return; // Contact is already assigned, do not add it again
+    }
+
+    // Create the assigned contact bubble
+    const contactBubble = document.createElement("div");
+    contactBubble.classList.add("contactBubble");
+    contactBubble.style.backgroundColor = color;
+    contactBubble.textContent = initials;
+    contactBubble.setAttribute("data-name", name); // Store name to check for duplicates
+
+    // Add event listener to remove the bubble when clicked
+    contactBubble.addEventListener("click", () => {
+        assignedContainer.removeChild(contactBubble); // Remove the bubble from assigned contacts
+    });
+
+    // Append to assigned contacts container
+    assignedContainer.appendChild(contactBubble);
+
+    console.log(`Added contact: ${name}`); // Debugging information
+}
+
+function displayAssignedContacts(contacts) {
+    const assignedToContainer = document.getElementById("aktivContactsEdit");
+    assignedToContainer.innerHTML = ""; // Clear existing contacts
+
+    contacts.forEach(contact => {
+        const initials = getInitials(contact);
+        const color = getColor(contact); // Use getColor function to get color based on name
+
+        // Create contact bubble element
+        const contactElement = document.createElement("div");
+        contactElement.classList.add("contactBubble");
+        contactElement.style.backgroundColor = color;
+        contactElement.textContent = initials;
+        contactElement.setAttribute("data-name", contact); // Store name to check for duplicates
+
+        // Add event listener to remove the bubble when clicked
+        contactElement.addEventListener("click", () => {
+            assignedToContainer.removeChild(contactElement); // Remove the bubble when clicked
+        });
+
+        // Append to the container
+        assignedToContainer.appendChild(contactElement);
+    });
+}
+
+
+
+function displaySubtasks(subtasks) {
+    const subTaskListContainer = document.getElementById("subTaskListEdit");
+    subTaskListContainer.innerHTML = ""; // Clear existing subtasks
+
+    subtasks.forEach((subtask, index) => {
+        const title = subtask.title || "Untitled";
+
+        // Create a container for each subtask
+        const subTaskItem = document.createElement("div");
+        subTaskItem.classList.add("subTask");
+        subTaskItem.setAttribute("data-index", index);
+
+        // Left container for displaying the title or input
+        const leftContainer = document.createElement("div");
+        leftContainer.classList.add("leftContainerSubTask");
+
+        // Display subtask title as text initially
+        const subTaskText = document.createElement("span");
+        subTaskText.textContent = title;
+        subTaskText.classList.add("subTaskText");
+
+        // Create an input field for editing the subtask title, hidden by default
+        const subTaskInput = document.createElement("input");
+        subTaskInput.type = "text";
+        subTaskInput.value = title;
+        subTaskInput.classList.add("subTaskInput");
+        subTaskInput.style.display = "none";
+
+        // Save changes when Enter is pressed or input loses focus
+        subTaskInput.onblur = () => saveSubtaskTitle(index, subTaskInput.value, subTaskText, subTaskInput);
+        subTaskInput.onkeydown = (event) => {
+            if (event.key === "Enter") {
+                saveSubtaskTitle(index, subTaskInput.value, subTaskText, subTaskInput);
+            }
+        };
+
+        // Append the text and input field to the left container
+        leftContainer.appendChild(subTaskText);
+        leftContainer.appendChild(subTaskInput);
+
+        // Right container for edit and delete buttons
+        const rightContainer = document.createElement("div");
+        rightContainer.classList.add("rightContainerSubTask");
+
+        // Edit button
+        const editButton = document.createElement("img");
+        editButton.src = "./assets/img/edit.svg";
+        editButton.alt = "Edit";
+        editButton.onclick = () => toggleSubtaskEditMode(subTaskText, subTaskInput);
+
+        // Delete button
+        const deleteButton = document.createElement("img");
+        deleteButton.src = "./assets/img/delete.svg";
+        deleteButton.alt = "Delete";
+        deleteButton.onclick = () => deleteSubtaskEdit(index);
+
+        // Append edit and delete buttons to the right container
+        rightContainer.appendChild(editButton);
+        rightContainer.appendChild(deleteButton);
+
+        // Append both containers to the subTaskItem
+        subTaskItem.appendChild(leftContainer);
+        subTaskItem.appendChild(rightContainer);
+
+        // Append the subTaskItem to the main subtask list container
+        subTaskListContainer.appendChild(subTaskItem);
+    });
+}
+
+function toggleSubtaskEditMode(subTaskText, subTaskInput) {
+    subTaskText.style.display = "none";
+    subTaskInput.style.display = "inline-block";
+    subTaskInput.focus(); // Focus on the input field for immediate editing
+}
+
+async function saveSubtaskTitle(index, newTitle, subTaskText, subTaskInput) {
+    if (newTitle.trim() === "") {
+        alert("Subtask title cannot be empty.");
+        return;
+    }
+
+    // Update the displayed text and hide the input field
+    subTaskText.textContent = newTitle;
+    subTaskText.style.display = "inline-block";
+    subTaskInput.style.display = "none";
+
+    // Update the local subtasks array
+    subtasks[index].title = newTitle;
+
+    // Save the updated subtasks to Firebase
+    try {
+        await updateData(`tasks/${currentTaskId}/subtasks/${index}`, { title: newTitle });
+        console.log("Subtask updated in Firebase.");
+    } catch (error) {
+        console.error("Error updating subtask in Firebase:", error);
+    }
+}
+
+async function deleteSubtaskEdit(index) {
+    // Remove the subtask from the local list
+    subtasks.splice(index, 1);
+
+    // Re-render the list of subtasks
+    displaySubtasks(subtasks);
+
+    // Delete the subtask in Firebase
+    try {
+        await deleteData(`tasks/${currentTaskId}/subtasks/${index}`);
+        console.log("Subtask deleted in Firebase.");
+    } catch (error) {
+        console.error("Error deleting subtask in Firebase:", error);
+    }
 }
 
 // Funktion zum Schließen des Edit-Overlays

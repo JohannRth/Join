@@ -211,15 +211,9 @@
                             <div class="input-group-edit">
                                 <span class="priority-line-overlay">Priority</span>
                                 <div class="prioButtonContainer">
-                                    <button type="button" id="edit-prioUrgent" class="prioButton prioButtonUrgent"
-                                        onclick="setPriorityColor('urgent', 'edit-')">Urgent <img
-                                            src="./assets/img/arrow-up.svg"></button>
-                                    <button type="button" id="edit-prioMedium" class="prioButton prioButtonMedium"
-                                        onclick="setPriorityColor('medium', 'edit-')">Medium <img
-                                            src="./assets/img/even.svg"></button>
-                                    <button type="button" id="edit-prioLow" class="prioButton prioButtonLow"
-                                        onclick="setPriorityColor('low', 'edit-')">Low <img
-                                            src="./assets/img/arrow-down.svg"></button>
+                                  <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
+                                  <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
+                                  <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
                                 </div>
                             </div>
                             <div class="categoryContainer">
@@ -308,7 +302,7 @@
                 <div class="edit-card-body">
                     <div class="input-group-edit">
                         <span class="priority-line-overlay">Title</span>
-                        <input class="inputAddTask" id="edit-title" type="text">
+                        <input class="inputAddTask" id="edit-title-edit" type="text">
                     </div>
 
                     <div class="input-group-edit">
@@ -321,25 +315,28 @@
                     </div>
                     <div class="input-group-edit">
                         <span class="priority-line-overlay">Priority</span>
-                        <div class="prioButtonContainer">
-                            <button type="button" class="prioButton prioButtonUrgent">Urgent <img
-                                    src="./assets/img/arrow-up.svg"></button>
-                            <button type="button" class="prioButton prioButtonMedium">Medium <img
-                                    src="./assets/img/even.svg"></button>
-                            <button type="button" class="prioButton prioButtonLow">Low <img
-                                    src="./assets/img/arrow-down.svg"></button>
-                        </div>
+                        <div class="prioButtonContainerEdit">
+                          <button type="button" class="prioButtonEdit prioButtonUrgentEdit" onclick="setPriorityEdit('urgent')">
+                              Urgent <img src="./assets/img/arrow-up.svg">
+                          </button>
+                          <button type="button" class="prioButtonEdit prioButtonMediumEdit" onclick="setPriorityEdit('medium')">
+                              Medium <img src="./assets/img/even.svg">
+                          </button>
+                          <button type="button" class="prioButtonEdit prioButtonLowEdit" onclick="setPriorityEdit('low')">
+                              Low <img src="./assets/img/arrow-down.svg">
+                          </button>
+                      </div>
                     </div>
                     <div class="assignedAddTaskContainer">
-                        <span class="addTaskInputTitle">Assigned to</span>
-                        <div class="assignedAddTask" id="assignedToEdit">
-                            <div>
-                                <div class="selectedContactsHeadline" id="contactsEdit">Select contacts to assign</div>
-                            </div>
-                        </div>
-                        <div class="contactDropdown" id="contactDropdownEdit"></div>
-                        <div id="aktivContactsEdit" class="aktivContacts"></div>
-                    </div>
+                      <span class="addTaskInputTitle">Assigned to</span>
+                      <div class="assignedAddTask" id="assignedToEdit">
+                          <div>
+                              <div class="selectedContactsHeadline" id="contactsEdit">Select contacts to assign</div>
+                          </div>
+                      </div>
+                      <div class="contactDropdown" id="contactDropdownEdit"></div> <!-- Dropdown container -->
+                      <div id="aktivContactsEdit" class="aktivContacts"></div>
+                  </div>
                     <div class="subTaskContainer">
                         <div class="inputContainer">
                             <span class="addTaskInputTitle">Subtasks</span>

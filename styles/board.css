@@ -165,6 +165,7 @@ body.no-scroll {
 
 .drag-area {
   width: 246px;
+  min-height: 550px;
   transition: 0.3s;
   border-radius: 8px;
 }
@@ -785,25 +786,166 @@ body.no-scroll {
 }
 
 /* Styles for priority buttons */
-.prioButton {
-  border: none;
-  color: rgb(3, 3, 3);
-  padding: 8px 16px;
+.prioButtonContainerEdit {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-bottom: 24px;
+}
+
+.prioButtonUrgentEdit{
+  width: 136px;
+  height: 56px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #D1D1D1;
+  border-radius: 10px;
   cursor: pointer;
+  margin-right: 16px;
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.prioButtonUrgentEdit:hover {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.prioButtonMediumEdit {
+  width: 136px;
+  height: 56px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #D1D1D1;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 16px;
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.prioButtonMediumEdit img {
+  filter: brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(342%) hue-rotate(360deg) brightness(103%) contrast(103%);
+}
+
+.prioButtonMediumEdit:hover {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.prioButtonLowEdit {
+  width: 136px;
+  height: 56px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #D1D1D1;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 16px;
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.prioButtonLowEdit:hover {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.prioButtonUrgentEdit.active:hover,
+.prioButtonMediumEdit.active:hover,
+.prioButtonLowEdit.active:hover {
+  box-shadow: none;
+}
+
+.prioButtonUrgentEdit.active {
+  background-color: #FF3D00;
+  color: white;
+}
+
+.prioButtonUrgentEdit.active img {
+  filter: brightness(0) invert(1);
+}
+
+.prioButtonMediumEdit.active {
+  background-color: #FFA800;
+  color: white;
+}
+
+.prioButtonMediumEdit.active img {
+  filter: brightness(0) invert(1);
+}
+
+.prioButtonLowEdit.active {
+  background-color: #7AE229;
+  color: white;
+}
+
+.prioButtonLowEdit.active img {
+  filter: brightness(0) invert(1);
+}
+
+.contactBubble {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: white;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.assignedAddTaskContainer {
+  position: relative;
+}
+
+.contactDropdown {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #D1D1D1;
   border-radius: 5px;
+  padding: 8px;
+  background-color: white;
+  display: none;
+  z-index: 10;
+}
+
+.contactDropdownItem {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.contactDropdownItem:hover {
+  background-color: #f0f0f0;
+}
+
+.contactName {
   font-size: 16px;
 }
 
-.prioButtonUrgent.active {
-  background-color: #FF5733;
-}
-
-.prioButtonMedium.active {
-  background-color: #FFA500; 
-}
-
-.prioButtonLow.active {
-  background-color: #33FF57; 
+.subTaskInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 16px;
 }
 
 /* ///////////////////////////////Mobile-Screen////////////////////////////////////////////// */
