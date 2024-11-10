@@ -378,7 +378,6 @@ function showTaskAddedNotification() {
  * @event DOMContentLoaded
  */
 document.addEventListener('DOMContentLoaded', function () {
-    // Überprüfen, ob die Funktionen definiert sind
     if (typeof initializeCategorySelector === 'function') {
         initializeCategorySelector();
     }

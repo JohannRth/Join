@@ -106,9 +106,9 @@ function resetCategorySelector() {
     let categoryItems = document.querySelectorAll('.categoryItem');
     categoryItems.forEach(item => item.classList.remove('active'));
     let categoryDropdown = document.getElementById('categoryDropdown');
-    categoryDropdown.classList.remove('show');
+    categoryDropdown.classList.add('show');
     let dropDownImage = document.getElementById('dropDownImageCategory');
-    dropDownImage.classList.remove('dropDownImageRotation180');
+    dropDownImage.classList.add('dropDownImageRotation180');
 }
 
 
