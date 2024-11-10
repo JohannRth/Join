@@ -125,10 +125,12 @@ function getElements() {
  * @param {Object} elements - The DOM elements object
  */
 function setupEventListeners(elements) {
-    elements.assignedTo.addEventListener('click', (event) => {
+    const toggleDropdownHandler = (event) => {
         event.stopPropagation();
         toggleDropdown(elements);
-    });    
+    };
+    elements.assignedTo.addEventListener('click', toggleDropdownHandler);
+    elements.dropDownImage.addEventListener('click', toggleDropdownHandler);
 }
 
 /**
@@ -139,8 +141,16 @@ function setupEventListeners(elements) {
 function toggleDropdown(elements) {
     let isOpen = elements.contactDropdown.classList.toggle('show');
     elements.dropDownImage.classList.toggle('dropDownImageRotation180', isOpen);
-    if (!isOpen) {
-        closeDropdown(elements);
+    let contactsDiv = document.getElementById('contacts');
+    if (isOpen) {
+        if (contactsDiv.textContent === originalText) {
+            if (!inputField) {createInputField();}
+            contactsDiv.textContent = '';
+            contactsDiv.appendChild(inputField);
+            inputField.focus();}
+    } else {
+        contactsDiv.textContent = originalText;
+        if (inputField && inputField.parentNode === contactsDiv) {contactsDiv.removeChild(inputField);}
     }
 }
 
@@ -359,7 +369,7 @@ function addLoggedInUserToDropdown() {
 }
 
 /**
- * This function initializes the contact dropdown asynchronously@returns {Promise}
+ * This function initializes the contact dropdown asynchronously
  * 
  *
  */
@@ -380,22 +390,6 @@ function initializeContactDropdown() {
     updateAktivContactsVisibility();
 }
 
-/**
- * This function loads contacts from storage and adds them to the dropdown
- * 
- * @param {HTMLElement} contactDropdown - The dropdown element to populate@returns {Promise} 
- */
-async function loadAndAddContacts(contactDropdown) {
-    try {
-        const contacts = await loadData('contacts');
-        Object.values(contacts).forEach(contact => {
-            addContact(contact.name, contactDropdown);
-        });
-    } catch (error) {
-        console.error('Fehler beim Laden der Kontakte:', error);
-        addExampleContacts(contactDropdown);
-    }
-}
 
 initializeEventListeners();
 

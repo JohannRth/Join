@@ -1,4 +1,22 @@
 /**
+ * This function loads contacts from storage and adds them to the dropdown
+ * 
+ * @param {HTMLElement} contactDropdown - The dropdown element to populate@returns {Promise} 
+ */
+async function loadAndAddContacts(contactDropdown) {
+    try {
+        const contacts = await loadData('contacts');
+        Object.values(contacts).forEach(contact => {
+            addContact(contact.name, contactDropdown);
+        });
+    } catch (error) {
+        console.error('Fehler beim Laden der Kontakte:', error);
+        addExampleContacts(contactDropdown);
+    }
+}
+
+
+/**
  * This function collects and validates task data from the form
  * 
  * @returns {Object|null} The collected task data if valid, null otherwise
