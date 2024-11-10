@@ -267,8 +267,10 @@ async function loadTaskTitle(taskId) {
 async function loadTaskDetails(taskId) {
     try {
         const taskData = await loadData(`tasks/${taskId}`);
+        console.log("Loaded task data:", taskData); // Debugging line
 
         if (taskData) {
+            // Set up title, description, and due date for the edit card
             if (taskData.title) document.getElementById("edit-title-edit").value = taskData.title;
             if (taskData.description) document.getElementById("edit-description").value = taskData.description;
             if (taskData.dueDate) document.getElementById("edit-due-date").value = taskData.dueDate;
@@ -281,7 +283,11 @@ async function loadTaskDetails(taskId) {
 
             // Load and display subtasks
             if (taskData.subtasks) {
-                displaySubtasks(Object.values(taskData.subtasks)); // Convert subtasks object to array
+                const subtasksArray = Array.isArray(taskData.subtasks) 
+                    ? taskData.subtasks 
+                    : Object.values(taskData.subtasks); // Convert to array if it's an object
+                console.log("Loaded subtasks for edit card:", subtasksArray); // Debugging line
+                displaySubtasks(subtasksArray);
             } else {
                 console.warn("No subtasks found for task:", taskId);
             }
@@ -530,14 +536,15 @@ function displayAssignedContacts(contacts) {
     });
 }
 
-
-
 function displaySubtasks(subtasks) {
     const subTaskListContainer = document.getElementById("subTaskListEdit");
     subTaskListContainer.innerHTML = ""; // Clear existing subtasks
 
-    subtasks.forEach((subtask, index) => {
-        const title = subtask.title || "Untitled";
+    // Ensure `subtasks` is treated as an array
+    const subtasksArray = Array.isArray(subtasks) ? subtasks : Object.values(subtasks);
+
+    subtasksArray.forEach((subtask, index) => {
+        const title = subtask && subtask.title ? subtask.title : "Untitled";
 
         // Create a container for each subtask
         const subTaskItem = document.createElement("div");
@@ -600,6 +607,7 @@ function displaySubtasks(subtasks) {
         subTaskListContainer.appendChild(subTaskItem);
     });
 }
+
 
 function toggleSubtaskEditMode(subTaskText, subTaskInput) {
     subTaskText.style.display = "none";
