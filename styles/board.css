@@ -950,6 +950,17 @@ body.no-scroll {
 
 /* ///////////////////////////////Mobile-Screen////////////////////////////////////////////// */
 
+
+
+
+@media (max-width: 1450px) {
+
+  body {
+     overflow-x: hidden;
+  }
+}
+
+
 @media (max-width: 1020px) {
 
   body {
@@ -958,7 +969,7 @@ body.no-scroll {
   }
 }
 
-@media (max-width: 1380px) {
+@media (max-width: 1395px) {
   
   .drag-area-container {
     display: flex;
@@ -993,6 +1004,9 @@ body.no-scroll {
     min-height: 320px; 
     border: 1px dashed #ccc; 
     border-radius: 8px;
+    overflow-x: auto;
+    width: 815px;
+    margin-left: 416px;
   }
 }
 
@@ -1054,6 +1068,11 @@ body.no-scroll {
     width: 312px;
   }
 
+  .drag-area {
+    overflow-x: auto;
+    width: 540px;
+    margin-left: 140px;
+  }
 }
 
 @media (max-width: 340px) {
