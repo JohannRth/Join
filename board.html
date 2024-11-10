@@ -291,7 +291,7 @@
             </div>
         </div>
     </div>
-    <div class="card-overlay hidden" id="edit-overlay">
+    <div class="card-overlay hidden" id="edit-overlay" data-task-id="123">
         <div class="edit-card-around">
             <div class="edit-card-overlay">
                 <div class="edit-card-header">
@@ -342,10 +342,10 @@
                             <span class="addTaskInputTitle">Subtasks</span>
                             <div class="subTaskInputContainer">
                                 <div>
-                                    <input onclick="showInputSubTasksEdit()"
-                                        onkeydown="if(event.key === 'Enter') addNewSubtaskEdit(event)"
-                                        class="inputAddSubTask" type="text" id="subTaskInputEdit"
-                                        placeholder="Add new subtask">
+                                  <input onclick="showInputSubTasksEdit()"
+                                  onkeydown="if(event.key === 'Enter') addNewSubtaskEdit(event)"
+                                  class="inputAddSubTask" type="text" id="subTaskInputEdit"
+                                  placeholder="Add new subtask">
                                 </div>
                                 <div class="addSubTaskButtonContainer" id="addSubTaskButtonContainerEdit">
                                     <img onclick="showInputSubTasksEdit()" class="addSubTaskButton"
@@ -370,16 +370,15 @@
 
                                     </div>
                                     <div class="rightContainerSubTask">
-                                        <img onclick="editSubtaskEdit(0)" src="./assets/img/edit.svg" alt="Edit">
-                                        <img onclick="deleteSubtaskEdit(0)" src="./assets/img/delete.svg" alt="Delete">
+                                        <img onclick="editSubtaskEdit()" src="./assets/img/edit.svg" alt="Edit">
+                                        <img onclick="deleteSubtaskEdit()" src="./assets/img/delete.svg" alt="Delete">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="btn-check-edit-container">
-                        <button class="btn-check-edit" onclick="confirmChanges(taskId)">Ok <img
-                                src="./assets/img/check.svg" alt=""></button>
+                      <img onclick="deleteSubtaskEdit('${taskId}')" src="./assets/img/delete.svg" alt="Delete">
                     </div>
                 </div>
             </div>

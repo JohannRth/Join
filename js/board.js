@@ -536,78 +536,98 @@ function displayAssignedContacts(contacts) {
     });
 }
 
-function displaySubtasks(subtasks) {
+function displaySubtasks(subtasks, subtaskStatusData = {}, taskId) {
     const subTaskListContainer = document.getElementById("subTaskListEdit");
-    subTaskListContainer.innerHTML = ""; // Clear existing subtasks
+    subTaskListContainer.innerHTML = "";
 
-    // Ensure `subtasks` is treated as an array
-    const subtasksArray = Array.isArray(subtasks) ? subtasks : Object.values(subtasks);
+    if (!subtasks) {
+        console.warn("No subtasks found for task:", taskId);
+        return;
+    }
+
+    const subtasksArray = Object.entries(subtasks).map(([index, title]) => ({
+        title: title || "Untitled Subtask",
+        completed: subtaskStatusData[taskId] && subtaskStatusData[taskId][index]
+            ? subtaskStatusData[taskId][index].completed
+            : false
+    }));
 
     subtasksArray.forEach((subtask, index) => {
         const title = subtask && subtask.title ? subtask.title : "Untitled";
 
-        // Create a container for each subtask
         const subTaskItem = document.createElement("div");
         subTaskItem.classList.add("subTask");
         subTaskItem.setAttribute("data-index", index);
 
-        // Left container for displaying the title or input
         const leftContainer = document.createElement("div");
         leftContainer.classList.add("leftContainerSubTask");
 
-        // Display subtask title as text initially
         const subTaskText = document.createElement("span");
         subTaskText.textContent = title;
         subTaskText.classList.add("subTaskText");
 
-        // Create an input field for editing the subtask title, hidden by default
         const subTaskInput = document.createElement("input");
         subTaskInput.type = "text";
         subTaskInput.value = title;
         subTaskInput.classList.add("subTaskInput");
         subTaskInput.style.display = "none";
 
-        // Save changes when Enter is pressed or input loses focus
-        subTaskInput.onblur = () => saveSubtaskTitle(index, subTaskInput.value, subTaskText, subTaskInput);
+        subTaskInput.onblur = () => saveSubtaskTitle(index, subTaskInput.value, subTaskText, subTaskInput, subtasks, taskId);
         subTaskInput.onkeydown = (event) => {
             if (event.key === "Enter") {
-                saveSubtaskTitle(index, subTaskInput.value, subTaskText, subTaskInput);
+                saveSubtaskTitle(index, subTaskInput.value, subTaskText, subTaskInput, subtasks, taskId);
             }
         };
 
-        // Append the text and input field to the left container
         leftContainer.appendChild(subTaskText);
         leftContainer.appendChild(subTaskInput);
 
-        // Right container for edit and delete buttons
         const rightContainer = document.createElement("div");
         rightContainer.classList.add("rightContainerSubTask");
 
-        // Edit button
         const editButton = document.createElement("img");
         editButton.src = "./assets/img/edit.svg";
         editButton.alt = "Edit";
         editButton.onclick = () => toggleSubtaskEditMode(subTaskText, subTaskInput);
 
-        // Delete button
         const deleteButton = document.createElement("img");
         deleteButton.src = "./assets/img/delete.svg";
         deleteButton.alt = "Delete";
-        deleteButton.onclick = () => deleteSubtaskEdit(index);
+        deleteButton.onclick = () => deleteSubtaskEdit(index, taskId); // Pass taskId here
 
-        // Append edit and delete buttons to the right container
         rightContainer.appendChild(editButton);
         rightContainer.appendChild(deleteButton);
 
-        // Append both containers to the subTaskItem
         subTaskItem.appendChild(leftContainer);
         subTaskItem.appendChild(rightContainer);
 
-        // Append the subTaskItem to the main subtask list container
         subTaskListContainer.appendChild(subTaskItem);
     });
 }
 
+async function saveSubtaskTitle(index, newTitle, subTaskText, subTaskInput, subtasks, taskId) {
+    if (newTitle.trim() === "") {
+        alert("Subtask title cannot be empty.");
+        return;
+    }
+
+    subTaskText.textContent = newTitle;
+    subTaskText.style.display = "inline-block";
+    subTaskInput.style.display = "none";
+
+    if (subtasks && subtasks[index]) {
+        subtasks[index].title = newTitle;
+    } else {
+        console.warn("Subtask not found at index:", index);
+    }
+
+    try {
+        await updateData(`tasks/${taskId}/subtasks/${index}`, { title: newTitle });
+        console.log("Subtask updated in Firebase.");
+    } catch (error) {
+        console.error("Error updating subtask in Firebase:", error);
+    }
+}
 
 function toggleSubtaskEditMode(subTaskText, subTaskInput) {
     subTaskText.style.display = "none";
@@ -615,43 +635,88 @@ function toggleSubtaskEditMode(subTaskText, subTaskInput) {
     subTaskInput.focus(); // Focus on the input field for immediate editing
 }
 
-async function saveSubtaskTitle(index, newTitle, subTaskText, subTaskInput) {
-    if (newTitle.trim() === "") {
+async function deleteSubtaskEdit(index, taskId) {
+    console.log("Delete Subtask Called - Index:", index, "Task ID:", taskId); // Debugging line
+
+    if (!taskId) {
+        console.error("Task ID is undefined. Cannot proceed with deletion.");
+        return;
+    }
+
+    const task = todos.find(t => t.id === taskId); // Find the task with the specific ID
+    if (!task) {
+        console.error("Task not found for ID:", taskId);
+        return;
+    }
+
+    // Entferne die Subtask lokal
+    if (task.subtasks && Array.isArray(task.subtasks)) {
+        task.subtasks.splice(index, 1); // Entferne Subtask aus Array
+        console.log("Subtask removed from array.");
+    } else {
+        console.warn("Subtask not found at index:", index);
+        return;
+    }
+
+    // Lösche das Subtask in Firebase
+    try {
+        await updateData(`tasks/${taskId}/subtasks/${index}`, null); // Entferne Subtask in Firebase
+        console.log("Subtask deleted from Firebase.");
+    } catch (error) {
+        console.error("Error deleting subtask from Firebase:", error);
+    }
+
+    // Aktualisiere die Anzeige nach dem Löschen
+    displaySubtasks(task.subtasks, {}, taskId); // Subtasks erneut anzeigen
+}
+
+async function addNewSubtaskEdit(event) {
+    event.preventDefault();
+    const inputField = document.getElementById("subTaskInputEdit");
+    const newSubtaskTitle = inputField.value.trim();
+
+    if (newSubtaskTitle === "") {
         alert("Subtask title cannot be empty.");
         return;
     }
 
-    // Update the displayed text and hide the input field
-    subTaskText.textContent = newTitle;
-    subTaskText.style.display = "inline-block";
-    subTaskInput.style.display = "none";
+    const taskId = getCurrentTaskId();  
+    const task = todos.find(t => t.id === taskId);
 
-    // Update the local subtasks array
-    subtasks[index].title = newTitle;
+    if (!task) {
+        console.error("Task not found for ID:", taskId);
+        return;
+    }
 
-    // Save the updated subtasks to Firebase
+    const newSubtask = { title: newSubtaskTitle, completed: false };
+    task.subtasks = task.subtasks || [];  
+    task.subtasks.push(newSubtask);
+
     try {
-        await updateData(`tasks/${currentTaskId}/subtasks/${index}`, { title: newTitle });
-        console.log("Subtask updated in Firebase.");
+        const newIndex = task.subtasks.length - 1;
+        await updateData(`tasks/${taskId}/subtasks/${newIndex}`, { title: newSubtaskTitle });
+        console.log("New subtask added to Firebase.");
     } catch (error) {
-        console.error("Error updating subtask in Firebase:", error);
+        console.error("Error adding subtask to Firebase:", error);
+    }
+
+    inputField.value = "";
+    displaySubtasks(task.subtasks, {}, taskId);
+}
+
+function showInputSubTasksEdit() {
+    // Example logic to display an input for adding a subtask
+    const subTaskInputContainer = document.getElementById("inputSubTaksClickContainerEdit");
+    if (subTaskInputContainer) {
+        subTaskInputContainer.style.display = "block";
+    } else {
+        console.error("Element with ID 'inputSubTaksClickContainerEdit' not found.");
     }
 }
 
-async function deleteSubtaskEdit(index) {
-    // Remove the subtask from the local list
-    subtasks.splice(index, 1);
-
-    // Re-render the list of subtasks
-    displaySubtasks(subtasks);
-
-    // Delete the subtask in Firebase
-    try {
-        await deleteData(`tasks/${currentTaskId}/subtasks/${index}`);
-        console.log("Subtask deleted in Firebase.");
-    } catch (error) {
-        console.error("Error deleting subtask in Firebase:", error);
-    }
+function getCurrentTaskId() {
+    const editOverlay = document.getElementById("edit-overlay");
+    return editOverlay.getAttribute("data-task-id");
 }
 
 // Funktion zum Schließen des Edit-Overlays

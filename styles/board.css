@@ -351,7 +351,7 @@ body.no-scroll {
 /* Erweiterte Titel-Karte */
 .around-container-epended-card{
   width: 525px;
-  height: 800px;
+  height: 700px;
   border-radius: 30px;
   background-color: white;
   animation: slideInOverlay 0.5s forwards;
@@ -690,7 +690,7 @@ body.no-scroll {
 
 .edit-card-around {
   width: 525px;
-  height: 800px;
+  height: 700px;
   background-color: white;
   border-radius: 30px;
   display: flex;
@@ -700,7 +700,7 @@ body.no-scroll {
 
 .edit-card-body {
   width: 513px;
-  min-height: 650px;
+  min-height: 600px;
   padding: 36px 20px;
   background-color: white;
   display: flex;
