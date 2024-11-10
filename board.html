@@ -342,10 +342,10 @@
                             <span class="addTaskInputTitle">Subtasks</span>
                             <div class="subTaskInputContainer">
                                 <div>
-                                  <input onclick="showInputSubTasksEdit()"
-                                  onkeydown="if(event.key === 'Enter') addNewSubtaskEdit(event)"
-                                  class="inputAddSubTask" type="text" id="subTaskInputEdit"
-                                  placeholder="Add new subtask">
+                                    <input onclick="showInputSubTasksEdit()"
+                                        onkeydown="if(event.key === 'Enter') addNewSubtaskEdit(event)"
+                                        class="inputAddSubTask" type="text" id="subTaskInputEdit"
+                                        placeholder="Add new subtask">
                                 </div>
                                 <div class="addSubTaskButtonContainer" id="addSubTaskButtonContainerEdit">
                                     <img onclick="showInputSubTasksEdit()" class="addSubTaskButton"
@@ -378,7 +378,8 @@
                         </div>
                     </div>
                     <div class="btn-check-edit-container">
-                      <img onclick="deleteSubtaskEdit('${taskId}')" src="./assets/img/delete.svg" alt="Delete">
+                        <button class="btn-check-edit" onclick="confirmChanges(taskId)">Ok <img
+                                src="./assets/img/check.svg" alt=""></button>
                     </div>
                 </div>
             </div>
