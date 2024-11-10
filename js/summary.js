@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('greetUser').textContent = loggedInUser.name;
     } else {
         // Falls kein Benutzer eingeloggt ist, Weiterleitung zur Login-Seite
-        window.location.href = 'index.html';
+        //nur aktivieren wenn gar keiner auf legalNotice und privacyPolicy zugreifen soll--> window.location.href = 'index.html';
     }
 });
 

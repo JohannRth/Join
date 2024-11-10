@@ -143,7 +143,7 @@ function displayUserInitials() {
             profilePictureDiv.textContent = initials;
         }
     } else {
-        window.location.href = 'index.html';
+        //activate if you dosn´t won´t to share privacyPolicy or legalNotice--> window.location.href = 'index.html';
     }
 }
 
