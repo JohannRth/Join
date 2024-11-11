@@ -243,6 +243,8 @@ function updateHTML() {
 // Funktion zum Öffnen des Edit-Overlays und Laden der aktuellen Task-Daten
 async function openEditOverlay(taskId) {
     await loadTaskDetails(taskId);
+    await populateContactDropdownFromFirebase();
+    await loadAssignedContacts(taskId);
 
     const editOverlay = document.getElementById("edit-overlay");
     editOverlay.setAttribute("data-task-id", taskId);
@@ -380,21 +382,42 @@ function getRandomColor() {
     return colors[Math.floor(Math.random() * colors.length)];
 }
 
+async function loadAssignedContacts(taskId) {
+    try {
+        const taskData = await loadData(`tasks/${taskId}`);
+        
+        // Falls assignedTo nicht existiert, setze ein leeres Array
+        const assignedContacts = taskData && taskData.assignedTo ? taskData.assignedTo : [];
+        
+        console.log("Geladene zugewiesene Kontakte:", assignedContacts); // Debugging
+        
+        displayAssignedContacts(assignedContacts); // Zeige die Kontakte im UI an
+    } catch (error) {
+        console.error("Fehler beim Laden der zugewiesenen Kontakte:", error);
+    }
+}
+
+
 function displayAssignedContacts(contacts) {
     const assignedToContainer = document.getElementById("aktivContactsEdit");
-    assignedToContainer.innerHTML = ""; // Clear existing contacts
+    assignedToContainer.innerHTML = ""; // Vorherige Inhalte löschen
 
     contacts.forEach(contact => {
         const initials = getInitials(contact);
-        const color = getColor(contact); // Use getColor function to get color based on name
+        const color = getColor(contact);
 
-        // Create contact bubble element
+        // Erstelle das contactBubble-Element
         const contactElement = document.createElement("div");
         contactElement.classList.add("contactBubble");
         contactElement.style.backgroundColor = color;
         contactElement.textContent = initials;
+        contactElement.setAttribute("data-name", contact);
 
-        // Append to the container
+        // Füge Event-Listener hinzu, um Bubble bei Klick zu entfernen
+        contactElement.addEventListener("click", () => {
+            assignedToContainer.removeChild(contactElement);
+        });
+
         assignedToContainer.appendChild(contactElement);
     });
 }
@@ -411,43 +434,52 @@ async function loadContacts() {
 }
 
 async function populateContactDropdownFromFirebase() {
-    const contacts = await loadContacts(); // Load contacts from Firebase
+    const contacts = await loadContacts(); // Kontakte aus Firebase laden
     const dropdownContainer = document.getElementById("contactDropdownEdit");
-    dropdownContainer.innerHTML = ""; // Clear any existing contacts in the dropdown
+    dropdownContainer.innerHTML = ""; // Vorhandene Kontakte im Dropdown löschen
+
+    console.log("Geladene Kontakte:", contacts); // Kontakte überprüfen
+
+    if (!contacts || contacts.length === 0) {
+        console.log("Keine Kontakte geladen");
+        return; // Keine Kontakte gefunden, Abbruch
+    }
 
     contacts.forEach(contact => {
-        const name = contact.name || contact; // Adjust if contact is an object with a 'name' property
+        const name = contact.name || contact; // Wenn Kontaktobjekt einen Namen hat, diesen verwenden
         const initials = getInitials(name);
         const color = getColor(name);
 
-        // Create dropdown item container
+        // Kontakt-Element erstellen
         const contactItem = document.createElement("div");
         contactItem.classList.add("contactDropdownItem");
 
-        // Create contact bubble for the left side
+        // Kontakt-Bubble erstellen
         const contactBubble = document.createElement("div");
         contactBubble.classList.add("contactBubble");
         contactBubble.style.backgroundColor = color;
         contactBubble.textContent = initials;
 
-        // Create contact name for the right side
+        // Kontaktname anzeigen
         const contactName = document.createElement("span");
         contactName.classList.add("contactName");
         contactName.textContent = name;
 
-        // Append bubble and name to the dropdown item
+        // Kontakt-Bubble und Namen dem Dropdown-Item hinzufügen
         contactItem.appendChild(contactBubble);
         contactItem.appendChild(contactName);
 
-        // Add event listener for selecting a contact
+        // Event-Listener zum Auswählen eines Kontakts
         contactItem.addEventListener("click", () => {
-            addContactToAssignedList(name, initials, color); // Add contact to assigned list
-            dropdownContainer.style.display = "none"; // Hide dropdown after selection
+            addContactToAssignedList(name, initials, color); // Zum ausgewählten Kontakt hinzufügen
+            dropdownContainer.style.display = "none"; // Dropdown nach Auswahl ausblenden
         });
 
-        // Add the dropdown item to the container
+        // Kontakt zum Dropdown-Container hinzufügen
         dropdownContainer.appendChild(contactItem);
     });
+
+    console.log("Dropdown-Container nach dem Befüllen:", dropdownContainer);
 }
 
 // Initialize the dropdown on page load
@@ -493,6 +525,7 @@ function addContactToAssignedList(name, initials, color) {
 
     assignedContainer.appendChild(contactBubble);
 }
+
 
 function displayAssignedContacts(contacts) {
     const assignedToContainer = document.getElementById("aktivContactsEdit");
@@ -656,61 +689,57 @@ async function reloadTaskDataAndUpdateUI(taskId) {
 
 // Funktion zum Löschen eines Subtasks und Entfernen aus Firebase
 async function deleteSubtaskEdit(index, taskId) {
-    console.log("Versuche, Subtask zu löschen - Index:", index, "Task ID:", taskId);
+    console.log("Versuche, Subtask und Subtask-Status zu löschen - Index:", index, "Task ID:", taskId);
 
-    // Überprüfe, ob die Aufgabe in der lokalen `todos`-Liste existiert
-    const task = todos.find(t => t.id === taskId);
-    if (!task || !task.subtasks) {
-        console.error("Task oder Subtasks nicht gefunden für ID:", taskId);
-        return;
-    }
-
-    // Entferne den Subtask lokal
-    task.subtasks.splice(index, 1);
-
-    // Lösche den Subtask in Firebase
-    const subtaskPath = `tasks/${taskId}/subtasks/${index}`;
     try {
-        console.log(`Versuche, Subtask in Firebase unter ${subtaskPath} zu löschen.`);
+        // Lade die Task-Daten, um zu überprüfen, ob der Subtask im `subtasks` oder `newSubtask` liegt
+        const taskData = await loadData(`tasks/${taskId}`);
 
-        // Setze den Subtask in Firebase auf `null`, um ihn zu löschen
+        // Bestimme den Subtask-Typ dynamisch
+        let subtaskType = null;
+        
+        if (taskData.subtasks && taskData.subtasks[index]) {
+            subtaskType = "subtasks";
+        } else if (taskData.newSubtask && taskData.newSubtask[index]) {
+            subtaskType = "newSubtask";
+        } else {
+            console.warn("Subtask nicht gefunden.");
+            return; // Abbrechen, wenn der Subtask nicht existiert
+        }
+
+        // Subtask-Pfad basierend auf dem ermittelten Typ
+        const subtaskPath = `tasks/${taskId}/${subtaskType}/${index}`;
+        
+        // Lösche den Subtask in Firebase
         await deleteData(subtaskPath);
         console.log(`Subtask bei ${subtaskPath} wurde erfolgreich in Firebase gelöscht.`);
-    } catch (error) {
-        console.error("Fehler beim Löschen des Subtasks in Firebase:", error);
-    }
 
-    // Lade die aktuellen Daten neu und aktualisiere die Benutzeroberfläche
-    await reloadTaskDataAndUpdateUI(taskId);
+        // Lösche den zugehörigen Subtask-Status in Firebase
+        const subtaskStatusPath = `tasks/${taskId}/subtaskStatus/${index}`;
+        await deleteData(subtaskStatusPath);
+        console.log(`Subtask-Status bei ${subtaskStatusPath} wurde erfolgreich in Firebase gelöscht.`);
+        
+        // Lade die aktuellen Daten neu und aktualisiere die Benutzeroberfläche
+        await reloadTaskDataAndUpdateUI(taskId);
+    } catch (error) {
+        console.error("Fehler beim Löschen des Subtasks oder Subtask-Status in Firebase:", error);
+    }
 }
 
-async function deleteSubtaskEdit(index, taskId) {
-    console.log("Versuche, Subtask zu löschen - Index:", index, "Task ID:", taskId);
-
-    // Überprüfe, ob die Aufgabe in der lokalen `todos`-Liste existiert
-    const task = todos.find(t => t.id === taskId);
-    if (!task || !task.subtasks) {
-        console.error("Task oder Subtasks nicht gefunden für ID:", taskId);
-        return;
-    }
-
-    // Entferne den Subtask lokal
-    task.subtasks.splice(index, 1);
-
-    // Lösche den Subtask in Firebase
-    const subtaskPath = `tasks/${taskId}/subtasks/${index}`;
+async function deleteData(path) {
     try {
-        console.log(`Versuche, Subtask in Firebase unter ${subtaskPath} zu löschen.`);
-
-        // Setze den Subtask in Firebase auf `null`, um ihn zu löschen
-        await deleteData(subtaskPath);
-        console.log(`Subtask bei ${subtaskPath} wurde erfolgreich in Firebase gelöscht.`);
+        const response = await fetch(`${BASE_URL}${path}.json`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) {
+            console.error(`Löschen fehlgeschlagen mit Status: ${response.status} - ${response.statusText}`);
+            throw new Error(`Fehler beim Löschen der Daten in Firebase: ${response.statusText}`);
+        }
+        console.log(`Daten erfolgreich gelöscht bei Pfad ${path}`);
     } catch (error) {
-        console.error("Fehler beim Löschen des Subtasks in Firebase:", error);
+        console.error("Fehler beim Löschen der Daten in Firebase:", error);
     }
-
-    // Lade die aktuellen Daten neu und aktualisiere die Benutzeroberfläche
-    await reloadTaskDataAndUpdateUI(taskId);
 }
 
 async function updateData(path, data) {
