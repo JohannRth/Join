@@ -21,7 +21,6 @@ function generateExpandedCardHTML(element) {
 
     const dueDate = element.dueDate ? new Date(element.dueDate).toLocaleDateString("de-DE") : "Kein Datum";
 
-    // Subtasks und NewSubtasks kombinieren und anzeigen
     const subtasksHTML = element.subtasks.map((subtask, index) => `
     <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
         <input type="checkbox" 
@@ -81,7 +80,6 @@ function generateExpandedCardHTML(element) {
     </div> `;
 }
 
-// Subtasks //
 async function toggleSubtask(taskId, subtaskIndex) {
     const task = todos.find(t => t.id === taskId);
     if (!task || !task.subtasks || !task.subtasks[subtaskIndex]) {
@@ -89,17 +87,14 @@ async function toggleSubtask(taskId, subtaskIndex) {
         return;
     }
 
-    // Status umschalten
+ 
     const subtask = task.subtasks[subtaskIndex];
     subtask.completed = !subtask.completed;
 
-    // Speichere den neuen Status in `subtaskStatus` in Firebase
     await saveSubtaskStatus(taskId, subtaskIndex, subtask.completed);
 
-    // Aktualisiere die Anzahl abgeschlossener Subtasks
     task.completedSubtasks = task.subtasks.filter(st => st.completed).length;
 
-    // Berechne das Fortschrittsverhältnis und aktualisiere die progressBar
     const totalSubtasks = task.subtasks.length;
     const percentage = totalSubtasks > 0 ? (task.completedSubtasks / totalSubtasks) * 100 : 0;
 
@@ -115,23 +110,19 @@ async function saveSubtaskStatus(taskId, subtaskIndex, isChecked) {
 async function loadSubtaskStatusesFromFirebase() {
     const subtaskStatuses = await loadData("subtaskStatus");
 
-    // Zuweisung des Subtask-Status in `todos`
     todos.forEach(task => {
         if (subtaskStatuses[task.id]) {
             task.subtasks.forEach((subtask, index) => {
                 if (subtaskStatuses[task.id][index] && subtaskStatuses[task.id][index].completed !== undefined) {
                     subtask.completed = subtaskStatuses[task.id][index].completed || false;
                 } else {
-                    subtask.completed = false; // Standardwert, falls `completed` nicht definiert ist
+                    subtask.completed = false; 
                 }
             });
         }
     });
 }
 
-// Subtasks //
-
-//Progress Bar //
 function updateProgressBar(taskId) {
     const task = todos.find((t) => t.id === taskId);
     if (!task) return;
@@ -140,7 +131,6 @@ function updateProgressBar(taskId) {
     const totalSubtasks = task.subtasks.length;
     const percentage = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) * 100 : 0;
 
-    // Aktualisiere die Anzeige des Fortschrittsbalkens
     const taskElement = document.getElementById(taskId);
     if (!taskElement) return;
 
@@ -152,17 +142,15 @@ function updateProgressBar(taskId) {
         progressText.textContent = `${completedSubtasks}/${totalSubtasks} Subtasks`;
     }
 }
-//Progress Bar //
-//card-overlay
+
 function openCardOverlay(taskId) {
     const overlay = document.getElementById("card-overlay");
-    const task = todos.find((t) => t.id === taskId); // Hier wird die id als String verglichen
+    const task = todos.find((t) => t.id === taskId); 
     overlay.innerHTML = generateExpandedCardHTML(task);
     overlay.classList.remove("hidden");
 
     document.body.classList.add("no-scroll");
 
-    // Hinzufügen des taskId als Attribut für Delete-Button
     const deleteButton = overlay.querySelector(".action-btn-overlay");
     deleteButton.setAttribute("onclick", `deleteTask('${taskId}')`);
 
@@ -181,37 +169,30 @@ function closeCardOverlay() {
 }
 
 async function deleteTask(taskId) {
-    // Entferne die Aufgabe aus der `todos`-Liste
     todos = todos.filter(task => task.id !== taskId);
 
-    // Firebase-Pfade für die spezifische Aufgabe, deren Subtask-Status und Position
     const taskPath = `tasks/${taskId}`;
     const subtaskStatusPath = `subtaskStatus/${taskId}`;
     const positionPath = `positionDropArea/${taskId}`;
     
     try {
-        // Hauptaufgabe in Firebase löschen
         await deleteData(taskPath);
         console.log(`Task mit ID ${taskId} wurde erfolgreich in Firebase gelöscht.`);
         
-        // Zugehörigen Subtask-Status in Firebase löschen
         await deleteData(subtaskStatusPath);
         console.log(`Subtask-Status für Task ${taskId} wurde erfolgreich in Firebase gelöscht.`);
         
-        // Position der Aufgabe in Firebase löschen
         await deleteData(positionPath);
         console.log(`Position für Task ${taskId} wurde erfolgreich in Firebase gelöscht.`);
     } catch (error) {
         console.error("Fehler beim Löschen der Daten aus Firebase:", error);
-        return; // Beende die Funktion, falls ein Fehler auftritt
+        return; 
     }
 
-    // HTML aktualisieren, um die Aufgabe von der Oberfläche zu entfernen
     updateHTML();
-    closeCardOverlay(); // Schließe das Overlay nach dem Löschen
+    closeCardOverlay(); 
 }
 
-// Funktion zum Löschen der Daten aus Firebase
 async function deleteData(path) {
     try {
         const response = await fetch(`${BASE_URL}${path}.json`, {

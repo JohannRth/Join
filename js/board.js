@@ -1,7 +1,5 @@
-// Titel Card und Subtask-Initialisierung
 let todos = [];
 
-// Event Listener für das Laden der Todos und Positionen
 document.addEventListener("DOMContentLoaded", async () => {
     await loadTodosFromFirebase();
     await loadPositionsFromFirebase();
@@ -18,7 +16,6 @@ function initializeDragAreas() {
     });
 }
 
-// Funktion zum Laden der Todos aus Firebase
 async function loadTodosFromFirebase() {
     try {
         const tasksData = await loadData("tasks");
@@ -80,9 +77,7 @@ function getInitials(name) {
 function handleInputClick() {
     const inputWrapper = document.querySelector('.input-field-complett');
 
-
     inputWrapper.classList.add('focused');
-
 
     const inputField = document.querySelector('.input-find-task');
     inputField.setAttribute('placeholder', '');
@@ -93,10 +88,8 @@ document.addEventListener('click', function (event) {
     const inputWrapper = document.querySelector('.input-field-complett');
     const inputField = document.querySelector('.input-find-task');
 
-
     if (!inputWrapper.contains(event.target)) {
         inputWrapper.classList.remove('focused');
-
 
         if (!inputField.value) {
             inputField.setAttribute('placeholder', 'Find Task');

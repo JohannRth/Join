@@ -17,10 +17,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateHTML();
 });
 
-// Funktion zum Abrufen einer Farbe basierend auf dem ersten Buchstaben des Namens
 function getColor(name) {
-    if (!name || typeof name !== 'string') return '#000000'; // Standardfarbe
+    if (!name || typeof name !== 'string') return '#000000'; 
     const firstLetter = name.charAt(0).toUpperCase();
-    const index = firstLetter.charCodeAt(0) - 65; // 'A' hat den charCode 65
+    const index = firstLetter.charCodeAt(0) - 65; 
     return colors[index % colors.length];
 }

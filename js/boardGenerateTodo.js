@@ -5,7 +5,7 @@ function generateTodoHTML(element) {
         ? `height: 27px; width: 144px; border-radius: 8px; padding: 4px 16px; background-color: #1FD7C1; color: #FFFFFF; font-size: 16px; font-weight: 400;`
         : `width: 113px; height: 27px; border-radius: 8px; padding: 4px 16px; background-color: #0038ff; color: white; font-weight: 400; font-size: 16px; display: flex; align-items: center; justify-content: center;`;
 
-    // Fortschrittsdaten berechnen
+
     const completed = element.completedSubtasks || 0;
     const totalSubtasks = element.subtasks ? element.subtasks.length : 0;
     const percentage = totalSubtasks > 0 ? (completed / totalSubtasks) * 100 : 0;
@@ -74,10 +74,8 @@ function dropTask(ev) {
     ev.currentTarget.appendChild(taskElement);
     taskElement.classList.remove("dragging");
 
-    // Speichere die Position in Firebase unter `positionDropArea`
     savePosition(taskId, newCategory);
 
-    // Lokale Änderungen, falls nötig
     todos = todos.map((task) =>
         task.id == taskId ? { ...task, category: newCategory } : task
     );
@@ -90,13 +88,11 @@ function dropTask(ev) {
     updateHTML();
 }
 
-// Setze den Cursor zurück, wenn das Draggen beendet wird
 document.addEventListener("dragend", function (event) {
     event.target.classList.remove("dragging");
 });
 
 function updateHTML() {
-    // To-Do Category
     let todoTasks = todos.filter((t) => t["category"] === "todo");
     let todoContainer = document.getElementById("todo");
     todoContainer.innerHTML = "";
@@ -106,11 +102,10 @@ function updateHTML() {
     } else {
         todoTasks.forEach((task) => {
             todoContainer.innerHTML += generateTodoHTML(task);
-            updateProgressBar(task.id); // Fortschrittsbalken aktualisieren
+            updateProgressBar(task.id);
         });
     }
 
-    // In-Progress Category
     let inProgressTasks = todos.filter(
         (t) => t["category"] === "inProgress"
     );
@@ -122,11 +117,10 @@ function updateHTML() {
     } else {
         inProgressTasks.forEach((task) => {
             inProgressContainer.innerHTML += generateTodoHTML(task);
-            updateProgressBar(task.id); // Fortschrittsbalken aktualisieren
+            updateProgressBar(task.id); 
         });
     }
 
-    // Await Feedback Category
     let feedbackTasks = todos.filter(
         (t) => t["category"] === "awaitFeedback"
     );
@@ -138,11 +132,10 @@ function updateHTML() {
     } else {
         feedbackTasks.forEach((task) => {
             feedbackContainer.innerHTML += generateTodoHTML(task);
-            updateProgressBar(task.id); // Fortschrittsbalken aktualisieren
+            updateProgressBar(task.id); 
         });
     }
 
-    // Done Category
     let doneTasks = todos.filter((t) => t["category"] === "done");
     let doneContainer = document.getElementById("done");
     doneContainer.innerHTML = "";
@@ -152,7 +145,7 @@ function updateHTML() {
     } else {
         doneTasks.forEach((task) => {
             doneContainer.innerHTML += generateTodoHTML(task);
-            updateProgressBar(task.id); // Fortschrittsbalken aktualisieren
+            updateProgressBar(task.id); 
         });
     }
 }
