@@ -380,6 +380,25 @@ function getRandomColor() {
     return colors[Math.floor(Math.random() * colors.length)];
 }
 
+function displayAssignedContacts(contacts) {
+    const assignedToContainer = document.getElementById("aktivContactsEdit");
+    assignedToContainer.innerHTML = ""; // Clear existing contacts
+
+    contacts.forEach(contact => {
+        const initials = getInitials(contact);
+        const color = getColor(contact); // Use getColor function to get color based on name
+
+        // Create contact bubble element
+        const contactElement = document.createElement("div");
+        contactElement.classList.add("contactBubble");
+        contactElement.style.backgroundColor = color;
+        contactElement.textContent = initials;
+
+        // Append to the container
+        assignedToContainer.appendChild(contactElement);
+    });
+}
+
 // Function to load contacts from Firebase
 async function loadContacts() {
     try {
@@ -634,6 +653,36 @@ async function reloadTaskDataAndUpdateUI(taskId) {
     }
 }
 
+
+// Funktion zum Löschen eines Subtasks und Entfernen aus Firebase
+async function deleteSubtaskEdit(index, taskId) {
+    console.log("Versuche, Subtask zu löschen - Index:", index, "Task ID:", taskId);
+
+    // Überprüfe, ob die Aufgabe in der lokalen `todos`-Liste existiert
+    const task = todos.find(t => t.id === taskId);
+    if (!task || !task.subtasks) {
+        console.error("Task oder Subtasks nicht gefunden für ID:", taskId);
+        return;
+    }
+
+    // Entferne den Subtask lokal
+    task.subtasks.splice(index, 1);
+
+    // Lösche den Subtask in Firebase
+    const subtaskPath = `tasks/${taskId}/subtasks/${index}`;
+    try {
+        console.log(`Versuche, Subtask in Firebase unter ${subtaskPath} zu löschen.`);
+
+        // Setze den Subtask in Firebase auf `null`, um ihn zu löschen
+        await deleteData(subtaskPath);
+        console.log(`Subtask bei ${subtaskPath} wurde erfolgreich in Firebase gelöscht.`);
+    } catch (error) {
+        console.error("Fehler beim Löschen des Subtasks in Firebase:", error);
+    }
+
+    // Lade die aktuellen Daten neu und aktualisiere die Benutzeroberfläche
+    await reloadTaskDataAndUpdateUI(taskId);
+}
 
 async function deleteSubtaskEdit(index, taskId) {
     console.log("Versuche, Subtask zu löschen - Index:", index, "Task ID:", taskId);
