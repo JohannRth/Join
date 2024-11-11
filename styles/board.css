@@ -2,10 +2,6 @@ body.no-scroll {
   overflow: hidden;
 }
 
-body {
-  /* overflow-x: hidden; */
-}
-
 .main-board {
   margin-top: 8px;
   display: flex;
@@ -999,11 +995,6 @@ body {
 
 }
 
-@media (max-width: 1160px) {
-
-  .board-add-task {}
-}
-
 @media (max-width: 1070px) {
   .board-add-task {
     flex-direction: column;
@@ -1051,36 +1042,10 @@ body {
 
   .board-add-task {
     margin-top: 0px;
-}
-}
-
-@media (max-width: 840px) {
-  .drag-area {
-   
   }
-
-  .drag-area {
-   
-  }
-}
-
-@media (max-width: 575px) {
-
-  .drag-area {
-    
-  }
-
-  .column-titel {
-    
-  }
-
 }
 
 @media (max-width: 430px) {
-
-  .drag-area-container {
-    
-  }
 
   .board-add-task {
     margin: 0;
@@ -1100,9 +1065,5 @@ body {
 
   .img-input-container {
     gap: 0px;
-  }
-
-  .drag-area {
-    
   }
 }
