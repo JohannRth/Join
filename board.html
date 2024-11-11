@@ -334,7 +334,7 @@
                               <div class="selectedContactsHeadline" id="contactsEdit">Select contacts to assign</div>
                           </div>
                       </div>
-                      <div class="contactDropdown" id="contactDropdownEdit"></div> <!-- Dropdown container -->
+                      <div class="contactDropdown" id="contactDropdownEdit"></div> 
                       <div id="aktivContactsEdit" class="aktivContacts"></div>
                   </div>
                     <div class="subTaskContainer">
@@ -343,12 +343,11 @@
                             <div class="subTaskInputContainer">
                                 <div>
                                     <input onclick="showInputSubTasksEdit()"
-                                        onkeydown="if(event.key === 'Enter') addNewSubtaskEdit(event)"
                                         class="inputAddSubTask" type="text" id="subTaskInputEdit"
                                         placeholder="Add new subtask">
                                 </div>
                                 <div class="addSubTaskButtonContainer" id="addSubTaskButtonContainerEdit">
-                                    <img onclick="showInputSubTasksEdit()" class="addSubTaskButton"
+                                    <img onclick="showInputSubTasksEdit()" class="addSubTaskButton" 
                                         id="addSubTaskButtonEdit" src="./assets/img/add dark.svg">
                                     <div class="inputSubTaksClickContainer" id="inputSubTaksClickContainerEdit">
                                         <div class="deleteCurrentTextButtonContainer">
@@ -378,8 +377,9 @@
                         </div>
                     </div>
                     <div class="btn-check-edit-container">
-                        <button class="btn-check-edit" onclick="confirmChanges(taskId)">Ok <img
-                                src="./assets/img/check.svg" alt=""></button>
+                      <button class="btn-check-edit" onclick="confirmChanges('<TASK_ID>')">
+                        Ok <img src="./assets/img/check.svg" alt="">
+                    </button>
                     </div>
                 </div>
             </div>

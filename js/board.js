@@ -1,12 +1,13 @@
-// titel carde  
+// Titel Card und Subtask-Initialisierung
 let todos = [];
 
+// Event Listener für das Laden der Todos und Positionen
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadTodosFromFirebase(); // Lade die Todos
-    await loadPositionsFromFirebase(); // Lade Positionen
-    await loadSubtaskStatusesFromFirebase(); // Lade Subtask-Status
-    updateHTML(); // Aktualisiere das HTML
-    initializeDragAreas(); // Initialisiere Drag & Drop-Bereiche
+    await loadTodosFromFirebase();
+    await loadPositionsFromFirebase();
+    await loadSubtaskStatusesFromFirebase();
+    updateHTML();
+    initializeDragAreas();
 });
 
 function initializeDragAreas() {
@@ -17,22 +18,28 @@ function initializeDragAreas() {
     });
 }
 
+// Funktion zum Laden der Todos aus Firebase
 async function loadTodosFromFirebase() {
     try {
         const tasksData = await loadData("tasks");
-        const subtaskStatusData = await loadData("subtaskStatus"); // Lade Subtask-Status
+        const subtaskStatusData = await loadData("subtaskStatus");
 
         todos = Object.keys(tasksData).map((key) => {
             const task = tasksData[key];
-            const subtasks = task.subtasks
-                ? Object.entries(task.subtasks).map(([index, title]) => ({
-                    title: title || "Untitled Subtask",
-                    completed: subtaskStatusData[key] && subtaskStatusData[key][index]
-                        ? subtaskStatusData[key][index].completed
-                        : false
-                }))
-                : [];
-
+            const subtasks = task.subtasks ? Object.entries(task.subtasks).map(([index, title]) => ({
+                title: title || "Untitled Subtask",
+                completed: subtaskStatusData[key] && subtaskStatusData[key][index] && subtaskStatusData[key][index].completed !== undefined
+                    ? subtaskStatusData[key][index].completed
+                    : false
+            })) : [];
+        
+            const newSubtasks = task.newSubtask ? Object.entries(task.newSubtask).map(([index, title]) => ({
+                title: title || "Untitled New Subtask",
+                completed: subtaskStatusData[key] && subtaskStatusData[key][index] && subtaskStatusData[key][index].completed !== undefined
+                    ? subtaskStatusData[key][index].completed
+                    : false
+            })) : [];
+        
             return {
                 id: key,
                 titel: task.title || "Untitled",
@@ -41,24 +48,11 @@ async function loadTodosFromFirebase() {
                 description: task.description || "No description",
                 priority: task.prio || "low",
                 dueDate: task.dueDate ? new Date(task.dueDate) : null,
-                subtasks: subtasks,
+                subtasks: subtasks.concat(newSubtasks),
                 completedSubtasks: subtasks.filter(st => st.completed).length,
                 contacts: task.assignedTo ? task.assignedTo.map(name => name.trim()) : []
             };
         });
-
-        // Berechne die Anzahl und das nächste Fälligkeitsdatum der "Urgent"-Aufgaben
-        const urgentTasks = todos.filter(task => task.priority === "urgent");
-        const urgentCount = urgentTasks.length;
-        const nearestDeadline = urgentTasks
-            .filter(task => task.dueDate) // nur Aufgaben mit Datum
-            .sort((a, b) => a.dueDate - b.dueDate) // Sortiere nach Datum
-            .map(task => task.dueDate)[0]; // Nimm das früheste Datum
-
-        // Speichere die Werte in localStorage
-        localStorage.setItem("urgentCount", urgentCount);
-        localStorage.setItem("nearestDeadline", nearestDeadline ? nearestDeadline.toISOString().split("T")[0] : "");
-
         updateHTML();
     } catch (error) {
         console.error("Fehler beim Laden der Daten aus Firebase:", error);
@@ -192,6 +186,7 @@ function updateHTML() {
     } else {
         todoTasks.forEach((task) => {
             todoContainer.innerHTML += generateTodoHTML(task);
+            updateProgressBar(task.id); // Fortschrittsbalken aktualisieren
         });
     }
 
@@ -207,6 +202,7 @@ function updateHTML() {
     } else {
         inProgressTasks.forEach((task) => {
             inProgressContainer.innerHTML += generateTodoHTML(task);
+            updateProgressBar(task.id); // Fortschrittsbalken aktualisieren
         });
     }
 
@@ -222,6 +218,7 @@ function updateHTML() {
     } else {
         feedbackTasks.forEach((task) => {
             feedbackContainer.innerHTML += generateTodoHTML(task);
+            updateProgressBar(task.id); // Fortschrittsbalken aktualisieren
         });
     }
 
@@ -235,9 +232,11 @@ function updateHTML() {
     } else {
         doneTasks.forEach((task) => {
             doneContainer.innerHTML += generateTodoHTML(task);
+            updateProgressBar(task.id); // Fortschrittsbalken aktualisieren
         });
     }
 }
+
 
 // Edit Card //
 
@@ -246,6 +245,7 @@ async function openEditOverlay(taskId) {
     await loadTaskDetails(taskId);
 
     const editOverlay = document.getElementById("edit-overlay");
+    editOverlay.setAttribute("data-task-id", taskId);
     editOverlay.classList.remove("hidden");
     document.body.classList.add("no-scroll");
 }
@@ -267,35 +267,26 @@ async function loadTaskTitle(taskId) {
 async function loadTaskDetails(taskId) {
     try {
         const taskData = await loadData(`tasks/${taskId}`);
-        console.log("Loaded task data:", taskData); // Debugging line
-
         if (taskData) {
-            // Set up title, description, and due date for the edit card
+            // Setze Titel, Beschreibung und andere Felder
             if (taskData.title) document.getElementById("edit-title-edit").value = taskData.title;
             if (taskData.description) document.getElementById("edit-description").value = taskData.description;
             if (taskData.dueDate) document.getElementById("edit-due-date").value = taskData.dueDate;
             if (taskData.prio) setPriorityEdit(taskData.prio);
 
-            // Load and display assigned contacts
-            if (taskData.assignedTo) {
-                displayAssignedContacts(taskData.assignedTo);
-            }
+            // Lade und zeige Subtasks aus beiden Kategorien
+            const subtasksArray = taskData.subtasks ? Object.values(taskData.subtasks).map(title => ({ title })) : [];
+            const newSubtasksArray = taskData.newSubtask ? Object.values(taskData.newSubtask).map(title => ({ title })) : [];
+            const combinedSubtasks = subtasksArray.concat(newSubtasksArray);
 
-            // Load and display subtasks
-            if (taskData.subtasks) {
-                const subtasksArray = Array.isArray(taskData.subtasks) 
-                    ? taskData.subtasks 
-                    : Object.values(taskData.subtasks); // Convert to array if it's an object
-                console.log("Loaded subtasks for edit card:", subtasksArray); // Debugging line
-                displaySubtasks(subtasksArray);
-            } else {
-                console.warn("No subtasks found for task:", taskId);
-            }
+            // Rufe die Funktion auf, um die Subtasks in der Edit-Card anzuzeigen
+            displaySubtasks(combinedSubtasks, taskId); // Hier wird die UI der Edit-Card aktualisiert
+
         } else {
-            console.error("Task data not found for task:", taskId);
+            console.error("Task-Daten nicht gefunden für Task:", taskId);
         }
     } catch (error) {
-        console.error("Error loading task details:", error);
+        console.error("Fehler beim Laden der Task-Details:", error);
     }
 }
 
@@ -378,36 +369,15 @@ function displayAssignedContacts(contacts) {
 // Helper function to get initials from a name
 function getInitials(name) {
     const nameParts = name.split(" ");
-    if (nameParts.length >= 2) {
-        return nameParts[0][0] + nameParts[1][0];
-    } else {
-        return nameParts[0][0];
-    }
+    return nameParts.length >= 2 
+        ? nameParts[0][0] + nameParts[1][0]
+        : nameParts[0][0];
 }
 
 // Helper function to generate a random color for each contact
 function getRandomColor() {
     const colors = ["#FF5733", "#33C3FF", "#7D3CFF", "#FFC300", "#DAF7A6"];
     return colors[Math.floor(Math.random() * colors.length)];
-}
-
-function displayAssignedContacts(contacts) {
-    const assignedToContainer = document.getElementById("aktivContactsEdit");
-    assignedToContainer.innerHTML = ""; // Clear existing contacts
-
-    contacts.forEach(contact => {
-        const initials = getInitials(contact);
-        const color = getColor(contact); // Use getColor function to get color based on name
-
-        // Create contact bubble element
-        const contactElement = document.createElement("div");
-        contactElement.classList.add("contactBubble");
-        contactElement.style.backgroundColor = color;
-        contactElement.textContent = initials;
-
-        // Append to the container
-        assignedToContainer.appendChild(contactElement);
-    });
 }
 
 // Function to load contacts from Firebase
@@ -483,76 +453,65 @@ document.addEventListener("click", (event) => {
 function addContactToAssignedList(name, initials, color) {
     const assignedContainer = document.getElementById("aktivContactsEdit");
 
-    // Check if the contact is already assigned
+    // Prüfen, ob der Kontakt schon vorhanden ist
     const isAlreadyAssigned = Array.from(assignedContainer.children).some(
         el => el.getAttribute("data-name") === name
     );
 
-    if (isAlreadyAssigned) {
-        console.log(`Contact ${name} is already assigned.`); // Debugging information
-        return; // Contact is already assigned, do not add it again
-    }
+    if (isAlreadyAssigned) return; 
 
-    // Create the assigned contact bubble
+    // Kontakt-Bubble erstellen
     const contactBubble = document.createElement("div");
     contactBubble.classList.add("contactBubble");
     contactBubble.style.backgroundColor = color;
     contactBubble.textContent = initials;
-    contactBubble.setAttribute("data-name", name); // Store name to check for duplicates
+    contactBubble.setAttribute("data-name", name); 
 
-    // Add event listener to remove the bubble when clicked
+    // Entfernen, wenn angeklickt
     contactBubble.addEventListener("click", () => {
-        assignedContainer.removeChild(contactBubble); // Remove the bubble from assigned contacts
+        assignedContainer.removeChild(contactBubble);
     });
 
-    // Append to assigned contacts container
     assignedContainer.appendChild(contactBubble);
-
-    console.log(`Added contact: ${name}`); // Debugging information
 }
 
 function displayAssignedContacts(contacts) {
     const assignedToContainer = document.getElementById("aktivContactsEdit");
-    assignedToContainer.innerHTML = ""; // Clear existing contacts
+    assignedToContainer.innerHTML = ""; // Vorherige Inhalte löschen
 
     contacts.forEach(contact => {
         const initials = getInitials(contact);
-        const color = getColor(contact); // Use getColor function to get color based on name
+        const color = getColor(contact); // Verwende die Funktion getColor, um die Farbe basierend auf dem Namen zu erhalten
 
-        // Create contact bubble element
+        // Erstelle das contactBubble-Element
         const contactElement = document.createElement("div");
         contactElement.classList.add("contactBubble");
         contactElement.style.backgroundColor = color;
         contactElement.textContent = initials;
-        contactElement.setAttribute("data-name", contact); // Store name to check for duplicates
+        contactElement.setAttribute("data-name", contact); // Name als Attribut speichern
 
-        // Add event listener to remove the bubble when clicked
+        // Füge einen Event-Listener hinzu, um die Bubble beim Klicken zu entfernen (falls gewünscht)
         contactElement.addEventListener("click", () => {
-            assignedToContainer.removeChild(contactElement); // Remove the bubble when clicked
+            assignedToContainer.removeChild(contactElement);
         });
 
-        // Append to the container
+        // Füge das Element zum Container hinzu
         assignedToContainer.appendChild(contactElement);
     });
 }
 
-function displaySubtasks(subtasks, subtaskStatusData = {}, taskId) {
+
+// Anzeige der Subtasks in der Edit-Card
+function displaySubtasks(subtasks, taskId) {
     const subTaskListContainer = document.getElementById("subTaskListEdit");
     subTaskListContainer.innerHTML = "";
 
-    if (!subtasks) {
-        console.warn("No subtasks found for task:", taskId);
+    if (!subtasks || subtasks.length === 0) {
+        console.warn("Keine Subtasks gefunden für Task:", taskId);
         return;
     }
 
-    const subtasksArray = Object.entries(subtasks).map(([index, title]) => ({
-        title: title || "Untitled Subtask",
-        completed: subtaskStatusData[taskId] && subtaskStatusData[taskId][index]
-            ? subtaskStatusData[taskId][index].completed
-            : false
-    }));
-
-    subtasksArray.forEach((subtask, index) => {
+    subtasks.forEach((subtask, index) => {
         const title = subtask && subtask.title ? subtask.title : "Untitled";
 
         const subTaskItem = document.createElement("div");
@@ -566,36 +525,16 @@ function displaySubtasks(subtasks, subtaskStatusData = {}, taskId) {
         subTaskText.textContent = title;
         subTaskText.classList.add("subTaskText");
 
-        const subTaskInput = document.createElement("input");
-        subTaskInput.type = "text";
-        subTaskInput.value = title;
-        subTaskInput.classList.add("subTaskInput");
-        subTaskInput.style.display = "none";
-
-        subTaskInput.onblur = () => saveSubtaskTitle(index, subTaskInput.value, subTaskText, subTaskInput, subtasks, taskId);
-        subTaskInput.onkeydown = (event) => {
-            if (event.key === "Enter") {
-                saveSubtaskTitle(index, subTaskInput.value, subTaskText, subTaskInput, subtasks, taskId);
-            }
-        };
-
         leftContainer.appendChild(subTaskText);
-        leftContainer.appendChild(subTaskInput);
 
         const rightContainer = document.createElement("div");
         rightContainer.classList.add("rightContainerSubTask");
 
-        const editButton = document.createElement("img");
-        editButton.src = "./assets/img/edit.svg";
-        editButton.alt = "Edit";
-        editButton.onclick = () => toggleSubtaskEditMode(subTaskText, subTaskInput);
-
         const deleteButton = document.createElement("img");
         deleteButton.src = "./assets/img/delete.svg";
         deleteButton.alt = "Delete";
-        deleteButton.onclick = () => deleteSubtaskEdit(index, taskId); // Pass taskId here
+        deleteButton.onclick = () => deleteSubtaskEdit(index, taskId);
 
-        rightContainer.appendChild(editButton);
         rightContainer.appendChild(deleteButton);
 
         subTaskItem.appendChild(leftContainer);
@@ -605,118 +544,152 @@ function displaySubtasks(subtasks, subtaskStatusData = {}, taskId) {
     });
 }
 
-async function saveSubtaskTitle(index, newTitle, subTaskText, subTaskInput, subtasks, taskId) {
-    if (newTitle.trim() === "") {
-        alert("Subtask title cannot be empty.");
+
+async function addNewSubtaskEdit(event) {
+    // Hole das Eingabefeld und den Text des neuen Subtasks
+    let newSubTaskInput = document.getElementById('subTaskInputEdit');
+    let newSubTaskValue = newSubTaskInput.value.trim(); // Entfernt überflüssige Leerzeichen
+
+    // Verhindere das Hinzufügen von leeren Subtasks
+    if (newSubTaskValue === '') {
+        return false;
+    }
+
+    // Hole die Task-ID aus dem Edit-Overlay
+    const taskId = document.getElementById("edit-overlay").getAttribute("data-task-id");
+
+    try {
+        // Lade die vorhandenen `newSubtask` Daten (falls vorhanden) aus Firebase
+        const taskData = await loadData(`tasks/${taskId}`);
+        const existingNewSubtasks = taskData.newSubtask || {};
+
+        // Berechne den nächsten Index für den neuen Subtask in der `newSubtask` Kategorie
+        const newSubtaskIndex = Object.keys(existingNewSubtasks).length;
+
+        // Speichere den neuen Subtask in Firebase unter der neuen Kategorie `newSubtask`
+        await updateData(`tasks/${taskId}/newSubtask/${newSubtaskIndex}`, newSubTaskValue);
+
+        // Leere das Eingabefeld
+        newSubTaskInput.value = '';
+
+        // Lade die aktuellen Daten neu und aktualisiere die Benutzeroberfläche
+        await reloadTaskDataAndUpdateUI(taskId);
+
+    } catch (error) {
+        console.error("Fehler beim Hinzufügen des Subtasks in der neuen Kategorie `newSubtask` in Firebase:", error);
+    }
+}
+
+function renderSubtasks() {
+    const subTaskListContainer = document.getElementById("subTaskListEdit");
+    subTaskListContainer.innerHTML = "";
+
+    // Zeige alle bestehenden `newSubtask` Elemente an
+    subTasks.forEach((subtask, index) => {
+        const subTaskItem = document.createElement("div");
+        subTaskItem.classList.add("subTask");
+        
+        const leftContainer = document.createElement("div");
+        leftContainer.classList.add("leftContainerSubTask");
+        leftContainer.textContent = subtask;
+
+        const rightContainer = document.createElement("div");
+        rightContainer.classList.add("rightContainerSubTask");
+
+        // Optional: Edit- und Delete-Buttons
+        const editButton = document.createElement("img");
+        editButton.src = "./assets/img/edit.svg";
+        editButton.alt = "Edit";
+        editButton.onclick = () => editSubtaskEdit(index);
+
+        const deleteButton = document.createElement("img");
+        deleteButton.src = "./assets/img/delete.svg";
+        deleteButton.alt = "Delete";
+        deleteButton.onclick = () => deleteSubtaskEdit(index);
+
+        rightContainer.appendChild(editButton);
+        rightContainer.appendChild(deleteButton);
+
+        subTaskItem.appendChild(leftContainer);
+        subTaskItem.appendChild(rightContainer);
+        subTaskListContainer.appendChild(subTaskItem);
+    });
+}
+
+// Aktualisiere UI und lade Daten neu
+async function reloadTaskDataAndUpdateUI(taskId) {
+    await loadTodosFromFirebase();
+    await loadPositionsFromFirebase();
+    await loadSubtaskStatusesFromFirebase();
+    updateHTML();
+
+    const editOverlay = document.getElementById("edit-overlay");
+    if (editOverlay && !editOverlay.classList.contains("hidden")) {
+        await loadTaskDetails(taskId);
+    }
+    const expandedCardOverlay = document.getElementById("card-overlay");
+    if (expandedCardOverlay && !expandedCardOverlay.classList.contains("hidden")) {
+        const task = todos.find((t) => t.id === taskId);
+        expandedCardOverlay.innerHTML = generateExpandedCardHTML(task);
+    }
+}
+
+
+async function deleteSubtaskEdit(index, taskId) {
+    console.log("Versuche, Subtask zu löschen - Index:", index, "Task ID:", taskId);
+
+    // Überprüfe, ob die Aufgabe in der lokalen `todos`-Liste existiert
+    const task = todos.find(t => t.id === taskId);
+    if (!task || !task.subtasks) {
+        console.error("Task oder Subtasks nicht gefunden für ID:", taskId);
         return;
     }
 
-    subTaskText.textContent = newTitle;
-    subTaskText.style.display = "inline-block";
-    subTaskInput.style.display = "none";
+    // Entferne den Subtask lokal
+    task.subtasks.splice(index, 1);
 
-    if (subtasks && subtasks[index]) {
-        subtasks[index].title = newTitle;
-    } else {
-        console.warn("Subtask not found at index:", index);
-    }
-
+    // Lösche den Subtask in Firebase
+    const subtaskPath = `tasks/${taskId}/subtasks/${index}`;
     try {
-        await updateData(`tasks/${taskId}/subtasks/${index}`, { title: newTitle });
-        console.log("Subtask updated in Firebase.");
+        console.log(`Versuche, Subtask in Firebase unter ${subtaskPath} zu löschen.`);
+
+        // Setze den Subtask in Firebase auf `null`, um ihn zu löschen
+        await deleteData(subtaskPath);
+        console.log(`Subtask bei ${subtaskPath} wurde erfolgreich in Firebase gelöscht.`);
     } catch (error) {
-        console.error("Error updating subtask in Firebase:", error);
+        console.error("Fehler beim Löschen des Subtasks in Firebase:", error);
     }
+
+    // Lade die aktuellen Daten neu und aktualisiere die Benutzeroberfläche
+    await reloadTaskDataAndUpdateUI(taskId);
+}
+
+async function updateData(path, data) {
+    try {
+        const response = await fetch(`${BASE_URL}${path}.json`, {
+            method: data === null ? 'DELETE' : 'PUT', // Verwende DELETE, wenn data null ist
+            body: data === null ? null : JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) {
+            console.error(`Löschen fehlgeschlagen mit Status: ${response.status} - ${response.statusText}`);
+            throw new Error(`Fehler beim Aktualisieren der Daten in Firebase: ${response.statusText}`);
+        }
+        console.log(`Daten erfolgreich aktualisiert bei Pfad ${path}`);
+    } catch (error) {
+        console.error("Fehler beim Aktualisieren der Daten in Firebase:", error);
+    }
+}
+
+function showInputSubTasksEdit() {
+    const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
+    inputContainer.classList.toggle("visible"); 
 }
 
 function toggleSubtaskEditMode(subTaskText, subTaskInput) {
     subTaskText.style.display = "none";
     subTaskInput.style.display = "inline-block";
-    subTaskInput.focus(); // Focus on the input field for immediate editing
-}
-
-async function deleteSubtaskEdit(index, taskId) {
-    console.log("Delete Subtask Called - Index:", index, "Task ID:", taskId); // Debugging line
-
-    if (!taskId) {
-        console.error("Task ID is undefined. Cannot proceed with deletion.");
-        return;
-    }
-
-    const task = todos.find(t => t.id === taskId); // Find the task with the specific ID
-    if (!task) {
-        console.error("Task not found for ID:", taskId);
-        return;
-    }
-
-    // Entferne die Subtask lokal
-    if (task.subtasks && Array.isArray(task.subtasks)) {
-        task.subtasks.splice(index, 1); // Entferne Subtask aus Array
-        console.log("Subtask removed from array.");
-    } else {
-        console.warn("Subtask not found at index:", index);
-        return;
-    }
-
-    // Lösche das Subtask in Firebase
-    try {
-        await updateData(`tasks/${taskId}/subtasks/${index}`, null); // Entferne Subtask in Firebase
-        console.log("Subtask deleted from Firebase.");
-    } catch (error) {
-        console.error("Error deleting subtask from Firebase:", error);
-    }
-
-    // Aktualisiere die Anzeige nach dem Löschen
-    displaySubtasks(task.subtasks, {}, taskId); // Subtasks erneut anzeigen
-}
-
-async function addNewSubtaskEdit(event) {
-    event.preventDefault();
-    const inputField = document.getElementById("subTaskInputEdit");
-    const newSubtaskTitle = inputField.value.trim();
-
-    if (newSubtaskTitle === "") {
-        alert("Subtask title cannot be empty.");
-        return;
-    }
-
-    const taskId = getCurrentTaskId();  
-    const task = todos.find(t => t.id === taskId);
-
-    if (!task) {
-        console.error("Task not found for ID:", taskId);
-        return;
-    }
-
-    const newSubtask = { title: newSubtaskTitle, completed: false };
-    task.subtasks = task.subtasks || [];  
-    task.subtasks.push(newSubtask);
-
-    try {
-        const newIndex = task.subtasks.length - 1;
-        await updateData(`tasks/${taskId}/subtasks/${newIndex}`, { title: newSubtaskTitle });
-        console.log("New subtask added to Firebase.");
-    } catch (error) {
-        console.error("Error adding subtask to Firebase:", error);
-    }
-
-    inputField.value = "";
-    displaySubtasks(task.subtasks, {}, taskId);
-}
-
-function showInputSubTasksEdit() {
-    // Example logic to display an input for adding a subtask
-    const subTaskInputContainer = document.getElementById("inputSubTaksClickContainerEdit");
-    if (subTaskInputContainer) {
-        subTaskInputContainer.style.display = "block";
-    } else {
-        console.error("Element with ID 'inputSubTaksClickContainerEdit' not found.");
-    }
-}
-
-function getCurrentTaskId() {
-    const editOverlay = document.getElementById("edit-overlay");
-    return editOverlay.getAttribute("data-task-id");
+    subTaskInput.focus(); // Setzt den Fokus sofort auf das Eingabefeld zum Bearbeiten
 }
 
 // Funktion zum Schließen des Edit-Overlays
@@ -760,6 +733,7 @@ function generateExpandedCardHTML(element) {
 
     const dueDate = element.dueDate ? new Date(element.dueDate).toLocaleDateString("de-DE") : "Kein Datum";
 
+    // Subtasks und NewSubtasks kombinieren und anzeigen
     const subtasksHTML = element.subtasks.map((subtask, index) => `
     <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
         <input type="checkbox" 
@@ -767,9 +741,9 @@ function generateExpandedCardHTML(element) {
                onclick="toggleSubtask('${element.id}', ${index})" 
                class="styled-checkbox"
                ${subtask.completed ? "checked" : ""}>
-        <label for="subtask-checkbox-${element.id}-${index}">${subtask.title}</label> <!-- Achte hier auf subtask.title -->
+        <label for="subtask-checkbox-${element.id}-${index}">${subtask.title}</label>
     </div>
-`).join('');
+    `).join('');
 
     return `
     <div class="around-container-epended-card">    
@@ -811,7 +785,7 @@ function generateExpandedCardHTML(element) {
                 <img src="./assets/img/delete.svg" alt="delete">Delete
             </p>
             <img src="./assets/img/sep-delet-edit.svg" alt="delete">
-            <p class="action-btn-overlay"onclick="openEditOverlay('${element.id}')">
+            <p class="action-btn-overlay" onclick="openEditOverlay('${element.id}')">
                 <img src="./assets/img/edit.svg" alt="edit">Edit
             </p>
         </div>
@@ -857,8 +831,10 @@ async function loadSubtaskStatusesFromFirebase() {
     todos.forEach(task => {
         if (subtaskStatuses[task.id]) {
             task.subtasks.forEach((subtask, index) => {
-                if (subtaskStatuses[task.id][index] !== undefined) {
+                if (subtaskStatuses[task.id][index] && subtaskStatuses[task.id][index].completed !== undefined) {
                     subtask.completed = subtaskStatuses[task.id][index].completed || false;
+                } else {
+                    subtask.completed = false; // Standardwert, falls `completed` nicht definiert ist
                 }
             });
         }
@@ -868,7 +844,15 @@ async function loadSubtaskStatusesFromFirebase() {
 // Subtasks //
 
 //Progress Bar //
-function updateProgressBar(taskId, percentage, completed, total) {
+function updateProgressBar(taskId) {
+    const task = todos.find((t) => t.id === taskId);
+    if (!task) return;
+
+    const completedSubtasks = task.subtasks.filter((subtask) => subtask.completed).length;
+    const totalSubtasks = task.subtasks.length;
+    const percentage = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) * 100 : 0;
+
+    // Aktualisiere die Anzeige des Fortschrittsbalkens
     const taskElement = document.getElementById(taskId);
     if (!taskElement) return;
 
@@ -877,7 +861,7 @@ function updateProgressBar(taskId, percentage, completed, total) {
 
     if (progressBar && progressText) {
         progressBar.style.width = `${percentage}%`;
-        progressText.textContent = `${completed}/${total} Subtasks`;
+        progressText.textContent = `${completedSubtasks}/${totalSubtasks} Subtasks`;
     }
 }
 //Progress Bar //
@@ -1024,23 +1008,46 @@ function getColor(name) {
 }
 
 async function deleteTask(taskId) {
-    // Finde die Aufgabe in `todos` und entferne sie
+    // Entferne die Aufgabe aus der `todos`-Liste
     todos = todos.filter(task => task.id !== taskId);
 
-    // Lösche die Aufgabe in Firebase unter dem Pfad `tasks/taskId`
-    const path = `tasks/${taskId}`;
-    await deleteData(path);
+    // Firebase-Pfade für die spezifische Aufgabe, deren Subtask-Status und Position
+    const taskPath = `tasks/${taskId}`;
+    const subtaskStatusPath = `subtaskStatus/${taskId}`;
+    const positionPath = `positionDropArea/${taskId}`;
+    
+    try {
+        // Hauptaufgabe in Firebase löschen
+        await deleteData(taskPath);
+        console.log(`Task mit ID ${taskId} wurde erfolgreich in Firebase gelöscht.`);
+        
+        // Zugehörigen Subtask-Status in Firebase löschen
+        await deleteData(subtaskStatusPath);
+        console.log(`Subtask-Status für Task ${taskId} wurde erfolgreich in Firebase gelöscht.`);
+        
+        // Position der Aufgabe in Firebase löschen
+        await deleteData(positionPath);
+        console.log(`Position für Task ${taskId} wurde erfolgreich in Firebase gelöscht.`);
+    } catch (error) {
+        console.error("Fehler beim Löschen der Daten aus Firebase:", error);
+        return; // Beende die Funktion, falls ein Fehler auftritt
+    }
 
-    // Aktualisiere das HTML, um die gelöschte Aufgabe zu entfernen
+    // HTML aktualisieren, um die Aufgabe von der Oberfläche zu entfernen
     updateHTML();
     closeCardOverlay(); // Schließe das Overlay nach dem Löschen
 }
 
+// Funktion zum Löschen der Daten aus Firebase
 async function deleteData(path) {
     try {
-        const taskRef = firebase.database().ref(path);
-        await taskRef.remove();
-        console.log(`Task bei Pfad ${path} wurde erfolgreich gelöscht.`);
+        const response = await fetch(`${BASE_URL}${path}.json`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            throw new Error(`Fehler beim Löschen der Daten aus Firebase: ${response.statusText}`);
+        }
+        console.log(`Daten bei Pfad ${path} wurden erfolgreich gelöscht.`);
     } catch (error) {
         console.error("Fehler beim Löschen der Daten aus Firebase:", error);
     }
