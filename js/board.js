@@ -282,17 +282,6 @@ async function loadTaskDetails(taskId) {
             // Rufe die Funktion auf, um die Subtasks in der Edit-Card anzuzeigen
             displaySubtasks(combinedSubtasks, taskId); // Hier wird die UI der Edit-Card aktualisiert
 
-            // Load and display subtasks
-            if (taskData.subtasks) {
-                const subtasksArray = Array.isArray(taskData.subtasks)
-                    ? taskData.subtasks
-                    : Object.values(taskData.subtasks); // Convert to array if it's an object
-                console.log("Loaded subtasks for edit card:", subtasksArray); // Debugging line
-                displaySubtasks(subtasksArray);
-            } else {
-                console.warn("No subtasks found for task:", taskId);
-            }
-
         } else {
             console.error("Task-Daten nicht gefunden für Task:", taskId);
         }
@@ -700,93 +689,7 @@ function showInputSubTasksEdit() {
 function toggleSubtaskEditMode(subTaskText, subTaskInput) {
     subTaskText.style.display = "none";
     subTaskInput.style.display = "inline-block";
-
-    subTaskInput.focus(); // Focus on the input field for immediate editing
-}
-
-async function deleteSubtaskEdit(index, taskId) {
-    console.log("Delete Subtask Called - Index:", index, "Task ID:", taskId); // Debugging line
-
-    if (!taskId) {
-        console.error("Task ID is undefined. Cannot proceed with deletion.");
-        return;
-    }
-
-    const task = todos.find(t => t.id === taskId); // Find the task with the specific ID
-    if (!task) {
-        console.error("Task not found for ID:", taskId);
-        return;
-    }
-
-    // Entferne die Subtask lokal
-    if (task.subtasks && Array.isArray(task.subtasks)) {
-        task.subtasks.splice(index, 1); // Entferne Subtask aus Array
-        console.log("Subtask removed from array.");
-    } else {
-        console.warn("Subtask not found at index:", index);
-        return;
-    }
-
-    // Lösche das Subtask in Firebase
-    try {
-        await updateData(`tasks/${taskId}/subtasks/${index}`, null); // Entferne Subtask in Firebase
-        console.log("Subtask deleted from Firebase.");
-    } catch (error) {
-        console.error("Error deleting subtask from Firebase:", error);
-    }
-
-    // Aktualisiere die Anzeige nach dem Löschen
-    displaySubtasks(task.subtasks, {}, taskId); // Subtasks erneut anzeigen
-}
-
-async function addNewSubtaskEdit(event) {
-    event.preventDefault();
-    const inputField = document.getElementById("subTaskInputEdit");
-    const newSubtaskTitle = inputField.value.trim();
-
-    if (newSubtaskTitle === "") {
-        alert("Subtask title cannot be empty.");
-        return;
-    }
-
-    const taskId = getCurrentTaskId();
-    const task = todos.find(t => t.id === taskId);
-
-    if (!task) {
-        console.error("Task not found for ID:", taskId);
-        return;
-    }
-
-    const newSubtask = { title: newSubtaskTitle, completed: false };
-    task.subtasks = task.subtasks || [];
-    task.subtasks.push(newSubtask);
-
-    try {
-        const newIndex = task.subtasks.length - 1;
-        await updateData(`tasks/${taskId}/subtasks/${newIndex}`, { title: newSubtaskTitle });
-        console.log("New subtask added to Firebase.");
-    } catch (error) {
-        console.error("Error adding subtask to Firebase:", error);
-    }
-
-    inputField.value = "";
-    displaySubtasks(task.subtasks, {}, taskId);
-}
-
-function showInputSubTasksEdit() {
-    // Example logic to display an input for adding a subtask
-    const subTaskInputContainer = document.getElementById("inputSubTaksClickContainerEdit");
-    if (subTaskInputContainer) {
-        subTaskInputContainer.style.display = "block";
-    } else {
-        console.error("Element with ID 'inputSubTaksClickContainerEdit' not found.");
-    }
-}
-
-function getCurrentTaskId() {
-    const editOverlay = document.getElementById("edit-overlay");
-    return editOverlay.getAttribute("data-task-id");
-
+    subTaskInput.focus(); // Setzt den Fokus sofort auf das Eingabefeld zum Bearbeiten
 }
 
 // Funktion zum Schließen des Edit-Overlays
