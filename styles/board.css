@@ -3,11 +3,10 @@ body.no-scroll {
 }
 
 body {
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 .main-board {
-  width: 1208px;
   margin-top: 8px;
   display: flex;
   flex-direction: column;
@@ -15,12 +14,12 @@ body {
 }
 
 .board-add-task {
-  width: 1056px;
   height: 73px;
   margin-left: 64px;
   margin-top: 80px;
+  margin-bottom: 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -141,8 +140,6 @@ body {
 .column {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top: 48px;
 }
 
 
@@ -159,7 +156,6 @@ body {
 
 /* Drag Area */
 .drag-area-container {
-  width: 1208px;
   margin-top: 8px;
   padding: 0px 64px 0px 64px;
   gap: 26px;
@@ -965,23 +961,19 @@ body {
 @media (max-width: 1380px) {
 
   .drag-area-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 0;
-    margin-left: 10px;
-    min-width: 300px;
+    padding: 0px 30px 0px 30px;
   }
 
+
+}
+
+@media (max-width: 1360px) {
   .column {
-    width: 100%;
-    max-width: 400px;
     margin-left: 0;
+    overflow: auto;
   }
 
   .column-titel {
-    width: 100%;
     display: flex;
     justify-content: space-between;
     margin-bottom: 8px;
@@ -994,24 +986,22 @@ body {
     white-space: nowrap;
     gap: 16px;
     padding: 10px;
-    min-height: 320px;
+    min-height: 260px;
     border: 1px dashed #ccc;
     border-radius: 8px;
+    width: 100%;
   }
-}
 
-@media (max-width: 1360px) {
-
-  .board-add-task {
-    width: 850px;
+  .drag-area-container {
+    flex-direction: column;
+    padding: 0px 8px 0px 8px;
   }
+
 }
 
 @media (max-width: 1160px) {
 
-  .board-add-task {
-    width: 750px;
-  }
+  .board-add-task {}
 }
 
 @media (max-width: 1070px) {
@@ -1043,8 +1033,11 @@ body {
 
   .drag-area {
     overflow-x: auto;
-    width: 545px;
-    margin-left: 140px;
+  }
+
+  .drag-area-container {
+    flex-direction: column;
+    padding: 60px 8px 0px 8px;
   }
 
 }
@@ -1056,31 +1049,29 @@ body {
     margin-bottom: 90px;
   }
 
-  .drag-area {
-    width: 815px;
-    margin-left: 416px;
-  }
+  .board-add-task {
+    margin-top: 0px;
+}
 }
 
 @media (max-width: 840px) {
   .drag-area {
-    width: 545px;
+   
   }
 
   .drag-area {
-    margin-left: 140px;
+   
   }
 }
 
 @media (max-width: 575px) {
 
   .drag-area {
-    width: 275px;
-    margin-left: 20px;
+    
   }
 
   .column-titel {
-    width: 250px;
+    
   }
 
 }
@@ -1088,11 +1079,10 @@ body {
 @media (max-width: 430px) {
 
   .drag-area-container {
-    width: 300px;
+    
   }
 
   .board-add-task {
-    width: 750px;
     margin: 0;
     margin-top: 48px;
     margin-left: 10px;
@@ -1113,7 +1103,6 @@ body {
   }
 
   .drag-area {
-    width: 275px;
-    margin-left: 0px;
+    
   }
 }
