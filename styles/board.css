@@ -25,10 +25,10 @@ body.no-scroll {
   font-weight: 700;
 }
 
-.responsiv-plus-btn{
+.responsiv-plus-btn {
   width: 40px;
   height: 40px;
-  padding: 3px ;
+  padding: 3px;
   gap: 10px;
   border-radius: 10px;
   background: #2A3647;
@@ -349,7 +349,7 @@ body.no-scroll {
 }
 
 /* Erweiterte Titel-Karte */
-.around-container-epended-card{
+.around-container-epended-card {
   width: 525px;
   height: 800px;
   border-radius: 30px;
@@ -372,8 +372,8 @@ body.no-scroll {
 }
 
 .expanded-card-overlay::-webkit-scrollbar-track {
-  margin-top: 50px; 
-  margin-bottom: 50px; 
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 
@@ -401,23 +401,23 @@ body.no-scroll {
 
 .task-title-overlay {
   width: 445px;
-  min-height: 150px; 
-  max-height: 250px; 
+  min-height: 150px;
+  max-height: 250px;
   font-weight: 700;
   font-size: 61px;
   color: #000000;
-  line-height: 1.2; 
+  line-height: 1.2;
   overflow-wrap: break-word;
-  overflow-y: auto; 
-}  
+  overflow-y: auto;
+}
 
 .task-description-overlay {
-  min-height: 80px; 
-  max-height: 250px; 
+  min-height: 80px;
+  max-height: 250px;
   font-weight: 400;
   font-size: 20px;
   color: #000000;
-  line-height: 1.2; 
+  line-height: 1.2;
   overflow-wrap: break-word;
   overflow-y: auto;
 }
@@ -460,7 +460,7 @@ body.no-scroll {
   color: #2a3647;
 }
 
-.priority-focus-img-container{
+.priority-focus-img-container {
   display: flex;
   align-items: center;
 }
@@ -711,8 +711,8 @@ body.no-scroll {
 }
 
 .edit-card-body::-webkit-scrollbar-track {
-  margin-top: 50px; 
-  margin-bottom: 50px; 
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .edit-card-overlay {
@@ -793,7 +793,7 @@ body.no-scroll {
   padding-bottom: 24px;
 }
 
-.prioButtonUrgentEdit{
+.prioButtonUrgentEdit {
   width: 136px;
   height: 56px;
   padding: 10px;
@@ -963,7 +963,7 @@ body.no-scroll {
   .drag-area-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; 
+    align-items: flex-start;
     gap: 16px;
     padding: 0;
     margin-left: 10px;
@@ -973,7 +973,7 @@ body.no-scroll {
   .column {
     width: 100%;
     max-width: 400px;
-    margin-left: 0; 
+    margin-left: 0;
   }
 
   .column-titel {
@@ -987,45 +987,27 @@ body.no-scroll {
   .drag-area {
     display: flex;
     flex-direction: row;
-    white-space: nowrap; 
-    gap: 16px; 
+    white-space: nowrap;
+    gap: 16px;
     padding: 10px;
-    min-height: 320px; 
-    border: 1px dashed #ccc; 
+    min-height: 320px;
+    border: 1px dashed #ccc;
     border-radius: 8px;
   }
 }
 
-@media (max-width: 430px) {
-
-  .drag-area-container{
-    width: 300px;
-  }
-
-}
-
 @media (max-width: 1360px) {
 
-  .board-add-task{
+  .board-add-task {
     width: 850px;
   }
 }
 
 @media (max-width: 1160px) {
 
-  .board-add-task{
+  .board-add-task {
     width: 750px;
   }
-}
-
-@media (max-width: 1060px) {
-
-  .board-add-task{
-    width: 750px;
-    margin: 0;
-    margin-top: 48px;
-    margin-left: 10px;
-  }  
 }
 
 @media (max-width: 1070px) {
@@ -1036,28 +1018,80 @@ body.no-scroll {
   }
 
   .input-container {
-    width: 100%; /* Volle Breite für das Eingabefeld */
+    width: 100%;
+    /* Volle Breite für das Eingabefeld */
   }
 
   .button-add-task-board {
     display: none;
   }
 
-  .responsiv-plus-btn{
+  .responsiv-plus-btn {
     display: flex;
   }
 
-  .responsiv-plus-headline-container{
+  .responsiv-plus-headline-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 312px;
   }
 
+  .drag-area {
+    overflow-x: auto;
+    width: 545px;
+    margin-left: 140px;
+  }
+
+}
+
+@media (max-width: 1020px) {
+
+  body {
+    padding-left: unset;
+    margin-bottom: 90px;
+  }
+
+  .drag-area {
+    width: 815px;
+    margin-left: 416px;
+  }
+}
+
+@media (max-width: 840px) {
+  .drag-area {
+    width: 545px;
+  }
+
+  .drag-area {
+    margin-left: 140px;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .drag-area-container {
+    width: 300px;
+  }
+
+  .board-add-task {
+    width: 750px;
+    margin: 0;
+    margin-top: 48px;
+    margin-left: 10px;
+  }
 }
 
 @media (max-width: 340px) {
-  .input-container{
+  .input-container {
     width: 90px;
+  }
+
+  .responsiv-plus-headline-container {
+    width: 250px;
+  }
+
+  .img-input-container {
+    gap: 0px;
   }
 }
