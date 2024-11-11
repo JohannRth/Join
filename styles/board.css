@@ -1049,21 +1049,26 @@ body.no-scroll {
   }
 }
 
-@media (max-width: 1060px) {
-
-  .board-add-task {
-    width: 750px;
-    margin: 0;
-    margin-top: 48px;
-    margin-left: 10px;
-  }
-}
-
 @media (max-width: 1020px) {
 
   body {
     padding-left: unset;
     margin-bottom: 90px;
+  }
+
+  .drag-area {
+    width: 815px;
+    margin-left: 416px;
+  }
+}
+
+@media (max-width: 840px) {
+  .drag-area {
+    width: 545px;
+  }
+
+  .drag-area {
+    margin-left: 140px;
   }
 }
 
@@ -1073,10 +1078,24 @@ body.no-scroll {
     width: 300px;
   }
 
+  .board-add-task {
+    width: 750px;
+    margin: 0;
+    margin-top: 48px;
+    margin-left: 10px;
+  }
 }
 
 @media (max-width: 340px) {
   .input-container {
     width: 90px;
+  }
+
+  .responsiv-plus-headline-container {
+    width: 250px;
+  }
+
+  .img-input-container {
+    gap: 0px;
   }
 }
