@@ -283,8 +283,8 @@ async function loadTaskDetails(taskId) {
 
             // Load and display subtasks
             if (taskData.subtasks) {
-                const subtasksArray = Array.isArray(taskData.subtasks) 
-                    ? taskData.subtasks 
+                const subtasksArray = Array.isArray(taskData.subtasks)
+                    ? taskData.subtasks
                     : Object.values(taskData.subtasks); // Convert to array if it's an object
                 console.log("Loaded subtasks for edit card:", subtasksArray); // Debugging line
                 displaySubtasks(subtasksArray);
@@ -680,7 +680,7 @@ async function addNewSubtaskEdit(event) {
         return;
     }
 
-    const taskId = getCurrentTaskId();  
+    const taskId = getCurrentTaskId();
     const task = todos.find(t => t.id === taskId);
 
     if (!task) {
@@ -689,7 +689,7 @@ async function addNewSubtaskEdit(event) {
     }
 
     const newSubtask = { title: newSubtaskTitle, completed: false };
-    task.subtasks = task.subtasks || [];  
+    task.subtasks = task.subtasks || [];
     task.subtasks.push(newSubtask);
 
     try {
