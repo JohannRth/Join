@@ -59,7 +59,6 @@ async function loadTodosFromFirebase() {
     }
 }
 
-
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -68,6 +67,11 @@ function dragTask(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
     ev.target.classList.add("dragging");
     ev.target.style.cursor = "grabbing";
+
+    ev.target.addEventListener("dragend", () => {
+        const dragAreas = document.querySelectorAll(".drag-area");
+        dragAreas.forEach((area) => area.classList.remove("highlight"));
+    });
 }
 
 
