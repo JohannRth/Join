@@ -2,6 +2,8 @@ async function openEditOverlay(taskId) {
     await loadTaskDetails(taskId);
     await populateContactDropdownFromFirebase();
     await loadAssignedContacts(taskId);
+    
+    document.querySelector(".btn-check-edit").setAttribute("onclick", `confirmChanges('${taskId}')`);
 
     const editOverlay = document.getElementById("edit-overlay");
     editOverlay.setAttribute("data-task-id", taskId);
@@ -380,16 +382,16 @@ async function deleteData(path) {
 async function updateData(path, data) {
     try {
         const response = await fetch(`${BASE_URL}${path}.json`, {
-            method: data === null ? 'DELETE' : 'PUT', 
-            body: data === null ? null : JSON.stringify(data),
+            method: 'PUT', // Verwende PUT statt PATCH
+            body: JSON.stringify(data),
             headers: { 'Content-Type': 'application/json' }
         });
         if (!response.ok) {
-            console.error(`Löschen fehlgeschlagen mit Status: ${response.status} - ${response.statusText}`);
+            console.error(`Update fehlgeschlagen mit Status: ${response.status} - ${response.statusText}`);
             throw new Error(`Fehler beim Aktualisieren der Daten in Firebase: ${response.statusText}`);
         }
     } catch (error) {
-        
+        console.error("Fehler beim Aktualisieren der Daten:", error);
     }
 }
 
@@ -416,3 +418,45 @@ document.getElementById("edit-overlay").addEventListener("click", function (even
         closeEditOverlay();
     }
 });
+
+async function confirmChanges(taskId) {
+    try {
+        // 1. Lade die bestehenden Daten des Tasks
+        const existingData = await loadData(`tasks/${taskId}`);
+        if (!existingData) {
+            console.error("Task nicht gefunden:", taskId);
+            return;
+        }
+
+        // 2. Hole die Werte aus den Edit-Feldern
+        const title = document.getElementById("edit-title-edit").value.trim();
+        const description = document.getElementById("edit-description").value.trim();
+        const dueDate = document.getElementById("edit-due-date").value;
+        const priority = currentPriority;  // Verwende den aktuellen Wert aus `setPriorityEdit`
+        
+        // 3. Hole die zugewiesenen Kontakte
+        const assignedContacts = Array.from(document.getElementById("aktivContactsEdit").children)
+            .map(contact => contact.getAttribute("data-name"));
+
+        // 4. Erstelle ein Datenobjekt für das Update, das `createdAt` und `category` beibehält
+        const updatedData = {
+            ...existingData,  // Behalte alle existierenden Felder
+            title,            // Überschreibe nur die Felder, die geändert wurden
+            description,
+            dueDate,
+            prio: priority,
+            assignedTo: assignedContacts
+        };
+        
+        // 5. Sende die aktualisierten Daten an Firebase
+        await updateData(`tasks/${taskId}`, updatedData);
+        
+        // 6. Schließe das Overlay und lade die Aufgabenliste neu, wenn nötig
+        closeEditOverlay();
+        await reloadTaskDataAndUpdateUI(taskId);
+        
+        console.log("Task erfolgreich aktualisiert:", updatedData);
+    } catch (error) {
+        console.error("Fehler beim Aktualisieren des Tasks in Firebase:", error);
+    }
+}

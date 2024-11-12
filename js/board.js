@@ -218,3 +218,25 @@ function openAddTaskOverlay() {
     overlay.classList.remove("hidden");
     document.body.classList.add("no-scroll"); 
 }
+
+function updateButtonFunction() {
+    const button = document.getElementById("addTaskButton");
+
+    if (window.matchMedia("(max-width: 1245px)").matches) {
+        // Für Bildschirme mit maximal 1245px Breite
+        button.onclick = function() {
+            window.location.href = "addTask.html";  // Leite zu addTask.html weiter
+        };
+    } else {
+        // Für größere Bildschirme
+        button.onclick = function() {
+            addTaskExpanded(); // Originalfunktion für größere Bildschirme
+        };
+    }
+}
+
+// Initiale Zuweisung beim Laden der Seite
+updateButtonFunction();
+
+// Überwache Änderungen der Bildschirmgröße
+window.addEventListener("resize", updateButtonFunction);
