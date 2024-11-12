@@ -4,7 +4,27 @@
       padding-left: unset;
       margin-bottom: 90px;
     }
+
+    .around-container-epended-card {
+      width: 500px;
+      height: 720px;
+    }
+
+    .task-title-overlay {
+      width: 100%;
+      min-height: 70px;
+      max-height: 130px;
+      font-weight: 700;
+      font-size: 50px;
   }
+
+  .task-description-overlay {
+    min-height: 30px;
+    max-height: 80px;
+    font-weight: 400;
+    font-size: 20px;
+  }
+}
   
   @media (max-width: 1380px) {
   
