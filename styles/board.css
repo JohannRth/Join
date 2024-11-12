@@ -166,6 +166,10 @@ body.no-scroll {
   border-radius: 8px;
 }
 
+.drag-area.highlight {
+  border: 2px dashed #2A3647;
+}
+
 .no-tasks {
   width: 246px;
   height: 48px;

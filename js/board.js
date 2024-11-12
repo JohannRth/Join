@@ -10,9 +10,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function initializeDragAreas() {
     const dragAreas = document.querySelectorAll(".drag-area");
+
     dragAreas.forEach((area) => {
         area.addEventListener("dragover", allowDrop);
         area.addEventListener("drop", dropTask);
+        area.addEventListener("dragenter", () => area.classList.add("highlight"));
+        area.addEventListener("dragleave", () => area.classList.remove("highlight"));
     });
 }
 
@@ -56,14 +59,33 @@ async function loadTodosFromFirebase() {
     }
 }
 
+
 function allowDrop(ev) {
     ev.preventDefault();
 }
+
 
 function dragTask(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
     ev.target.classList.add("dragging");
     ev.target.style.cursor = "grabbing";
+
+    ev.target.addEventListener("dragend", () => {
+        const dragAreas = document.querySelectorAll(".drag-area");
+        dragAreas.forEach((area) => area.classList.remove("highlight"));
+    });
+}
+
+function dropTask(ev) {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData("text");
+    const taskElement = document.getElementById(data);
+    const targetArea = ev.target.closest(".drag-area");
+
+    if (targetArea) {
+        targetArea.classList.remove("highlight"); // Rand entfernen nach Drop
+        targetArea.appendChild(taskElement); // Element in die Ziel-Div verschieben
+    }
 }
 
 function getInitials(name) {
