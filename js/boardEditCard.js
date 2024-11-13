@@ -371,14 +371,11 @@ async function deleteSubtaskEdit(index) {
         // Lösche den Subtask aus Firebase
         await deleteData(`tasks/${taskId}/subtasks/${index}`);
         
-        // Lösche den entsprechenden Status des Subtasks aus Firebase
-        await deleteData(`subtaskStatus/${taskId}/${index}`);
-
         // Subtasks neu laden und aktualisieren
         await reloadSubtasks(taskId);
 
     } catch (error) {
-        console.error("Fehler beim Löschen des Subtasks oder seines Status:", error);
+        console.error("Fehler beim Löschen des Subtasks:", error);
     }
 }
 
