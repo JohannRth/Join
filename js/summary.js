@@ -1,34 +1,13 @@
-
-/////Beim Laden der Seite den  Benutzernamen aus dem LocalStorage auslesen und im Begrüßungselement mit entsrpechender Begrüßung anzeigen////////////////////////////////////////////////////////////////////////////////////
 document.addEventListener('DOMContentLoaded', function () {
-    // Überprüfen, ob ein Benutzer im localStorage gespeichert ist
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-
-    if (loggedInUser && loggedInUser.name) {
-        // Benutzernamen anzeigen
-        document.getElementById('greetUser').textContent = loggedInUser.name;
-    } else {
-        // Falls kein Benutzer eingeloggt ist, Weiterleitung zur Login-Seite
-        //nur aktivieren wenn gar keiner auf legalNotice und privacyPolicy zugreifen soll--> window.location.href = 'index.html';
-    }
-});
-
-function getGreeting() {
-    const hour = new Date().getHours();
-    if (hour < 12) {
-        return 'Good morning,';
-    } else if (hour < 18) {
-        return 'Good afternoon,';
-    } else {
-        return 'Good evening,';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
+    // Begrüßung initialisieren
     initializeMainGreet();
     setGreeting();
-    displayUrgentTasks();
-    displayNearestDeadline();
+
+    // Aufgabenstatistiken aktualisieren
+    updateSummary();
+
+    // Event Listener für die Links hinzufügen
+    initializeLinkListeners();
 });
 
 /**
@@ -82,26 +61,15 @@ function handleAnimationEnd(event, mainGreet) {
 function setGreeting() {
     const greetTimeElement = document.querySelector('.greet-time');
     greetTimeElement.textContent = getGreeting();
-}
 
-/**
- * Zeigt die Anzahl der "Urgent"-Aufgaben an.
- */
-function displayUrgentTasks() {
-    const urgentCount = localStorage.getItem("urgentCount") || 0;
-    const urgentNumberElement = document.querySelector(".urgent-number");
-    urgentNumberElement.innerText = urgentCount;
-}
-
-/**
- * Zeigt das nächste Fälligkeitsdatum an.
- */
-function displayNearestDeadline() {
-    const nearestDeadline = localStorage.getItem("nearestDeadline") || "No upcoming deadline";
-    const datumElement = document.getElementById("datum");
-    datumElement.innerText = nearestDeadline !== "No upcoming deadline"
-        ? new Date(nearestDeadline).toLocaleDateString('en-US') // Optional: 'de-DE' kann beibehalten werden, wenn das Datumsformat auf Deutsch bleiben soll
-        : "No deadline";
+    // Benutzernamen anzeigen
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (loggedInUser && loggedInUser.name) {
+        document.getElementById('greetUser').textContent = loggedInUser.name;
+    } else {
+        // Falls kein Benutzer eingeloggt ist, Weiterleitung zur Login-Seite
+        // window.location.href = 'index.html';
+    }
 }
 
 /**
@@ -110,9 +78,9 @@ function displayNearestDeadline() {
  */
 function getGreeting() {
     const currentHour = new Date().getHours();
-    if (currentHour < 12) return 'Good Morning!';
-    if (currentHour < 18) return 'Good Afternoon!';
-    return 'Good Evening!';
+    if (currentHour < 12) return 'Good morning,';
+    if (currentHour < 18) return 'Good afternoon,';
+    return 'Good evening,';
 }
 
 /**
@@ -120,65 +88,153 @@ function getGreeting() {
  */
 function debounce(func, wait) {
     let timeout;
-    return function(...args) {
+    return function (...args) {
         clearTimeout(timeout);
         timeout = setTimeout(() => func.apply(this, args), wait);
     };
 }
 
+/**
+ * Lädt die Aufgaben aus Firebase.
+ * @returns {Promise<Array>} Liste der Aufgaben.
+ */
+async function loadTasksFromFirebase() {
+    try {
+        const tasksData = await loadData("tasks");
+        const tasks = Object.keys(tasksData).map((key) => {
+            const task = tasksData[key];
+            const dueDate = task.dueDate ? new Date(task.dueDate) : null;
+            return {
+                id: key,
+                title: task.title || "Untitled",
+                description: task.description || "No description",
+                priority: task.prio || "low",
+                dueDate: dueDate,
+                category: task.category || "todo",
+                assignedTo: task.assignedTo || [],
+                subtasks: task.subtasks || [],
+            };
+        });
+        return tasks;
+    } catch (error) {
+        console.error("Fehler beim Laden der Aufgaben aus Firebase:", error);
+        return [];
+    }
+}
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// Datum //
-const heute = new Date();
+/**
+ * Lädt die Positionen der Aufgaben aus Firebase.
+ * @returns {Promise<Object>} Positionen der Aufgaben.
+ */
+async function loadPositionsFromFirebase() {
+    const positionsData = await loadData("positionDropArea");
+    return positionsData || {};
+}
 
-const options = { year: 'numeric', month: 'long', day: 'numeric' };
+/**
+ * Berechnet die Aufgabenstatistiken.
+ * @returns {Promise<Object>} Die berechneten Statistiken.
+ */
+async function calculateStatistics() {
+    const tasks = await loadTasksFromFirebase();
+    const positions = await loadPositionsFromFirebase();
 
-const formatiertesDatum = heute.toLocaleDateString('en-US', options);
+    let todoCount = 0;
+    let doneCount = 0;
+    let inProgressCount = 0;
+    let feedbackCount = 0;
+    let urgentCount = 0;
+    let nearestDeadline = null;
 
-document.getElementById('datum').innerText = formatiertesDatum;
-// Datum //
+    tasks.forEach((task) => {
+        const position = positions[task.id] || "todo"; // Standardmäßig "todo", falls keine Position vorhanden
+        // Zähle die Aufgaben basierend auf ihrer Position
+        if (position === "todo") {
+            todoCount++;
+        } else if (position === "done") {
+            doneCount++;
+        } else if (position === "inProgress") {
+            inProgressCount++;
+        } else if (position === "awaitFeedback") {
+            feedbackCount++;
+        }
 
-// Redirect to 'board.html' when containers are clicked
-document.querySelector('.toDo-container').addEventListener('click', function () {
-    window.location.href = 'board.html';
-});
+        // Zähle die "Urgent"-Aufgaben
+        if (task.priority === "urgent") {
+            urgentCount++;
+            // Überprüfe das Fälligkeitsdatum
+            if (task.dueDate) {
+                if (!nearestDeadline || task.dueDate < nearestDeadline) {
+                    nearestDeadline = task.dueDate;
+                }
+            }
+        }
+    });
 
-document.querySelector('.done-container').addEventListener('click', function () {
-    window.location.href = 'board.html';
-});
+    // Gesamtzahl der Aufgaben im Board
+    const boardTaskCount = tasks.length;
 
-document.querySelector('.urgent-date-container').addEventListener('click', function () {
-    window.location.href = 'board.html';
-});
+    return {
+        todoCount,
+        doneCount,
+        inProgressCount,
+        feedbackCount,
+        urgentCount,
+        nearestDeadline,
+        boardTaskCount,
+    };
+}
 
-document.querySelector('.board-task-container').addEventListener('click', function () {
-    window.location.href = 'board.html';
-});
+/**
+ * Aktualisiert die Zusammenfassungsstatistiken auf der Seite.
+ */
+async function updateSummary() {
+    const stats = await calculateStatistics();
 
-document.querySelector('.progress-task-container').addEventListener('click', function () {
-    window.location.href = 'board.html';
-});
+    // Update der Elemente im DOM
+    document.querySelector(".todo-number").innerText = stats.todoCount;
+    document.querySelector(".done-number").innerText = stats.doneCount;
+    document.querySelector(".urgent-number").innerText = stats.urgentCount;
+    document.querySelector(".board-number").innerText = stats.boardTaskCount;
+    document.querySelector(".progress-number").innerText = stats.inProgressCount;
+    document.querySelector(".feedback-number").innerText = stats.feedbackCount;
 
-document.querySelector('.feedback-task-container').addEventListener('click', function () {
-    window.location.href = 'board.html';
-});
+    // Nächstes Fälligkeitsdatum formatieren und anzeigen
+    const datumElement = document.getElementById("datum");
+    if (stats.nearestDeadline) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = stats.nearestDeadline.toLocaleDateString('de-DE', options);
+        datumElement.innerText = formattedDate;
+    } else {
+        datumElement.innerText = "Keine bevorstehenden Deadlines";
+    }
+}
 
-// Drag-Area zähler //
-document.addEventListener("DOMContentLoaded", function () {
-    const todoCount = localStorage.getItem('todoCount') || 0; // Für Todo
-    document.querySelector(".todo-number").innerText = todoCount;
+/**
+ * Initialisiert die Event Listener für die Container, die zu 'board.html' weiterleiten.
+ */
+function initializeLinkListeners() {
+    document.querySelector('.toDo-container').addEventListener('click', function () {
+        window.location.href = 'board.html';
+    });
 
-    const doneCount = localStorage.getItem('doneCount') || 0; // Für Done
-    document.querySelector(".done-number").innerText = doneCount;
+    document.querySelector('.done-container').addEventListener('click', function () {
+        window.location.href = 'board.html';
+    });
 
-    const boardTaskCount = localStorage.getItem('boardTaskCount') || 0; // Gesamtzahl 
-    document.querySelector(".board-number").innerText = boardTaskCount;
+    document.querySelector('.urgent-date-container').addEventListener('click', function () {
+        window.location.href = 'board.html';
+    });
 
-    const inProgressCount = localStorage.getItem('inProgressCount') || 0; // In Progress
-    document.querySelector(".progress-number").innerText = inProgressCount;
+    document.querySelector('.board-task-container').addEventListener('click', function () {
+        window.location.href = 'board.html';
+    });
 
-    const feedbackCount = localStorage.getItem('feedbackCount') || 0; // Await Feedback
-    document.querySelector(".feedback-number").innerText = feedbackCount;
-});
+    document.querySelector('.progress-task-container').addEventListener('click', function () {
+        window.location.href = 'board.html';
+    });
 
-
+    document.querySelector('.feedback-task-container').addEventListener('click', function () {
+        window.location.href = 'board.html';
+    });
+}
