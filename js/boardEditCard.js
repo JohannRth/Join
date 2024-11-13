@@ -371,11 +371,14 @@ async function deleteSubtaskEdit(index) {
         // Lösche den Subtask aus Firebase
         await deleteData(`tasks/${taskId}/subtasks/${index}`);
         
+        // Lösche den entsprechenden Status des Subtasks aus Firebase
+        await deleteData(`subtaskStatus/${taskId}/${index}`);
+
         // Subtasks neu laden und aktualisieren
         await reloadSubtasks(taskId);
 
     } catch (error) {
-        console.error("Fehler beim Löschen des Subtasks:", error);
+        console.error("Fehler beim Löschen des Subtasks oder seines Status:", error);
     }
 }
 
@@ -472,8 +475,15 @@ async function confirmChanges(taskId) {
         // Schließe das Bearbeitungs-Overlay
         closeEditOverlay();
 
-        // Aktualisiere das Board und die erweiterte Kartenansicht
+        // Lade die neuesten Daten und aktualisiere die `titel-card` und `expanded-card`
         await reloadTaskDataAndUpdateUI(taskId);
+        updateHTML(); // Aktualisiert das Board
+
+        // Falls die `expanded-card` noch geöffnet ist, lade sie neu
+        const expandedCardOverlay = document.getElementById("card-overlay");
+        if (expandedCardOverlay && !expandedCardOverlay.classList.contains("hidden")) {
+            openCardOverlay(taskId); // Erneut aufrufen, um `expanded-card` zu aktualisieren
+        }
 
         console.log("Task erfolgreich aktualisiert:", updatedData);
     } catch (error) {
