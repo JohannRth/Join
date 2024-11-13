@@ -258,37 +258,52 @@ function displaySubtasks(subtasks, taskId) {
     });
 }
 
-
-async function addNewSubtaskEdit(event) {
+async function addNewSubtaskEdit() {
     let newSubTaskInput = document.getElementById('subTaskInputEdit');
-    let newSubTaskValue = newSubTaskInput.value.trim(); 
+    let newSubTaskValue = newSubTaskInput.value.trim();
 
-    if (newSubTaskValue === '') {
-        return false;
-    }
+    if (newSubTaskValue === '') return;
 
     const taskId = document.getElementById("edit-overlay").getAttribute("data-task-id");
 
     try {
+        // Fügen Sie den neuen Subtask zu Firebase hinzu
         const taskData = await loadData(`tasks/${taskId}`);
-        const existingNewSubtasks = taskData.newSubtask || {};
-        const newSubtaskIndex = Object.keys(existingNewSubtasks).length;
-        await updateData(`tasks/${taskId}/newSubtask/${newSubtaskIndex}`, newSubTaskValue);
+        const existingSubtasks = taskData.subtasks || {};
+        const newSubtaskIndex = Object.keys(existingSubtasks).length;
 
+        await updateData(`tasks/${taskId}/subtasks/${newSubtaskIndex}`, newSubTaskValue);
+
+        // Eingabefeld leeren und die Subtasks neu laden und anzeigen
         newSubTaskInput.value = '';
-        await reloadTaskDataAndUpdateUI(taskId);
+        await reloadSubtasks(taskId);
 
-    } catch (error) {}
+    } catch (error) {
+        console.error("Fehler beim Hinzufügen des Subtasks:", error);
+    }
 }
 
-function renderSubtasks() {
+function editSubtaskEdit(index) {
+    // Hier speichern wir die Änderungen im updatedSubtasks Array
+    const subTaskText = document.querySelector(`[data-index="${index}"] .subTaskText`);
+    if (subTaskText) {
+        const updatedText = prompt("Ändere den Subtask:", subTaskText.textContent);
+        if (updatedText) {
+            updatedSubtasks[index] = updatedText;
+        }
+    }
+    renderSubtaskEdit();  // Anzeige aktualisieren
+}
+
+function renderSubtaskEdit(subtasks) {
     const subTaskListContainer = document.getElementById("subTaskListEdit");
     subTaskListContainer.innerHTML = "";
 
-    subTasks.forEach((subtask, index) => {
+    subtasks.forEach((subtask, index) => {
         const subTaskItem = document.createElement("div");
         subTaskItem.classList.add("subTask");
-        
+        subTaskItem.setAttribute("data-index", index);
+
         const leftContainer = document.createElement("div");
         leftContainer.classList.add("leftContainerSubTask");
         leftContainer.textContent = subtask;
@@ -296,17 +311,11 @@ function renderSubtasks() {
         const rightContainer = document.createElement("div");
         rightContainer.classList.add("rightContainerSubTask");
 
-        const editButton = document.createElement("img");
-        editButton.src = "./assets/img/edit.svg";
-        editButton.alt = "Edit";
-        editButton.onclick = () => editSubtaskEdit(index);
-
         const deleteButton = document.createElement("img");
         deleteButton.src = "./assets/img/delete.svg";
         deleteButton.alt = "Delete";
         deleteButton.onclick = () => deleteSubtaskEdit(index);
 
-        rightContainer.appendChild(editButton);
         rightContainer.appendChild(deleteButton);
 
         subTaskItem.appendChild(leftContainer);
@@ -315,52 +324,58 @@ function renderSubtasks() {
     });
 }
 
-async function reloadTaskDataAndUpdateUI(taskId) {
-    await loadTodosFromFirebase();
-    await loadPositionsFromFirebase();
-    await loadSubtaskStatusesFromFirebase();
-    updateHTML();
-
-    const editOverlay = document.getElementById("edit-overlay");
-    if (editOverlay && !editOverlay.classList.contains("hidden")) {
-        await loadTaskDetails(taskId);
-    }
-    const expandedCardOverlay = document.getElementById("card-overlay");
-    if (expandedCardOverlay && !expandedCardOverlay.classList.contains("hidden")) {
-        const task = todos.find((t) => t.id === taskId);
-        expandedCardOverlay.innerHTML = generateExpandedCardHTML(task);
+async function reloadSubtasks(taskId) {
+    try {
+        const taskData = await loadData(`tasks/${taskId}`);
+        const subtasks = taskData.subtasks ? Object.values(taskData.subtasks) : [];
+        
+        renderSubtaskEdit(subtasks);  // Aktualisiere die Subtask-Liste mit den neuen Daten
+    } catch (error) {
+        console.error("Fehler beim Laden der Subtasks:", error);
     }
 }
 
-async function deleteSubtaskEdit(index, taskId) {
-    console.log("Versuche, Subtask und Subtask-Status zu löschen - Index:", index, "Task ID:", taskId);
-
+async function reloadTaskDataAndUpdateUI(taskId) {
     try {
-        const taskData = await loadData(`tasks/${taskId}`);
+        // Lade alle relevanten Daten neu
+        await loadTodosFromFirebase();       // Lädt alle Aufgaben
+        await loadPositionsFromFirebase();   // Lädt alle Positionen
+        await loadSubtaskStatusesFromFirebase(); // Lädt alle Subtask-Status
 
-        let subtaskType = null;
-        
-        if (taskData.subtasks && taskData.subtasks[index]) {
-            subtaskType = "subtasks";
-        } else if (taskData.newSubtask && taskData.newSubtask[index]) {
-            subtaskType = "newSubtask";
-        } else {
-            console.warn("Subtask nicht gefunden.");
-            return;
+        // Aktualisiere das HTML (hier sollte das gesamte UI aktualisiert werden)
+        updateHTML();
+
+        // Wenn das Bearbeitungs-Overlay sichtbar ist, lade die Task-Details neu
+        const editOverlay = document.getElementById("edit-overlay");
+        if (editOverlay && !editOverlay.classList.contains("hidden")) {
+            await loadTaskDetails(taskId);
         }
 
-        const subtaskPath = `tasks/${taskId}/${subtaskType}/${index}`;
-        
-        await deleteData(subtaskPath);
-        console.log(`Subtask bei ${subtaskPath} wurde erfolgreich in Firebase gelöscht.`);
-
-        const subtaskStatusPath = `tasks/${taskId}/subtaskStatus/${index}`;
-        await deleteData(subtaskStatusPath);
-        console.log(`Subtask-Status bei ${subtaskStatusPath} wurde erfolgreich in Firebase gelöscht.`);
-    
-        await reloadTaskDataAndUpdateUI(taskId);
+        // Wenn eine Kartenansicht (Overlay) geöffnet ist, lade die Kartendaten neu
+        const expandedCardOverlay = document.getElementById("card-overlay");
+        if (expandedCardOverlay && !expandedCardOverlay.classList.contains("hidden")) {
+            const task = todos.find((t) => t.id === taskId);
+            if (task) {
+                expandedCardOverlay.innerHTML = generateExpandedCardHTML(task);  // Generiere das HTML neu
+            }
+        }
     } catch (error) {
-        console.error("Fehler beim Löschen des Subtasks oder Subtask-Status in Firebase:", error);
+        console.error("Fehler beim Aktualisieren des UI:", error);
+    }
+}
+
+async function deleteSubtaskEdit(index) {
+    const taskId = document.getElementById("edit-overlay").getAttribute("data-task-id");
+
+    try {
+        // Lösche den Subtask aus Firebase
+        await deleteData(`tasks/${taskId}/subtasks/${index}`);
+        
+        // Subtasks neu laden und aktualisieren
+        await reloadSubtasks(taskId);
+
+    } catch (error) {
+        console.error("Fehler beim Löschen des Subtasks:", error);
     }
 }
 
@@ -395,6 +410,9 @@ async function updateData(path, data) {
     }
 }
 
+let newSubtasks = [];
+let deletedSubtasks = [];
+
 function showInputSubTasksEdit() {
     const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
     inputContainer.classList.toggle("visible"); 
@@ -421,40 +439,42 @@ document.getElementById("edit-overlay").addEventListener("click", function (even
 
 async function confirmChanges(taskId) {
     try {
-        // 1. Lade die bestehenden Daten des Tasks
         const existingData = await loadData(`tasks/${taskId}`);
         if (!existingData) {
             console.error("Task nicht gefunden:", taskId);
             return;
         }
 
-        // 2. Hole die Werte aus den Edit-Feldern
+        // Aktuelle Felder auslesen
         const title = document.getElementById("edit-title-edit").value.trim();
         const description = document.getElementById("edit-description").value.trim();
         const dueDate = document.getElementById("edit-due-date").value;
-        const priority = currentPriority;  // Verwende den aktuellen Wert aus `setPriorityEdit`
-        
-        // 3. Hole die zugewiesenen Kontakte
+        const priority = currentPriority;
+
         const assignedContacts = Array.from(document.getElementById("aktivContactsEdit").children)
             .map(contact => contact.getAttribute("data-name"));
 
-        // 4. Erstelle ein Datenobjekt für das Update, das `createdAt` und `category` beibehält
         const updatedData = {
-            ...existingData,  // Behalte alle existierenden Felder
-            title,            // Überschreibe nur die Felder, die geändert wurden
+            ...existingData,
+            title,
             description,
             dueDate,
             prio: priority,
             assignedTo: assignedContacts
         };
-        
-        // 5. Sende die aktualisierten Daten an Firebase
+
+        // Daten in Firebase aktualisieren
         await updateData(`tasks/${taskId}`, updatedData);
-        
-        // 6. Schließe das Overlay und lade die Aufgabenliste neu, wenn nötig
+
+        // Subtask-Listen leeren, nachdem Änderungen angewendet wurden
+        deletedSubtasks = [];
+
+        // Schließe das Bearbeitungs-Overlay
         closeEditOverlay();
+
+        // Aktualisiere das Board und die erweiterte Kartenansicht
         await reloadTaskDataAndUpdateUI(taskId);
-        
+
         console.log("Task erfolgreich aktualisiert:", updatedData);
     } catch (error) {
         console.error("Fehler beim Aktualisieren des Tasks in Firebase:", error);

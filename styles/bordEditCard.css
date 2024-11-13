@@ -244,6 +244,11 @@
   .assignedAddTaskContainer {
     position: relative;
   }
+
+  .inputAssignedToEdit{
+    display: flex;
+    justify-content: space-between;
+  }
   
   .contactDropdown {
     position: absolute;
