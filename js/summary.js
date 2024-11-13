@@ -1,35 +1,35 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Begrüßung initialisieren
+    // Initialize greeting
     initializeMainGreet();
     setGreeting();
 
-    // Aufgabenstatistiken aktualisieren
+    // Update task statistics
     updateSummary();
 
-    // Event Listener für die Links hinzufügen
+    // Add event listeners for the links
     initializeLinkListeners();
 });
 
 /**
- * Initialisiert das .main-greet Element und setzt die Display-Eigenschaft basierend auf der Fensterbreite.
+ * Initializes the .main-greet element and sets its display property based on the window width.
  */
 function initializeMainGreet() {
     const mainGreet = document.querySelector('.main-greet');
     const debouncedUpdate = debounce(() => updateMainGreetDisplay(mainGreet), 200);
 
-    // Initiale Anzeige basierend auf der aktuellen Fensterbreite
+    // Initial display based on current window width
     updateMainGreetDisplay(mainGreet);
 
-    // Event-Listener für das Ende der Animation
+    // Event listener for the end of the animation
     mainGreet.addEventListener('animationend', (event) => handleAnimationEnd(event, mainGreet));
 
-    // Event-Listener für das Ändern der Fenstergröße mit Debounce
+    // Event listener for window resize with debounce
     window.addEventListener('resize', debouncedUpdate);
 }
 
 /**
- * Aktualisiert die Display-Eigenschaft des .main-greet Elements basierend auf der Fensterbreite.
- * @param {HTMLElement} mainGreet - Das .main-greet DOM-Element.
+ * Updates the display property of the .main-greet element based on the window width.
+ * @param {HTMLElement} mainGreet - The .main-greet DOM element.
  */
 function updateMainGreetDisplay(mainGreet) {
     if (window.innerWidth > 1020) {
@@ -44,9 +44,9 @@ function updateMainGreetDisplay(mainGreet) {
 }
 
 /**
- * Behandelt das Ende der Animation für das .main-greet Element.
- * @param {AnimationEvent} event - Das AnimationEnd-Ereignis.
- * @param {HTMLElement} mainGreet - Das .main-greet DOM-Element.
+ * Handles the end of the animation for the .main-greet element.
+ * @param {AnimationEvent} event - The AnimationEnd event.
+ * @param {HTMLElement} mainGreet - The .main-greet DOM element.
  */
 function handleAnimationEnd(event, mainGreet) {
     if (event.target === mainGreet && window.innerWidth <= 1020) {
@@ -56,25 +56,25 @@ function handleAnimationEnd(event, mainGreet) {
 }
 
 /**
- * Setzt die Begrüßungsnachricht basierend auf der aktuellen Tageszeit.
+ * Sets the greeting message based on the current time of day.
  */
 function setGreeting() {
     const greetTimeElement = document.querySelector('.greet-time');
     greetTimeElement.textContent = getGreeting();
 
-    // Benutzernamen anzeigen
+    // Display username
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     if (loggedInUser && loggedInUser.name) {
         document.getElementById('greetUser').textContent = loggedInUser.name;
     } else {
-        // Falls kein Benutzer eingeloggt ist, Weiterleitung zur Login-Seite
+        // If no user is logged in, redirect to the login page
         // window.location.href = 'index.html';
     }
 }
 
 /**
- * Generiert eine Begrüßungsnachricht basierend auf der aktuellen Uhrzeit.
- * @returns {string} Die Begrüßungsnachricht.
+ * Generates a greeting message based on the current time.
+ * @returns {string} The greeting message.
  */
 function getGreeting() {
     const currentHour = new Date().getHours();
@@ -84,7 +84,10 @@ function getGreeting() {
 }
 
 /**
- * Fügt dem Resize-Event einen Debounce-Mechanismus hinzu.
+ * Creates a debounced version of a function that delays its execution until after the specified wait time.
+ * @param {Function} func - The function to debounce.
+ * @param {number} wait - The number of milliseconds to delay.
+ * @returns {Function} The debounced function.
  */
 function debounce(func, wait) {
     let timeout;
@@ -95,8 +98,8 @@ function debounce(func, wait) {
 }
 
 /**
- * Lädt die Aufgaben aus Firebase.
- * @returns {Promise<Array>} Liste der Aufgaben.
+ * Loads tasks from Firebase.
+ * @returns {Promise<Array>} List of tasks.
  */
 async function loadTasksFromFirebase() {
     try {
@@ -117,14 +120,14 @@ async function loadTasksFromFirebase() {
         });
         return tasks;
     } catch (error) {
-        console.error("Fehler beim Laden der Aufgaben aus Firebase:", error);
+        console.error("Error loading tasks from Firebase:", error);
         return [];
     }
 }
 
 /**
- * Lädt die Positionen der Aufgaben aus Firebase.
- * @returns {Promise<Object>} Positionen der Aufgaben.
+ * Loads the positions of tasks from Firebase.
+ * @returns {Promise<Object>} Positions of tasks.
  */
 async function loadPositionsFromFirebase() {
     const positionsData = await loadData("positionDropArea");
@@ -132,8 +135,8 @@ async function loadPositionsFromFirebase() {
 }
 
 /**
- * Berechnet die Aufgabenstatistiken.
- * @returns {Promise<Object>} Die berechneten Statistiken.
+ * Calculates task statistics.
+ * @returns {Promise<Object>} The calculated statistics.
  */
 async function calculateStatistics() {
     const tasks = await loadTasksFromFirebase();
@@ -147,8 +150,8 @@ async function calculateStatistics() {
     let nearestDeadline = null;
 
     tasks.forEach((task) => {
-        const position = positions[task.id] || "todo"; // Standardmäßig "todo", falls keine Position vorhanden
-        // Zähle die Aufgaben basierend auf ihrer Position
+        const position = positions[task.id] || "todo"; // Default to "todo" if no position is available
+        // Count tasks based on their position
         if (position === "todo") {
             todoCount++;
         } else if (position === "done") {
@@ -159,10 +162,10 @@ async function calculateStatistics() {
             feedbackCount++;
         }
 
-        // Zähle die "Urgent"-Aufgaben
+        // Count "Urgent" tasks
         if (task.priority === "urgent") {
             urgentCount++;
-            // Überprüfe das Fälligkeitsdatum
+            // Check due date
             if (task.dueDate) {
                 if (!nearestDeadline || task.dueDate < nearestDeadline) {
                     nearestDeadline = task.dueDate;
@@ -171,7 +174,7 @@ async function calculateStatistics() {
         }
     });
 
-    // Gesamtzahl der Aufgaben im Board
+    // Total number of tasks on the board
     const boardTaskCount = tasks.length;
 
     return {
@@ -186,12 +189,12 @@ async function calculateStatistics() {
 }
 
 /**
- * Aktualisiert die Zusammenfassungsstatistiken auf der Seite.
+ * Updates the summary statistics on the page.
  */
 async function updateSummary() {
     const stats = await calculateStatistics();
 
-    // Update der Elemente im DOM
+    // Update DOM elements
     document.querySelector(".todo-number").innerText = stats.todoCount;
     document.querySelector(".done-number").innerText = stats.doneCount;
     document.querySelector(".urgent-number").innerText = stats.urgentCount;
@@ -199,19 +202,19 @@ async function updateSummary() {
     document.querySelector(".progress-number").innerText = stats.inProgressCount;
     document.querySelector(".feedback-number").innerText = stats.feedbackCount;
 
-    // Nächstes Fälligkeitsdatum formatieren und anzeigen
+    // Format and display the nearest deadline
     const datumElement = document.getElementById("datum");
     if (stats.nearestDeadline) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const formattedDate = stats.nearestDeadline.toLocaleDateString('de-DE', options);
         datumElement.innerText = formattedDate;
     } else {
-        datumElement.innerText = "Keine bevorstehenden Deadlines";
+        datumElement.innerText = "No upcoming deadlines";
     }
 }
 
 /**
- * Initialisiert die Event Listener für die Container, die zu 'board.html' weiterleiten.
+ * Initializes the event listeners for the containers that redirect to 'board.html'.
  */
 function initializeLinkListeners() {
     document.querySelector('.toDo-container').addEventListener('click', function () {
