@@ -1,21 +1,103 @@
+@media (max-width: 1380px) {
+
+  .drag-area-container {
+    padding: 0px 30px 0px 30px;
+  }
+
+
+}
+
+@media (max-width: 1360px) {
+  .column {
+    margin-left: 0;
+    overflow: auto;
+  }
+
+  .column-titel {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 18px;
+  }
+
+  .drag-area {
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+    gap: 16px;
+    padding: 10px;
+    min-height: 260px;
+    border-radius: 8px;
+    width: 100%;
+  }
+
+  .drag-area-container {
+    flex-direction: column;
+    padding: 0px 8px 0px 8px;
+  }
+
+}
+
+@media (max-width: 1070px) {
+  .board-add-task {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .input-container {
+    width: 100%;
+    /* Volle Breite für das Eingabefeld */
+  }
+
+  .button-add-task-board {
+    display: none;
+  }
+
+  .responsiv-plus-btn {
+    display: flex;
+  }
+
+  .responsiv-plus-headline-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 312px;
+  }
+
+  .drag-area {
+    overflow-x: auto;
+  }
+
+  .drag-area-container {
+    flex-direction: column;
+    padding: 60px 8px 0px 8px;
+  }
+
+}
+
 @media (max-width: 1020px) {
 
-    body {
-      padding-left: unset;
-      margin-bottom: 90px;
-    }
+  body {
+    padding-left: unset;
+    margin-bottom: 90px;
+  }
 
-    .around-container-epended-card {
-      width: 500px;
-      height: 720px;
-    }
+  .board-add-task {
+    margin-top: 0px;
+  }
 
-    .task-title-overlay {
-      width: 100%;
-      min-height: 70px;
-      max-height: 130px;
-      font-weight: 700;
-      font-size: 50px;
+  .around-container-epended-card {
+    width: 500px;
+    height: 720px;
+  }
+
+  .task-title-overlay {
+    width: 100%;
+    min-height: 70px;
+    max-height: 130px;
+    font-weight: 700;
+    font-size: 50px;
   }
 
   .task-description-overlay {
@@ -25,117 +107,26 @@
     font-size: 20px;
   }
 }
-  
-  @media (max-width: 1380px) {
-  
-    .drag-area-container {
-      padding: 0px 30px 0px 30px;
-    }
-  
-  
+
+@media (max-width: 430px) {
+
+  .board-add-task {
+    margin: 0;
+    margin-top: 48px;
+    margin-left: 10px;
   }
-  
-  @media (max-width: 1360px) {
-    .column {
-      margin-left: 0;
-      overflow: auto;
-    }
-  
-    .column-titel {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 18px;
-    }
-  
-    .drag-area {
-      display: flex;
-      flex-direction: row;
-      white-space: nowrap;
-      gap: 16px;
-      padding: 10px;
-      min-height: 260px;
-      border: 1px dashed #ccc;
-      border-radius: 8px;
-      width: 100%;
-    }
-  
-    .drag-area-container {
-      flex-direction: column;
-      padding: 0px 8px 0px 8px;
-    }
-  
+}
+
+@media (max-width: 340px) {
+  .input-container {
+    width: 90px;
   }
-  
-  @media (max-width: 1070px) {
-    .board-add-task {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-    }
-  
-    .input-container {
-      width: 100%;
-      /* Volle Breite für das Eingabefeld */
-    }
-  
-    .button-add-task-board {
-      display: none;
-    }
-  
-    .responsiv-plus-btn {
-      display: flex;
-    }
-  
-    .responsiv-plus-headline-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 312px;
-    }
-  
-    .drag-area {
-      overflow-x: auto;
-    }
-  
-    .drag-area-container {
-      flex-direction: column;
-      padding: 60px 8px 0px 8px;
-    }
-  
+
+  .responsiv-plus-headline-container {
+    width: 250px;
   }
-  
-  @media (max-width: 1020px) {
-  
-    body {
-      padding-left: unset;
-      margin-bottom: 90px;
-    }
-  
-    .board-add-task {
-      margin-top: 0px;
-    }
+
+  .img-input-container {
+    gap: 0px;
   }
-  
-  @media (max-width: 430px) {
-  
-    .board-add-task {
-      margin: 0;
-      margin-top: 48px;
-      margin-left: 10px;
-    }
-  }
-  
-  @media (max-width: 340px) {
-    .input-container {
-      width: 90px;
-    }
-  
-    .responsiv-plus-headline-container {
-      width: 250px;
-    }
-  
-    .img-input-container {
-      gap: 0px;
-    }
-  }
+}
