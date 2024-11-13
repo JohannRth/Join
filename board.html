@@ -48,7 +48,7 @@
 
 <body>
     <div id="sidebar-placeholder"></div>
-    <div id="mobile-nav-placeholder"></div> 
+    <div id="mobile-nav-placeholder"></div>
     <div id="header-placeholder"></div>
     <div class="main-board">
         <div class="board-headline-container">
@@ -218,9 +218,15 @@
                             <div class="input-group-edit">
                                 <span class="priority-line-overlay">Priority</span>
                                 <div class="prioButtonContainer">
-                                  <button type="button" id="prioUrgent" class="prioButtonUrgent" onclick="setPriority('urgent')">Urgent <img src="./assets/img/arrow-up.svg"></button>
-                                  <button type="button" id="prioMedium" class="prioButtonMedium" onclick="setPriority('medium')">Medium <img src="./assets/img/even.svg"></button>
-                                  <button type="button" id="prioLow" class="prioButtonLow" onclick="setPriority('low')">Low <img src="./assets/img/arrow-down.svg"></button>
+                                    <button type="button" id="prioUrgent" class="prioButtonUrgent"
+                                        onclick="setPriority('urgent')">Urgent <img
+                                            src="./assets/img/arrow-up.svg"></button>
+                                    <button type="button" id="prioMedium" class="prioButtonMedium"
+                                        onclick="setPriority('medium')">Medium <img
+                                            src="./assets/img/even.svg"></button>
+                                    <button type="button" id="prioLow" class="prioButtonLow"
+                                        onclick="setPriority('low')">Low <img
+                                            src="./assets/img/arrow-down.svg"></button>
                                 </div>
                             </div>
                             <div class="categoryContainer">
@@ -323,38 +329,40 @@
                     <div class="input-group-edit">
                         <span class="priority-line-overlay">Priority</span>
                         <div class="prioButtonContainerEdit">
-                          <button type="button" class="prioButtonEdit prioButtonUrgentEdit" onclick="setPriorityEdit('urgent')">
-                              Urgent <img src="./assets/img/arrow-up.svg">
-                          </button>
-                          <button type="button" class="prioButtonEdit prioButtonMediumEdit" onclick="setPriorityEdit('medium')">
-                              Medium <img src="./assets/img/even.svg">
-                          </button>
-                          <button type="button" class="prioButtonEdit prioButtonLowEdit" onclick="setPriorityEdit('low')">
-                              Low <img src="./assets/img/arrow-down.svg">
-                          </button>
-                      </div>
+                            <button type="button" class="prioButtonEdit prioButtonUrgentEdit"
+                                onclick="setPriorityEdit('urgent')">
+                                Urgent <img src="./assets/img/arrow-up.svg">
+                            </button>
+                            <button type="button" class="prioButtonEdit prioButtonMediumEdit"
+                                onclick="setPriorityEdit('medium')">
+                                Medium <img src="./assets/img/even.svg">
+                            </button>
+                            <button type="button" class="prioButtonEdit prioButtonLowEdit"
+                                onclick="setPriorityEdit('low')">
+                                Low <img src="./assets/img/arrow-down.svg">
+                            </button>
+                        </div>
                     </div>
                     <div class="assignedAddTaskContainer">
-                      <span class="addTaskInputTitle">Assigned to</span>
-                      <div class="assignedAddTask" id="assignedToEdit">
-                          <div>
-                              <div class="selectedContactsHeadline" id="contactsEdit">Select contacts to assign</div>
-                          </div>
-                      </div>
-                      <div class="contactDropdown" id="contactDropdownEdit"></div> 
-                      <div id="aktivContactsEdit" class="aktivContacts"></div>
-                  </div>
+                        <span class="addTaskInputTitle">Assigned to</span>
+                        <div class="assignedAddTask" id="assignedToEdit">
+                            <div>
+                                <div class="selectedContactsHeadline" id="contactsEdit">Select contacts to assign</div>
+                            </div>
+                        </div>
+                        <div class="contactDropdown" id="contactDropdownEdit"></div>
+                        <div id="aktivContactsEdit" class="aktivContacts"></div>
+                    </div>
                     <div class="subTaskContainer">
                         <div class="inputContainer">
                             <span class="addTaskInputTitle">Subtasks</span>
                             <div class="subTaskInputContainer">
-                                <div>
-                                    <input onclick="showInputSubTasksEdit()"
-                                        class="inputAddSubTask" type="text" id="subTaskInputEdit"
-                                        placeholder="Add new subtask">
-                                </div>
+
+                                <input onclick="showInputSubTasksEdit()" class="inputAddSubTask" type="text"
+                                    id="subTaskInputEdit" placeholder="Add new subtask">
+
                                 <div class="addSubTaskButtonContainer" id="addSubTaskButtonContainerEdit">
-                                    <img onclick="showInputSubTasksEdit()" class="addSubTaskButton" 
+                                    <img onclick="showInputSubTasksEdit()" class="addSubTaskButton"
                                         id="addSubTaskButtonEdit" src="./assets/img/add dark.svg">
                                     <div class="inputSubTaksClickContainer" id="inputSubTaksClickContainerEdit">
                                         <div class="deleteCurrentTextButtonContainer">
@@ -377,16 +385,17 @@
                                     </div>
                                     <div class="rightContainerSubTask">
                                         <img onclick="editSubtaskEdit()" src="./assets/img/edit.svg" alt="Edit">
-                                        <img onclick="deleteSubtaskEdit(0, '<TASK_ID>')" src="./assets/img/delete.svg" alt="Delete">
+                                        <img onclick="deleteSubtaskEdit(0, '<TASK_ID>')" src="./assets/img/delete.svg"
+                                            alt="Delete">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="btn-check-edit-container">
-                      <button class="btn-check-edit" onclick="confirmChanges('TASK_ID')">
-                        Ok <img src="./assets/img/check.svg" alt="">
-                    </button>
+                        <button class="btn-check-edit" onclick="confirmChanges('TASK_ID')">
+                            Ok <img src="./assets/img/check.svg" alt="">
+                        </button>
                     </div>
                 </div>
             </div>

@@ -111,12 +111,54 @@
     width: 45px;
     height: 45px;
   }
+
+  .edit-card-around {
+    width: 500px;
+    height: 720px;
+  }
+
+  .edit-card-body {
+    width: 100%;
+  }
+
+  .edit-card-header {
+    margin: 10px 20px;
+  }
+
+  .assignedAddTaskContainer {
+    display: unset;
+  }
+
+  .inputAddTaskDueDate {
+    width: 95%;
+    margin: 0% 2%;
+  }
+
+  .assignedAddTask {
+    width: 100%;
+  }
+
+  .aktivContacts {
+    width: 100%;
+  }
+
+  .subTaskContainer {
+    width: 90%;
+  }
+
+  .inputAddSubTask {
+    width: 100%;
+  }
+
+  .subTask {
+    width: 100%;
+  }
 }
 
 @media (max-width: 500px) {
 
   .around-container-epended-card {
-    width: 100%;
+    width: 95%;
   }
 
   .expanded-card-overlay {
@@ -157,6 +199,56 @@
     width: 100%;
   }
 
+  .edit-card-header {
+    margin: 10px 20px;
+  }
+
+  .edit-card-around {
+    width: 95%;
+    height: 80vh;
+  }
+
+  .edit-card-body {
+    padding: 20px 8px;
+  }
+
+  .inputAddTaskDueDate {
+    width: 100%;
+  }
+
+  .prioButtonContainerEdit {
+    zoom: 90%;
+  }
+
+  .prioButtonLowEdit {
+    margin-right: unset;
+  }
+
+  .assignedAddTask {
+    width: 100%;
+  }
+
+  .aktivContacts {
+    width: 100%;
+  }
+
+  .subTaskContainer {
+    width: 90%;
+  }
+
+  .subTaskInputContainer {
+    width: 100%;
+    position: unset;
+    justify-content: center;
+  }
+
+  .inputAddSubTask {
+    width: 100%;
+  }
+
+  .subTask {
+    width: 100%;
+  }
 
 }
 
