@@ -379,18 +379,55 @@ async function deleteSubtaskEdit(index) {
     }
 }
 
-async function deleteData(path) {
+async function deleteSubtaskEdit(index) {
+    const taskId = document.getElementById("edit-overlay").getAttribute("data-task-id");
+
     try {
-        const response = await fetch(`${BASE_URL}${path}.json`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
+        // Lösche den Subtask und den spezifischen Status in Firebase
+        await deleteData(`tasks/${taskId}/subtasks/${index}`);
+        await deleteData(`subtaskStatus/${taskId}/${index}`); // Löscht nur den spezifischen Status
+
+        // Lade die aktuellen Subtasks und Status neu
+        const taskData = await loadData(`tasks/${taskId}`);
+        let subtasks = taskData.subtasks ? Object.values(taskData.subtasks) : [];
+
+        // Entferne das gelöschte Subtask-Element und ordne die Indizes neu
+        subtasks.splice(index, 1);
+
+        // Speichere die neu geordneten Subtasks in Firebase
+        const reorderedSubtasks = {};
+        subtasks.forEach((subtask, newIndex) => {
+            reorderedSubtasks[newIndex] = subtask;
         });
-        if (!response.ok) {
-            console.error(`Löschen fehlgeschlagen mit Status: ${response.status} - ${response.statusText}`);
-            throw new Error(`Fehler beim Löschen der Daten in Firebase: ${response.statusText}`);
+        await updateData(`tasks/${taskId}/subtasks`, reorderedSubtasks);
+
+        // Nur verbleibende Status-Einträge neu organisieren
+        const subtaskStatuses = taskData.subtaskStatus || {};
+        const reorderedStatuses = {};
+
+        // Durchlaufe die Status-Einträge und lasse alle außer dem gelöschten Eintrag
+        Object.keys(subtaskStatuses).forEach((statusIndex) => {
+            const numericIndex = parseInt(statusIndex, 10);
+            if (numericIndex < index) {
+                reorderedStatuses[numericIndex] = subtaskStatuses[statusIndex];
+            } else if (numericIndex > index) {
+                reorderedStatuses[numericIndex - 1] = subtaskStatuses[statusIndex];
+            }
+        });
+
+        // Aktualisiere nur die neu geordneten Status
+        for (const [key, value] of Object.entries(reorderedStatuses)) {
+            await updateData(`subtaskStatus/${taskId}/${key}`, value);
         }
+
+        // Lösche den überzähligen Status-Eintrag
+        await deleteData(`subtaskStatus/${taskId}/${Object.keys(subtaskStatuses).length - 1}`);
+
+        // Aktualisiere die Subtasks in der UI
+        await reloadSubtasks(taskId);
+
     } catch (error) {
-    
+        console.error("Fehler beim Löschen des Subtasks oder seines Status:", error);
     }
 }
 
@@ -415,7 +452,7 @@ let deletedSubtasks = [];
 
 function showInputSubTasksEdit() {
     const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
-    inputContainer.classList.toggle("visible"); 
+    inputContainer.classList.toggle("visible"); // Schaltet die Klasse 'visible' um
 }
 
 function toggleSubtaskEditMode(subTaskText, subTaskInput) {

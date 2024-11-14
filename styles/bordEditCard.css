@@ -286,3 +286,7 @@
     background-color: transparent;
     font-size: 16px;
   }
+
+  .addSubTaskButton {
+    display: none; 
+  }
