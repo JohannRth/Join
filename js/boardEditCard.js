@@ -524,3 +524,12 @@ async function confirmChanges(taskId) {
         console.error("Fehler beim Aktualisieren des Tasks in Firebase:", error);
     }
 }
+
+
+flatpickr("#edit-due-date", {
+    dateFormat: "Y-m-d", // Format, das mit dem Eingabefeld übereinstimmt
+    onChange: function(selectedDates, dateStr, instance) {
+        // Fügt das ausgewählte Datum in das Feld ein
+        document.getElementById("edit-due-date").value = dateStr;
+    }
+});

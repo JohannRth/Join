@@ -4,7 +4,7 @@
   
   .edit-card-around {
     width: 525px;
-    height: 800px;
+    height: 700px;
     background-color: white;
     border-radius: 30px;
     display: flex;
@@ -14,7 +14,7 @@
   
   .edit-card-body {
     width: 513px;
-    min-height: 650px;
+    min-height: 550px;
     padding: 36px 20px;
     background-color: white;
     display: flex;
@@ -53,6 +53,7 @@
     margin-top: 16px;
     display: flex;
     flex-direction: column;
+    position: relative; 
   }
   
   .edit-label {
@@ -290,3 +291,42 @@
   .addSubTaskButton {
     display: none; 
   }
+
+  .inputAddTaskDueDateEdit {
+    display: flex;
+    flex-direction: column;
+    width: 440px;
+    height: 48px;
+    padding: 12px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: left;
+    cursor: pointer;
+    color: #D1D1D1;
+    background-image: url(/assets/img/calender.svg);
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.calendar-overlay {
+    position: absolute;
+    width: 200px;
+    height: 200px; /* Anpassen an die gewünschte Kalendergröße */
+    background-color: #fff;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    top: calc(100% + 8px); /* Position direkt unter dem Input */
+    left: 0;
+}
+
+.hidden {
+    display: none;
+}

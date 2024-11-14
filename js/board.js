@@ -83,6 +83,9 @@ function dropTask(ev) {
         const data = ev.dataTransfer.getData("text");
         const taskElement = document.getElementById(data);
         targetArea.appendChild(taskElement);
+
+        // Speichern der neuen Position
+        savePosition(data, targetArea.id);
     }
 }
 

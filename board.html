@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="./styles/bordEditCard.css">
     <link rel="stylesheet" href="./styles/boardExpendedCard.css">
     <link rel="stylesheet" href="./styles/boardResponsive.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="./js/addTaskCategory.js" defer></script>
     <script src="./js/addTask.js" defer></script>
     <script src="./js/addTaskAsync.js" defer></script>
@@ -323,9 +325,9 @@
                         <textarea class="textAreaAddTask" id="edit-description"></textarea>
                     </div>
                     <div class="input-group-edit">
-                        <span class="date-line-overlay">Due date</span>
-                        <input class="inputAddTaskDueDate" type="date" id="edit-due-date">
-                    </div>
+                      <span class="date-line-overlay">Due date</span>
+                      <input class="inputAddTaskDueDateEdit" type="text" id="edit-due-date" placeholder="Select date" readonly>
+                  </div>
                     <div class="input-group-edit">
                         <span class="priority-line-overlay">Priority</span>
                         <div class="prioButtonContainerEdit">
