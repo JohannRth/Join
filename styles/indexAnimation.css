@@ -56,3 +56,16 @@
     }
 
 }
+
+@media (max-width: 400px) {
+
+    @keyframes moveAndResize {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+        100% {
+            transform: translate(calc(-55vw + 77px), calc(-57vh + 104px)) scale(0.5);
+        }
+    }
+
+}

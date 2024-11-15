@@ -207,7 +207,7 @@ input#confirmedPassword {
     position: fixed;
     left: 5%;
     right: 5%;
-    bottom: 1%;
+    bottom: 0.5%;
     z-index: -1;
 }
 
@@ -278,26 +278,27 @@ input#confirmedPassword {
     padding: 0px 25px;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: none; 
+    display: none;
     justify-content: center;
     align-items: center;
     opacity: 0;
-    pointer-events: none; 
+    pointer-events: none;
 }
 
 .success.show {
-    display: flex; 
-    animation: slideInBottom 0.5s forwards; 
-    pointer-events: auto; 
+    display: flex;
+    animation: slideInBottom 0.5s forwards;
+    pointer-events: auto;
 }
 
 @keyframes slideInBottom {
     from {
-        transform: translate(-50%, 100%); 
+        transform: translate(-50%, 100%);
         opacity: 0;
     }
+
     to {
-        transform: translate(-50%, -50%); 
+        transform: translate(-50%, -50%);
         opacity: 1;
     }
 }
@@ -307,7 +308,7 @@ input#confirmedPassword {
 /* ///////////////////////////////////////Mobile-Screen////////////////////////////////////////////////////// */
 
 @media (max-width: 680px) {
-    
+
     .login-content {
         padding: 0px 16px;
     }
@@ -328,7 +329,7 @@ input#confirmedPassword {
         padding: 40px 40px;
     }
 
-    .register-header img{
+    .register-header img {
         height: 90px;
     }
 
@@ -367,5 +368,38 @@ input#confirmedPassword {
 
     .login-mobile {
         width: 177px !important;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .image-container img {
+        width: 100px !important;
+    }
+
+    .content-field {
+        zoom: 90%;
+        margin-top: 120px;
+    }
+
+    .login-header {
+        zoom: 90%;
+    }
+
+    .login-modal {
+        zoom: 86%;
+    }
+
+    .register-header {
+        height: 112px;
+        padding: 0px 34px;
+    }
+
+    .register-header img {
+        height: 60px;
+    }
+
+    .login-footer a {
+        font-size: 14px;
     }
 }
