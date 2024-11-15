@@ -1,6 +1,6 @@
-.around-container-epended-card {
-  width: 525px;
-  height: 700px;
+.around-container-expended-card{
+  width: 505px;
+  height: 600px;
   border-radius: 30px;
   background-color: white;
   animation: slideInOverlay 0.5s forwards;
@@ -10,7 +10,7 @@
 
 .expanded-card-overlay {
   width: 513px;
-  min-height: 550px;
+  max-height: 600px;
   padding: 36px 20px;
   background-color: white;
   display: flex;

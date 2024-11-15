@@ -174,12 +174,12 @@ body.no-scroll {
   width: 246px;
   height: 48px;
   border-radius: 10px;
-  border: 1px solid #a8a8a8;
-  background-color: #f4f4f4;
+  border: 1px solid #454545;
+  background-color: rgb(189, 189, 189);
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #e7e7e7;
+  color: #646464;
   font-size: 16px;
   font-weight: 400;
 }
@@ -239,6 +239,7 @@ body.no-scroll {
   font-size: 16px;
   color: #2a3647;
   margin: 0;
+  margin-top: 10px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;

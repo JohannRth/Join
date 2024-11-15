@@ -47,7 +47,6 @@
 
   .input-container {
     width: 100%;
-    /* Volle Breite für das Eingabefeld */
   }
 
   .button-add-task-board {
@@ -87,9 +86,17 @@
     margin-top: 0px;
   }
 
-  .around-container-epended-card {
+  .around-container-expended-card {
     width: 500px;
-    height: 720px;
+    height: 450px;
+  }
+
+  .expanded-card-overlay{
+    height: 520px;
+  }
+
+  .card-overlay{
+    margin-top: 40px;
   }
 
   .task-title-overlay {

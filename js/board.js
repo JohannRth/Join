@@ -84,7 +84,6 @@ function dropTask(ev) {
         const taskElement = document.getElementById(data);
         targetArea.appendChild(taskElement);
 
-        // Speichern der neuen Position
         savePosition(data, targetArea.id);
     }
 }
@@ -121,7 +120,7 @@ document.addEventListener('click', function (event) {
 });
 
 // Drag-Area zähler //
-function getTodoCount() { // ToDo
+function getTodoCount() { 
     const todoContainer = document.getElementById("todo");
     const tasks = todoContainer.querySelectorAll(".titel-card");
     return tasks.length;
@@ -132,7 +131,7 @@ function updateTodoCount() {
     localStorage.setItem('todoCount', todoCount);
 }
 
-function getDoneCount() { // Done
+function getDoneCount() { 
     const doneContainer = document.getElementById("done");
     const tasks = doneContainer.querySelectorAll(".titel-card");
     return tasks.length;
@@ -143,7 +142,7 @@ function updateDoneCount() {
     localStorage.setItem('doneCount', doneCount);
 }
 
-function getBoardTaskCount() { // Alle
+function getBoardTaskCount() { 
     const todoTasks = document.getElementById("todo").querySelectorAll(".titel-card");
     const inProgressTasks = document.getElementById("inProgress").querySelectorAll(".titel-card");
     const feedbackTasks = document.getElementById("awaitFeedback").querySelectorAll(".titel-card");
@@ -158,7 +157,7 @@ function updateBoardTaskCount() {
     localStorage.setItem('boardTaskCount', boardTaskCount);
 }
 
-function getInProgressCount() { // In Progress
+function getInProgressCount() { 
     const inProgressTasks = document.getElementById("inProgress").querySelectorAll(".titel-card");
     return inProgressTasks.length;
 }
@@ -168,7 +167,7 @@ function updateInProgressCount() {
     localStorage.setItem('inProgressCount', inProgressCount);
 }
 
-function getAwaitFeedbackCount() { // Await Feedback
+function getAwaitFeedbackCount() { 
     const feedbackTasks = document.getElementById("awaitFeedback").querySelectorAll(".titel-card");
     return feedbackTasks.length;
 }
@@ -179,10 +178,10 @@ function updateAwaitFeedbackCount() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadTodosFromFirebase();         // Lade die `todos` Daten
-    await loadPositionsFromFirebase();     // Lade und setze die Positionen
-    await loadSubtaskStatusesFromFirebase(); // Lade und setze die Subtask-Checkbox-Status
-    updateHTML();                          // Aktualisiere das HTML mit allen geladenen Daten
+    await loadTodosFromFirebase(); 
+    await loadPositionsFromFirebase();    
+    await loadSubtaskStatusesFromFirebase();
+    updateHTML();                          
 });
 
 // Todo's position //
@@ -193,15 +192,15 @@ async function savePosition(taskId, position) {
 
 async function loadPositionsFromFirebase() {
     const positionsData = await loadData("positionDropArea");
-    console.log("Geladene Positionen:", positionsData); // Debugging: Überprüfen der geladenen Positionen
+    console.log("Geladene Positionen:", positionsData); 
 
     for (const taskId in positionsData) {
         const position = positionsData[taskId];
         const task = todos.find((t) => t.id === taskId || t.id === parseInt(taskId));
 
         if (task) {
-            task.category = position; // Setze die Position basierend auf den Daten in `positionDropArea`
-            console.log(`Task ${taskId} auf Position ${position} gesetzt`); // Debugging: Überprüfen der aktualisierten Positionen
+            task.category = position; 
+            console.log(`Task ${taskId} auf Position ${position} gesetzt`); 
         }
     }
 }
@@ -221,3 +220,32 @@ function openAddTaskOverlay() {
     overlay.classList.remove("hidden");
     document.body.classList.add("no-scroll"); 
 }
+
+function filterTasks() {
+    const inputField = document.querySelector('.input-find-task');
+    const filterText = inputField.value.toLowerCase();
+    const taskCards = document.querySelectorAll('.titel-card');
+
+    taskCards.forEach(card => {
+        const title = card.querySelector('.task-title').innerText.toLowerCase();
+        const description = card.querySelector('.task-description').innerText.toLowerCase();
+        
+        if (title.includes(filterText) || description.includes(filterText)) {
+            card.style.display = 'block'; 
+        } else {
+            card.style.display = 'none'; 
+        }
+    });
+}
+
+document.querySelector('.input-find-task').addEventListener('input', filterTasks);
+
+document.addEventListener('click', function (event) {
+    const inputField = document.querySelector('.input-find-task');
+    const inputWrapper = document.querySelector('.input-field-complett');
+
+    if (!inputWrapper.contains(event.target)) {
+        inputField.value = ''; 
+        filterTasks(); 
+    }
+});
