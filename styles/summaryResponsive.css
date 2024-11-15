@@ -23,6 +23,10 @@
     .main-summary {
         margin-left: 0px;
         justify-content: center;
+        overflow-y: auto;
+        margin-bottom: 60px;
+        height: 700px;
+        margin-top: 0px;
     }
 
     .summary-container {
