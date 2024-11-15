@@ -200,6 +200,7 @@ body.no-scroll {
   margin-bottom: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: grab;
+  touch-action: none; /* Verhindert das Standardverhalten von Touch-Events */
 }
 
 .titel-card:hover {
@@ -208,7 +209,7 @@ body.no-scroll {
 }
 
 .titel-card.dragging {
-  cursor: grabbing;
+  opacity: 0.5;
 }
 
 .user-story {

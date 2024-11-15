@@ -1,3 +1,8 @@
+/**
+ * Opens the edit overlay for a specific task, loading its details and preparing the UI.
+ * @async
+ * @param {string} taskId - The unique identifier of the task to edit.
+ */
 async function openEditOverlay(taskId) {
     await loadTaskDetails(taskId);
     await populateContactDropdownFromFirebase();
@@ -11,6 +16,11 @@ async function openEditOverlay(taskId) {
     document.body.classList.add("no-scroll");
 }
 
+/**
+ * Loads the task title from Firebase and populates the title input field.
+ * @async
+ * @param {string} taskId - The unique identifier of the task.
+ */
 async function loadTaskTitle(taskId) {
     try {
         const taskData = await loadData(`tasks/${taskId}`);
@@ -25,6 +35,11 @@ async function loadTaskTitle(taskId) {
     }
 }
 
+/**
+ * Loads detailed information of a task and populates the edit form fields.
+ * @async
+ * @param {string} taskId - The unique identifier of the task.
+ */
 async function loadTaskDetails(taskId) {
     try {
         const taskData = await loadData(`tasks/${taskId}`);
@@ -38,9 +53,15 @@ async function loadTaskDetails(taskId) {
 
         const getSubtasks = (data) => data ? Object.values(data).map(title => ({ title })) : [];
         displaySubtasks([...getSubtasks(subtasks), ...getSubtasks(newSubtask)], taskId);
-     } catch (error) {}
+     } catch (error) {
+        console.error("Error loading task details:", error);
+     }
 }
 
+/**
+ * Highlights the priority button corresponding to the given priority level.
+ * @param {string} priority - The priority level ('urgent', 'medium', or 'low').
+ */
 function highlightPriorityButton(priority) {
     const buttons = {
         urgent: document.querySelector(".prioButtonUrgentEdit"),
@@ -52,8 +73,13 @@ function highlightPriorityButton(priority) {
     if (buttons[priority]) buttons[priority].classList.add("active");
 }
 
+/** @type {string} */
 let currentPriority = ""; 
 
+/**
+ * Sets the priority in the edit form and updates the UI accordingly.
+ * @param {string} priority - The priority level ('urgent', 'medium', or 'low').
+ */
 function setPriorityEdit(priority) {
     const buttons = {
         urgent: document.querySelector(".prioButtonUrgentEdit"),
@@ -68,6 +94,10 @@ function setPriorityEdit(priority) {
     }
 }
 
+/**
+ * Displays the assigned contacts in the edit overlay.
+ * @param {Array<string>} contacts - An array of contact names.
+ */
 function displayAssignedContacts(contacts) {
     const container = document.getElementById("aktivContactsEdit");
     container.innerHTML = "";
@@ -81,6 +111,11 @@ function displayAssignedContacts(contacts) {
     });
 }
 
+/**
+ * Retrieves the initials from a contact's full name.
+ * @param {string} name - The full name of the contact.
+ * @returns {string} The initials of the contact.
+ */
 function getInitials(name) {
     const nameParts = name.split(" ");
     return nameParts.length >= 2 
@@ -88,19 +123,34 @@ function getInitials(name) {
         : nameParts[0][0];
 }
 
+/**
+ * Generates a random color from a predefined list.
+ * @returns {string} A random color in hexadecimal format.
+ */
 function getRandomColor() {
     const colors = ["#FF5733", "#33C3FF", "#7D3CFF", "#FFC300", "#DAF7A6"];
     return colors[Math.floor(Math.random() * colors.length)];
 }
 
+/**
+ * Loads the assigned contacts for a task and displays them.
+ * @async
+ * @param {string} taskId - The unique identifier of the task.
+ */
 async function loadAssignedContacts(taskId) {
     try {
         const taskData = await loadData(`tasks/${taskId}`);
         const assignedContacts = taskData?.assignedTo || [];
         displayAssignedContacts(assignedContacts);
-    } catch (error) {}
+    } catch (error) {
+        console.error("Error loading assigned contacts:", error);
+    }
 }
 
+/**
+ * Displays the assigned contacts in the edit overlay, allowing removal on click.
+ * @param {Array<string>} contacts - An array of contact names.
+ */
 function displayAssignedContacts(contacts) {
     const container = document.getElementById("aktivContactsEdit");
     container.innerHTML = "";
@@ -117,6 +167,11 @@ function displayAssignedContacts(contacts) {
     });
 }
 
+/**
+ * Loads contacts from Firebase.
+ * @async
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of contact objects.
+ */
 async function loadContacts() {
     try {
         const contactsData = await loadData("contacts"); 
@@ -127,10 +182,17 @@ async function loadContacts() {
     }
 }
 
+/**
+ * Populates the contact dropdown in the edit overlay with contacts from Firebase.
+ * @async
+ */
 async function populateContactDropdownFromFirebase() {
     const contacts = await loadContacts();
     const dropdown = document.getElementById("contactDropdownEdit");
-    if (!contacts?.length) return dropdown.innerHTML = "";
+    if (!contacts?.length) {
+        dropdown.innerHTML = "";
+        return;
+    }
 
     dropdown.innerHTML = contacts.map(createContactHTML).join("");
 
@@ -142,6 +204,11 @@ async function populateContactDropdownFromFirebase() {
         }));
 }
 
+/**
+ * Creates HTML for a contact to be displayed in the dropdown.
+ * @param {Object|string} contact - The contact object or name string.
+ * @returns {string} HTML string representing the contact.
+ */
 function createContactHTML(contact) {
     const name = contact.name || contact;
     return `
@@ -153,11 +220,13 @@ function createContactHTML(contact) {
         </div>`;
 }
 
+// Event listener to toggle the contact dropdown visibility
 document.getElementById("contactsEdit").addEventListener("click", () => {
     const dropdown = document.getElementById("contactDropdownEdit");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 });
 
+// Event listener to close the contact dropdown when clicking outside
 document.addEventListener("click", (event) => {
     const dropdown = document.getElementById("contactDropdownEdit");
     const target = event.target;
@@ -166,12 +235,19 @@ document.addEventListener("click", (event) => {
     }
 });
 
+/**
+ * Adds a contact to the assigned contacts list in the edit overlay.
+ * @param {string} name - The contact's name.
+ * @param {string} initials - The contact's initials.
+ * @param {string} color - The color associated with the contact.
+ */
 function addContactToAssignedList(name, initials, color) {
     const assignedContainer = document.getElementById("aktivContactsEdit");
     const isAlreadyAssigned = Array.from(assignedContainer.children).some(
         el => el.getAttribute("data-name") === name
-        );
-        if (isAlreadyAssigned) return; 
+    );
+    if (isAlreadyAssigned) return; 
+
     const contactBubble = document.createElement("div");
     contactBubble.classList.add("contactBubble");
     contactBubble.style.backgroundColor = color;
@@ -183,7 +259,10 @@ function addContactToAssignedList(name, initials, color) {
     assignedContainer.appendChild(contactBubble);
 }
 
-
+/**
+ * Displays the assigned contacts in the edit overlay.
+ * @param {Array<string>} contacts - An array of contact names.
+ */
 function displayAssignedContacts(contacts) {
     const container = document.getElementById("aktivContactsEdit");
     container.innerHTML = "";
@@ -200,17 +279,32 @@ function displayAssignedContacts(contacts) {
     });
 }
 
+/**
+ * Displays the subtasks in the edit overlay.
+ * @param {Array<Object>} subtasks - An array of subtask objects.
+ * @param {string} taskId - The unique identifier of the task.
+ */
 function displaySubtasks(subtasks, taskId) {
     const container = document.getElementById("subTaskListEdit");
     container.innerHTML = "";
 
-    if (!subtasks?.length) return console.warn("Keine Subtasks für Task:", taskId);
+    if (!subtasks?.length) {
+        console.warn("No subtasks for task:", taskId);
+        return;
+    }
 
     subtasks.forEach((subtask, index) => 
         container.innerHTML += generateSubtaskHTML(subtask, index, taskId)
     );
 }
 
+/**
+ * Generates HTML for a subtask item in the edit overlay.
+ * @param {Object} subtask - The subtask object.
+ * @param {number} index - The index of the subtask.
+ * @param {string} taskId - The unique identifier of the task.
+ * @returns {string} HTML string representing the subtask.
+ */
 function generateSubtaskHTML(subtask, index, taskId) {
     const title = subtask?.title || "Untitled";
     return `
@@ -224,6 +318,10 @@ function generateSubtaskHTML(subtask, index, taskId) {
         </div>`;
 }
 
+/**
+ * Adds a new subtask to the task being edited.
+ * @async
+ */
 async function addNewSubtaskEdit() {
     const input = document.getElementById('subTaskInputEdit');
     const value = input.value.trim();
@@ -238,22 +336,92 @@ async function addNewSubtaskEdit() {
         input.value = '';
         await reloadSubtasks(taskId);
     } catch (error) {
-        console.error("Fehler beim Hinzufügen des Subtasks:", error);
+        console.error("Error adding subtask:", error);
     }
 }
 
-function editSubtaskEdit(index) {
-    // Hier speichern wir die Änderungen im updatedSubtasks Array
-    const subTaskText = document.querySelector(`[data-index="${index}"] .subTaskText`);
-    if (subTaskText) {
-        const updatedText = prompt("Ändere den Subtask:", subTaskText.textContent);
-        if (updatedText) {
-            updatedSubtasks[index] = updatedText;
-        }
+/**
+ * Deletes a subtask from the task being edited.
+ * @async
+ * @param {number} index - The index of the subtask to delete.
+ */
+async function deleteSubtaskEdit(index) {
+    const taskId = document.getElementById("edit-overlay").getAttribute("data-task-id");
+    try {
+        await Promise.all([
+            deleteData(`tasks/${taskId}/subtasks/${index}`),
+            deleteData(`subtaskStatus/${taskId}/${index}`)
+        ]);
+        const taskData = await loadData(`tasks/${taskId}`);
+        const subtasks = reorderSubtasks(taskData.subtasks, index);
+        await updateData(`tasks/${taskId}/subtasks`, subtasks);
+
+        const statuses = reorderStatuses(taskData.subtaskStatus || {}, index);
+        await updateReorderedStatuses(taskId, statuses);
+        await reloadSubtasks(taskId);
+    } catch (error) {
+        console.error("Error deleting subtask:", error);
     }
-    renderSubtaskEdit();  // Anzeige aktualisieren
 }
 
+/**
+ * Reorders subtasks after a deletion to maintain continuous indices.
+ * @param {Object} subtasks - The current subtasks as an object with indices as keys.
+ * @param {number} index - The index of the subtask that was deleted.
+ * @returns {Object} The reordered subtasks object.
+ */
+function reorderSubtasks(subtasks, index) {
+    const updated = subtasks ? Object.values(subtasks).filter((_, i) => i !== index) : [];
+    return Object.fromEntries(updated.map((subtask, i) => [i, subtask]));
+}
+
+/**
+ * Reorders subtask statuses after a deletion to maintain continuous indices.
+ * @param {Object} statuses - The current statuses as an object with indices as keys.
+ * @param {number} index - The index of the status that was deleted.
+ * @returns {Object} The reordered statuses object.
+ */
+function reorderStatuses(statuses, index) {
+    return Object.fromEntries(Object.entries(statuses)
+        .map(([key, value]) => [parseInt(key, 10), value])
+        .filter(([i]) => i !== index)
+        .map(([i, value], newIndex) => [i > index ? newIndex - 1 : newIndex, value]));
+}
+
+/**
+ * Updates the reordered subtask statuses in Firebase.
+ * @async
+ * @param {string} taskId - The unique identifier of the task.
+ * @param {Object} statuses - The reordered statuses object.
+ */
+async function updateReorderedStatuses(taskId, statuses) {
+    await Promise.all(Object.entries(statuses).map(([key, value]) =>
+        updateData(`subtaskStatus/${taskId}/${key}`, value)
+    ));
+    const lastKey = Object.keys(statuses).length;
+    await deleteData(`subtaskStatus/${taskId}/${lastKey}`);
+}
+
+/**
+ * Reloads the subtasks for a task and updates the UI.
+ * @async
+ * @param {string} taskId - The unique identifier of the task.
+ */
+async function reloadSubtasks(taskId) {
+    try {
+        const taskData = await loadData(`tasks/${taskId}`);
+        const subtasks = taskData.subtasks ? Object.values(taskData.subtasks) : [];
+        
+        renderSubtaskEdit(subtasks);  // Update the subtask list with the new data
+    } catch (error) {
+        console.error("Error loading subtasks:", error);
+    }
+}
+
+/**
+ * Renders the subtasks in the edit overlay.
+ * @param {Array<string>} subtasks - An array of subtask titles.
+ */
 function renderSubtaskEdit(subtasks) {
     const container = document.getElementById("subTaskListEdit");
     container.innerHTML = "";
@@ -269,17 +437,11 @@ function renderSubtaskEdit(subtasks) {
     });
 }
 
-async function reloadSubtasks(taskId) {
-    try {
-        const taskData = await loadData(`tasks/${taskId}`);
-        const subtasks = taskData.subtasks ? Object.values(taskData.subtasks) : [];
-        
-        renderSubtaskEdit(subtasks);  // Aktualisiere die Subtask-Liste mit den neuen Daten
-    } catch (error) {
-        console.error("Fehler beim Laden der Subtasks:", error);
-    }
-}
-
+/**
+ * Reloads task data and updates the UI, including overlays.
+ * @async
+ * @param {string} taskId - The unique identifier of the task.
+ */
 async function reloadTaskDataAndUpdateUI(taskId) {
     try {
         await Promise.all([
@@ -295,87 +457,14 @@ async function reloadTaskDataAndUpdateUI(taskId) {
             const task = todos.find(t => t.id === taskId);
             if (task) cardOverlay.innerHTML = generateExpandedCardHTML(task);
         }
-    } catch{}
-}
-
-async function deleteSubtaskEdit(index) {
-    const taskId = document.getElementById("edit-overlay").getAttribute("data-task-id");
-
-    try {
-        await deleteData(`tasks/${taskId}/subtasks/${index}`);
-        
-        await reloadSubtasks(taskId);
-
-    } catch {}
-}
-
-async function deleteSubtaskEdit(index) {
-    const taskId = document.getElementById("edit-overlay").getAttribute("data-task-id");
-    try {
-        await Promise.all([
-            deleteData(`tasks/${taskId}/subtasks/${index}`),
-            deleteData(`subtaskStatus/${taskId}/${index}`)
-        ]);
-        const taskData = await loadData(`tasks/${taskId}`);
-        const subtasks = reorderSubtasks(taskData.subtasks, index);
-        await updateData(`tasks/${taskId}/subtasks`, subtasks);
-
-        const statuses = reorderStatuses(taskData.subtaskStatus || {}, index);
-        await updateReorderedStatuses(taskId, statuses);
-        await reloadSubtasks(taskId);
-    } catch {}
-}
-
-function reorderSubtasks(subtasks, index) {
-    const updated = subtasks ? Object.values(subtasks).filter((_, i) => i !== index) : [];
-    return Object.fromEntries(updated.map((subtask, i) => [i, subtask]));
-}
-
-async function updateReorderedStatuses(taskId, statuses) {
-    await Promise.all(Object.entries(statuses).map(([key, value]) =>
-        updateData(`subtaskStatus/${taskId}/${key}`, value)
-    ));
-    const lastKey = Object.keys(statuses).length;
-    await deleteData(`subtaskStatus/${taskId}/${lastKey}`);
-}
-
-function reorderStatuses(statuses, index) {
-    return Object.fromEntries(Object.entries(statuses)
-        .map(([key, value]) => [parseInt(key, 10), value])
-        .filter(([i]) => i !== index)
-        .map(([i, value], newIndex) => [i > index ? newIndex - 1 : newIndex, value]));
-}
-
-async function updateData(path, data) {
-    try {
-        const response = await fetch(`${BASE_URL}${path}.json`, {
-            method: 'PUT', // Verwende PUT statt PATCH
-            body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        if (!response.ok) {
-            console.error(`Update fehlgeschlagen mit Status: ${response.status} - ${response.statusText}`);
-            throw new Error(`Fehler beim Aktualisieren der Daten in Firebase: ${response.statusText}`);
-        }
     } catch (error) {
-        console.error("Fehler beim Aktualisieren der Daten:", error);
+        console.error("Error reloading task data and updating UI:", error);
     }
 }
 
-let newSubtasks = [];
-let deletedSubtasks = [];
-
-function showInputSubTasksEdit() {
-    const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
-    inputContainer.classList.toggle("visible"); // Schaltet die Klasse 'visible' um
-}
-
-function toggleSubtaskEditMode(subTaskText, subTaskInput) {
-    subTaskText.style.display = "none";
-    subTaskInput.style.display = "inline-block";
-    subTaskInput.focus(); 
-}
-
+/**
+ * Closes the edit overlay and re-enables body scrolling.
+ */
 function closeEditOverlay() {
     const editOverlay = document.getElementById("edit-overlay");
     editOverlay.classList.add("hidden");
@@ -383,12 +472,18 @@ function closeEditOverlay() {
     document.body.classList.remove("no-scroll");
 }
 
+// Event listener to close the edit overlay when clicking outside
 document.getElementById("edit-overlay").addEventListener("click", function (event) {
     if (event.target === this) {
         closeEditOverlay();
     }
 });
 
+/**
+ * Confirms changes made in the edit overlay and updates the task.
+ * @async
+ * @param {string} taskId - The unique identifier of the task.
+ */
 async function confirmChanges(taskId) {
     try {
         const updatedData = await getUpdatedTaskData(taskId);
@@ -402,9 +497,17 @@ async function confirmChanges(taskId) {
 
         const cardOverlay = document.getElementById("card-overlay");
         if (cardOverlay && !cardOverlay.classList.contains("hidden")) openCardOverlay(taskId);
-    } catch {}
+    } catch (error) {
+        console.error("Error confirming changes:", error);
+    }
 }
 
+/**
+ * Gathers updated task data from the edit overlay form.
+ * @async
+ * @param {string} taskId - The unique identifier of the task.
+ * @returns {Promise<Object|null>} The updated task data, or null if not found.
+ */
 async function getUpdatedTaskData(taskId) {
     const existingData = await loadData(`tasks/${taskId}`);
     if (!existingData) return null;
@@ -420,11 +523,11 @@ async function getUpdatedTaskData(taskId) {
     return { ...existingData, title, description, dueDate, prio: priority, assignedTo: assignedContacts };
 }
 
-
+// Initialize flatpickr date picker for the due date input
 flatpickr("#edit-due-date", {
-    dateFormat: "Y-m-d", // Format, das mit dem Eingabefeld übereinstimmt
+    dateFormat: "Y-m-d", // Format matching the input field
     onChange: function(selectedDates, dateStr, instance) {
-        // Fügt das ausgewählte Datum in das Feld ein
+        // Updates the input field with the selected date
         document.getElementById("edit-due-date").value = dateStr;
     }
 });

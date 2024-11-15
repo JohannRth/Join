@@ -1,3 +1,8 @@
+/**
+ * Generates the HTML for an expanded task card overlay.
+ * @param {Object} element - The task object containing all task details.
+ * @returns {string} The HTML string for the expanded task card.
+ */
 function generateExpandedCardHTML(element) {
     const taskTypeStyle = getTaskTypeStyle(element.type);
     const priority = getPriorityData(element.priority);
@@ -8,6 +13,16 @@ function generateExpandedCardHTML(element) {
     return generateExpandedCardHTMLTemplate(element, taskTypeStyle, priority, dueDate, subtasksHTML, assignedContactsHTML);
 }
 
+/**
+ * Generates the HTML template for the expanded task card overlay.
+ * @param {Object} element - The task object.
+ * @param {string} taskTypeStyle - The inline style for the task type.
+ * @param {Object} priority - An object containing label and icon for priority.
+ * @param {string} dueDate - The formatted due date string.
+ * @param {string} subtasksHTML - The HTML string for subtasks.
+ * @param {string} assignedContactsHTML - The HTML string for assigned contacts.
+ * @returns {string} The complete HTML template for the expanded task card.
+ */
 function generateExpandedCardHTMLTemplate(element, taskTypeStyle, priority, dueDate, subtasksHTML, assignedContactsHTML) {
     return `
     <div class="around-container-epended-card">    
@@ -52,12 +67,22 @@ function generateExpandedCardHTMLTemplate(element, taskTypeStyle, priority, dueD
     </div>`;
 }
 
+/**
+ * Returns the inline CSS style string based on the task type.
+ * @param {string} type - The type of the task.
+ * @returns {string} The CSS style string.
+ */
 function getTaskTypeStyle(type) {
     return type === "Technical Task"
         ? "height: 36px; width: 208px; border-radius: 8px; padding: 4px 16px; background-color: #1FD7C1; color: #FFFFFF; font-size: 23px; font-weight: 400;"
         : "width: 164px; height: 36px; border-radius: 8px; padding: 4px 16px; background-color: #0038ff; color: white; font-weight: 400; font-size: 23px; display: flex; align-items: center; justify-content: center;";
 }
 
+/**
+ * Retrieves priority data including label and icon based on priority level.
+ * @param {string} priority - The priority level ('urgent', 'medium', 'low').
+ * @returns {Object} An object containing the label and icon URL.
+ */
 function getPriorityData(priority) {
     const priorities = {
         urgent: { label: "Urgent", icon: "./assets/img/urgent-titel-card.svg" },
@@ -67,6 +92,11 @@ function getPriorityData(priority) {
     return priorities[priority] || { label: "Default", icon: "./assets/img/default-titel-card.svg" };
 }
 
+/**
+ * Generates the HTML for the subtasks section of the expanded card.
+ * @param {Object} element - The task object containing subtasks.
+ * @returns {string} The HTML string for the subtasks.
+ */
 function generateSubtasksHTML(element) {
     return element.subtasks.map((subtask, index) => `
         <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
@@ -80,6 +110,11 @@ function generateSubtasksHTML(element) {
     `).join('');
 }
 
+/**
+ * Generates the HTML for the assigned contacts section.
+ * @param {Object} element - The task object containing contacts.
+ * @returns {string} The HTML string for the assigned contacts.
+ */
 function generateAssignedContactsHTML(element) {
     return element.contacts.map(contact => `
         <div class="person-container-overlay">
@@ -89,10 +124,16 @@ function generateAssignedContactsHTML(element) {
     `).join('');
 }
 
+/**
+ * Toggles the completion status of a subtask and updates the UI and data.
+ * @async
+ * @param {string} taskId - The unique identifier of the task.
+ * @param {number} subtaskIndex - The index of the subtask in the task's subtask array.
+ */
 async function toggleSubtask(taskId, subtaskIndex) {
     const task = todos.find(t => t.id === taskId);
     if (!task || !task.subtasks || !task.subtasks[subtaskIndex]) {
-        console.error("Subtask nicht gefunden oder ungültiger Index:", taskId, subtaskIndex);
+        console.error("Subtask not found or invalid index:", taskId, subtaskIndex);
         return;
     }
     const subtask = task.subtasks[subtaskIndex];
@@ -105,12 +146,23 @@ async function toggleSubtask(taskId, subtaskIndex) {
     updateProgressBar(taskId, percentage, task.completedSubtasks, totalSubtasks);
 }
 
+/**
+ * Saves the completion status of a subtask to Firebase.
+ * @async
+ * @param {string} taskId - The unique identifier of the task.
+ * @param {number} subtaskIndex - The index of the subtask.
+ * @param {boolean} isChecked - The completion status of the subtask.
+ */
 async function saveSubtaskStatus(taskId, subtaskIndex, isChecked) {
     const path = `subtaskStatus/${taskId}/${subtaskIndex}`;
-    console.log(`Speichere Subtask-Status an Pfad ${path}:`, isChecked);
+    console.log(`Saving subtask status at path ${path}:`, isChecked);
     await updateData(path, { completed: isChecked });
 }
 
+/**
+ * Loads subtask completion statuses from Firebase and updates the local tasks.
+ * @async
+ */
 async function loadSubtaskStatusesFromFirebase() {
     const subtaskStatuses = await loadData("subtaskStatus");
 
@@ -127,6 +179,10 @@ async function loadSubtaskStatusesFromFirebase() {
     });
 }
 
+/**
+ * Updates the progress bar of a task based on completed subtasks.
+ * @param {string} taskId - The unique identifier of the task.
+ */
 function updateProgressBar(taskId) {
     const task = todos.find((t) => t.id === taskId);
     if (!task) return;
@@ -145,6 +201,10 @@ function updateProgressBar(taskId) {
     }
 }
 
+/**
+ * Opens the overlay displaying the expanded view of a task card.
+ * @param {string} taskId - The unique identifier of the task.
+ */
 function openCardOverlay(taskId) {
     const overlay = document.getElementById("card-overlay");
     const task = todos.find((t) => t.id === taskId); 
@@ -162,6 +222,9 @@ function openCardOverlay(taskId) {
     });
 }
 
+/**
+ * Closes the task card overlay and re-enables body scrolling.
+ */
 function closeCardOverlay() {
     const overlay = document.getElementById("card-overlay");
     overlay.classList.add("hidden");
@@ -169,6 +232,11 @@ function closeCardOverlay() {
     document.body.classList.remove("no-scroll");
 }
 
+/**
+ * Deletes a task and its associated data from Firebase and updates the UI.
+ * @async
+ * @param {string} taskId - The unique identifier of the task to delete.
+ */
 async function deleteTask(taskId) {
     todos = todos.filter(task => task.id !== taskId);
     try {
@@ -177,23 +245,29 @@ async function deleteTask(taskId) {
             deleteData(`subtaskStatus/${taskId}`),
             deleteData(`positionDropArea/${taskId}`)
         ]);
-    } catch {
+    } catch (error) {
+        console.error("Error deleting task:", error);
         return; 
     }
     updateHTML();
     closeCardOverlay();
 }
 
+/**
+ * Deletes data from Firebase at the specified path.
+ * @async
+ * @param {string} path - The Firebase path from which to delete data.
+ */
 async function deleteData(path) {
     try {
         const response = await fetch(`${BASE_URL}${path}.json`, {
             method: 'DELETE'
         });
         if (!response.ok) {
-            throw new Error(`Fehler beim Löschen der Daten aus Firebase: ${response.statusText}`);
+            throw new Error(`Error deleting data from Firebase: ${response.statusText}`);
         }
-        console.log(`Daten bei Pfad ${path} wurden erfolgreich gelöscht.`);
+        console.log(`Data at path ${path} was successfully deleted.`);
     } catch (error) {
-        console.error("Fehler beim Löschen der Daten aus Firebase:", error);
+        console.error("Error deleting data from Firebase:", error);
     }
 }

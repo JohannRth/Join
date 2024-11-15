@@ -1,5 +1,12 @@
+/**
+ * Array to store all tasks.
+ * @type {Array}
+ */
 let todos = [];
 
+/**
+ * Initializes the application once the DOM content is loaded.
+ */
 document.addEventListener("DOMContentLoaded", async () => {
     await loadTodosFromFirebase();
     await loadPositionsFromFirebase();
@@ -8,6 +15,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     initializeDragAreas();
 });
 
+/**
+ * Initializes drag areas by adding event listeners for drag and drop functionality.
+ */
 function initializeDragAreas() {
     const dragAreas = document.querySelectorAll(".drag-area");
 
@@ -19,6 +29,10 @@ function initializeDragAreas() {
     });
 }
 
+/**
+ * Loads tasks from Firebase and updates the local `todos` array.
+ * Also updates the HTML display.
+ */
 async function loadTodosFromFirebase() {
     try {
         const tasksData = await loadData("tasks");
@@ -32,14 +46,14 @@ async function loadTodosFromFirebase() {
                     ? subtaskStatusData[key][index].completed
                     : false
             })) : [];
-        
+
             const newSubtasks = task.newSubtask ? Object.entries(task.newSubtask).map(([index, title]) => ({
                 title: title || "Untitled New Subtask",
                 completed: subtaskStatusData[key] && subtaskStatusData[key][index] && subtaskStatusData[key][index].completed !== undefined
                     ? subtaskStatusData[key][index].completed
                     : false
             })) : [];
-        
+
             return {
                 id: key,
                 titel: task.title || "Untitled",
@@ -55,39 +69,15 @@ async function loadTodosFromFirebase() {
         });
         updateHTML();
     } catch (error) {
-        console.error("Fehler beim Laden der Daten aus Firebase:", error);
+        console.error("Error loading data from Firebase:", error);
     }
 }
 
-function allowDrop(ev) {
-    ev.preventDefault();
-}
-
-function dragTask(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-    ev.target.classList.add("dragging");
-    ev.target.style.cursor = "grabbing";
-
-    ev.target.addEventListener("dragend", () => {
-        const dragAreas = document.querySelectorAll(".drag-area");
-        dragAreas.forEach((area) => area.classList.remove("highlight"));
-    });
-}
-
-
-function dropTask(ev) {
-    ev.preventDefault();
-    const targetArea = ev.target.closest(".drag-area");
-    if (targetArea) {
-        targetArea.classList.remove("highlight");
-        const data = ev.dataTransfer.getData("text");
-        const taskElement = document.getElementById(data);
-        targetArea.appendChild(taskElement);
-
-        savePosition(data, targetArea.id);
-    }
-}
-
+/**
+ * Extracts initials from a full name string.
+ * @param {string} name - The full name.
+ * @returns {string} The initials.
+ */
 function getInitials(name) {
     if (!name || typeof name !== 'string') return '';
     const nameParts = name.trim().split(' ');
@@ -95,7 +85,9 @@ function getInitials(name) {
     return initials.toUpperCase();
 }
 
-
+/**
+ * Handles the click event on the input field, focusing and styling it.
+ */
 function handleInputClick() {
     const inputWrapper = document.querySelector('.input-field-complett');
 
@@ -104,7 +96,6 @@ function handleInputClick() {
     const inputField = document.querySelector('.input-find-task');
     inputField.setAttribute('placeholder', '');
 }
-
 
 document.addEventListener('click', function (event) {
     const inputWrapper = document.querySelector('.input-field-complett');
@@ -119,30 +110,49 @@ document.addEventListener('click', function (event) {
     }
 });
 
-// Drag-Area zähler //
-function getTodoCount() { 
+// Drag area counters
+
+/**
+ * Retrieves the count of tasks in the 'todo' category.
+ * @returns {number} The number of 'todo' tasks.
+ */
+function getTodoCount() {
     const todoContainer = document.getElementById("todo");
     const tasks = todoContainer.querySelectorAll(".titel-card");
     return tasks.length;
 }
 
+/**
+ * Updates the 'todo' task count in local storage.
+ */
 function updateTodoCount() {
     const todoCount = getTodoCount();
     localStorage.setItem('todoCount', todoCount);
 }
 
-function getDoneCount() { 
+/**
+ * Retrieves the count of tasks in the 'done' category.
+ * @returns {number} The number of 'done' tasks.
+ */
+function getDoneCount() {
     const doneContainer = document.getElementById("done");
     const tasks = doneContainer.querySelectorAll(".titel-card");
     return tasks.length;
 }
 
+/**
+ * Updates the 'done' task count in local storage.
+ */
 function updateDoneCount() {
     const doneCount = getDoneCount();
     localStorage.setItem('doneCount', doneCount);
 }
 
-function getBoardTaskCount() { 
+/**
+ * Calculates the total number of tasks across all categories.
+ * @returns {number} The total number of tasks.
+ */
+function getBoardTaskCount() {
     const todoTasks = document.getElementById("todo").querySelectorAll(".titel-card");
     const inProgressTasks = document.getElementById("inProgress").querySelectorAll(".titel-card");
     const feedbackTasks = document.getElementById("awaitFeedback").querySelectorAll(".titel-card");
@@ -152,61 +162,87 @@ function getBoardTaskCount() {
     return totalTasks;
 }
 
+/**
+ * Updates the total task count in local storage.
+ */
 function updateBoardTaskCount() {
     const boardTaskCount = getBoardTaskCount();
     localStorage.setItem('boardTaskCount', boardTaskCount);
 }
 
-function getInProgressCount() { 
+/**
+ * Retrieves the count of tasks in the 'inProgress' category.
+ * @returns {number} The number of 'inProgress' tasks.
+ */
+function getInProgressCount() {
     const inProgressTasks = document.getElementById("inProgress").querySelectorAll(".titel-card");
     return inProgressTasks.length;
 }
 
+/**
+ * Updates the 'inProgress' task count in local storage.
+ */
 function updateInProgressCount() {
     const inProgressCount = getInProgressCount();
     localStorage.setItem('inProgressCount', inProgressCount);
 }
 
-function getAwaitFeedbackCount() { 
+/**
+ * Retrieves the count of tasks in the 'awaitFeedback' category.
+ * @returns {number} The number of 'awaitFeedback' tasks.
+ */
+function getAwaitFeedbackCount() {
     const feedbackTasks = document.getElementById("awaitFeedback").querySelectorAll(".titel-card");
     return feedbackTasks.length;
 }
 
+/**
+ * Updates the 'awaitFeedback' task count in local storage.
+ */
 function updateAwaitFeedbackCount() {
     const feedbackCount = getAwaitFeedbackCount();
     localStorage.setItem('feedbackCount', feedbackCount);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadTodosFromFirebase(); 
-    await loadPositionsFromFirebase();    
+    await loadTodosFromFirebase();
+    await loadPositionsFromFirebase();
     await loadSubtaskStatusesFromFirebase();
-    updateHTML();                          
+    updateHTML();
 });
 
-// Todo's position //
+// Task position management
+
+/**
+ * Saves the position (category) of a task to Firebase.
+ * @param {string} taskId - The unique ID of the task.
+ * @param {string} position - The new position/category of the task.
+ */
 async function savePosition(taskId, position) {
     const path = `positionDropArea/${taskId}`;
     await updateData(path, position);
 }
 
+/**
+ * Loads task positions from Firebase and updates the local tasks accordingly.
+ */
 async function loadPositionsFromFirebase() {
     const positionsData = await loadData("positionDropArea");
-    console.log("Geladene Positionen:", positionsData); 
+    console.log("Loaded positions:", positionsData);
 
     for (const taskId in positionsData) {
         const position = positionsData[taskId];
         const task = todos.find((t) => t.id === taskId || t.id === parseInt(taskId));
 
         if (task) {
-            task.category = position; 
-            console.log(`Task ${taskId} auf Position ${position} gesetzt`); 
+            task.category = position;
+            console.log(`Task ${taskId} set to position ${position}`);
         }
     }
 }
-// Todo's position //
 
-// cross link //
+// Cross-link functionality
+
 document.addEventListener("DOMContentLoaded", () => {
     const crossTitleButtons = document.querySelectorAll(".cross-titel-button");
 
@@ -215,12 +251,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+/**
+ * Opens the "Add Task" overlay and prevents body scrolling.
+ */
 function openAddTaskOverlay() {
     const overlay = document.getElementById("add-task-overlay");
     overlay.classList.remove("hidden");
-    document.body.classList.add("no-scroll"); 
+    document.body.classList.add("no-scroll");
 }
 
+/**
+ * Filters tasks based on the user's input in the search field.
+ */
 function filterTasks() {
     const inputField = document.querySelector('.input-find-task');
     const filterText = inputField.value.toLowerCase();
@@ -228,11 +270,11 @@ function filterTasks() {
     taskCards.forEach(card => {
         const title = card.querySelector('.task-title').innerText.toLowerCase();
         const description = card.querySelector('.task-description').innerText.toLowerCase();
-        
+
         if (title.includes(filterText) || description.includes(filterText)) {
-            card.style.display = 'block'; 
+            card.style.display = 'block';
         } else {
-            card.style.display = 'none'; 
+            card.style.display = 'none';
         }
     });
 }
@@ -244,7 +286,7 @@ document.addEventListener('click', function (event) {
     const inputWrapper = document.querySelector('.input-field-complett');
 
     if (!inputWrapper.contains(event.target)) {
-        inputField.value = ''; 
-        filterTasks(); 
+        inputField.value = '';
+        filterTasks();
     }
 });
