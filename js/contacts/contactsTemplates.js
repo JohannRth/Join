@@ -121,7 +121,7 @@ function getContactInfoModalHTML(contact) {
                 <div class="contact-details-body">
                     <h3>Contact Information</h3>
                     <p><strong>Email</strong></p>
-                    <p class="contact-info-mail">${contact.email}</p>
+                    <p class="contact-info-mail-details">${contact.email}</p>
                     <p><strong>Phone</strong></p>
                     <p class="contact-details-phone">${contact.phone}</p>
                 </div>

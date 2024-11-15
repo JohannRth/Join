@@ -35,7 +35,7 @@
         overflow: hidden;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         flex-direction: column;
-        margin-bottom: 100px;
+        margin-bottom: 50px;
     }
 
     .add-contact-left {
@@ -140,5 +140,33 @@
 
     .add-contact-left {
         padding: 0px 8px 0px 12px;
+    }
+
+    .add-contact-left h2 {
+        font-size: 40px;
+    }
+
+    .add-contact-left p {
+        font-size: 16px;
+    }
+
+    .add-contact-left {
+        justify-content: flex-start;
+        padding: 70px 8px 0px 12px;
+    }
+
+}
+
+@media (max-width:400px) {
+    .add-contact-left {
+        padding: 40px 8px 0px 12px;
+    }
+
+    .profileImg {
+        top: -110px;
+    }
+
+    .add-contact-right {
+        zoom: 90%;
     }
 }
