@@ -1,37 +1,14 @@
 function generateExpandedCardHTML(element) {
-    const taskTypeStyle = element.type === "Technical Task"
-        ? `height: 36px; width: 208px; border-radius: 8px; padding: 4px 16px; background-color: #1FD7C1; color: #FFFFFF; font-size: 23px; font-weight: 400;`
-        : `width: 164px; height: 36px; border-radius: 8px; padding: 4px 16px; background-color: #0038ff; color: white; font-weight: 400; font-size: 23px; display: flex; align-items: center; justify-content: center;`;
-
-    let priorityLabel = "";
-    let priorityIconSrc = "";
-    if (element.priority === "urgent") {
-        priorityLabel = "Urgent";
-        priorityIconSrc = "./assets/img/urgent-titel-card.svg";
-    } else if (element.priority === "medium") {
-        priorityLabel = "Medium";
-        priorityIconSrc = "./assets/img/medium-titel-card.svg";
-    } else if (element.priority === "low") {
-        priorityLabel = "Low";
-        priorityIconSrc = "./assets/img/low-titel-card.svg";
-    } else {
-        priorityLabel = "Default";
-        priorityIconSrc = "./assets/img/default-titel-card.svg";
-    }
-
+    const taskTypeStyle = getTaskTypeStyle(element.type);
+    const priority = getPriorityData(element.priority);
     const dueDate = element.dueDate ? new Date(element.dueDate).toLocaleDateString("de-DE") : "Kein Datum";
+    const subtasksHTML = generateSubtasksHTML(element);
+    const assignedContactsHTML = generateAssignedContactsHTML(element);
 
-    const subtasksHTML = element.subtasks.map((subtask, index) => `
-    <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
-        <input type="checkbox" 
-               id="subtask-checkbox-${element.id}-${index}" 
-               onclick="toggleSubtask('${element.id}', ${index})" 
-               class="styled-checkbox"
-               ${subtask.completed ? "checked" : ""}>
-        <label for="subtask-checkbox-${element.id}-${index}">${subtask.title}</label>
-    </div>
-    `).join('');
+    return generateExpandedCardHTMLTemplate(element, taskTypeStyle, priority, dueDate, subtasksHTML, assignedContactsHTML);
+}
 
+function generateExpandedCardHTMLTemplate(element, taskTypeStyle, priority, dueDate, subtasksHTML, assignedContactsHTML) {
     return `
     <div class="around-container-epended-card">    
       <div class="expanded-card-overlay">
@@ -48,18 +25,13 @@ function generateExpandedCardHTML(element) {
         <div class="priority-container-overlay">
             <span class="priority-line-overlay">Priority:</span>
             <div class="priority-focus-img-container">
-                <span class="priority-focus-overlay">${priorityLabel}</span>
-                <img src="${priorityIconSrc}" alt="Priority ${priorityLabel}" class="priority-img-overlay">
+                <span class="priority-focus-overlay">${priority.label}</span>
+                <img src="${priority.icon}" alt="Priority ${priority.label}" class="priority-img-overlay">
             </div>    
         </div>
         <span class="task-assigned-line-overlay">Assigned To:</span>
         <div class="task-assigned-container-overlay">
-                ${element.contacts.map(contact => `
-                <div class="person-container-overlay">
-                    <span class="person-circle-overlay" style="background-color: ${getColor(contact)};">${getInitials(contact)}</span>
-                    <span class="person-name-overlay">${contact}</span>
-                </div>
-            `).join('')}
+            ${assignedContactsHTML}
         </div>
         <div class="subtask-conatiner-overlay">
             <span class="subtask-line-overlay">Subtasks:</span>
@@ -67,7 +39,7 @@ function generateExpandedCardHTML(element) {
                 ${subtasksHTML}
             </div>
         </div>
-         <div class="actions-overlay">
+        <div class="actions-overlay">
             <p class="action-btn-overlay" onclick="deleteTask('${element.id}')">
                 <img src="./assets/img/delete.svg" alt="delete">Delete
             </p>
@@ -77,7 +49,44 @@ function generateExpandedCardHTML(element) {
             </p>
         </div>
       </div>
-    </div> `;
+    </div>`;
+}
+
+function getTaskTypeStyle(type) {
+    return type === "Technical Task"
+        ? "height: 36px; width: 208px; border-radius: 8px; padding: 4px 16px; background-color: #1FD7C1; color: #FFFFFF; font-size: 23px; font-weight: 400;"
+        : "width: 164px; height: 36px; border-radius: 8px; padding: 4px 16px; background-color: #0038ff; color: white; font-weight: 400; font-size: 23px; display: flex; align-items: center; justify-content: center;";
+}
+
+function getPriorityData(priority) {
+    const priorities = {
+        urgent: { label: "Urgent", icon: "./assets/img/urgent-titel-card.svg" },
+        medium: { label: "Medium", icon: "./assets/img/medium-titel-card.svg" },
+        low: { label: "Low", icon: "./assets/img/low-titel-card.svg" },
+    };
+    return priorities[priority] || { label: "Default", icon: "./assets/img/default-titel-card.svg" };
+}
+
+function generateSubtasksHTML(element) {
+    return element.subtasks.map((subtask, index) => `
+        <div class="subtask-item" style="display: flex; align-items: center; gap: 16px;">
+            <input type="checkbox" 
+                   id="subtask-checkbox-${element.id}-${index}" 
+                   onclick="toggleSubtask('${element.id}', ${index})" 
+                   class="styled-checkbox"
+                   ${subtask.completed ? "checked" : ""}>
+            <label for="subtask-checkbox-${element.id}-${index}">${subtask.title}</label>
+        </div>
+    `).join('');
+}
+
+function generateAssignedContactsHTML(element) {
+    return element.contacts.map(contact => `
+        <div class="person-container-overlay">
+            <span class="person-circle-overlay" style="background-color: ${getColor(contact)};">${getInitials(contact)}</span>
+            <span class="person-name-overlay">${contact}</span>
+        </div>
+    `).join('');
 }
 
 async function toggleSubtask(taskId, subtaskIndex) {
@@ -86,18 +95,13 @@ async function toggleSubtask(taskId, subtaskIndex) {
         console.error("Subtask nicht gefunden oder ungültiger Index:", taskId, subtaskIndex);
         return;
     }
-
- 
     const subtask = task.subtasks[subtaskIndex];
     subtask.completed = !subtask.completed;
 
     await saveSubtaskStatus(taskId, subtaskIndex, subtask.completed);
-
     task.completedSubtasks = task.subtasks.filter(st => st.completed).length;
-
     const totalSubtasks = task.subtasks.length;
     const percentage = totalSubtasks > 0 ? (task.completedSubtasks / totalSubtasks) * 100 : 0;
-
     updateProgressBar(taskId, percentage, task.completedSubtasks, totalSubtasks);
 }
 
@@ -126,11 +130,9 @@ async function loadSubtaskStatusesFromFirebase() {
 function updateProgressBar(taskId) {
     const task = todos.find((t) => t.id === taskId);
     if (!task) return;
-
     const completedSubtasks = task.subtasks.filter((subtask) => subtask.completed).length;
     const totalSubtasks = task.subtasks.length;
     const percentage = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) * 100 : 0;
-
     const taskElement = document.getElementById(taskId);
     if (!taskElement) return;
 
@@ -150,7 +152,6 @@ function openCardOverlay(taskId) {
     overlay.classList.remove("hidden");
 
     document.body.classList.add("no-scroll");
-
     const deleteButton = overlay.querySelector(".action-btn-overlay");
     deleteButton.setAttribute("onclick", `deleteTask('${taskId}')`);
 
@@ -170,27 +171,17 @@ function closeCardOverlay() {
 
 async function deleteTask(taskId) {
     todos = todos.filter(task => task.id !== taskId);
-
-    const taskPath = `tasks/${taskId}`;
-    const subtaskStatusPath = `subtaskStatus/${taskId}`;
-    const positionPath = `positionDropArea/${taskId}`;
-    
     try {
-        await deleteData(taskPath);
-        console.log(`Task mit ID ${taskId} wurde erfolgreich in Firebase gelöscht.`);
-        
-        await deleteData(subtaskStatusPath);
-        console.log(`Subtask-Status für Task ${taskId} wurde erfolgreich in Firebase gelöscht.`);
-        
-        await deleteData(positionPath);
-        console.log(`Position für Task ${taskId} wurde erfolgreich in Firebase gelöscht.`);
-    } catch (error) {
-        console.error("Fehler beim Löschen der Daten aus Firebase:", error);
+        await Promise.all([
+            deleteData(`tasks/${taskId}`),
+            deleteData(`subtaskStatus/${taskId}`),
+            deleteData(`positionDropArea/${taskId}`)
+        ]);
+    } catch {
         return; 
     }
-
     updateHTML();
-    closeCardOverlay(); 
+    closeCardOverlay();
 }
 
 async function deleteData(path) {

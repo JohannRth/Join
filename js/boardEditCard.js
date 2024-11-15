@@ -38,8 +38,7 @@ async function loadTaskDetails(taskId) {
 
         const getSubtasks = (data) => data ? Object.values(data).map(title => ({ title })) : [];
         displaySubtasks([...getSubtasks(subtasks), ...getSubtasks(newSubtask)], taskId);
-        
-    } catch (error) {}
+     } catch (error) {}
 }
 
 function highlightPriorityButton(priority) {
@@ -130,44 +129,34 @@ async function loadContacts() {
 
 async function populateContactDropdownFromFirebase() {
     const contacts = await loadContacts();
-    const dropdownContainer = document.getElementById("contactDropdownEdit");
-    dropdownContainer.innerHTML = "";
+    const dropdown = document.getElementById("contactDropdownEdit");
+    if (!contacts?.length) return dropdown.innerHTML = "";
 
-    if (!contacts || contacts.length === 0) return;
+    dropdown.innerHTML = contacts.map(createContactHTML).join("");
 
-    contacts.forEach(contact => {
-        const name = contact.name || contact;
-        const contactItem = document.createElement("div");
-        contactItem.classList.add("contactDropdownItem");
-
-        const contactBubble = document.createElement("div");
-        contactBubble.classList.add("contactBubble");
-        contactBubble.style.backgroundColor = getColor(name);
-        contactBubble.textContent = getInitials(name);
-
-        contactItem.append(contactBubble, Object.assign(document.createElement("span"), {
-            className: "contactName", textContent: name
-        }));
-        
-        contactItem.addEventListener("click", () => {
+    dropdown.querySelectorAll(".contactDropdownItem").forEach((item, i) =>
+        item.addEventListener("click", () => {
+            const name = contacts[i].name || contacts[i];
             addContactToAssignedList(name, getInitials(name), getColor(name));
-            dropdownContainer.style.display = "none";
-        });
-        
-        dropdownContainer.appendChild(contactItem);
-    });
+            dropdown.style.display = "none";
+        }));
 }
 
-
-populateContactDropdownFromFirebase();
-
-
+function createContactHTML(contact) {
+    const name = contact.name || contact;
+    return `
+        <div class="contactDropdownItem">
+            <div class="contactBubble" style="background-color: ${getColor(name)};">
+                ${getInitials(name)}
+            </div>
+            <span class="contactName">${name}</span>
+        </div>`;
+}
 
 document.getElementById("contactsEdit").addEventListener("click", () => {
     const dropdown = document.getElementById("contactDropdownEdit");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 });
-
 
 document.addEventListener("click", (event) => {
     const dropdown = document.getElementById("contactDropdownEdit");
@@ -181,9 +170,8 @@ function addContactToAssignedList(name, initials, color) {
     const assignedContainer = document.getElementById("aktivContactsEdit");
     const isAlreadyAssigned = Array.from(assignedContainer.children).some(
         el => el.getAttribute("data-name") === name
-    );
-    if (isAlreadyAssigned) return; 
-
+        );
+        if (isAlreadyAssigned) return; 
     const contactBubble = document.createElement("div");
     contactBubble.classList.add("contactBubble");
     contactBubble.style.backgroundColor = color;
@@ -197,87 +185,58 @@ function addContactToAssignedList(name, initials, color) {
 
 
 function displayAssignedContacts(contacts) {
-    const assignedToContainer = document.getElementById("aktivContactsEdit");
-    assignedToContainer.innerHTML = "";
+    const container = document.getElementById("aktivContactsEdit");
+    container.innerHTML = "";
 
     contacts.forEach(contact => {
-        const initials = getInitials(contact);
-        const color = getColor(contact);
-        const contactElement = document.createElement("div");
-        contactElement.classList.add("contactBubble");
-        contactElement.style.backgroundColor = color;
-        contactElement.textContent = initials;
-        contactElement.setAttribute("data-name", contact); 
-        contactElement.addEventListener("click", () => {
-
-            assignedToContainer.removeChild(contactElement);
+        const element = Object.assign(document.createElement("div"), {
+            className: "contactBubble",
+            textContent: getInitials(contact),
+            style: `background-color: ${getColor(contact)}`,
         });
-        assignedToContainer.appendChild(contactElement);
+        element.setAttribute("data-name", contact);
+        element.addEventListener("click", () => container.removeChild(element));
+        container.appendChild(element);
     });
 }
 
 function displaySubtasks(subtasks, taskId) {
-    const subTaskListContainer = document.getElementById("subTaskListEdit");
-    subTaskListContainer.innerHTML = "";
+    const container = document.getElementById("subTaskListEdit");
+    container.innerHTML = "";
 
-    if (!subtasks || subtasks.length === 0) {
-        console.warn("Keine Subtasks gefunden für Task:", taskId);
-        return;
-    }
+    if (!subtasks?.length) return console.warn("Keine Subtasks für Task:", taskId);
 
-    subtasks.forEach((subtask, index) => {
-        const title = subtask && subtask.title ? subtask.title : "Untitled";
+    subtasks.forEach((subtask, index) => 
+        container.innerHTML += generateSubtaskHTML(subtask, index, taskId)
+    );
+}
 
-        const subTaskItem = document.createElement("div");
-        subTaskItem.classList.add("subTask");
-        subTaskItem.setAttribute("data-index", index);
-
-        const leftContainer = document.createElement("div");
-        leftContainer.classList.add("leftContainerSubTask");
-
-        const subTaskText = document.createElement("span");
-        subTaskText.textContent = title;
-        subTaskText.classList.add("subTaskText");
-
-        leftContainer.appendChild(subTaskText);
-
-        const rightContainer = document.createElement("div");
-        rightContainer.classList.add("rightContainerSubTask");
-
-        const deleteButton = document.createElement("img");
-        deleteButton.src = "./assets/img/delete.svg";
-        deleteButton.alt = "Delete";
-        deleteButton.onclick = () => deleteSubtaskEdit(index, taskId);
-
-        rightContainer.appendChild(deleteButton);
-
-        subTaskItem.appendChild(leftContainer);
-        subTaskItem.appendChild(rightContainer);
-
-        subTaskListContainer.appendChild(subTaskItem);
-    });
+function generateSubtaskHTML(subtask, index, taskId) {
+    const title = subtask?.title || "Untitled";
+    return `
+        <div class="subTask" data-index="${index}">
+            <div class="leftContainerSubTask">
+                <span class="subTaskText">${title}</span>
+            </div>
+            <div class="rightContainerSubTask">
+                <img src="./assets/img/delete.svg" alt="Delete" onclick="deleteSubtaskEdit(${index}, '${taskId}')">
+            </div>
+        </div>`;
 }
 
 async function addNewSubtaskEdit() {
-    let newSubTaskInput = document.getElementById('subTaskInputEdit');
-    let newSubTaskValue = newSubTaskInput.value.trim();
+    const input = document.getElementById('subTaskInputEdit');
+    const value = input.value.trim();
+    if (!value) return;
 
-    if (newSubTaskValue === '') return;
-
-    const taskId = document.getElementById("edit-overlay").getAttribute("data-task-id");
+    const taskId = document.getElementById("edit-overlay").dataset.taskId;
 
     try {
-        // Fügen Sie den neuen Subtask zu Firebase hinzu
-        const taskData = await loadData(`tasks/${taskId}`);
-        const existingSubtasks = taskData.subtasks || {};
-        const newSubtaskIndex = Object.keys(existingSubtasks).length;
+        const subtasks = (await loadData(`tasks/${taskId}`)).subtasks || {};
+        await updateData(`tasks/${taskId}/subtasks/${Object.keys(subtasks).length}`, value);
 
-        await updateData(`tasks/${taskId}/subtasks/${newSubtaskIndex}`, newSubTaskValue);
-
-        // Eingabefeld leeren und die Subtasks neu laden und anzeigen
-        newSubTaskInput.value = '';
+        input.value = '';
         await reloadSubtasks(taskId);
-
     } catch (error) {
         console.error("Fehler beim Hinzufügen des Subtasks:", error);
     }
@@ -296,31 +255,17 @@ function editSubtaskEdit(index) {
 }
 
 function renderSubtaskEdit(subtasks) {
-    const subTaskListContainer = document.getElementById("subTaskListEdit");
-    subTaskListContainer.innerHTML = "";
+    const container = document.getElementById("subTaskListEdit");
+    container.innerHTML = "";
 
     subtasks.forEach((subtask, index) => {
-        const subTaskItem = document.createElement("div");
-        subTaskItem.classList.add("subTask");
-        subTaskItem.setAttribute("data-index", index);
-
-        const leftContainer = document.createElement("div");
-        leftContainer.classList.add("leftContainerSubTask");
-        leftContainer.textContent = subtask;
-
-        const rightContainer = document.createElement("div");
-        rightContainer.classList.add("rightContainerSubTask");
-
-        const deleteButton = document.createElement("img");
-        deleteButton.src = "./assets/img/delete.svg";
-        deleteButton.alt = "Delete";
-        deleteButton.onclick = () => deleteSubtaskEdit(index);
-
-        rightContainer.appendChild(deleteButton);
-
-        subTaskItem.appendChild(leftContainer);
-        subTaskItem.appendChild(rightContainer);
-        subTaskListContainer.appendChild(subTaskItem);
+        container.innerHTML += `
+            <div class="subTask" data-index="${index}">
+                <div class="leftContainerSubTask">${subtask}</div>
+                <div class="rightContainerSubTask">
+                    <img src="./assets/img/delete.svg" alt="Delete" onclick="deleteSubtaskEdit(${index})">
+                </div>
+            </div>`;
     });
 }
 
@@ -337,98 +282,68 @@ async function reloadSubtasks(taskId) {
 
 async function reloadTaskDataAndUpdateUI(taskId) {
     try {
-        // Lade alle relevanten Daten neu
-        await loadTodosFromFirebase();       // Lädt alle Aufgaben
-        await loadPositionsFromFirebase();   // Lädt alle Positionen
-        await loadSubtaskStatusesFromFirebase(); // Lädt alle Subtask-Status
-
-        // Aktualisiere das HTML (hier sollte das gesamte UI aktualisiert werden)
+        await Promise.all([
+            loadTodosFromFirebase(),
+            loadPositionsFromFirebase(),
+            loadSubtaskStatusesFromFirebase()
+        ]);
         updateHTML();
-
-        // Wenn das Bearbeitungs-Overlay sichtbar ist, lade die Task-Details neu
         const editOverlay = document.getElementById("edit-overlay");
-        if (editOverlay && !editOverlay.classList.contains("hidden")) {
-            await loadTaskDetails(taskId);
+        if (editOverlay && !editOverlay.classList.contains("hidden")) await loadTaskDetails(taskId);
+        const cardOverlay = document.getElementById("card-overlay");
+        if (cardOverlay && !cardOverlay.classList.contains("hidden")) {
+            const task = todos.find(t => t.id === taskId);
+            if (task) cardOverlay.innerHTML = generateExpandedCardHTML(task);
         }
-
-        // Wenn eine Kartenansicht (Overlay) geöffnet ist, lade die Kartendaten neu
-        const expandedCardOverlay = document.getElementById("card-overlay");
-        if (expandedCardOverlay && !expandedCardOverlay.classList.contains("hidden")) {
-            const task = todos.find((t) => t.id === taskId);
-            if (task) {
-                expandedCardOverlay.innerHTML = generateExpandedCardHTML(task);  // Generiere das HTML neu
-            }
-        }
-    } catch (error) {
-        console.error("Fehler beim Aktualisieren des UI:", error);
-    }
+    } catch{}
 }
 
 async function deleteSubtaskEdit(index) {
     const taskId = document.getElementById("edit-overlay").getAttribute("data-task-id");
 
     try {
-        // Lösche den Subtask aus Firebase
         await deleteData(`tasks/${taskId}/subtasks/${index}`);
         
-        // Subtasks neu laden und aktualisieren
         await reloadSubtasks(taskId);
 
-    } catch (error) {
-        console.error("Fehler beim Löschen des Subtasks:", error);
-    }
+    } catch {}
 }
 
 async function deleteSubtaskEdit(index) {
     const taskId = document.getElementById("edit-overlay").getAttribute("data-task-id");
-
     try {
-        // Lösche den Subtask und den spezifischen Status in Firebase
-        await deleteData(`tasks/${taskId}/subtasks/${index}`);
-        await deleteData(`subtaskStatus/${taskId}/${index}`); // Löscht nur den spezifischen Status
-
-        // Lade die aktuellen Subtasks und Status neu
+        await Promise.all([
+            deleteData(`tasks/${taskId}/subtasks/${index}`),
+            deleteData(`subtaskStatus/${taskId}/${index}`)
+        ]);
         const taskData = await loadData(`tasks/${taskId}`);
-        let subtasks = taskData.subtasks ? Object.values(taskData.subtasks) : [];
+        const subtasks = reorderSubtasks(taskData.subtasks, index);
+        await updateData(`tasks/${taskId}/subtasks`, subtasks);
 
-        // Entferne das gelöschte Subtask-Element und ordne die Indizes neu
-        subtasks.splice(index, 1);
-
-        // Speichere die neu geordneten Subtasks in Firebase
-        const reorderedSubtasks = {};
-        subtasks.forEach((subtask, newIndex) => {
-            reorderedSubtasks[newIndex] = subtask;
-        });
-        await updateData(`tasks/${taskId}/subtasks`, reorderedSubtasks);
-
-        // Nur verbleibende Status-Einträge neu organisieren
-        const subtaskStatuses = taskData.subtaskStatus || {};
-        const reorderedStatuses = {};
-
-        // Durchlaufe die Status-Einträge und lasse alle außer dem gelöschten Eintrag
-        Object.keys(subtaskStatuses).forEach((statusIndex) => {
-            const numericIndex = parseInt(statusIndex, 10);
-            if (numericIndex < index) {
-                reorderedStatuses[numericIndex] = subtaskStatuses[statusIndex];
-            } else if (numericIndex > index) {
-                reorderedStatuses[numericIndex - 1] = subtaskStatuses[statusIndex];
-            }
-        });
-
-        // Aktualisiere nur die neu geordneten Status
-        for (const [key, value] of Object.entries(reorderedStatuses)) {
-            await updateData(`subtaskStatus/${taskId}/${key}`, value);
-        }
-
-        // Lösche den überzähligen Status-Eintrag
-        await deleteData(`subtaskStatus/${taskId}/${Object.keys(subtaskStatuses).length - 1}`);
-
-        // Aktualisiere die Subtasks in der UI
+        const statuses = reorderStatuses(taskData.subtaskStatus || {}, index);
+        await updateReorderedStatuses(taskId, statuses);
         await reloadSubtasks(taskId);
+    } catch {}
+}
 
-    } catch (error) {
-        console.error("Fehler beim Löschen des Subtasks oder seines Status:", error);
-    }
+function reorderSubtasks(subtasks, index) {
+    const updated = subtasks ? Object.values(subtasks).filter((_, i) => i !== index) : [];
+    return Object.fromEntries(updated.map((subtask, i) => [i, subtask]));
+}
+
+async function updateReorderedStatuses(taskId, statuses) {
+    await Promise.all(Object.entries(statuses).map(([key, value]) =>
+        updateData(`subtaskStatus/${taskId}/${key}`, value)
+    ));
+    const lastKey = Object.keys(statuses).length;
+    await deleteData(`subtaskStatus/${taskId}/${lastKey}`);
+}
+
+function reorderStatuses(statuses, index) {
+    return Object.fromEntries(Object.entries(statuses)
+        .map(([key, value]) => [parseInt(key, 10), value])
+        .filter(([i]) => i !== index)
+        .map(([i, value], newIndex) => [i > index ? newIndex - 1 : newIndex, value]));
 }
 
 async function updateData(path, data) {
@@ -476,53 +391,33 @@ document.getElementById("edit-overlay").addEventListener("click", function (even
 
 async function confirmChanges(taskId) {
     try {
-        const existingData = await loadData(`tasks/${taskId}`);
-        if (!existingData) {
-            console.error("Task nicht gefunden:", taskId);
-            return;
-        }
+        const updatedData = await getUpdatedTaskData(taskId);
+        if (!updatedData) return;
 
-        // Aktuelle Felder auslesen
-        const title = document.getElementById("edit-title-edit").value.trim();
-        const description = document.getElementById("edit-description").value.trim();
-        const dueDate = document.getElementById("edit-due-date").value;
-        const priority = currentPriority;
-
-        const assignedContacts = Array.from(document.getElementById("aktivContactsEdit").children)
-            .map(contact => contact.getAttribute("data-name"));
-
-        const updatedData = {
-            ...existingData,
-            title,
-            description,
-            dueDate,
-            prio: priority,
-            assignedTo: assignedContacts
-        };
-
-        // Daten in Firebase aktualisieren
         await updateData(`tasks/${taskId}`, updatedData);
-
-        // Subtask-Listen leeren, nachdem Änderungen angewendet wurden
         deletedSubtasks = [];
-
-        // Schließe das Bearbeitungs-Overlay
         closeEditOverlay();
-
-        // Lade die neuesten Daten und aktualisiere die `titel-card` und `expanded-card`
         await reloadTaskDataAndUpdateUI(taskId);
-        updateHTML(); // Aktualisiert das Board
+        updateHTML();
 
-        // Falls die `expanded-card` noch geöffnet ist, lade sie neu
-        const expandedCardOverlay = document.getElementById("card-overlay");
-        if (expandedCardOverlay && !expandedCardOverlay.classList.contains("hidden")) {
-            openCardOverlay(taskId); // Erneut aufrufen, um `expanded-card` zu aktualisieren
-        }
+        const cardOverlay = document.getElementById("card-overlay");
+        if (cardOverlay && !cardOverlay.classList.contains("hidden")) openCardOverlay(taskId);
+    } catch {}
+}
 
-        console.log("Task erfolgreich aktualisiert:", updatedData);
-    } catch (error) {
-        console.error("Fehler beim Aktualisieren des Tasks in Firebase:", error);
-    }
+async function getUpdatedTaskData(taskId) {
+    const existingData = await loadData(`tasks/${taskId}`);
+    if (!existingData) return null;
+
+    const title = document.getElementById("edit-title-edit").value.trim();
+    const description = document.getElementById("edit-description").value.trim();
+    const dueDate = document.getElementById("edit-due-date").value;
+    const priority = currentPriority;
+
+    const assignedContacts = Array.from(document.getElementById("aktivContactsEdit").children)
+        .map(contact => contact.getAttribute("data-name"));
+
+    return { ...existingData, title, description, dueDate, prio: priority, assignedTo: assignedContacts };
 }
 
 

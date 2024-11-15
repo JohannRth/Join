@@ -225,7 +225,6 @@ function filterTasks() {
     const inputField = document.querySelector('.input-find-task');
     const filterText = inputField.value.toLowerCase();
     const taskCards = document.querySelectorAll('.titel-card');
-
     taskCards.forEach(card => {
         const title = card.querySelector('.task-title').innerText.toLowerCase();
         const description = card.querySelector('.task-description').innerText.toLowerCase();
