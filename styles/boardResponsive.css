@@ -267,6 +267,32 @@
     margin-top: 48px;
     margin-left: 10px;
   }
+
+  .headline-span-board {
+    font-size: 47px;
+  }
+
+  .responsiv-plus-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .responsiv-plus-headline-container {
+    width: 100%;
+    padding-right: 15px;
+    margin-bottom: 15px;
+  }
+
+  .input-field-complett {
+    width: 100%;
+    margin-right: 15px;
+}
+
+.column-titel {
+  width: 100%;
+  padding-right: 8px;
+}
+
 }
 
 @media (max-width: 340px) {
