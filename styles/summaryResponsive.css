@@ -75,10 +75,32 @@
 
     .title-container {
         zoom: 80%;
+        font-size: 80%;
+    }
+
+    .title-container h1 {
+        font-size: 52px;
+    }
+
+    .title-container p {
+        font-size: 20px;
     }
 
     .main-summary {
-        zoom: 80%;
+        zoom: 75%;
+        height: 600px;
+    }
+
+    .main-summary {
+        margin-top: 0px;
+    }
+
+    .urgent-date-container {
+        margin-top: 10px;
+    }
+
+    .tasks-container {
+        margin-top: 10px;
     }
 
 }
