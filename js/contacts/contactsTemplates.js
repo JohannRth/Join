@@ -52,7 +52,7 @@ function getContactModalHTML(contact, isEditMode, contactKey, initials, color) {
                 <img class="modal-underline" src="./assets/img/underline_login.svg" alt="Underline">
             </div>
             <div class="add-contact-right">
-                <img src="./assets/img/Close.svg" class="close" onclick="closeAddContactModal()">
+                <img src="./assets/img/close.svg" class="close" onclick="closeAddContactModal()">
 
                 ${isEditMode ? `
                 <div class="contact-icon-large profileImg" style="background-color: ${color};">
