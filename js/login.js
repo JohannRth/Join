@@ -1,37 +1,57 @@
+/**
+ * Represents a guest user with default credentials.
+ * The password can be empty or have a fixed value.
+ */
 const guestUser = {
     name: 'Guest',
     email: 'guest@example.com',
-    password: '' // Das Passwort kann leer sein oder einen festen Wert haben
+    password: '' // The password can be empty or have a fixed value
 };
 
-// Funktion für den Gastlogin
+/**
+ * Logs in a guest user by setting the guest user object in localStorage
+ * and redirects to the summary page.
+ */
 function guestLogin() {
-    // Gastbenutzer als eingeloggt setzen
+    // Set guest user as logged in
     localStorage.setItem('loggedInUser', JSON.stringify(guestUser));
-    // Weiterleitung zur summary.html
+    // Redirect to summary.html
     window.location.href = 'summary.html';
 }
 
+/**
+ * Validates an email address using a regular expression pattern.
+ *
+ * @param {string} email - The email address to validate.
+ * @returns {boolean} Returns true if the email is valid, otherwise false.
+ */
 function validateEmail(email) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
 }
 
+/**
+ * Handles the login process for a user.
+ * Validates input fields, checks credentials against Firebase data,
+ * and redirects to the summary page upon successful login.
+ *
+ * @param {Event} event - The event object from the form submission.
+ */
 async function login(event) {
-    event.preventDefault(); // Verhindert das standardmäßige Absenden des Formulars
+    event.preventDefault(); // Prevents the default form submission behavior
 
-    // Eingabewerte abrufen
+    // Retrieve input values
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
 
-    // Fehlermeldungen zurücksetzen
+    // Reset error messages
     document.getElementById('loginEmailError').textContent = '';
     document.getElementById('loginPasswordError').textContent = '';
     document.getElementById('loginError').textContent = '';
 
     let isValid = true;
 
-    // Validierung der Eingaben
+    // Validate inputs
     if (email === '') {
         document.getElementById('loginEmailError').textContent = 'Please enter your email address.';
         isValid = false;
@@ -46,15 +66,15 @@ async function login(event) {
     }
 
     if (!isValid) {
-        return; // Beendet die Funktion, wenn die Validierung fehlschlägt
+        return; // Exit the function if validation fails
     }
 
     try {
-        // Benutzer aus Firebase abrufen
+        // Retrieve users from Firebase
         let usersData = await loadData('users') || {};
         let users = Object.values(usersData);
 
-        // Überprüfen, ob die E-Mail vorhanden ist
+        // Check if the email exists
         const user = users.find(u => u.email === email);
 
         if (!user || user.password !== password) {
@@ -62,10 +82,10 @@ async function login(event) {
             return;
         }
 
-        // Benutzernamen im localStorage speichern
+        // Store the user in localStorage
         localStorage.setItem('loggedInUser', JSON.stringify(user));
 
-        // Login erfolgreich, Weiterleitung zur summary.html
+        // Successful login, redirect to summary.html
         window.location.href = 'summary.html';
     } catch (error) {
         console.error('Login error:', error);

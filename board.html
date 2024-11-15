@@ -57,8 +57,8 @@
             <div class="board-add-task">
                 <div class="responsiv-plus-headline-container">
                     <span class="headline-span-board">Board</span>
-                    <a href="addTask.html"><button class="responsiv-plus-btn"><img src="./assets/img/add.svg"
-                                alt=""></button></a>
+                    <div class="responsiv-plus-btn" onclick="window.location.href='addTask.html'"><img src="./assets/img/add.svg"
+                                alt=""></div>
                 </div>
                 <div class="input-container">
                     <div class="input-field-complett">
@@ -325,9 +325,10 @@
                         <textarea class="textAreaAddTask" id="edit-description"></textarea>
                     </div>
                     <div class="input-group-edit">
-                      <span class="date-line-overlay">Due date</span>
-                      <input class="inputAddTaskDueDateEdit" type="text" id="edit-due-date" placeholder="Select date" readonly>
-                  </div>
+                        <span class="date-line-overlay">Due date</span>
+                        <input class="inputAddTaskDueDateEdit" type="text" id="edit-due-date" placeholder="Select date"
+                            readonly>
+                    </div>
                     <div class="input-group-edit">
                         <span class="priority-line-overlay">Priority</span>
                         <div class="prioButtonContainerEdit">

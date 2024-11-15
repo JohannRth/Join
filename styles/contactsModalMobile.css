@@ -30,12 +30,12 @@
     .add-contact-modal-content {
         display: flex;
         width: 95%;
-        height: 80%;
+        height: 85%;
         border-radius: 15px;
         overflow: hidden;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         flex-direction: column;
-        margin-bottom: 50px;
+        margin-bottom: 80px;
     }
 
     .add-contact-left {
@@ -167,6 +167,6 @@
     }
 
     .add-contact-right {
-        zoom: 90%;
+        zoom: 95%;
     }
 }
