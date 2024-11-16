@@ -1,6 +1,6 @@
 .around-container-expended-card{
-  width: 505px;
-  height: 600px;
+  width: 525px;
+  height: 800px;
   border-radius: 30px;
   background-color: white;
   animation: slideInOverlay 0.5s forwards;
@@ -10,8 +10,8 @@
 
 .expanded-card-overlay {
   width: 513px;
-  max-height: 600px;
-  padding: 36px 20px;
+  max-height: 800px;
+  padding: 0px 20px 36px 20px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -43,23 +43,25 @@
 }
 
 .close-btn-overlay {
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    position: sticky; 
+    top: 54px; 
+    margin-left: 420px;
+    z-index: 100; 
 }
 
 .close-btn-overlay:hover {
-  background-color: #EEEEEE;
-  transform: scale(1.2);
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  ;
+    background-color: #EEEEEE;
+    transform: scale(1.2);
+    border-radius: 50%;
+    transition: all 0.3s ease;
 }
 
 .task-title-overlay {
   width: 445px;
-  min-height: 150px;
-  max-height: 250px;
+  min-height: 80px;
   font-weight: 700;
   font-size: 61px;
   color: #000000;
@@ -69,7 +71,8 @@
 }
 
 .task-description-overlay {
-  min-height: 80px;
+  width: 445px;
+  min-height: 30px;
   max-height: 250px;
   font-weight: 400;
   font-size: 20px;

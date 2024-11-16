@@ -88,17 +88,38 @@ function getPriorityIcon(priority) {
  * @param {Object} element - The task object containing contacts.
  * @returns {string} The HTML string for the assigned contacts.
  */
+/**
+ * Generates the HTML for the assigned contacts of a task.
+ * Displays up to 4 contacts and a "+x" bubble for additional contacts.
+ * @param {Object} element - The task object containing contacts.
+ * @returns {string} The HTML string for the assigned contacts.
+ */
 function generateContactsHTML(element) {
     if (!element["contacts"]) return "";
+
+    const contacts = element["contacts"];
+    const maxVisibleContacts = 4;
+
+    const visibleContacts = contacts.slice(0, maxVisibleContacts); // Die ersten 4 Kontakte
+    const remainingCount = contacts.length - maxVisibleContacts; // Anzahl weiterer Kontakte
+
+    const visibleContactsHTML = visibleContacts
+        .map(contact => {
+            const initials = getInitials(contact);
+            const color = getColor(contact);
+            return `<span class="person-circle" style="background-color: ${color};">${initials}</span>`;
+        })
+        .join("");
+
+    const additionalContactsHTML =
+        remainingCount > 0
+            ? `<span class="person-circle" style="background-color: #ccc;">+${remainingCount}</span>`
+            : "";
+
     return `
         <div class="task-assigned">
-            ${element["contacts"]
-                .map(contact => {
-                    const initials = getInitials(contact);
-                    const color = getColor(contact);
-                    return `<span class="person-circle" style="background-color: ${color};">${initials}</span>`;
-                })
-                .join("")}
+            ${visibleContactsHTML}
+            ${additionalContactsHTML}
         </div>`;
 }
 

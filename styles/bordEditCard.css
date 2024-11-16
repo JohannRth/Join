@@ -4,7 +4,7 @@
   
   .edit-card-around {
     width: 525px;
-    height: 600px;
+    height: 800px;
     background-color: white;
     border-radius: 30px;
     display: flex;
@@ -14,7 +14,7 @@
   
   .edit-card-body {
     width: 513px;
-    max-height: 550px;
+    max-height: 850px;
     padding: 36px 20px;
     background-color: white;
     display: flex;
@@ -38,9 +38,10 @@
   .edit-card-header {
     display: flex;
     justify-content: space-between;
-    margin: 36px 20px;
     align-items: center;
     color: #2a3647;
+    padding-right: 20px;
+    padding-top: 15px;
   }
   
   .close-btn-overlay {
@@ -288,10 +289,6 @@
     font-size: 16px;
   }
 
-  .addSubTaskButton {
-    display: none; 
-  }
-
   .inputAddTaskDueDateEdit {
     display: flex;
     flex-direction: column;
@@ -328,4 +325,31 @@
 
 .hidden {
     display: none;
+}
+
+.addSubTaskButtonContainer:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    transition: opacity 0.3s ease;
+}
+
+.inputSubTaksClickContainer{
+    margin-left: 7px;
+}
+
+.contactCheckbox {
+    margin-left: auto; /* Verschiebt die Checkbox nach rechts */
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.contactCheckbox:checked {
+    -webkit-appearance: none; /* Entfernt das Standard-Design der Checkbox */
+    appearance: none;
+    color: #141414; /* Schwarzer Hintergrund bei Aktivierung */  
+}
+
+.contactCheckbox:checked {
+    filter: invert(1); /* Invertiert die Farbe der Checkbox */
 }

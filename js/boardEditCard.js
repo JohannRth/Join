@@ -189,19 +189,18 @@ async function loadContacts() {
 async function populateContactDropdownFromFirebase() {
     const contacts = await loadContacts();
     const dropdown = document.getElementById("contactDropdownEdit");
+    const assignedContacts = Array.from(document.getElementById("aktivContactsEdit").children)
+        .map(contact => contact.getAttribute("data-name")); // Bereits zugewiesene Kontakte
+
     if (!contacts?.length) {
         dropdown.innerHTML = "";
         return;
     }
 
-    dropdown.innerHTML = contacts.map(createContactHTML).join("");
-
-    dropdown.querySelectorAll(".contactDropdownItem").forEach((item, i) =>
-        item.addEventListener("click", () => {
-            const name = contacts[i].name || contacts[i];
-            addContactToAssignedList(name, getInitials(name), getColor(name));
-            dropdown.style.display = "none";
-        }));
+    // Erstelle die HTML-Struktur für jeden Kontakt mit Checkbox
+    dropdown.innerHTML = contacts.map(contact => createContactHTML(contact, assignedContacts)).join("");
+    
+    // Entferne das automatische Öffnen hier
 }
 
 /**
@@ -209,15 +208,23 @@ async function populateContactDropdownFromFirebase() {
  * @param {Object|string} contact - The contact object or name string.
  * @returns {string} HTML string representing the contact.
  */
-function createContactHTML(contact) {
+function createContactHTML(contact, assignedContacts) {
     const name = contact.name || contact;
+    const isChecked = assignedContacts.includes(name); // Überprüfe, ob Kontakt bereits zugewiesen ist
+
     return `
-        <div class="contactDropdownItem">
+        <div class="contactDropdownItem" data-name="${name}">
             <div class="contactBubble" style="background-color: ${getColor(name)};">
                 ${getInitials(name)}
             </div>
             <span class="contactName">${name}</span>
-        </div>`;
+            <input 
+                type="checkbox" 
+                class="contactCheckbox" 
+                ${isChecked ? "checked" : ""} 
+                onclick="toggleAssignedContact('${name}')">
+        </div>
+    `;
 }
 
 // Event listener to toggle the contact dropdown visibility
@@ -226,12 +233,14 @@ document.getElementById("contactsEdit").addEventListener("click", () => {
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 });
 
-// Event listener to close the contact dropdown when clicking outside
-document.addEventListener("click", (event) => {
+// Event-Listener, um das Dropdown zu schließen, wenn man außerhalb klickt
+document.addEventListener("click", function (event) {
     const dropdown = document.getElementById("contactDropdownEdit");
-    const target = event.target;
-    if (!dropdown.contains(target) && target.id !== "contactsEdit") {
-        dropdown.style.display = "none";
+    const input = document.getElementById("contactsInputEdit");
+
+    // Prüfe, ob der Klick außerhalb von Input und Dropdown war
+    if (!dropdown.contains(event.target) && event.target !== input) {
+        dropdown.classList.add("hidden");
     }
 });
 
@@ -367,9 +376,118 @@ async function getUpdatedTaskData(taskId) {
 
 // Initialize flatpickr date picker for the due date input
 flatpickr("#edit-due-date", {
-    dateFormat: "Y-m-d", // Format matching the input field
+    dateFormat: "Y-m-d", // Format für das Eingabefeld
+    minDate: "today", // Verhindert die Auswahl von Daten vor dem heutigen Datum
     onChange: function(selectedDates, dateStr, instance) {
-        // Updates the input field with the selected date
+        // Aktualisiert das Eingabefeld mit dem ausgewählten Datum
         document.getElementById("edit-due-date").value = dateStr;
     }
 });
+function showInputSubTasksEdit() {
+    const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
+    const addButton = document.getElementById("addSubTaskButtonEdit"); // Das Plus-Icon
+
+    if (inputContainer.classList.contains("visible")) {
+        // Verberge das X- und Check-Container, zeige das Plus-Icon
+        inputContainer.classList.remove("visible");
+        addButton.style.display = "block"; // Zeige das Plus-Icon
+    } else {
+        // Zeige das X- und Check-Container, verberge das Plus-Icon
+        inputContainer.classList.add("visible");
+        addButton.style.display = "none"; // Verstecke das Plus-Icon
+    }
+}
+
+function handleEnterKey(event) {
+    // Prüfen, ob die Enter-Taste gedrückt wurde
+    if (event.key === "Enter") {
+        // Verhindert, dass das Formular abgeschickt wird (falls innerhalb eines <form>)
+        event.preventDefault();
+
+        // Ruf die Funktion auf, die das neue Subtask hinzufügt
+        addNewSubtaskEdit(event);
+
+        // Zurücksetzen des Input-Felds
+        resetInputField();
+    }
+}
+
+function handleInputChange() {
+    const inputField = document.getElementById("subTaskInputEdit");
+    const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
+    const addButton = document.getElementById("addSubTaskButtonEdit");
+
+    if (inputField.value.trim() !== "") {
+        // Zeige den Container, wenn das Feld nicht leer ist
+        inputContainer.classList.add("visible");
+        addButton.style.display = "none";
+    } else {
+        // Verstecke den Container, wenn das Feld leer ist
+        inputContainer.classList.remove("visible");
+        addButton.style.display = "block";
+    }
+}
+
+function addNewSubtaskEdit(event) {
+    const inputField = document.getElementById("subTaskInputEdit");
+    const subTaskList = document.getElementById("subTaskListEdit");
+
+    // Hole den Wert aus dem Input-Feld
+    const newSubtask = inputField.value.trim();
+
+    // Falls das Feld leer ist, abbrechen
+    if (!newSubtask) {
+        alert("Subtask cannot be empty!");
+        return;
+    }
+
+    // Neues Subtask als HTML hinzufügen
+    const subTaskItem = document.createElement("div");
+    subTaskItem.classList.add("subTask");
+    subTaskItem.innerHTML = `
+        <div class="leftContainerSubTask">${newSubtask}</div>
+        <div class="rightContainerSubTask">
+            <img onclick="editSubTaskEdit()" src="./assets/img/edit.svg" alt="Edit">
+            <img onclick="deleteSubtaskEdit()" src="./assets/img/delete.svg" alt="Delete">
+        </div>
+    `;
+
+    // Füge es zur Liste hinzu
+    subTaskList.appendChild(subTaskItem);
+
+    // Input-Feld zurücksetzen
+    resetInputField();
+}
+
+function resetInputField() {
+    const inputField = document.getElementById("subTaskInputEdit");
+    const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
+    const addButton = document.getElementById("addSubTaskButtonEdit");
+
+    inputField.value = ""; // Leere das Input-Feld
+    inputContainer.classList.remove("visible"); // Verstecke den Container
+    addButton.style.display = "block"; // Zeige das Plus-Icon
+}
+
+function toggleAssignedContact(name) {
+    const assignedContainer = document.getElementById("aktivContactsEdit");
+    const existingContact = Array.from(assignedContainer.children).find(
+        el => el.getAttribute("data-name") === name
+    );
+
+    if (existingContact) {
+        // Kontakt entfernen, wenn bereits zugewiesen
+        assignedContainer.removeChild(existingContact);
+    } else {
+        // Kontakt hinzufügen, wenn nicht zugewiesen
+        const contactBubble = document.createElement("div");
+        contactBubble.classList.add("contactBubble");
+        contactBubble.style.backgroundColor = getColor(name);
+        contactBubble.textContent = getInitials(name);
+        contactBubble.setAttribute("data-name", name);
+
+        // Klick-Event für Entfernen
+        contactBubble.addEventListener("click", () => assignedContainer.removeChild(contactBubble));
+        assignedContainer.appendChild(contactBubble);
+    }
+}

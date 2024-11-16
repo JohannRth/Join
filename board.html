@@ -364,7 +364,7 @@
                             <span class="addTaskInputTitle">Subtasks</span>
                             <div class="subTaskInputContainer">
 
-                                <input onclick="showInputSubTasksEdit()" class="inputAddSubTask" type="text"
+                                <input oninput="handleInputChange()"  onkeydown="handleEnterKey(event)" onclick="showInputSubTasksEdit()" class="inputAddSubTask" type="text"
                                     id="subTaskInputEdit" placeholder="Add new subtask">
 
                                 <div class="addSubTaskButtonContainer" id="addSubTaskButtonContainerEdit">
@@ -384,16 +384,9 @@
                                 </div>
                             </div>
                             <div class="subTaskList" id="subTaskListEdit">
-
-                                <div class="subTask" onclick="editSubTaskEdit(0)">
-                                    <div class="leftContainerSubTask">
-
-                                    </div>
-                                    <div class="rightContainerSubTask">
-                                        <img onclick="editSubtaskEdit()" src="./assets/img/edit.svg" alt="Edit">
-                                        <img onclick="deleteSubtaskEdit(0, '<TASK_ID>')" src="./assets/img/delete.svg"
-                                            alt="Delete">
-                                    </div>
+                                    <div class="subTask" onclick="editSubTaskEdit(0)">
+                                    <div class="leftContainerSubTask"></div>
+                                    <div class="rightContainerSubTask"></div>
                                 </div>
                             </div>
                         </div>

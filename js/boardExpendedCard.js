@@ -27,9 +27,10 @@ function generateExpandedCardHTMLTemplate(element, taskTypeStyle, priority, dueD
     return `
     <div class="around-container-epended-card">    
       <div class="expanded-card-overlay">
+      <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeCardOverlay()">
         <div class="close-story-container-overlay">
             <div class="user-story-overlay" style="${taskTypeStyle}">${element["type"]}</div>
-            <img src="./assets/img/close.svg" alt="close" class="close-btn-overlay" onclick="closeCardOverlay()">
+            <span></span>
         </div>
         <div class="task-title-overlay">${element["titel"]}</div>
         <div class="task-description-overlay">${element["description"]}</div>
