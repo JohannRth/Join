@@ -355,3 +355,7 @@ body.no-scroll {
   display: none;
   opacity: 0;
 }
+
+.titel-card.match {
+  border: 2px solid red;
+}
