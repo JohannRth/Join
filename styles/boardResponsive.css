@@ -187,6 +187,10 @@
     width: 100%;
   }
 
+  .task-description-overlay{
+    width: 100%;
+  }
+
   .task-assigned-container-overlay {
     width: 100%;
   }
@@ -256,6 +260,16 @@
 
   .subTask {
     width: 100%;
+  }
+
+  .close-btn-overlay {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    position: sticky; 
+    top: 54px; 
+    margin-left: 300px;
+    z-index: 100; 
   }
 
 }
