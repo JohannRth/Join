@@ -15,7 +15,9 @@
   .edit-card-body {
     width: 520px;
     max-height: 850px;
-    padding: 36px 20px;
+    padding-bottom: 20px;
+    padding-right: 30px;
+    padding-left: 30px;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -42,6 +44,7 @@
     color: #2a3647;
     padding-right: 20px;
     padding-top: 15px;
+    height: 140px;
   }
   
   .close-btn-overlay {
@@ -68,7 +71,7 @@
   .textAreaAddTask {
     width: 100%;
     padding: 8px;
-    font-size: 16px;
+    font-size: 20px;
     border: 1px solid #a8a8a8;
     border-radius: 8px;
     outline: none;
@@ -121,7 +124,6 @@
     border: #29ABE2;
   }
   
-  /* Styles for priority buttons */
   .prioButtonContainerEdit {
     display: flex;
     justify-content: center;
@@ -348,10 +350,6 @@
     -webkit-appearance: none; /* Entfernt das Standard-Design der Checkbox */
     appearance: none;
     color: #141414; /* Schwarzer Hintergrund bei Aktivierung */  
-}
-
-.contactCheckbox:checked {
-    filter: invert(1); /* Invertiert die Farbe der Checkbox */
 }
 
 .contactDropdownItem {
