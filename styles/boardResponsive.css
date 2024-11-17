@@ -93,6 +93,7 @@
 
   .expanded-card-overlay {
     height: 520px;
+    min-height: 80vh;
   }
 
   .card-overlay {
@@ -170,7 +171,6 @@
   .expanded-card-overlay {
     width: 100%;
     min-height: 80vh;
-    padding: 20px 8px;
   }
 
   .due-date-overlay {
@@ -219,7 +219,7 @@
   }
 
   .edit-card-body {
-    padding: 20px 8px;
+    padding: 0px 12px 20px 12px;
   }
 
   .inputAddTaskDueDate {
@@ -261,13 +261,10 @@
   }
 
   .close-btn-overlay {
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
     position: sticky;
     top: 54px;
-    margin-left: 300px;
-    z-index: 100;
+    margin-left: 84%;
+    z-index: 1;
   }
 
 }
@@ -304,18 +301,6 @@
     padding-right: 8px;
   }
 
-}
-
-@media (max-width: 375px) {
-  .close-btn-overlay {
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    position: sticky; 
-    top: 54px; 
-    margin-left: 252px;
-    
-  }
 }
 
 @media (max-width: 340px) {

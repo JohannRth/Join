@@ -71,7 +71,6 @@
   .textAreaAddTask {
     width: 100%;
     padding: 8px;
-    font-size: 20px;
     border: 1px solid #a8a8a8;
     border-radius: 8px;
     outline: none;
@@ -298,7 +297,7 @@
     padding: 12px;
     border: 1px solid #D1D1D1;
     border-radius: 10px;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
     text-align: left;
     cursor: pointer;
