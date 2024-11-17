@@ -24,8 +24,8 @@
         margin-left: 0px;
         justify-content: center;
         overflow-y: auto;
-        margin-bottom: 60px;
-        height: 700px;
+        margin-bottom: unset;
+        height: 610px;
         margin-top: 0px;
     }
 
@@ -41,7 +41,7 @@
         flex-direction: column;
         align-items: flex-start;
         margin-left: 12px;
-        margin-top: 120px;
+        margin-top: 130px;
     }
 
     .separator {
@@ -53,20 +53,23 @@
         width: 120px;
     }
 
-    .main-summary {
-        margin-top: 46px;
+    .title-container h1 {
+        font-size: 47px;
     }
 
+    .title-container p {
+        font-size: 20px;
+    }
+
+    .main-summary {
+        margin-top: 20px;
+    }
 }
 
 @media (max-width: 500px) {
 
-    .title-container {
-        zoom: 90%;
-    }
-
     .main-summary {
-        zoom: 90%;
+        zoom: 85%;
     }
 
 }
@@ -87,12 +90,13 @@
     }
 
     .main-summary {
-        zoom: 75%;
+        zoom: 70%;
         height: 600px;
+        margin-top: 40px;
     }
 
     .main-summary {
-        margin-top: 0px;
+        margin-top: 20px;
     }
 
     .urgent-date-container {
