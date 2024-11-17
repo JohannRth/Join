@@ -71,14 +71,9 @@
 
 .task-description-overlay {
   width: 445px;
-  min-height: 30px;
-  max-height: 250px;
   font-weight: 400;
   font-size: 20px;
   color: #000000;
-  line-height: 1.2;
-  overflow-wrap: break-word;
-  overflow-y: auto;
 }
 
 .due-date-overlay {

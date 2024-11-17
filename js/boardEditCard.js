@@ -297,6 +297,24 @@ async function initializeContactDropdownEdit() {
     dropdown.innerHTML = contacts.map(contact => createContactHTMLEdit(contact, assignedContacts)).join("");
 }
 
+// Funktion zum Schließen des Dropdowns
+function closeContactsDropdown() {
+    const dropdown = document.getElementById("contactDropdownEdit");
+    dropdown.style.display = "none"; // Verstecke das Dropdown
+}
+
+// Event-Listener für Klicks auf das Dokument
+document.addEventListener("click", function (event) {
+    const dropdown = document.getElementById("contactDropdownEdit");
+    const trigger = document.getElementById("contactsEdit"); // Der Button, der das Dropdown öffnet
+
+    // Überprüfen, ob der Klick außerhalb des Dropdowns und des Triggers liegt
+    if (!dropdown.contains(event.target) && event.target !== trigger) {
+        closeContactsDropdown();
+    }
+});
+
+
 /**
  * Holt aktive Kontakte aus dem "aktivContactsEdit"-Container.
  * @returns {Array<string>} Liste der aktiven Kontaktnamen.

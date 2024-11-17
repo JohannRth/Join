@@ -142,38 +142,43 @@ async function updateReorderedStatuses(taskId, statuses) {
 }
 
 /**
- * Reloads the subtasks for a task and updates the UI.
- * @async
- * @param {string} taskId - The unique identifier of the task.
+ * Lädt die Subtasks neu und aktualisiert die Edit-Karte.
+ * @param {string} taskId - Die ID der Aufgabe.
  */
 async function reloadSubtasks(taskId) {
     try {
         const taskData = await loadData(`tasks/${taskId}`);
-        const subtasks = taskData.subtasks ? Object.values(taskData.subtasks) : [];
-        
-        renderSubtaskEdit(subtasks);  // Update the subtask list with the new data
+        const subtasks = taskData?.subtasks ? Object.values(taskData.subtasks) : [];
+
+        // Render die aktualisierte Subtask-Liste
+        renderSubtaskEdit(subtasks, taskId);
     } catch (error) {
-        console.error("Error loading subtasks:", error);
+        console.error("Error reloading subtasks:", error);
     }
 }
 
+
 /**
- * Renders the subtasks in the edit overlay.
- * @param {Array<string>} subtasks - An array of subtask titles.
+ * Rendert die Subtasks in der Edit-Karte.
+ * @param {Array<string>} subtasks - Die aktualisierte Liste der Subtasks.
+ * @param {string} taskId - Die ID der Aufgabe.
  */
-function renderSubtaskEdit(subtasks) {
+function renderSubtaskEdit(subtasks, taskId) {
     const container = document.getElementById("subTaskListEdit");
     container.innerHTML = "";
 
     subtasks.forEach((subtask, index) => {
         container.innerHTML += `
             <div class="subTask" data-index="${index}">
-                <div class="leftContainerSubTask">${subtask}</div>
-                <div class="rightContainerSubTask">
-                    <img onclick="editSubTaskEdit()" src="./assets/img/edit.svg" alt="Edit">
-                    <img src="./assets/img/delete.svg" alt="Delete" onclick="deleteSubtaskEdit(${index})">
+                <div class="leftContainerSubTask">
+                    <span class="subTaskText" id="subTaskText-${index}">${subtask}</span>
                 </div>
-            </div>`;
+                <div class="rightContainerSubTask">
+                    <img onclick="editSubTaskEdit(${index}, '${taskId}')" src="./assets/img/edit.svg" alt="Edit">
+                    <img onclick="deleteSubtaskEdit(${index}, '${taskId}')" src="./assets/img/delete.svg" alt="Delete">
+                </div>
+            </div>
+        `;
     });
 }
 
@@ -183,25 +188,38 @@ function renderSubtaskEdit(subtasks) {
  * @param {string} taskId - Die ID des Tasks, zu dem der Subtask gehört.
  */
 async function editSubTaskEdit(index, taskId) {
+    const subTaskElement = document.querySelector(`[data-index="${index}"]`);
     const subTaskText = document.getElementById(`subTaskText-${index}`);
     const currentTitle = subTaskText.textContent;
 
-    // Eingabefeld hinzufügen und Icons für Speichern und Abbrechen einfügen
-    subTaskText.parentElement.innerHTML = `
+    subTaskElement.innerHTML = `
         <div class="subTaskEditContainer">
-            <input type="text" id="editInput-${index}" value="${currentTitle}" />
+            <input type="text" id="editInput-${index}" value="${currentTitle}" onkeypress="handleEnterKey(event, ${index}, '${taskId}')" />
             <div class="subTaskIcons">
                 <img onclick="saveSubTaskEdit(${index}, '${taskId}')" src="./assets/img/Property 1=check.svg" alt="Save" class="icon">
-                <img onclick="cancelEditSubTask(${index}, '${currentTitle}')" src="./assets/img/close.svg" alt="Cancel" class="icon">
+                <img onclick="cancelEditSubTask(${index}, '${currentTitle}', '${taskId}')" src="./assets/img/close.svg" alt="Cancel" class="icon">
             </div>
         </div>
     `;
 }
 
 /**
- * Speichert die Änderungen am Subtask.
+ * Handhabt die Enter-Taste, um Änderungen zu speichern.
+ * @param {Event} event - Das Keypress-Event.
  * @param {number} index - Der Index des Subtasks.
- * @param {string} taskId - Die ID des Tasks.
+ * @param {string} taskId - Die ID der Aufgabe.
+ */
+function handleEnterKey(event, index, taskId) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Verhindert den Standard-Submit (falls innerhalb eines Formulars)
+        saveSubTaskEdit(index, taskId);
+    }
+}
+
+/**
+ * Speichert die Änderungen an einem Subtask und aktualisiert die Edit-Karte.
+ * @param {number} index - Der Index des Subtasks.
+ * @param {string} taskId - Die ID der Aufgabe.
  */
 async function saveSubTaskEdit(index, taskId) {
     const input = document.getElementById(`editInput-${index}`);
@@ -215,43 +233,48 @@ async function saveSubTaskEdit(index, taskId) {
     try {
         // Lade die aktuellen Subtasks
         const taskData = await loadData(`tasks/${taskId}`);
-        let subtasks = taskData?.subtasks || {};
-
-        // Validiere die Struktur
-        if (!validateSubtaskStructure(subtasks)) {
-            subtasks = Object.fromEntries(
-                Object.entries(subtasks).map(([key, value]) => {
-                    if (typeof value === "object" && value.title) {
-                        return [key, value.title];
-                    }
-                    return [key, value];
-                })
-            );
-        }
+        const subtasks = taskData?.subtasks || {};
 
         // Subtask aktualisieren
         subtasks[index] = newValue;
 
-        // Speichere die aktualisierten Subtasks
+        // Speichere die aktualisierten Subtasks in der Datenbank
         await updateData(`tasks/${taskId}/subtasks`, subtasks);
 
         console.log(`Subtask updated successfully: index=${index}, newValue=${newValue}`);
 
-        // UI aktualisieren
+        // Aktualisiere die Subtask-Liste in der Edit-Karte
         await reloadSubtasks(taskId);
     } catch (error) {
         console.error("Error saving subtask:", error);
     }
 }
 
+
 /**
- * Bricht den Bearbeitungsmodus ab.
+ * Bricht den Bearbeitungsmodus ab und stellt das ursprüngliche Layout wieder her.
  * @param {number} index - Der Index des Subtasks.
  * @param {string} originalTitle - Der ursprüngliche Titel des Subtasks.
+ * @param {string} taskId - Die ID der Aufgabe, zu der der Subtask gehört.
  */
-function cancelEditSubTask(index, originalTitle) {
-    const subTaskText = document.getElementById(`subTaskText-${index}`);
-    subTaskText.innerHTML = originalTitle;
+function cancelEditSubTask(index, originalTitle, taskId) {
+    const subTaskElement = document.querySelector(`[data-index="${index}"]`); // Den gesamten Subtask-Container finden
+    
+    if (!subTaskElement) {
+        console.error(`Subtask element with index ${index} not found.`);
+        return;
+    }
+
+    // Ursprüngliches HTML für den Subtask wiederherstellen
+    subTaskElement.innerHTML = `
+        <div class="leftContainerSubTask">
+            <span class="subTaskText" id="subTaskText-${index}">${originalTitle}</span>
+        </div>
+        <div class="rightContainerSubTask">
+            <img onclick="editSubTaskEdit(${index}, '${taskId}')" src="./assets/img/edit.svg" alt="Edit">
+            <img onclick="deleteSubtaskEdit(${index}, '${taskId}')" src="./assets/img/delete.svg" alt="Delete">
+        </div>
+    `;
 }
 
 /**
