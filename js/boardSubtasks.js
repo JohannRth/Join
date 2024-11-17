@@ -25,16 +25,36 @@ function displaySubtasks(subtasks, taskId) {
  * @returns {string} HTML string representing the subtask.
  */
 function generateSubtaskHTML(subtask, index, taskId) {
-    const title = subtask?.title || "Untitled";
+    if (!subtask || index === undefined || !taskId) {
+        console.error("Invalid parameters for generateSubtaskHTML:", subtask, index, taskId);
+        return "";
+    }
+    const title = subtask.title || "Untitled";
     return `
         <div class="subTask" data-index="${index}">
             <div class="leftContainerSubTask">
-                <span class="subTaskText">${title}</span>
+                <span class="subTaskText" id="subTaskText-${index}">${title}</span>
             </div>
             <div class="rightContainerSubTask">
+                <img onclick="editSubTaskEdit(${index}, '${taskId}')" src="./assets/img/edit.svg" alt="Edit">
                 <img src="./assets/img/delete.svg" alt="Delete" onclick="deleteSubtaskEdit(${index}, '${taskId}')">
             </div>
         </div>`;
+}
+
+function showInputSubTasksEdit() {
+    const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
+    const addButton = document.getElementById("addSubTaskButtonEdit"); // Das Plus-Icon
+
+    if (inputContainer.classList.contains("visible")) {
+        // Verberge das X- und Check-Container, zeige das Plus-Icon
+        inputContainer.classList.remove("visible");
+        addButton.style.display = "block"; // Zeige das Plus-Icon
+    } else {
+        // Zeige das X- und Check-Container, verberge das Plus-Icon
+        inputContainer.classList.add("visible");
+        addButton.style.display = "none"; // Verstecke das Plus-Icon
+    }
 }
 
 /**
@@ -150,8 +170,96 @@ function renderSubtaskEdit(subtasks) {
             <div class="subTask" data-index="${index}">
                 <div class="leftContainerSubTask">${subtask}</div>
                 <div class="rightContainerSubTask">
+                    <img onclick="editSubTaskEdit()" src="./assets/img/edit.svg" alt="Edit">
                     <img src="./assets/img/delete.svg" alt="Delete" onclick="deleteSubtaskEdit(${index})">
                 </div>
             </div>`;
     });
+}
+
+/**
+ * Aktiviert den Bearbeitungsmodus für einen Subtask.
+ * @param {number} index - Der Index des Subtasks.
+ * @param {string} taskId - Die ID des Tasks, zu dem der Subtask gehört.
+ */
+async function editSubTaskEdit(index, taskId) {
+    const subTaskText = document.getElementById(`subTaskText-${index}`);
+    const currentTitle = subTaskText.textContent;
+
+    // Eingabefeld hinzufügen und Icons für Speichern und Abbrechen einfügen
+    subTaskText.parentElement.innerHTML = `
+        <div class="subTaskEditContainer">
+            <input type="text" id="editInput-${index}" value="${currentTitle}" />
+            <div class="subTaskIcons">
+                <img onclick="saveSubTaskEdit(${index}, '${taskId}')" src="./assets/img/Property 1=check.svg" alt="Save" class="icon">
+                <img onclick="cancelEditSubTask(${index}, '${currentTitle}')" src="./assets/img/close.svg" alt="Cancel" class="icon">
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Speichert die Änderungen am Subtask.
+ * @param {number} index - Der Index des Subtasks.
+ * @param {string} taskId - Die ID des Tasks.
+ */
+async function saveSubTaskEdit(index, taskId) {
+    const input = document.getElementById(`editInput-${index}`);
+    const newValue = input?.value.trim();
+
+    if (!newValue) {
+        alert("Subtask title cannot be empty!");
+        return;
+    }
+
+    try {
+        // Lade die aktuellen Subtasks
+        const taskData = await loadData(`tasks/${taskId}`);
+        let subtasks = taskData?.subtasks || {};
+
+        // Validiere die Struktur
+        if (!validateSubtaskStructure(subtasks)) {
+            subtasks = Object.fromEntries(
+                Object.entries(subtasks).map(([key, value]) => {
+                    if (typeof value === "object" && value.title) {
+                        return [key, value.title];
+                    }
+                    return [key, value];
+                })
+            );
+        }
+
+        // Subtask aktualisieren
+        subtasks[index] = newValue;
+
+        // Speichere die aktualisierten Subtasks
+        await updateData(`tasks/${taskId}/subtasks`, subtasks);
+
+        console.log(`Subtask updated successfully: index=${index}, newValue=${newValue}`);
+
+        // UI aktualisieren
+        await reloadSubtasks(taskId);
+    } catch (error) {
+        console.error("Error saving subtask:", error);
+    }
+}
+
+/**
+ * Bricht den Bearbeitungsmodus ab.
+ * @param {number} index - Der Index des Subtasks.
+ * @param {string} originalTitle - Der ursprüngliche Titel des Subtasks.
+ */
+function cancelEditSubTask(index, originalTitle) {
+    const subTaskText = document.getElementById(`subTaskText-${index}`);
+    subTaskText.innerHTML = originalTitle;
+}
+
+/**
+ * Validates the structure of the subtasks object.
+ * Ensures all subtasks are strings, not objects.
+ * @param {Object} subtasks - The subtasks object to validate.
+ * @returns {boolean} - Returns true if the structure is valid, otherwise false.
+ */
+function validateSubtaskStructure(subtasks) {
+    return Object.values(subtasks).every(value => typeof value === "string");
 }
