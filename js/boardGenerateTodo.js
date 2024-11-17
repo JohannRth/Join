@@ -164,10 +164,9 @@ document.addEventListener("dragend", function (event) {
  * Updates the HTML content of the board by updating each category.
  */
 function updateHTML() {
-    updateCategory("todo", "To do");
-    updateCategory("inProgress", "In progress");
-    updateCategory("awaitFeedback", "Await feedback");
-    updateCategory("done", "Done");
+    ["todo", "inProgress", "awaitFeedback", "done"].forEach((category) => {
+        updateCategory(category);
+    });
 }
 
 /**
@@ -186,8 +185,6 @@ function updateCategory(category, label) {
             updateProgressBar(task.id);
             return taskHTML;
         }).join("");
-
-        // Add event listeners to the task elements
         const taskElements = container.querySelectorAll('.titel-card');
         taskElements.forEach(taskElement => {
             taskElement.addEventListener('dragstart', dragTask);

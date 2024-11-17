@@ -410,16 +410,28 @@ async function getUpdatedTaskData(taskId) {
     return { ...existingData, title, description, dueDate, prio: priority, assignedTo: assignedContacts };
 }
 
-// Initialize flatpickr date picker for the due date input
-flatpickr("#edit-due-date", {
-    dateFormat: "Y-m-d", // Format für das Eingabefeld
-    minDate: "today", // Verhindert die Auswahl von Daten vor dem heutigen Datum
-    onChange: function(selectedDates, dateStr, instance) {
-        // Aktualisiert das Eingabefeld mit dem ausgewählten Datum
-        document.getElementById("edit-due-date").value = dateStr;
-    }
-});
+// Optionen für den Flatpickr-Date-Picker
+const flatpickrOptions = {
+    dateFormat: "Y-m-d", // Datumsformat
+    minDate: "today", // Keine Auswahl von Daten vor dem heutigen Datum
+    onChange: handleDateChange, // Callback-Funktion bei Änderung
+};
 
+// Initialisierung des Flatpickr-Date-Pickers
+flatpickr("#edit-due-date", flatpickrOptions);
+
+/**
+ * Callback-Funktion für die Änderung des Datums im Date-Picker.
+ * @param {Array<Date>} selectedDates - Die ausgewählten Daten.
+ * @param {string} dateStr - Das ausgewählte Datum als String im definierten Format.
+ * @param {Object} instance - Die Flatpickr-Instanz.
+ */
+function handleDateChange(selectedDates, dateStr, instance) {
+    const dueDateInput = document.getElementById("edit-due-date");
+    if (dueDateInput) {
+        dueDateInput.value = dateStr; // Aktualisiert den Wert des Eingabefelds
+    }
+}
 function handleEnterKey(event) {
     // Prüfen, ob die Enter-Taste gedrückt wurde
     if (event.key === "Enter") {
@@ -434,29 +446,82 @@ function handleEnterKey(event) {
     }
 }
 
+/**
+ * Handhabt die Sichtbarkeit von Elementen basierend auf dem Eingabefeldinhalt.
+ */
 function handleInputChange() {
     const inputField = document.getElementById("subTaskInputEdit");
     const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
     const addButton = document.getElementById("addSubTaskButtonEdit");
 
-    if (inputField.value.trim() !== "") {
-        // Zeige den Container, wenn das Feld nicht leer ist
-        inputContainer.classList.add("visible");
-        addButton.style.display = "none";
+    if (!inputField || !inputContainer || !addButton) {
+        console.warn("Ein oder mehrere DOM-Elemente konnten nicht gefunden werden.");
+        return;
+    }
+
+    const isInputNotEmpty = inputField.value.trim() !== "";
+
+    toggleVisibility(inputContainer, isInputNotEmpty);
+    toggleButtonVisibility(addButton, !isInputNotEmpty);
+}
+
+/**
+ * Zeigt oder versteckt ein Element basierend auf einem Zustand.
+ * @param {HTMLElement} element - Das DOM-Element, dessen Sichtbarkeit geändert werden soll.
+ * @param {boolean} isVisible - Gibt an, ob das Element sichtbar sein soll.
+ */
+function toggleVisibility(element, isVisible) {
+    if (isVisible) {
+        element.classList.add("visible");
     } else {
-        // Verstecke den Container, wenn das Feld leer ist
-        inputContainer.classList.remove("visible");
-        addButton.style.display = "block";
+        element.classList.remove("visible");
     }
 }
 
+/**
+ * Zeigt oder versteckt ein Button-Element basierend auf einem Zustand.
+ * @param {HTMLElement} button - Der Button, dessen Anzeige geändert werden soll.
+ * @param {boolean} isVisible - Gibt an, ob der Button sichtbar sein soll.
+ */
+function toggleButtonVisibility(button, isVisible) {
+    button.style.display = isVisible ? "block" : "none";
+}
+
+/**
+ * Setzt das Eingabefeld und die zugehörigen UI-Elemente zurück.
+ */
 function resetInputField() {
     const inputField = document.getElementById("subTaskInputEdit");
     const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
     const addButton = document.getElementById("addSubTaskButtonEdit");
 
-    inputField.value = ""; // Leere das Input-Feld
-    inputContainer.classList.remove("visible"); // Verstecke den Container
-    addButton.style.display = "block"; // Zeige das Plus-Icon
+    if (!inputField || !inputContainer || !addButton) {
+        console.warn("Ein oder mehrere DOM-Elemente konnten nicht gefunden werden.");
+        return;
+    }
+
+    clearInputField(inputField);
+    toggleVisibility(inputContainer, false); // Verstecke den Container
+    toggleButtonVisibility(addButton, true); // Zeige das Plus-Icon
 }
 
+/**
+ * Leert den Wert eines Eingabefelds.
+ * @param {HTMLInputElement} inputField - Das Eingabefeld, das geleert werden soll.
+ */
+function clearInputField(inputField) {
+    inputField.value = "";
+}
+
+/**
+ * Zeigt oder versteckt ein Element basierend auf einem Zustand.
+ * @param {HTMLElement} element - Das DOM-Element, dessen Sichtbarkeit geändert werden soll.
+ * @param {boolean} isVisible - Gibt an, ob das Element sichtbar sein soll.
+ */
+function toggleVisibility(element, isVisible) {
+    if (isVisible) {
+        element.classList.add("visible");
+    } else {
+        element.classList.remove("visible");
+    }
+}

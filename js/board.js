@@ -227,20 +227,18 @@ async function savePosition(taskId, position) {
  * Loads task positions from Firebase and updates the local tasks accordingly.
  */
 async function loadPositionsFromFirebase() {
-    const positionsData = await loadData("positionDropArea");
-    console.log("Loaded positions:", positionsData);
+    try {
+        const positionsData = await loadData("positionDropArea");
+        console.log("Loaded positions:", positionsData);
 
-    for (const taskId in positionsData) {
-        const position = positionsData[taskId];
-        const task = todos.find((t) => t.id === taskId || t.id === parseInt(taskId));
-
-        if (task) {
-            task.category = position;
-            console.log(`Task ${taskId} set to position ${position}`);
-        }
+        todos = todos.map((task) => {
+            const position = positionsData[task.id] || task.category; // Fallback zur aktuellen Kategorie
+            return { ...task, category: position };
+        });
+    } catch (error) {
+        
     }
 }
-
 // Cross-link functionality
 
 document.addEventListener("DOMContentLoaded", () => {

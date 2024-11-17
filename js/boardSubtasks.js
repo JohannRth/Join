@@ -191,10 +191,9 @@ async function editSubTaskEdit(index, taskId) {
     const subTaskElement = document.querySelector(`[data-index="${index}"]`);
     const subTaskText = document.getElementById(`subTaskText-${index}`);
     const currentTitle = subTaskText.textContent;
-
-    subTaskElement.innerHTML = `
+        subTaskElement.innerHTML = `
         <div class="subTaskEditContainer">
-            <input type="text" id="editInput-${index}" value="${currentTitle}" onkeypress="handleEnterKey(event, ${index}, '${taskId}')" />
+            <input type="text" id="editInput-${index}" value="${currentTitle}" onkeypress="handleEnterKeyEditSubtask(event, ${index}, '${taskId}')" />
             <div class="subTaskIcons">
                 <img onclick="saveSubTaskEdit(${index}, '${taskId}')" src="./assets/img/Property 1=check.svg" alt="Save" class="icon">
                 <img onclick="cancelEditSubTask(${index}, '${currentTitle}', '${taskId}')" src="./assets/img/close.svg" alt="Cancel" class="icon">
@@ -209,7 +208,7 @@ async function editSubTaskEdit(index, taskId) {
  * @param {number} index - Der Index des Subtasks.
  * @param {string} taskId - Die ID der Aufgabe.
  */
-function handleEnterKey(event, index, taskId) {
+function handleEnterKeyEditSubtask(event, index, taskId) {
     if (event.key === "Enter") {
         event.preventDefault(); // Verhindert den Standard-Submit (falls innerhalb eines Formulars)
         saveSubTaskEdit(index, taskId);
@@ -224,32 +223,19 @@ function handleEnterKey(event, index, taskId) {
 async function saveSubTaskEdit(index, taskId) {
     const input = document.getElementById(`editInput-${index}`);
     const newValue = input?.value.trim();
-
     if (!newValue) {
         alert("Subtask title cannot be empty!");
         return;
     }
-
     try {
-        // Lade die aktuellen Subtasks
         const taskData = await loadData(`tasks/${taskId}`);
         const subtasks = taskData?.subtasks || {};
-
-        // Subtask aktualisieren
         subtasks[index] = newValue;
 
-        // Speichere die aktualisierten Subtasks in der Datenbank
         await updateData(`tasks/${taskId}/subtasks`, subtasks);
-
-        console.log(`Subtask updated successfully: index=${index}, newValue=${newValue}`);
-
-        // Aktualisiere die Subtask-Liste in der Edit-Karte
         await reloadSubtasks(taskId);
-    } catch (error) {
-        console.error("Error saving subtask:", error);
-    }
+    } catch{}
 }
-
 
 /**
  * Bricht den Bearbeitungsmodus ab und stellt das ursprüngliche Layout wieder her.
@@ -264,8 +250,6 @@ function cancelEditSubTask(index, originalTitle, taskId) {
         console.error(`Subtask element with index ${index} not found.`);
         return;
     }
-
-    // Ursprüngliches HTML für den Subtask wiederherstellen
     subTaskElement.innerHTML = `
         <div class="leftContainerSubTask">
             <span class="subTaskText" id="subTaskText-${index}">${originalTitle}</span>
