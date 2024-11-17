@@ -401,20 +401,6 @@ flatpickr("#edit-due-date", {
         document.getElementById("edit-due-date").value = dateStr;
     }
 });
-function showInputSubTasksEdit() {
-    const inputContainer = document.getElementById("inputSubTaksClickContainerEdit");
-    const addButton = document.getElementById("addSubTaskButtonEdit"); // Das Plus-Icon
-
-    if (inputContainer.classList.contains("visible")) {
-        // Verberge das X- und Check-Container, zeige das Plus-Icon
-        inputContainer.classList.remove("visible");
-        addButton.style.display = "block"; // Zeige das Plus-Icon
-    } else {
-        // Zeige das X- und Check-Container, verberge das Plus-Icon
-        inputContainer.classList.add("visible");
-        addButton.style.display = "none"; // Verstecke das Plus-Icon
-    }
-}
 
 function handleEnterKey(event) {
     // Prüfen, ob die Enter-Taste gedrückt wurde
@@ -444,37 +430,6 @@ function handleInputChange() {
         inputContainer.classList.remove("visible");
         addButton.style.display = "block";
     }
-}
-
-function addNewSubtaskEdit(event) {
-    const inputField = document.getElementById("subTaskInputEdit");
-    const subTaskList = document.getElementById("subTaskListEdit");
-
-    // Hole den Wert aus dem Input-Feld
-    const newSubtask = inputField.value.trim();
-
-    // Falls das Feld leer ist, abbrechen
-    if (!newSubtask) {
-        alert("Subtask cannot be empty!");
-        return;
-    }
-
-    // Neues Subtask als HTML hinzufügen
-    const subTaskItem = document.createElement("div");
-    subTaskItem.classList.add("subTask");
-    subTaskItem.innerHTML = `
-        <div class="leftContainerSubTask">${newSubtask}</div>
-        <div class="rightContainerSubTask">
-            <img onclick="editSubTaskEdit()" src="./assets/img/edit.svg" alt="Edit">
-            <img onclick="deleteSubtaskEdit()" src="./assets/img/delete.svg" alt="Delete">
-        </div>
-    `;
-
-    // Füge es zur Liste hinzu
-    subTaskList.appendChild(subTaskItem);
-
-    // Input-Feld zurücksetzen
-    resetInputField();
 }
 
 function resetInputField() {

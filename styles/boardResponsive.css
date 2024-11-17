@@ -91,18 +91,16 @@
     height: 450px;
   }
 
-  .expanded-card-overlay{
+  .expanded-card-overlay {
     height: 520px;
   }
 
-  .card-overlay{
+  .card-overlay {
     margin-top: 40px;
   }
 
   .task-title-overlay {
     width: 100%;
-    min-height: 70px;
-    max-height: 130px;
     font-weight: 700;
     font-size: 50px;
   }
@@ -187,7 +185,7 @@
     width: 100%;
   }
 
-  .task-description-overlay{
+  .task-description-overlay {
     width: 100%;
   }
 
@@ -266,10 +264,10 @@
     width: 32px;
     height: 32px;
     cursor: pointer;
-    position: sticky; 
-    top: 54px; 
+    position: sticky;
+    top: 54px;
     margin-left: 300px;
-    z-index: 100; 
+    z-index: 100;
   }
 
 }
@@ -278,7 +276,7 @@
 
   .board-add-task {
     margin: 0;
-    margin-top: 48px;
+    margin-top: 30px;
     margin-left: 10px;
   }
 
@@ -294,24 +292,35 @@
   .responsiv-plus-headline-container {
     width: 100%;
     padding-right: 15px;
-    margin-bottom: 15px;
   }
 
   .input-field-complett {
     width: 100%;
     margin-right: 15px;
+  }
+
+  .column-titel {
+    width: 100%;
+    padding-right: 8px;
+  }
+
 }
 
-.column-titel {
-  width: 100%;
-  padding-right: 8px;
-}
-
+@media (max-width: 375px) {
+  .close-btn-overlay {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    position: sticky; 
+    top: 54px; 
+    margin-left: 252px;
+    
+  }
 }
 
 @media (max-width: 340px) {
   .input-container {
-    width: 90px;
+    width: 100%;
   }
 
   .responsiv-plus-headline-container {

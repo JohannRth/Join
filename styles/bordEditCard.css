@@ -383,3 +383,45 @@
     text-align: left;
     cursor: pointer;
 }
+
+/* Container für die Subtask-Bearbeitung */
+.subTaskEditContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Styling für das Eingabefeld */
+.subTaskEditContainer input {
+  flex-grow: 1;
+  margin-right: 10px;
+  padding: 5px;
+  font-size: 14px;
+  border: none;
+  width: 250px;
+  background-color: transparent;
+  transition: border-color 0.3s ease;
+}
+
+.subTaskEditContainer input:focus {
+  border-bottom: 2px solid #007BFF; /* Farbe ändern bei Fokus */
+}
+
+/* Icon-Container */
+.subTaskIcons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Icons für Speichern und Abbrechen */
+.subTaskIcons .icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.subTaskIcons .icon:hover {
+  transform: scale(1.2);
+}
