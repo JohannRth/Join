@@ -1,13 +1,13 @@
 /**
- * Opens the edit overlay for a specific task, loading its details and preparing the UI.
+ * Öffnet den Edit-Overlay-Modus und synchronisiert die Kontakte.
  * @async
- * @param {string} taskId - The unique identifier of the task to edit.
+ * @param {string} taskId - Die ID der Aufgabe.
  */
 async function openEditOverlay(taskId) {
-    await loadTaskDetails(taskId);
-    await populateContactDropdownFromFirebase();
-    await loadAssignedContacts(taskId);
-    
+    await loadTaskDetails(taskId); // Task-Details laden
+    await loadAssignedContacts(taskId); // Aktive Kontakte laden
+    await populateContactDropdownFromFirebaseEdit(); // Dropdown mit Kontakten befüllen
+
     document.querySelector(".btn-check-edit").setAttribute("onclick", `confirmChanges('${taskId}')`);
 
     const editOverlay = document.getElementById("edit-overlay");
@@ -95,7 +95,7 @@ function setPriorityEdit(priority) {
 }
 
 /**
- * Displays the assigned contacts in the edit overlay.
+ * Displays the assigned contacts in the edit overlay, allowing removal on click.
  * @param {Array<string>} contacts - An array of contact names.
  */
 function displayAssignedContacts(contacts) {
@@ -105,11 +105,46 @@ function displayAssignedContacts(contacts) {
     contacts.forEach(contact => {
         const contactElement = document.createElement("div");
         contactElement.classList.add("contactBubble");
-        contactElement.style.backgroundColor = getRandomColor();
+        contactElement.style.backgroundColor = getColor(contact);
         contactElement.textContent = getInitials(contact);
+        contactElement.setAttribute("data-name", contact);
+
+        contactElement.addEventListener("click", () => container.removeChild(contactElement));
         container.appendChild(contactElement);
     });
 }
+
+/**
+ * Fügt einen Kontakt der Liste der aktiven Kontakte hinzu oder entfernt ihn (Edit-Modus).
+ * @param {string} name - Name des Kontakts.
+ */
+function toggleAssignedContactEdit(name, element) {
+    const assignedContainer = document.getElementById("aktivContactsEdit");
+    const existingContact = Array.from(assignedContainer.children).find(
+        el => el.getAttribute("data-name") === name
+    );
+
+    if (existingContact) {
+        // Kontakt entfernen
+        assignedContainer.removeChild(existingContact);
+        element.classList.remove("active");
+        element.querySelector(".contactCheckbox").checked = false;
+    } else {
+        // Kontakt hinzufügen
+        const contactBubble = document.createElement("div");
+        contactBubble.classList.add("contactBubble");
+        contactBubble.style.backgroundColor = getColor(name);
+        contactBubble.textContent = getInitials(name);
+        contactBubble.setAttribute("data-name", name);
+
+        contactBubble.addEventListener("click", () => assignedContainer.removeChild(contactBubble));
+        assignedContainer.appendChild(contactBubble);
+
+        element.classList.add("active");
+        element.querySelector(".contactCheckbox").checked = true;
+    }
+}
+
 
 /**
  * Retrieves the initials from a contact's full name.
@@ -148,26 +183,6 @@ async function loadAssignedContacts(taskId) {
 }
 
 /**
- * Displays the assigned contacts in the edit overlay, allowing removal on click.
- * @param {Array<string>} contacts - An array of contact names.
- */
-function displayAssignedContacts(contacts) {
-    const container = document.getElementById("aktivContactsEdit");
-    container.innerHTML = "";
-
-    contacts.forEach(contact => {
-        const contactElement = document.createElement("div");
-        contactElement.classList.add("contactBubble");
-        contactElement.style.backgroundColor = getColor(contact);
-        contactElement.textContent = getInitials(contact);
-        contactElement.setAttribute("data-name", contact);
-
-        contactElement.addEventListener("click", () => container.removeChild(contactElement));
-        container.appendChild(contactElement);
-    });
-}
-
-/**
  * Loads contacts from Firebase.
  * @async
  * @returns {Promise<Array<Object>>} A promise that resolves to an array of contact objects.
@@ -183,37 +198,40 @@ async function loadContacts() {
 }
 
 /**
- * Populates the contact dropdown in the edit overlay with contacts from Firebase.
+ * Populiert das Contact-Dropdown im Edit-Modus mit Daten aus Firebase.
  * @async
  */
-async function populateContactDropdownFromFirebase() {
-    const contacts = await loadContacts();
+async function populateContactDropdownFromFirebaseEdit() {
+    const contacts = await loadContacts(); // Kontakte aus Firebase laden
     const dropdown = document.getElementById("contactDropdownEdit");
+
+    // Aktive Kontakte abrufen
     const assignedContacts = Array.from(document.getElementById("aktivContactsEdit").children)
-        .map(contact => contact.getAttribute("data-name")); // Bereits zugewiesene Kontakte
+        .map(contact => contact.getAttribute("data-name").trim());
 
     if (!contacts?.length) {
         dropdown.innerHTML = "";
         return;
     }
 
-    // Erstelle die HTML-Struktur für jeden Kontakt mit Checkbox
-    dropdown.innerHTML = contacts.map(contact => createContactHTML(contact, assignedContacts)).join("");
-    
-    // Entferne das automatische Öffnen hier
+    // Fülle das Dropdown und markiere aktive Kontakte
+    dropdown.innerHTML = contacts.map(contact => createContactHTMLEdit(contact, assignedContacts)).join("");
 }
 
 /**
- * Creates HTML for a contact to be displayed in the dropdown.
- * @param {Object|string} contact - The contact object or name string.
- * @returns {string} HTML string representing the contact.
+ * Erzeugt HTML für einen Kontakt im Dropdown (Edit-Modus).
+ * @param {Object} contact - Kontaktobjekt (enthält `name`).
+ * @param {Array<string>} assignedContacts - Bereits zugewiesene Kontakte.
+ * @returns {string} HTML-String für den Kontakt.
  */
-function createContactHTML(contact, assignedContacts) {
-    const name = contact.name || contact;
-    const isChecked = assignedContacts.includes(name); // Überprüfe, ob Kontakt bereits zugewiesen ist
+function createContactHTMLEdit(contact, assignedContacts) {
+    const name = contact.name.trim();
+    const isChecked = assignedContacts.includes(name); // Überprüfe, ob der Kontakt aktiv ist
 
     return `
-        <div class="contactDropdownItem" data-name="${name}">
+        <div 
+            class="contactDropdownItem ${isChecked ? 'active' : ''}" 
+            onclick="toggleAssignedContactEdit('${name}', this)">
             <div class="contactBubble" style="background-color: ${getColor(name)};">
                 ${getInitials(name)}
             </div>
@@ -221,8 +239,8 @@ function createContactHTML(contact, assignedContacts) {
             <input 
                 type="checkbox" 
                 class="contactCheckbox" 
-                ${isChecked ? "checked" : ""} 
-                onclick="toggleAssignedContact('${name}')">
+                ${isChecked ? "checked" : ""}
+                onclick="event.stopPropagation(); toggleAssignedContactEdit('${name}', this.parentElement);">
         </div>
     `;
 }
@@ -269,23 +287,23 @@ function addContactToAssignedList(name, initials, color) {
 }
 
 /**
- * Displays the assigned contacts in the edit overlay.
- * @param {Array<string>} contacts - An array of contact names.
+ * Initialisiert das Dropdown im Edit-Modus und synchronisiert die Checkboxen mit den aktiven Kontakten.
  */
-function displayAssignedContacts(contacts) {
-    const container = document.getElementById("aktivContactsEdit");
-    container.innerHTML = "";
+async function initializeContactDropdownEdit() {
+    const contacts = await loadContacts(); // Kontakte aus Firebase laden
+    const assignedContacts = getAssignedContactsEdit(); // Bereits aktive Kontakte im Edit-Modus
 
-    contacts.forEach(contact => {
-        const element = Object.assign(document.createElement("div"), {
-            className: "contactBubble",
-            textContent: getInitials(contact),
-            style: `background-color: ${getColor(contact)}`,
-        });
-        element.setAttribute("data-name", contact);
-        element.addEventListener("click", () => container.removeChild(element));
-        container.appendChild(element);
-    });
+    const dropdown = document.getElementById("contactDropdownEdit");
+    dropdown.innerHTML = contacts.map(contact => createContactHTMLEdit(contact, assignedContacts)).join("");
+}
+
+/**
+ * Holt aktive Kontakte aus dem "aktivContactsEdit"-Container.
+ * @returns {Array<string>} Liste der aktiven Kontaktnamen.
+ */
+function getAssignedContactsEdit() {
+    return Array.from(document.getElementById("aktivContactsEdit").children)
+        .map(el => el.getAttribute("data-name").trim().toLowerCase()); // Standardisieren für den Vergleich
 }
 
 /**
@@ -469,25 +487,3 @@ function resetInputField() {
     addButton.style.display = "block"; // Zeige das Plus-Icon
 }
 
-function toggleAssignedContact(name) {
-    const assignedContainer = document.getElementById("aktivContactsEdit");
-    const existingContact = Array.from(assignedContainer.children).find(
-        el => el.getAttribute("data-name") === name
-    );
-
-    if (existingContact) {
-        // Kontakt entfernen, wenn bereits zugewiesen
-        assignedContainer.removeChild(existingContact);
-    } else {
-        // Kontakt hinzufügen, wenn nicht zugewiesen
-        const contactBubble = document.createElement("div");
-        contactBubble.classList.add("contactBubble");
-        contactBubble.style.backgroundColor = getColor(name);
-        contactBubble.textContent = getInitials(name);
-        contactBubble.setAttribute("data-name", name);
-
-        // Klick-Event für Entfernen
-        contactBubble.addEventListener("click", () => assignedContainer.removeChild(contactBubble));
-        assignedContainer.appendChild(contactBubble);
-    }
-}

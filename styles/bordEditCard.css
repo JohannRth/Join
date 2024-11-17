@@ -354,6 +354,21 @@
     filter: invert(1); /* Invertiert die Farbe der Checkbox */
 }
 
+.contactDropdownItem {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  margin-top: 3px;
+}
+
+.contactDropdownItem.active {
+  background-color: #2A3947;
+  color: white;
+}
+
 .inputAddSubTaskEdit{
     display: flex;
     flex-direction: column;

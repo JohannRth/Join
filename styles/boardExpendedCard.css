@@ -61,13 +61,11 @@
 
 .task-title-overlay {
   width: 445px;
-  min-height: 80px;
   font-weight: 700;
   font-size: 61px;
   color: #000000;
   line-height: 1.2;
   overflow-wrap: break-word;
-  overflow-y: auto;
 }
 
 .task-description-overlay {
