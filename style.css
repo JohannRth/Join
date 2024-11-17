@@ -59,6 +59,7 @@ body {
     align-content: center;
     justify-content: space-around;
     box-shadow: 0px 0px 14px 3px #0000000A;
+    position: relative;
 }
 
 
@@ -233,6 +234,9 @@ input#confirmedPassword {
     width: 32px;
     height: 32px;
     margin-right: 90%;
+    position: absolute;
+    left: 50px;
+    top: 50px;
 }
 
 .back-button:hover {
@@ -335,8 +339,14 @@ input#confirmedPassword {
 
     .back-button {
         cursor: pointer;
-        width: 45px;
-        height: 45px;
+        width: 40px;
+        height: 40px;
+        left: 25px !important;
+    }
+
+    .login-fsize {
+        font-size: 47px !important;
+        margin-bottom: 10px;
     }
 }
 
@@ -387,7 +397,7 @@ input#confirmedPassword {
     }
 
     .login-modal {
-        zoom: 86%;
+        zoom: 90%;
     }
 
     .register-header {
