@@ -41,10 +41,15 @@
 @media (max-width: 1245px) {
   .add-task-overlay {
     width: 600px;
+    padding-top: 40px;
   }  
   
   .add-task-container-header{
     width: 100%;
+  }
+
+  .add-task-title{
+    font-size: 27px;
   }
 
   .addTaskContent{

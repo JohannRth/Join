@@ -289,3 +289,26 @@ document.addEventListener('click', function (event) {
         filterTasks();
     }
 });
+
+// Funktion zur Behandlung der Fenstergröße und Klicks
+function handleResize() {
+    const divs = document.querySelectorAll(".clickable");
+
+    divs.forEach(div => {
+        if (window.innerWidth < 1070) {
+            // Funktion für Breiten unter 1070px
+            div.onclick = function() {
+                window.location.href = 'addTask.html';
+            };
+        } else {
+            // Funktion für Breiten ab 1070px
+            div.onclick = function() {
+                openAddTaskOverlay();
+            };
+        }
+    });
+}
+
+// Event Listener, um Funktion bei Änderungen auszuführen
+window.addEventListener("resize", handleResize);
+window.addEventListener("load", handleResize);

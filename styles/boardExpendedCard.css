@@ -251,7 +251,7 @@
 
 .add-task-overlay {
   width: 1116px;
-  height: 670px;
+  height: 800px;
   padding: 62px;
   background-color: #fff;
   display: flex;
@@ -268,6 +268,7 @@
   display: flex;
   justify-content: space-between;
   width: 968px;
+  margin-bottom: 30px;
 }
 
 .add-task-title {
