@@ -251,7 +251,7 @@
 
 .add-task-overlay {
   width: 1116px;
-  height: 870px;
+  height: 670px;
   padding: 62px;
   background-color: #fff;
   display: flex;
@@ -259,12 +259,32 @@
   justify-content: center;
   align-items: center;
   border-radius: 30px;
+  overflow: auto;
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
 }
 
 .add-task-container-header {
   display: flex;
   justify-content: space-between;
   width: 968px;
+}
+
+.close-btn-overlay-add-task {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  position: sticky; 
+  top: 54px; 
+  margin-left: 420px;
+  z-index: 100; 
+}
+
+.close-btn-overlay-add-task:hover {
+  background-color: #EEEEEE;
+  transform: scale(1.2);
+  border-radius: 50%;
+  transition: all 0.3s ease;
 }
 
 .add-task-title {

@@ -38,6 +38,31 @@
 
 }
 
+@media (max-width: 1245px) {
+
+  .add-task-overlay {
+    width: 600px;
+  }  
+
+  .add-task-container-header {
+    width: 500px;
+  }
+
+  .close-btn-overlay-add-task {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    position: sticky; 
+    top: 54px; 
+    margin-left: 220px;
+    z-index: 100; 
+  }
+
+  .addTaskContent{
+    overflow-y: auto;
+  }
+}
+
 @media (max-width: 1070px) {
   .board-add-task {
     flex-direction: column;
@@ -318,5 +343,44 @@
 
   .prioButtonContainerEdit {
     zoom: 80%;
+  }
+}
+
+@media (min-height:650px){
+
+  .expanded-card-overlay {
+    width: 513px;
+    max-height: 600px;
+    padding: 0px 20px 36px 20px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    gap: 24px;
+    overflow-y: auto;
+  }
+
+  .edit-card-around {
+    width: 520px;
+    height: 600px;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    animation: slideInOverlay 0.5s forwards;
+  }
+  
+  .edit-card-body {
+    width: 520px;
+    max-height: 650px;
+    padding-bottom: 20px;
+    padding-right: 30px;
+    padding-left: 30px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    gap: 24px;
+    overflow-y: auto;
   }
 }

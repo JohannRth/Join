@@ -429,19 +429,17 @@ flatpickr("#edit-due-date", flatpickrOptions);
 function handleDateChange(selectedDates, dateStr, instance) {
     const dueDateInput = document.getElementById("edit-due-date");
     if (dueDateInput) {
-        dueDateInput.value = dateStr; // Aktualisiert den Wert des Eingabefelds
+        dueDateInput.value = dateStr; 
     }
 }
+
 function handleEnterKey(event) {
-    // Prüfen, ob die Enter-Taste gedrückt wurde
+    
     if (event.key === "Enter") {
-        // Verhindert, dass das Formular abgeschickt wird (falls innerhalb eines <form>)
         event.preventDefault();
 
-        // Ruf die Funktion auf, die das neue Subtask hinzufügt
         addNewSubtaskEdit(event);
 
-        // Zurücksetzen des Input-Felds
         resetInputField();
     }
 }
@@ -501,8 +499,8 @@ function resetInputField() {
     }
 
     clearInputField(inputField);
-    toggleVisibility(inputContainer, false); // Verstecke den Container
-    toggleButtonVisibility(addButton, true); // Zeige das Plus-Icon
+    toggleVisibility(inputContainer, false); 
+    toggleButtonVisibility(addButton, true);
 }
 
 /**
