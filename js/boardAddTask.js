@@ -44,10 +44,12 @@ function getColor(name) {
  * Versteckt das Overlay und aktiviert das Scrollen wieder.
  */
 window.closeAddTaskOverlayAddTask = function() {
-    const overlay = document.getElementById("card-overlay");
+    const overlay = document.getElementById("add-task-overlay"); // Add-Task-Overlay
     if (overlay) {
-        overlay.classList.add("hidden");
-        document.body.classList.remove("no-scroll");
+        overlay.classList.add("hidden"); // Verstecke das Overlay
+        document.body.classList.remove("no-scroll"); // Scrollen wieder aktivieren
+    } else {
+        console.warn("Add-Task-Overlay konnte nicht gefunden werden.");
     }
 };
 
