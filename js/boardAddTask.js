@@ -38,3 +38,16 @@ function getColor(name) {
     const index = firstLetter.charCodeAt(0) - 65; 
     return colors[index % colors.length];
 }
+
+/**
+ * Schließt das Add-Task-Overlay.
+ * Versteckt das Overlay und aktiviert das Scrollen wieder.
+ */
+window.closeAddTaskOverlayAddTask = function() {
+    const overlay = document.getElementById("card-overlay");
+    if (overlay) {
+        overlay.classList.add("hidden");
+        document.body.classList.remove("no-scroll");
+    }
+};
+
