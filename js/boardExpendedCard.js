@@ -156,7 +156,6 @@ async function toggleSubtask(taskId, subtaskIndex) {
  */
 async function saveSubtaskStatus(taskId, subtaskIndex, isChecked) {
     const path = `subtaskStatus/${taskId}/${subtaskIndex}`;
-    console.log(`Saving subtask status at path ${path}:`, isChecked);
     await updateData(path, { completed: isChecked });
 }
 
@@ -267,7 +266,6 @@ async function deleteData(path) {
         if (!response.ok) {
             throw new Error(`Error deleting data from Firebase: ${response.statusText}`);
         }
-        console.log(`Data at path ${path} was successfully deleted.`);
     } catch (error) {
         console.error("Error deleting data from Firebase:", error);
     }
