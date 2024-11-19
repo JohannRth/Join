@@ -229,7 +229,7 @@ body.no-scroll {
 
 .title-description {
   width: 220px;
-  height: 84px;
+  height: auto;
   border-radius: 10px;
   gap: 4px;
 }

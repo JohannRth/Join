@@ -127,8 +127,6 @@
   }
 
   .task-description-overlay {
-    min-height: 30px;
-    max-height: 80px;
     font-weight: 400;
     font-size: 20px;
   }
