@@ -379,6 +379,10 @@ input#confirmedPassword {
     .login-mobile {
         width: 177px !important;
     }
+
+    .login-error {
+        top: 38%;
+    }
 }
 
 @media (max-width: 400px) {

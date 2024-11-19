@@ -229,7 +229,6 @@ async function savePosition(taskId, position) {
 async function loadPositionsFromFirebase() {
     try {
         const positionsData = await loadData("positionDropArea");
-        console.log("Loaded positions:", positionsData);
 
         todos = todos.map((task) => {
             const position = positionsData[task.id] || task.category; // Fallback zur aktuellen Kategorie
