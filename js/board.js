@@ -259,9 +259,6 @@ function openAddTaskOverlay() {
 }
 
 /**
- * Filters tasks based on the user's input in the search field and updates the UI.
- */
-/**
  * Filters tasks based on the user's input in the search field
  * and ensures a "No tasks" div is displayed for empty categories.
  */
@@ -273,15 +270,20 @@ function filterTasks() {
     categories.forEach(category => {
         const container = document.getElementById(category); // Container für die Kategorie
         const taskCards = container.querySelectorAll('.titel-card'); // Alle Task-Karten in der Kategorie
+
         let hasVisibleTasks = false; // Flag, ob mindestens eine Karte sichtbar ist
 
         // Filter auf alle Karten in der Kategorie anwenden
         taskCards.forEach(card => {
-            const title = card.querySelector('.task-title').innerText.toLowerCase(); // Titel der Karte
-            const description = card.querySelector('.task-description').innerText.toLowerCase(); // Beschreibung der Karte
+            const titleElement = card.querySelector('.task-title');
+            const descriptionElement = card.querySelector('.task-description');
+
+            // Sicherheitsprüfung, falls Elemente fehlen
+            const title = titleElement ? titleElement.innerText.toLowerCase() : '';
+            const description = descriptionElement ? descriptionElement.innerText.toLowerCase() : '';
 
             // Überprüfen, ob Titel oder Beschreibung den Filtertext enthält
-            if (filterText && (title.includes(filterText) || description.includes(filterText))) {
+            if (!filterText || title.includes(filterText) || description.includes(filterText)) {
                 card.style.display = 'block'; // Karte anzeigen
                 hasVisibleTasks = true; // Mindestens eine Karte sichtbar
             } else {
@@ -290,15 +292,15 @@ function filterTasks() {
         });
 
         // "No tasks"-Div einfügen oder entfernen, basierend auf der Sichtbarkeit
+        const noTasksDiv = container.querySelector('.no-tasks');
         if (!hasVisibleTasks) {
-            if (!container.querySelector('.no-tasks')) {
-                const noTasksDiv = document.createElement('div');
-                noTasksDiv.className = 'no-tasks';
-                noTasksDiv.innerText = `No tasks ${category.replace(/([A-Z])/g, ' $1').toLowerCase()}`;
-                container.appendChild(noTasksDiv);
+            if (!noTasksDiv) {
+                const newNoTasksDiv = document.createElement('div');
+                newNoTasksDiv.className = 'no-tasks';
+                newNoTasksDiv.innerText = `No tasks in ${category.replace(/([A-Z])/g, ' $1').toLowerCase()}`;
+                container.appendChild(newNoTasksDiv);
             }
         } else {
-            const noTasksDiv = container.querySelector('.no-tasks');
             if (noTasksDiv) {
                 noTasksDiv.remove();
             }
