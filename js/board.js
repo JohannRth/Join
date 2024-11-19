@@ -259,21 +259,49 @@ function openAddTaskOverlay() {
 }
 
 /**
- * Filters tasks based on the user's input in the search field.
+ * Filters tasks based on the user's input in the search field and updates the UI.
+ */
+/**
+ * Filters tasks based on the user's input in the search field
+ * and ensures a "No tasks" div is displayed for empty categories.
  */
 function filterTasks() {
     const inputField = document.querySelector('.input-find-task');
-    const filterText = inputField.value.toLowerCase().trim(); 
-    const taskCards = document.querySelectorAll('.titel-card');
+    const filterText = inputField.value.toLowerCase().trim(); // Benutzereingabe
+    const categories = ['todo', 'inProgress', 'awaitFeedback', 'done']; // IDs der Kategorien
 
-    taskCards.forEach(card => {
-        const title = card.querySelector('.task-title').innerText.toLowerCase();
-        const description = card.querySelector('.task-description').innerText.toLowerCase();
+    categories.forEach(category => {
+        const container = document.getElementById(category); // Container für die Kategorie
+        const taskCards = container.querySelectorAll('.titel-card'); // Alle Task-Karten in der Kategorie
+        let hasVisibleTasks = false; // Flag, ob mindestens eine Karte sichtbar ist
 
-        if (filterText && (title.includes(filterText) || description.includes(filterText))) {
-            card.style.border = '2px solid red'; 
+        // Filter auf alle Karten in der Kategorie anwenden
+        taskCards.forEach(card => {
+            const title = card.querySelector('.task-title').innerText.toLowerCase(); // Titel der Karte
+            const description = card.querySelector('.task-description').innerText.toLowerCase(); // Beschreibung der Karte
+
+            // Überprüfen, ob Titel oder Beschreibung den Filtertext enthält
+            if (filterText && (title.includes(filterText) || description.includes(filterText))) {
+                card.style.display = 'block'; // Karte anzeigen
+                hasVisibleTasks = true; // Mindestens eine Karte sichtbar
+            } else {
+                card.style.display = 'none'; // Karte ausblenden
+            }
+        });
+
+        // "No tasks"-Div einfügen oder entfernen, basierend auf der Sichtbarkeit
+        if (!hasVisibleTasks) {
+            if (!container.querySelector('.no-tasks')) {
+                const noTasksDiv = document.createElement('div');
+                noTasksDiv.className = 'no-tasks';
+                noTasksDiv.innerText = `No tasks ${category.replace(/([A-Z])/g, ' $1').toLowerCase()}`;
+                container.appendChild(noTasksDiv);
+            }
         } else {
-            card.style.border = ''; 
+            const noTasksDiv = container.querySelector('.no-tasks');
+            if (noTasksDiv) {
+                noTasksDiv.remove();
+            }
         }
     });
 }
