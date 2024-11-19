@@ -429,7 +429,7 @@ flatpickr("#edit-due-date", flatpickrOptions);
 function handleDateChange(selectedDates, dateStr, instance) {
     const dueDateInput = document.getElementById("edit-due-date");
     if (dueDateInput) {
-        dueDateInput.value = dateStr; 
+        dueDateInput.value = dateStr; // Aktualisiert den Wert des Eingabefelds
     }
 }
 
@@ -499,8 +499,8 @@ function resetInputField() {
     }
 
     clearInputField(inputField);
-    toggleVisibility(inputContainer, false); 
-    toggleButtonVisibility(addButton, true);
+    toggleVisibility(inputContainer, false); // Verstecke den Container
+    toggleButtonVisibility(addButton, true); // Zeige das Plus-Icon
 }
 
 /**
